@@ -43,7 +43,7 @@ The app runs at [http://localhost:3000](http://localhost:3000).
 
 ## Deployment
 
-Built for self-hosting via Docker on Hetzner with Dokploy. Push to `main` to deploy.
+The included setup is a personal configuration: Docker containers deployed via [Dokploy](https://dokploy.com) on a [Hetzner](https://www.hetzner.com) VPS, with push-to-`main` auto-deploys. If you're using this as a template, replace the Dockerfile, compose files, and deployment config with whatever suits your infrastructure — Vercel, Fly.io, Railway, bare metal, etc. Also update `CLAUDE.md` — it contains project-specific pointers (deploy targets, SSH aliases, MCP tools) that you'll want to rewrite for your own setup.
 
 ```bash
 # Build and run production locally
