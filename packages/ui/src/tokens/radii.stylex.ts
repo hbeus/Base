@@ -1,0 +1,12 @@
+import * as stylex from '@stylexjs/stylex';
+
+export const radii = stylex.defineVars({
+  r2: '2px',
+  r4: '4px',
+  r8: '8px',
+  r12: '12px',
+  r16: '16px',
+  r24: '24px',
+  r32: '32px',
+  full: '9999px',
+});
