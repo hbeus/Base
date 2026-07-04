@@ -25,4 +25,4 @@ Component library: `@base/ui` (Base UI + StyleX + motion). Optional 3D: `@base/c
 ## Constraints
 
 - `minimumReleaseAge: 10080` in `pnpm-workspace.yaml` — 7-day minimum package age
-- Never commit `.env` files. Production env vars managed via Dokploy
+- Production env vars managed via Dokploy
