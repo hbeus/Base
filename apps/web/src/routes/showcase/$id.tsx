@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { Link } from '~/components/Link';
 import { useState } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { Button, Input, Dialog, Toggle } from '@base/ui';

@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { Link } from '~/components/Link';
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';

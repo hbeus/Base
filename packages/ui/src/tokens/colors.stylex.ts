@@ -1,7 +1,12 @@
 import * as stylex from '@stylexjs/stylex';
 
+export const themeBackground: Record<'dark' | 'light', string> = {
+  dark: 'oklch(0.12 0 0)',
+  light: 'oklch(0.98 0 0)',
+};
+
 export const colors = stylex.defineVars({
-  background: 'oklch(0.12 0 0)',
+  background: themeBackground.dark,
   foregroundPrimary: 'oklch(1 0 0)',
   foregroundSecondary: 'oklch(1 0 0 / 0.6)',
 
@@ -29,7 +34,7 @@ export const colors = stylex.defineVars({
 });
 
 export const lightTheme = stylex.createTheme(colors, {
-  background: 'oklch(0.98 0 0)',
+  background: themeBackground.light,
   foregroundPrimary: 'oklch(0.12 0 0)',
   foregroundSecondary: 'oklch(0.12 0 0 / 0.6)',
 

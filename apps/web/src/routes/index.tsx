@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { Link } from '~/components/Link';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '@base/ui/tokens/colors.stylex';
@@ -42,16 +43,7 @@ const styles = stylex.create({
   },
   sectionTitle: {
     marginBottom: spacing.s16,
-    backgroundColor: 'red',
-  },
-  card: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: spacing.s20,
-    borderRadius: radii.r12,
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: colors.border,
+    paddingInline: spacing.s12,
   },
   userRow: {
     display: 'flex',
@@ -125,7 +117,7 @@ function HomePage() {
       </section>
 
       <section {...stylex.props(styles.section)}>
-      <Text size="bodyLg" style={styles.sectionTitle}>Data (server function → React Query)</Text>
+      <Text size="bodyLg" as="h2" style={styles.sectionTitle}>Data (server function → React Query)</Text>
         <Card>
           {users.map((user, i) => (
             <div
