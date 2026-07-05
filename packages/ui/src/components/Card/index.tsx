@@ -1,10 +1,10 @@
-import * as stylex from '@stylexjs/stylex';
-import { forwardRef } from 'react';
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
 import type { StyleXStyles } from '@stylexjs/stylex';
+import * as stylex from '@stylexjs/stylex';
+import type { ComponentPropsWithoutRef, ElementType } from 'react';
+import { forwardRef } from 'react';
 import { colors } from '../../tokens/colors.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
 import { radii } from '../../tokens/radii.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
 
 type CardVariant = 'filled' | 'outline';
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
@@ -40,7 +40,6 @@ const gaps = stylex.create({
   s24: { gap: spacing.s24 },
   s32: { gap: spacing.s32 },
   s40: { gap: spacing.s40 },
-
 });
 
 const variants = stylex.create({
@@ -65,16 +64,33 @@ const paddings = stylex.create({
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   (
-    { as: Component = "div", variant = "filled", padding = 'md', direction = 'column', gap = 's16', style, ...props },
+    {
+      as: Component = 'div',
+      variant = 'filled',
+      padding = 'md',
+      direction = 'column',
+      gap = 's16',
+      style,
+      ...props
+    },
     ref,
   ) => {
     const styleArr = Array.isArray(style) ? style : style ? [style] : [];
     return (
       <Component
         ref={ref}
-        {...stylex.props(styles.base, directions[direction], gaps[gap], variants[variant], paddings[padding], ...styleArr)}
+        {...stylex.props(
+          styles.base,
+          directions[direction],
+          gaps[gap],
+          variants[variant],
+          paddings[padding],
+          ...styleArr,
+        )}
         {...props}
       />
     );
   },
-) as <T extends ElementType = 'div'>(props: CardProps<T> & { ref?: React.Ref<Element> }) => React.JSX.Element;
+) as <T extends ElementType = 'div'>(
+  props: CardProps<T> & { ref?: React.Ref<Element> },
+) => React.JSX.Element;
