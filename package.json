@@ -16,5 +16,8 @@
     "db:generate": "pnpm --filter @base/db generate",
     "db:migrate": "pnpm --filter @base/db migrate",
     "db:studio": "pnpm --filter @base/db studio"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.1"
   }
 }
