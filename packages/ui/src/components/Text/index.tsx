@@ -15,6 +15,7 @@ type TextProps<T extends ElementType = 'span'> = {
   size?: TextSize;
   weight?: TextWeight;
   color?: TextColor;
+  tight?: boolean;
   style?: StyleXStyles | StyleXStyles[];
 } & Omit<ComponentPropsWithoutRef<T>, 'as' | 'size' | 'weight' | 'color' | 'style'>;
 
@@ -74,6 +75,10 @@ const weights = stylex.create({
   bold: { fontWeight: 700 },
 });
 
+const tightStyle = stylex.create({
+  tight: { lineHeight: 1 },
+});
+
 const textColors = stylex.create({
   primary: { color: colors.foregroundPrimary },
   secondary: { color: colors.foregroundSecondary },
@@ -86,6 +91,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(
       size = 'body',
       weight = 'medium',
       color = 'primary',
+      tight,
       style,
       ...props
     },
@@ -95,7 +101,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(
     return (
       <Component
         ref={ref}
-        {...stylex.props(sizes[size], weights[weight], textColors[color], ...styleArr)}
+        {...stylex.props(sizes[size], weights[weight], textColors[color], tight && tightStyle.tight, ...styleArr)}
         {...props}
       />
     );
