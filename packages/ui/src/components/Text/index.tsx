@@ -1,7 +1,6 @@
 import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
-import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef, ComponentRef, Ref } from 'react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { typography } from '../../tokens/typography.stylex';
@@ -11,8 +10,9 @@ type TextSize = 'hero' | 'display' | 'headline' | 'title' | 'body' | 'bodySm' | 
 type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 type TextColor = 'primary' | 'secondary';
 
-type TextProps<T extends ElementType = 'span'> = {
+type TextProps<T extends keyof React.JSX.IntrinsicElements = 'span'> = {
   as?: T;
+  ref?: Ref<ComponentRef<T>>;
   size?: TextSize;
   weight?: TextWeight;
   color?: TextColor;
@@ -85,34 +85,30 @@ const textColors = stylex.create({
   secondary: { color: colors.foregroundSecondary },
 });
 
-export const Text = forwardRef<HTMLElement, TextProps>(
-  (
-    {
-      as: Component = 'span',
-      size = 'body',
-      weight = 'medium',
-      color = 'primary',
-      tight,
-      style,
-      ...props
-    },
-    ref,
-  ) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return (
-      <Component
-        ref={ref}
-        {...stylex.props(
-          sizes[size],
-          weights[weight],
-          textColors[color],
-          tight && tightStyle.tight,
-          ...styleArr,
-        )}
-        {...props}
-      />
-    );
-  },
-) as <T extends ElementType = 'span'>(
-  props: TextProps<T> & { ref?: React.Ref<HTMLElement> },
+export const Text = function Text({
+  as: Component = 'span',
+  size = 'body',
+  weight = 'medium',
+  color = 'primary',
+  tight,
+  style,
+  ref,
+  ...props
+}: TextProps) {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return (
+    <Component
+      ref={ref}
+      {...stylex.props(
+        sizes[size],
+        weights[weight],
+        textColors[color],
+        tight && tightStyle.tight,
+        ...styleArr,
+      )}
+      {...props}
+    />
+  );
+} as <T extends keyof React.JSX.IntrinsicElements = 'span'>(
+  props: TextProps<T>,
 ) => React.JSX.Element;

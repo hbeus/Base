@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import type { Theme } from '~/server/theme';
 
@@ -20,14 +20,14 @@ export function ThemeProvider({
 }) {
   const [theme, setThemeState] = useState<Theme>(initialTheme);
 
-  const setTheme = useCallback((newTheme: Theme) => {
+  const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     document.cookie = `theme=${newTheme};path=/;max-age=31536000`;
-  }, []);
+  };
 
-  const toggleTheme = useCallback(() => {
+  const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
-  }, [theme, setTheme]);
+  };
 
   return <ThemeContext value={{ theme, toggleTheme, setTheme }}>{children}</ThemeContext>;
 }

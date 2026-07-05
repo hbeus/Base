@@ -2,8 +2,7 @@ import { Switch } from '@base-ui/react/switch';
 import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef } from 'react';
-import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef, Ref } from 'react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
@@ -11,6 +10,7 @@ import { radii } from '../../tokens/radii.stylex';
 type ToggleSize = 'sm' | 'md';
 
 interface ToggleProps extends Omit<ComponentPropsWithoutRef<typeof Switch.Root>, 'style'> {
+  ref?: Ref<HTMLButtonElement>;
   size?: ToggleSize;
   style?: StyleXStyles | StyleXStyles[];
 }
@@ -61,35 +61,39 @@ const thumbStyles = stylex.create({
   },
 });
 
-export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
-  ({ size = 'md', checked, defaultChecked, onCheckedChange, style, ...props }, ref) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return (
-      <Switch.Root
-        ref={ref}
-        checked={checked}
-        defaultChecked={defaultChecked}
-        onCheckedChange={onCheckedChange}
-        {...stylex.props(
-          rootStyles.base,
-          rootStyles[size],
-          checked && rootStyles.checked,
-          ...styleArr,
-        )}
-        {...props}
-      >
-        <Switch.Thumb
-          render={
-            <motion.span
-              layout
-              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-              {...stylex.props(thumbStyles.base, thumbStyles[size])}
-            />
-          }
-        />
-      </Switch.Root>
-    );
-  },
-);
-
-Toggle.displayName = 'Toggle';
+export function Toggle({
+  size = 'md',
+  checked,
+  defaultChecked,
+  onCheckedChange,
+  style,
+  ref,
+  ...props
+}: ToggleProps) {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return (
+    <Switch.Root
+      ref={ref}
+      checked={checked}
+      defaultChecked={defaultChecked}
+      onCheckedChange={onCheckedChange}
+      {...stylex.props(
+        rootStyles.base,
+        rootStyles[size],
+        checked && rootStyles.checked,
+        ...styleArr,
+      )}
+      {...props}
+    >
+      <Switch.Thumb
+        render={
+          <motion.span
+            layout
+            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            {...stylex.props(thumbStyles.base, thumbStyles[size])}
+          />
+        }
+      />
+    </Switch.Root>
+  );
+}

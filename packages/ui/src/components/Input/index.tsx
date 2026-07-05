@@ -1,8 +1,7 @@
 import { Input as BaseInput } from '@base-ui/react/input';
 import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef } from 'react';
-import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef, Ref } from 'react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
@@ -12,6 +11,7 @@ import { typography } from '../../tokens/typography.stylex';
 type InputSize = 'sm' | 'md' | 'lg';
 
 interface InputProps extends Omit<ComponentPropsWithoutRef<typeof BaseInput>, 'style'> {
+  ref?: Ref<HTMLInputElement>;
   inputSize?: InputSize;
   style?: StyleXStyles | StyleXStyles[];
 }
@@ -55,17 +55,13 @@ const styles = stylex.create({
   },
 });
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ inputSize = 'md', style, ...props }, ref) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return (
-      <BaseInput
-        ref={ref}
-        {...stylex.props(styles.base, styles[inputSize], ...styleArr)}
-        {...props}
-      />
-    );
-  },
-);
-
-Input.displayName = 'Input';
+export function Input({ inputSize = 'md', style, ref, ...props }: InputProps) {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return (
+    <BaseInput
+      ref={ref}
+      {...stylex.props(styles.base, styles[inputSize], ...styleArr)}
+      {...props}
+    />
+  );
+}

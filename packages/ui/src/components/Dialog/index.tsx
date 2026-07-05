@@ -3,8 +3,7 @@ import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
-import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef, Ref } from 'react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
@@ -19,20 +18,14 @@ function Root(props: ComponentPropsWithoutRef<typeof BaseDialog.Root>) {
 }
 
 /* ---------- Trigger ---------- */
-const Trigger = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof BaseDialog.Trigger>>(
-  (props, ref) => {
-    return <BaseDialog.Trigger ref={ref} {...props} />;
-  },
-);
-Trigger.displayName = 'Dialog.Trigger';
+function Trigger({ ref, ...props }: ComponentPropsWithoutRef<typeof BaseDialog.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
+  return <BaseDialog.Trigger ref={ref} {...props} />;
+}
 
 /* ---------- Close ---------- */
-const Close = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof BaseDialog.Close>>(
-  (props, ref) => {
-    return <BaseDialog.Close ref={ref} {...props} />;
-  },
-);
-Close.displayName = 'Dialog.Close';
+function Close({ ref, ...props }: ComponentPropsWithoutRef<typeof BaseDialog.Close> & { ref?: Ref<HTMLButtonElement> }) {
+  return <BaseDialog.Close ref={ref} {...props} />;
+}
 
 /* ---------- Portal ---------- */
 function Portal(props: ComponentPropsWithoutRef<typeof BaseDialog.Portal>) {
@@ -55,10 +48,11 @@ const MotionBackdrop = motion.create(
 
 interface BackdropProps
   extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Backdrop>, 'style'> {
+  ref?: Ref<HTMLDivElement>;
   style?: StyleXStyles | StyleXStyles[];
 }
 
-const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(({ style, ...props }, ref) => {
+function Backdrop({ style, ref, ...props }: BackdropProps) {
   const styleArr = Array.isArray(style) ? style : style ? [style] : [];
   return (
     <MotionBackdrop
@@ -71,8 +65,7 @@ const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(({ style, ...props },
       {...props}
     />
   );
-});
-Backdrop.displayName = 'Dialog.Backdrop';
+}
 
 /* ---------- Content ---------- */
 const contentStyles = stylex.create({
@@ -106,27 +99,25 @@ const contentStyles = stylex.create({
 const MotionPopup = motion.create(BaseDialog.Popup as React.ComponentType<Record<string, unknown>>);
 
 interface ContentProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Popup>, 'style'> {
+  ref?: Ref<HTMLDivElement>;
   size?: DialogSize;
   style?: StyleXStyles | StyleXStyles[];
 }
 
-const Content = forwardRef<HTMLDivElement, ContentProps>(
-  ({ size = 'md', style, ...props }, ref) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return (
-      <MotionPopup
-        ref={ref}
-        initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-        animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-        exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-        transition={{ duration: 0.2 }}
-        {...stylex.props(contentStyles.base, contentStyles[size], ...styleArr)}
-        {...props}
-      />
-    );
-  },
-);
-Content.displayName = 'Dialog.Content';
+function Content({ size = 'md', style, ref, ...props }: ContentProps) {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return (
+    <MotionPopup
+      ref={ref}
+      initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+      animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+      exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+      transition={{ duration: 0.2 }}
+      {...stylex.props(contentStyles.base, contentStyles[size], ...styleArr)}
+      {...props}
+    />
+  );
+}
 
 /* ---------- Title ---------- */
 const titleStyles = stylex.create({
@@ -140,14 +131,14 @@ const titleStyles = stylex.create({
 });
 
 interface TitleProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Title>, 'style'> {
+  ref?: Ref<HTMLHeadingElement>;
   style?: StyleXStyles | StyleXStyles[];
 }
 
-const Title = forwardRef<HTMLHeadingElement, TitleProps>(({ style, ...props }, ref) => {
+function Title({ style, ref, ...props }: TitleProps) {
   const styleArr = Array.isArray(style) ? style : style ? [style] : [];
   return <BaseDialog.Title ref={ref} {...stylex.props(titleStyles.base, ...styleArr)} {...props} />;
-});
-Title.displayName = 'Dialog.Title';
+}
 
 /* ---------- Description ---------- */
 const descriptionStyles = stylex.create({
@@ -160,22 +151,20 @@ const descriptionStyles = stylex.create({
 
 interface DescriptionProps
   extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Description>, 'style'> {
+  ref?: Ref<HTMLParagraphElement>;
   style?: StyleXStyles | StyleXStyles[];
 }
 
-const Description = forwardRef<HTMLParagraphElement, DescriptionProps>(
-  ({ style, ...props }, ref) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return (
-      <BaseDialog.Description
-        ref={ref}
-        {...stylex.props(descriptionStyles.base, ...styleArr)}
-        {...props}
-      />
-    );
-  },
-);
-Description.displayName = 'Dialog.Description';
+function Description({ style, ref, ...props }: DescriptionProps) {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return (
+    <BaseDialog.Description
+      ref={ref}
+      {...stylex.props(descriptionStyles.base, ...styleArr)}
+      {...props}
+    />
+  );
+}
 
 /* ---------- Export ---------- */
 export const Dialog = {

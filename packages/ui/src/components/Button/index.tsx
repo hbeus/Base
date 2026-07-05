@@ -3,8 +3,7 @@ import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
-import { forwardRef } from 'react';
+import type { ComponentPropsWithoutRef, Ref } from 'react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
@@ -15,6 +14,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends Omit<ComponentPropsWithoutRef<typeof BaseButton>, 'style'> {
+  ref?: Ref<HTMLButtonElement>;
   variant?: ButtonVariant;
   size?: ButtonSize;
   style?: StyleXStyles | StyleXStyles[];
@@ -87,18 +87,14 @@ const styles = stylex.create({
 
 const MotionBaseButton = motion.create(BaseButton as React.ComponentType<Record<string, unknown>>);
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', style, ...props }, ref) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return (
-      <MotionBaseButton
-        ref={ref}
-        whileTap={{ scale: 0.98 }}
-        {...stylex.props(styles.base, styles[variant], styles[size], ...styleArr)}
-        {...props}
-      />
-    );
-  },
-);
-
-Button.displayName = 'Button';
+export function Button({ variant = 'primary', size = 'md', style, ref, ...props }: ButtonProps) {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return (
+    <MotionBaseButton
+      ref={ref}
+      whileTap={{ scale: 0.98 }}
+      {...stylex.props(styles.base, styles[variant], styles[size], ...styleArr)}
+      {...props}
+    />
+  );
+}
