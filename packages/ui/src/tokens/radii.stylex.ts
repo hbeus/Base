@@ -3,6 +3,7 @@ import * as stylex from '@stylexjs/stylex';
 export const radii = stylex.defineVars({
   r2: '2px',
   r4: '4px',
+  r6: '6px',
   r8: '8px',
   r12: '12px',
   r16: '16px',
