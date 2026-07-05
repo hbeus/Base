@@ -3,12 +3,12 @@ import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-import { colors } from '../../tokens/colors.stylex';
-import { radii } from '../../tokens/radii.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
-import { typography } from '../../tokens/typography.stylex';
-import type { BaseProps } from '../../types/BaseProps';
-import { styleArray } from '../../utils/styleArray';
+import { colors } from '../../../tokens/colors.stylex';
+import { radii } from '../../../tokens/radii.stylex';
+import { spacing } from '../../../tokens/spacing.stylex';
+import { typography } from '../../../tokens/typography.stylex';
+import type { BaseProps } from '../../../types/BaseProps';
+import { styleArray } from '../../../utils/styleArray';
 
 type DialogSize = 'sm' | 'md' | 'lg';
 

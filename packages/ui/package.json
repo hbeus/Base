@@ -8,11 +8,11 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./input/*": "./src/input/*/index.tsx",
-    "./layout/*": "./src/layout/*/index.tsx",
-    "./typography/*": "./src/typography/*/index.tsx",
-    "./overlays/*": "./src/overlays/*/index.tsx",
-    "./alpha/*": "./src/alpha/*/index.tsx",
+    "./input/*": "./src/components/input/*/index.tsx",
+    "./layout/*": "./src/components/layout/*/index.tsx",
+    "./typography/*": "./src/components/typography/*/index.tsx",
+    "./overlays/*": "./src/components/overlays/*/index.tsx",
+    "./alpha/*": "./src/components/alpha/*/index.tsx",
     "./tokens/*.stylex": "./src/tokens/*.stylex.ts"
   },
   "dependencies": {

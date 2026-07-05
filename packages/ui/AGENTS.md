@@ -4,15 +4,16 @@
 
 ```
 src/
-  input/        Button, Input, Toggle, Pressable
-  layout/       Card
-  typography/   Text
-  overlays/     Dialog
-  alpha/        Unstable — deep-import only, not in barrel
-  tokens/       spacing, size, elementSize, colors, radii, typography
-  types/        polymorphic.ts (read before creating polymorphic components)
-  utils/        styleArray, mergeProps, mergeRefs
-  providers/    ComponentConfigProvider
+  components/
+    input/        Button, Input, Toggle, Pressable
+    layout/       Card
+    typography/   Text
+    overlays/     Dialog
+    alpha/        Unstable — deep-import only, not in barrel
+  tokens/         spacing, size, elementSize, colors, radii, typography
+  types/          polymorphic.ts (read before creating polymorphic components)
+  utils/          styleArray, mergeProps, mergeRefs
+  providers/      ComponentConfigProvider
 ```
 
 ## Key decisions

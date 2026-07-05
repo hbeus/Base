@@ -3,11 +3,11 @@ import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { useState } from 'react';
-import { useComponentConfig } from '../../providers/ComponentConfigProvider';
-import { colors } from '../../tokens/colors.stylex';
-import { radii } from '../../tokens/radii.stylex';
-import type { BaseProps } from '../../types/BaseProps';
-import { styleArray } from '../../utils/styleArray';
+import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+import { colors } from '../../../tokens/colors.stylex';
+import { radii } from '../../../tokens/radii.stylex';
+import type { BaseProps } from '../../../types/BaseProps';
+import { styleArray } from '../../../utils/styleArray';
 
 type ToggleSize = 'sm' | 'md';
 

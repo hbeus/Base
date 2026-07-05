@@ -1,8 +1,8 @@
-export { Button, type ButtonProps } from './input/Button';
-export { Input, type InputProps } from './input/Input';
-export { Pressable, type PressableProps } from './input/Pressable';
-export { Toggle, type ToggleProps } from './input/Toggle';
-export { Card, type CardProps } from './layout/Card';
+export { Button, type ButtonProps } from './components/input/Button';
+export { Input, type InputProps } from './components/input/Input';
+export { Pressable, type PressableProps } from './components/input/Pressable';
+export { Toggle, type ToggleProps } from './components/input/Toggle';
+export { Card, type CardProps } from './components/layout/Card';
 export {
   Dialog,
   type DialogBackdropProps,
@@ -10,7 +10,8 @@ export {
   type DialogDescriptionProps,
   type DialogFooterProps,
   type DialogTitleProps,
-} from './overlays/Dialog';
+} from './components/overlays/Dialog';
+export { Text, type TextProps } from './components/typography/Text';
 export {
   type ComponentConfig,
   ComponentConfigProvider,
@@ -24,7 +25,6 @@ export { spacing } from './tokens/spacing.stylex';
 export { typography } from './tokens/typography.stylex';
 export type { BaseProps } from './types/BaseProps';
 export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic';
-export { Text, type TextProps } from './typography/Text';
 export { mergeProps } from './utils/mergeProps';
 export { mergeRefs } from './utils/mergeRefs';
 export { styleArray } from './utils/styleArray';

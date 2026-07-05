@@ -1,10 +1,10 @@
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import { useComponentConfig } from '../../providers/ComponentConfigProvider';
-import { colors } from '../../tokens/colors.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
-import type { PolymorphicComponent, PolymorphicProps } from '../../types/polymorphic';
-import { styleArray } from '../../utils/styleArray';
+import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+import { colors } from '../../../tokens/colors.stylex';
+import { spacing } from '../../../tokens/spacing.stylex';
+import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
+import { styleArray } from '../../../utils/styleArray';
 
 type PressableVariant = 'filled' | 'outline' | 'ghost' | 'transparent';
 type PressableInset = 's2' | 's4' | 's8' | 's12' | 's16';

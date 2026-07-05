@@ -1,9 +1,9 @@
 import * as stylex from '@stylexjs/stylex';
-import { useComponentConfig } from '../../providers/ComponentConfigProvider';
-import { colors } from '../../tokens/colors.stylex';
-import { typography } from '../../tokens/typography.stylex';
-import type { PolymorphicComponent, PolymorphicProps } from '../../types/polymorphic';
-import { styleArray } from '../../utils/styleArray';
+import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+import { colors } from '../../../tokens/colors.stylex';
+import { typography } from '../../../tokens/typography.stylex';
+import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
+import { styleArray } from '../../../utils/styleArray';
 
 type TextSize = 'hero' | 'display' | 'headline' | 'title' | 'body' | 'bodySm' | 'label' | 'caption';
 type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold';

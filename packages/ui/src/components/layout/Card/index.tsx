@@ -1,10 +1,10 @@
 import * as stylex from '@stylexjs/stylex';
-import { useComponentConfig } from '../../providers/ComponentConfigProvider';
-import { colors } from '../../tokens/colors.stylex';
-import { radii } from '../../tokens/radii.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
-import type { PolymorphicComponent, PolymorphicProps } from '../../types/polymorphic';
-import { styleArray } from '../../utils/styleArray';
+import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+import { colors } from '../../../tokens/colors.stylex';
+import { radii } from '../../../tokens/radii.stylex';
+import { spacing } from '../../../tokens/spacing.stylex';
+import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
+import { styleArray } from '../../../utils/styleArray';
 
 type CardVariant = 'filled' | 'outline';
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
