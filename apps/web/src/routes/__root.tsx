@@ -2,7 +2,14 @@
 
 import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
 import * as stylex from '@stylexjs/stylex';
-import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+  useRouter,
+  useRouterState,
+} from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { MotionProvider } from '~/providers/MotionProvider';
 import { QueryProvider } from '~/providers/QueryProvider';
@@ -74,11 +81,9 @@ const bodyStyles = stylex.create({
   },
 });
 
-const toggleStyles = stylex.create({
-  button: {
+const fixedButtonStyles = stylex.create({
+  base: {
     position: 'fixed',
-    top: '16px',
-    right: '16px',
     zIndex: 9999,
     width: '36px',
     height: '36px',
@@ -97,17 +102,42 @@ const toggleStyles = stylex.create({
       backgroundColor: colors.lighten16,
     },
   },
+  topRight: {
+    top: '16px',
+    right: '16px',
+  },
+  topLeft: {
+    top: '16px',
+    left: '16px',
+  },
 });
 
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
   return (
     <button
-      {...stylex.props(toggleStyles.button)}
+      {...stylex.props(fixedButtonStyles.base, fixedButtonStyles.topRight)}
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
       {theme === 'dark' ? '☀' : '☾'}
+    </button>
+  );
+}
+
+function BackButton() {
+  const router = useRouter();
+  const pathname = useRouterState({ select: s => s.location.pathname });
+
+  if (pathname === '/') return null;
+
+  return (
+    <button
+      {...stylex.props(fixedButtonStyles.base, fixedButtonStyles.topLeft)}
+      onClick={() => router.history.back()}
+      aria-label='Go back'
+    >
+      ←
     </button>
   );
 }
@@ -128,6 +158,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <StyleXCSS />
       </head>
       <body {...stylex.props(bodyStyles.base)}>
+        <BackButton />
         <ThemeToggle />
         {children}
       </body>

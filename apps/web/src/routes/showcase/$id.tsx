@@ -5,7 +5,6 @@ import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Link } from '~/components/Link';
 
 export const Route = createFileRoute('/showcase/$id')({
   component: ShowcaseDetail,
@@ -54,13 +53,6 @@ const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  backLink: {
-    textDecoration: 'none',
-    transition: 'color 0.1s',
-    ':hover': {
-      color: colors.foregroundPrimary,
-    },
   },
 });
 
@@ -230,16 +222,9 @@ function ShowcaseDetail() {
 
   if (!showcase) {
     return (
-      <div>
-        <Text as='p' size='bodySm' color='secondary'>
-          Component "{id}" not found.
-        </Text>
-        <Link to='/showcase' {...stylex.props(styles.backLink)}>
-          <Text size='bodySm' color='secondary'>
-            ← Back to components
-          </Text>
-        </Link>
-      </div>
+      <Text as='p' size='bodySm' color='secondary'>
+        Component "{id}" not found.
+      </Text>
     );
   }
 
