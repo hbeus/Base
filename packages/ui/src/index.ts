@@ -16,7 +16,7 @@ export {
   ComponentConfigProvider,
   useComponentConfig,
 } from './providers/ComponentConfigProvider';
-export { colors } from './tokens/colors.stylex';
+export { colors, lightTheme } from './tokens/colors.stylex';
 export { elementSize } from './tokens/elementSize.stylex';
 export { radii } from './tokens/radii.stylex';
 export { size } from './tokens/size.stylex';

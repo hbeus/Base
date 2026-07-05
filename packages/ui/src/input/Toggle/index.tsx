@@ -3,6 +3,7 @@ import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { useState } from 'react';
+import { useComponentConfig } from '../../providers/ComponentConfigProvider';
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
 import type { BaseProps } from '../../types/BaseProps';
@@ -63,15 +64,16 @@ const thumbStyles = stylex.create({
   },
 });
 
-export function Toggle({
-  size = 'md',
-  checked: checkedProp,
-  defaultChecked = false,
-  onCheckedChange,
-  style,
-  ref,
-  ...props
-}: ToggleProps) {
+export function Toggle(rawProps: ToggleProps) {
+  const {
+    size = 'md',
+    checked: checkedProp,
+    defaultChecked = false,
+    onCheckedChange,
+    style,
+    ref,
+    ...props
+  } = useComponentConfig('Toggle', rawProps);
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const checked = checkedProp ?? internalChecked;
 

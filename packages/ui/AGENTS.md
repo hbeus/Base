@@ -20,4 +20,4 @@ src/
 - **Token split**: `spacing` = padding/margin/gap, `size` = arbitrary dimensions, `elementSize` = component heights (sm/md/lg). Read the token files to see the scales.
 - **No hardcoded values**: all colors, spacing, radii, and typography come from tokens. No raw px, hex, or font sizes.
 - **Components import from barrel** (`@base/ui`), **tokens use deep imports** (`@base/ui/tokens/colors.stylex`).
-- **`light-dark()` CSS function** for theming — single token set, no class swapping. Theme is controlled via `color-scheme` on `<html>`.
+- **Theming via `stylex.createTheme()`**: dark values are defaults in `defineVars()`, light overrides in `lightTheme` via `createTheme()`. Applied as a className on `<html>`. Do not use `light-dark()` CSS function — LightningCSS mangles it.

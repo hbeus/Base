@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 import { ComponentConfigProvider } from '@base/ui';
-import { colors, themeBackground } from '@base/ui/tokens/colors.stylex';
+import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
@@ -150,9 +150,14 @@ function BackButton() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
+  const themeStyle = theme === 'light' ? stylex.props(lightTheme) : {};
 
   return (
-    <html lang='en' style={{ colorScheme: theme }}>
+    <html
+      lang='en'
+      className={themeStyle.className}
+      style={{ ...themeStyle.style, colorScheme: theme }}
+    >
       <head>
         <HeadContent />
         <meta name='theme-color' content={themeBackground[theme]} />
