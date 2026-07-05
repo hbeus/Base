@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+
 import { colors } from '../../../tokens/colors.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
@@ -87,17 +87,16 @@ const textColors = stylex.create({
   secondary: { color: colors.foregroundSecondary },
 });
 
-export const Text = function Text(rawProps: TextProps) {
-  const {
-    as: Component = 'span',
-    size = 'body',
-    weight = 'medium',
-    color = 'primary',
-    tight,
-    style,
-    ref,
-    ...props
-  } = useComponentConfig('Text', rawProps);
+export const Text = function Text({
+  as: Component = 'span',
+  size = 'body',
+  weight = 'medium',
+  color = 'primary',
+  tight,
+  style,
+  ref,
+  ...props
+}: TextProps) {
   return (
     <Component
       ref={ref}

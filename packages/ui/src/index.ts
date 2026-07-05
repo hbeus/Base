@@ -12,11 +12,7 @@ export {
   type DialogTitleProps,
 } from './components/overlays/Dialog';
 export { Text, type TextProps } from './components/typography/Text';
-export {
-  type ComponentConfig,
-  ComponentConfigProvider,
-  useComponentConfig,
-} from './providers/ComponentConfigProvider';
+
 export { colors, lightTheme } from './tokens/colors.stylex';
 export { elementSize } from './tokens/elementSize.stylex';
 export { radii } from './tokens/radii.stylex';

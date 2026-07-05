@@ -1,7 +1,7 @@
 import { Input as BaseInput } from '@base-ui/react/input';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+
 import { colors } from '../../../tokens/colors.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -58,8 +58,7 @@ const styles = stylex.create({
   },
 });
 
-export function Input(rawProps: InputProps) {
-  const { size = 'md', style, ref, ...props } = useComponentConfig('Input', rawProps);
+export function Input({ size = 'md', style, ref, ...props }: InputProps) {
   return (
     <BaseInput
       ref={ref}

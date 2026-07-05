@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+
 import { colors } from '../../../tokens/colors.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
@@ -85,15 +85,14 @@ const insets = stylex.create({
   },
 });
 
-export const Pressable = function Pressable(rawProps: PressableProps) {
-  const {
-    as = 'div',
-    ref,
-    variant = 'ghost',
-    inset,
-    style,
-    ...props
-  } = useComponentConfig('Pressable', rawProps);
+export const Pressable = function Pressable({
+  as = 'div',
+  ref,
+  variant = 'ghost',
+  inset,
+  style,
+  ...props
+}: PressableProps) {
   const MotionElement = motion[as as keyof typeof motion] as React.ElementType;
   return (
     <MotionElement

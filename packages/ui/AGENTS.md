@@ -13,7 +13,6 @@ src/
   tokens/         spacing, size, elementSize, colors, radii, typography
   types/          polymorphic.ts (read before creating polymorphic components)
   utils/          styleArray, mergeProps, mergeRefs
-  providers/      ComponentConfigProvider
 ```
 
 ## Key decisions

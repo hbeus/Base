@@ -3,7 +3,7 @@ import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+
 import { colors } from '../../../tokens/colors.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -90,14 +90,7 @@ const styles = stylex.create({
 
 const MotionBaseButton = motion.create(BaseButton as React.ComponentType<Record<string, unknown>>);
 
-export function Button(rawProps: ButtonProps) {
-  const {
-    variant = 'primary',
-    size = 'md',
-    style,
-    ref,
-    ...props
-  } = useComponentConfig('Button', rawProps);
+export function Button({ variant = 'primary', size = 'md', style, ref, ...props }: ButtonProps) {
   return (
     <MotionBaseButton
       ref={ref}

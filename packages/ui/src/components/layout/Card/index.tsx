@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
-import { useComponentConfig } from '../../../providers/ComponentConfigProvider';
+
 import { colors } from '../../../tokens/colors.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -66,17 +66,16 @@ const paddings = stylex.create({
   lg: { padding: spacing.s32 },
 });
 
-export const Card = function Card(rawProps: CardProps) {
-  const {
-    as: Component = 'div',
-    variant = 'filled',
-    padding = 'md',
-    direction = 'column',
-    gap = 's16',
-    style,
-    ref,
-    ...props
-  } = useComponentConfig('Card', rawProps);
+export const Card = function Card({
+  as: Component = 'div',
+  variant = 'filled',
+  padding = 'md',
+  direction = 'column',
+  gap = 's16',
+  style,
+  ref,
+  ...props
+}: CardProps) {
   return (
     <Component
       ref={ref}

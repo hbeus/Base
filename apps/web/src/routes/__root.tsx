@@ -1,6 +1,5 @@
 /// <reference types="vite/client" />
 
-import { ComponentConfigProvider } from '@base/ui';
 import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
@@ -53,13 +52,11 @@ function RootComponent() {
   return (
     <QueryProvider>
       <ThemeProvider initialTheme={theme}>
-        <ComponentConfigProvider config={{}}>
-          <MotionProvider>
-            <RootDocument>
-              <Outlet />
-            </RootDocument>
-          </MotionProvider>
-        </ComponentConfigProvider>
+        <MotionProvider>
+          <RootDocument>
+            <Outlet />
+          </RootDocument>
+        </MotionProvider>
       </ThemeProvider>
     </QueryProvider>
   );
