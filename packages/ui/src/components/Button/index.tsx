@@ -9,7 +9,7 @@ import { motion } from 'motion/react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
+import { size } from '../../tokens/size.stylex';
 import { typography } from '../../tokens/typography.stylex';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
@@ -26,7 +26,7 @@ const styles = stylex.create({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.s8,
+    gap: size.s8,
     borderRadius: radii.r8,
     fontWeight: 500,
     cursor: 'pointer',
@@ -70,18 +70,18 @@ const styles = stylex.create({
     },
   },
   sm: {
-    height: spacing.s32,
-    paddingInline: spacing.s12,
+    height: size.s32,
+    paddingInline: size.s12,
     fontSize: typography.labelSize,
   },
   md: {
-    height: spacing.s40,
-    paddingInline: spacing.s16,
+    height: size.s40,
+    paddingInline: size.s16,
     fontSize: typography.bodySmSize,
   },
   lg: {
-    height: spacing.s48,
-    paddingInline: spacing.s24,
+    height: size.s48,
+    paddingInline: size.s24,
     fontSize: typography.bodySize,
   },
 });

@@ -6,5 +6,5 @@ export { Text } from './components/Text';
 export { Toggle } from './components/Toggle';
 export { colors, lightTheme } from './tokens/colors.stylex';
 export { radii } from './tokens/radii.stylex';
-export { spacing } from './tokens/spacing.stylex';
+export { size } from './tokens/size.stylex';
 export { typography } from './tokens/typography.stylex';

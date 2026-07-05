@@ -6,7 +6,7 @@ import * as stylex from '@stylexjs/stylex';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
+import { size } from '../../tokens/size.stylex';
 
 type CardVariant = 'filled' | 'outline';
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
@@ -35,13 +35,13 @@ const directions = stylex.create({
 
 const gaps = stylex.create({
   none: { gap: 0 },
-  s2: { gap: spacing.s2 },
-  s4: { gap: spacing.s4 },
-  s8: { gap: spacing.s8 },
-  s16: { gap: spacing.s16 },
-  s24: { gap: spacing.s24 },
-  s32: { gap: spacing.s32 },
-  s40: { gap: spacing.s40 },
+  s2: { gap: size.s2 },
+  s4: { gap: size.s4 },
+  s8: { gap: size.s8 },
+  s16: { gap: size.s16 },
+  s24: { gap: size.s24 },
+  s32: { gap: size.s32 },
+  s40: { gap: size.s40 },
 });
 
 const variants = stylex.create({
@@ -59,9 +59,9 @@ const variants = stylex.create({
 
 const paddings = stylex.create({
   none: { padding: 0 },
-  sm: { padding: spacing.s12 },
-  md: { padding: spacing.s20 },
-  lg: { padding: spacing.s32 },
+  sm: { padding: size.s12 },
+  md: { padding: size.s20 },
+  lg: { padding: size.s32 },
 });
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(

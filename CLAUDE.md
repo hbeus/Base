@@ -10,12 +10,12 @@ Component library: `@base/ui` (Base UI + StyleX + motion). Optional 3D: `@base/c
 
 - **Component hierarchy**: atoms (`packages/ui/`) → molecules (`components/`) → features (`features/{domain}/`). If you'd copy it to another project, it's a molecule. If it's domain-specific, it's a feature.
 - **Compound component pattern**: all UI atoms use `Component.Root > Component.Trigger > Component.Content` etc. Follow existing components in `packages/ui/`.
-- **StyleX only**: `stylex.create()` for all styles. Always use design tokens from `@base/ui/tokens/*` — never hardcode colors, spacing, or typography. Variants via `stylex.props(styles.base, styles[variant])`, no CVA.
+- **StyleX only**: `stylex.create()` for all styles. Always use design tokens from `@base/ui/tokens/*` — never hardcode colors, sizes, or typography. Variants via `stylex.props(styles.base, styles[variant])`, no CVA.
 - **React Query**: co-locate key factories in `features/{domain}/queries.ts`. Use `queryOptions()`. Server data via `createServerFn`.
 
 ## Pointers
 
-- **Design tokens**: see `packages/ui/src/tokens/` for available colors, spacing, typography, radii
+- **Design tokens**: see `packages/ui/src/tokens/` for available colors, size, typography, radii
 - **motion.dev**: use `/motion` skill or motion MCP — do not rely on training data for motion APIs
 - **Figma**: invoke `/figma-use` skill before calling `use_figma`
 - **Deploy**: Dokploy MCP, or push to `main` (auto-deploys). Host: Hetzner VPS (`ssh hetzner`), Traefik proxy

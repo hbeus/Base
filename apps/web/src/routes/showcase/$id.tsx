@@ -6,7 +6,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Button, Dialog, Input, Text, Toggle } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { size } from '@base/ui/tokens/size.stylex';
 
 export const Route = createFileRoute('/showcase/$id')({
   component: ShowcaseDetail,
@@ -16,26 +16,26 @@ const styles = stylex.create({
   header: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s8,
-    marginBottom: spacing.s32,
+    gap: size.s8,
+    marginBottom: size.s32,
   },
   capitalize: {
     textTransform: 'capitalize',
   },
   section: {
-    marginBottom: spacing.s32,
+    marginBottom: size.s32,
   },
   sectionTitle: {
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
-    marginBottom: spacing.s12,
+    marginBottom: size.s12,
   },
   preview: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: spacing.s12,
+    gap: size.s12,
     alignItems: 'center',
-    padding: spacing.s20,
+    padding: size.s20,
     borderRadius: radii.r12,
     borderWidth: '1px',
     borderStyle: 'solid',
@@ -44,8 +44,8 @@ const styles = stylex.create({
   previewColumn: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s12,
-    padding: spacing.s20,
+    gap: size.s12,
+    padding: size.s20,
     borderRadius: radii.r12,
     borderWidth: '1px',
     borderStyle: 'solid',

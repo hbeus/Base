@@ -5,7 +5,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Card, Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { size } from '@base/ui/tokens/size.stylex';
 import { IconChevronRight } from '@tabler/icons-react';
 
 import { Link } from '~/components/Link';
@@ -19,27 +19,27 @@ const styles = stylex.create({
   page: {
     maxWidth: '640px',
     marginInline: 'auto',
-    paddingInline: spacing.s24,
-    paddingBlock: spacing.s64,
+    paddingInline: size.s24,
+    paddingBlock: size.s64,
   },
   header: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s8,
-    marginBottom: spacing.s48,
+    gap: size.s8,
+    marginBottom: size.s48,
   },
   section: {
-    marginBottom: spacing.s40,
+    marginBottom: size.s40,
   },
   sectionTitle: {
-    marginBottom: spacing.s16,
-    paddingInline: spacing.s12,
+    marginBottom: size.s16,
+    paddingInline: size.s12,
   },
   userRow: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBlock: spacing.s10,
+    paddingBlock: size.s10,
   },
   userRowBorder: {
     borderBottomWidth: '1px',
@@ -49,14 +49,14 @@ const styles = stylex.create({
   nav: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s2,
+    gap: size.s2,
   },
   navLink: {
     position: 'relative',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBlock: spacing.s16,
+    paddingBlock: size.s16,
     textDecoration: 'none',
     '::before': {
       content: '',

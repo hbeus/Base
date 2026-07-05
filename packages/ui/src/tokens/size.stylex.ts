@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
 
-export const spacing = stylex.defineVars({
+export const size = stylex.defineVars({
   s1: '0.0625rem',
   s2: '0.125rem',
   s4: '0.25rem',

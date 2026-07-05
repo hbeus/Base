@@ -7,7 +7,7 @@ import * as stylex from '@stylexjs/stylex';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
+import { size } from '../../tokens/size.stylex';
 import { typography } from '../../tokens/typography.stylex';
 
 type InputSize = 'sm' | 'md' | 'lg';
@@ -40,18 +40,18 @@ const styles = stylex.create({
     },
   },
   sm: {
-    height: spacing.s32,
-    paddingInline: spacing.s12,
+    height: size.s32,
+    paddingInline: size.s12,
     fontSize: typography.labelSize,
   },
   md: {
-    height: spacing.s40,
-    paddingInline: spacing.s16,
+    height: size.s40,
+    paddingInline: size.s16,
     fontSize: typography.bodySmSize,
   },
   lg: {
-    height: spacing.s48,
-    paddingInline: spacing.s16,
+    height: size.s48,
+    paddingInline: size.s16,
     fontSize: typography.bodySize,
   },
 });

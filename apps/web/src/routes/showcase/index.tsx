@@ -4,7 +4,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { size } from '@base/ui/tokens/size.stylex';
 
 import { Link } from '~/components/Link';
 
@@ -27,21 +27,21 @@ const styles = stylex.create({
   header: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s8,
-    marginBottom: spacing.s32,
+    gap: size.s8,
+    marginBottom: size.s32,
   },
   list: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s2,
+    gap: size.s2,
   },
   link: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s2,
-    paddingBlock: spacing.s12,
-    paddingInline: spacing.s12,
-    marginInline: `-${spacing.s12}`,
+    gap: size.s2,
+    paddingBlock: size.s12,
+    paddingInline: size.s12,
+    marginInline: `-${size.s12}`,
     borderRadius: radii.r8,
     textDecoration: 'none',
     transition: 'background-color 0.1s',

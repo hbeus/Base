@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
-import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { size } from '@base/ui/tokens/size.stylex';
 
 export const Route = createFileRoute('/showcase')({
   component: ShowcaseLayout,
@@ -11,8 +11,8 @@ const styles = stylex.create({
   page: {
     maxWidth: '640px',
     marginInline: 'auto',
-    paddingInline: spacing.s24,
-    paddingBlock: spacing.s64,
+    paddingInline: size.s24,
+    paddingBlock: size.s64,
   },
 });
 

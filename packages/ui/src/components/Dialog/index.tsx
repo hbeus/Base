@@ -9,7 +9,7 @@ import { motion } from 'motion/react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
-import { spacing } from '../../tokens/spacing.stylex';
+import { size } from '../../tokens/size.stylex';
 import { typography } from '../../tokens/typography.stylex';
 
 type DialogSize = 'sm' | 'md' | 'lg';
@@ -87,7 +87,7 @@ const contentStyles = stylex.create({
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r12,
-    padding: spacing.s24,
+    padding: size.s24,
     outline: 'none',
   },
   sm: {
@@ -136,7 +136,7 @@ const titleStyles = stylex.create({
     lineHeight: typography.titleLineHeight,
     fontWeight: 600,
     color: colors.foregroundPrimary,
-    marginBottom: spacing.s8,
+    marginBottom: size.s8,
   },
 });
 
