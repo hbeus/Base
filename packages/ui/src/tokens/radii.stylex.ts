@@ -7,6 +7,7 @@ export const radii = stylex.defineVars({
   r8: '8px',
   r12: '12px',
   r16: '16px',
+  r20: '20px',
   r24: '24px',
   r32: '32px',
   full: '9999px',

@@ -1,10 +1,9 @@
-import * as stylex from '@stylexjs/stylex';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
-
 import { Card, Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { size } from '@base/ui/tokens/size.stylex';
+import * as stylex from '@stylexjs/stylex';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
 
 import { usersListOptions } from '~/features/users/queries';
 

@@ -1,11 +1,10 @@
-import * as stylex from '@stylexjs/stylex';
-import { createFileRoute } from '@tanstack/react-router';
-
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { size } from '@base/ui/tokens/size.stylex';
+import * as stylex from '@stylexjs/stylex';
 import { IconChevronRight } from '@tabler/icons-react';
+import { createFileRoute } from '@tanstack/react-router';
 
 import { Link } from '~/components/Link';
 
@@ -50,7 +49,7 @@ const styles = stylex.create({
       position: 'absolute',
       inset: '0 -16',
       backgroundColor: colors.lighten4,
-      borderRadius: radii.r12,
+      borderRadius: radii.r20,
       opacity: 0,
       transition: 'opacity 0.1s',
     },
@@ -68,13 +67,13 @@ function HomePage() {
           Base
         </Text>
         <Text as='p' size='body' color='secondary'>
-          A monorepo starter with TanStack Start, StyleX, Base UI, and motion.dev.
+          A monorepo starter with TanStack Start, StyleX, and Base UI.
         </Text>
       </header>
 
       <section {...stylex.props(styles.section)}>
         <Text as='h2' size='label' weight='medium' color='secondary'>
-          Components & tokens
+          Components
         </Text>
         <nav {...stylex.props(styles.nav)}>
           <Link to='/showcase' {...stylex.props(styles.navLink)}>
@@ -85,6 +84,13 @@ function HomePage() {
             <Text>Typography</Text>
             <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
           </Link>
+        </nav>
+      </section>
+      <section {...stylex.props(styles.section)}>
+        <Text as='h2' size='label' weight='medium' color='secondary'>
+          Patterns
+        </Text>
+        <nav {...stylex.props(styles.nav)}>
           <Link to='/data' {...stylex.props(styles.navLink)}>
             <Text>Data</Text>
             <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />

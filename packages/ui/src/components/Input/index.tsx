@@ -1,9 +1,8 @@
-import type { ComponentPropsWithoutRef } from 'react';
-import { forwardRef } from 'react';
-
 import { Input as BaseInput } from '@base-ui/react/input';
 import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
+import type { ComponentPropsWithoutRef } from 'react';
+import { forwardRef } from 'react';
 
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';

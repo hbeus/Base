@@ -1,7 +1,6 @@
-import type { MouseEvent } from 'react';
-
 import type { LinkComponentProps } from '@tanstack/react-router';
 import { Link as RouterLink, useRouter } from '@tanstack/react-router';
+import type { MouseEvent } from 'react';
 
 import { navigateWithTransition, type ViewTransitionEffect } from '~/lib/view-transition';
 

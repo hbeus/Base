@@ -1,7 +1,6 @@
-import { flushSync } from 'react-dom';
-
 import type { AnimationOptions, DOMKeyframesDefinition } from 'motion-dom';
 import { animateView } from 'motion-dom';
+import { flushSync } from 'react-dom';
 
 export type ViewTransitionEffect = {
   old?: [DOMKeyframesDefinition, AnimationOptions?];

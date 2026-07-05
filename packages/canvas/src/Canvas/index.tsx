@@ -1,8 +1,7 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { Suspense } from 'react';
-
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Canvas as R3FCanvas } from '@react-three/fiber';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { Suspense } from 'react';
 
 interface CanvasProps extends Omit<ComponentPropsWithoutRef<typeof R3FCanvas>, 'children'> {
   children: ReactNode;

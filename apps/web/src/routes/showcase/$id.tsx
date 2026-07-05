@@ -1,12 +1,10 @@
-import { useState } from 'react';
-
-import * as stylex from '@stylexjs/stylex';
-import { createFileRoute } from '@tanstack/react-router';
-
 import { Button, Dialog, Input, Text, Toggle } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { size } from '@base/ui/tokens/size.stylex';
+import * as stylex from '@stylexjs/stylex';
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
 
 export const Route = createFileRoute('/showcase/$id')({
   component: ShowcaseDetail,

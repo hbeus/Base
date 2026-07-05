@@ -1,7 +1,6 @@
+import { size } from '@base/ui/tokens/size.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-
-import { size } from '@base/ui/tokens/size.stylex';
 
 export const Route = createFileRoute('/showcase')({
   component: ShowcaseLayout,

@@ -1,10 +1,9 @@
+import path from 'node:path';
 import stylex from '@stylexjs/unplugin';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import viteReact from '@vitejs/plugin-react';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
-
-import path from 'node:path';
 
 export default defineConfig({
   server: {

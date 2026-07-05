@@ -1,27 +1,6 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.1/schema.json",
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": {
-          "level": "on",
-          "options": {
-            "groups": [
-              ["react", "react-dom"],
-              ":BLANK_LINE:",
-              [":PACKAGE:", "!react", "!react-dom", "!@base/**", "!@tabler/**"],
-              ":BLANK_LINE:",
-              ["@base/**", "@tabler/**"],
-              ":BLANK_LINE:",
-              [":ALIAS:", ":PATH:"],
-              ":BLANK_LINE:",
-              { "type": true }
-            ]
-          }
-        }
-      }
-    }
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",

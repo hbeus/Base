@@ -1,10 +1,9 @@
-import * as stylex from '@stylexjs/stylex';
-import { createFileRoute } from '@tanstack/react-router';
-
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { size } from '@base/ui/tokens/size.stylex';
+import * as stylex from '@stylexjs/stylex';
+import { createFileRoute } from '@tanstack/react-router';
 
 import { Link } from '~/components/Link';
 
@@ -55,11 +54,12 @@ function ShowcaseIndex() {
   return (
     <>
       <header {...stylex.props(styles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
+        <Text as='h1' size='hero'>
           Components
         </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Styled atoms from @base/ui — Base UI + StyleX + motion.dev.
+        <Text as='p' color='secondary'>
+          Styled atoms built on Base UI primitives, styled with StyleX tokens, and animated with
+          Motion.
         </Text>
       </header>
       <nav {...stylex.props(styles.list)}>
