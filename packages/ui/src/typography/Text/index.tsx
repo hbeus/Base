@@ -1,24 +1,25 @@
-import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, ComponentRef, Ref } from 'react';
-
 import { colors } from '../../tokens/colors.stylex';
 import { typography } from '../../tokens/typography.stylex';
+import type { PolymorphicComponent, PolymorphicProps } from '../../types/polymorphic';
+import { styleArray } from '../../utils/styleArray';
 
 type TextSize = 'hero' | 'display' | 'headline' | 'title' | 'body' | 'bodySm' | 'label' | 'caption';
-
 type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 type TextColor = 'primary' | 'secondary';
 
-type TextProps<T extends keyof React.JSX.IntrinsicElements = 'span'> = {
-  as?: T;
-  ref?: Ref<ComponentRef<T>>;
+interface TextOwnProps {
   size?: TextSize;
   weight?: TextWeight;
   color?: TextColor;
   tight?: boolean;
-  style?: StyleXStyles | StyleXStyles[];
-} & Omit<ComponentPropsWithoutRef<T>, 'as' | 'size' | 'weight' | 'color' | 'style'>;
+}
+
+export type TextProps<T extends keyof React.JSX.IntrinsicElements = 'span'> = PolymorphicProps<
+  T,
+  TextOwnProps,
+  'size' | 'color'
+>;
 
 const sizes = stylex.create({
   hero: {
@@ -95,7 +96,6 @@ export const Text = function Text({
   ref,
   ...props
 }: TextProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
   return (
     <Component
       ref={ref}
@@ -104,11 +104,9 @@ export const Text = function Text({
         weights[weight],
         textColors[color],
         tight && tightStyle.tight,
-        ...styleArr,
+        ...styleArray(style),
       )}
       {...props}
     />
   );
-} as <T extends keyof React.JSX.IntrinsicElements = 'span'>(
-  props: TextProps<T>,
-) => React.JSX.Element;
+} as PolymorphicComponent<'span', TextOwnProps, 'size' | 'color'>;

@@ -1,7 +1,7 @@
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
-import { size } from '@base/ui/tokens/size.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 
@@ -26,21 +26,21 @@ const styles = stylex.create({
   header: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s8,
-    marginBottom: size.s32,
+    gap: spacing.s8,
+    marginBottom: spacing.s32,
   },
   list: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s2,
+    gap: spacing.s2,
   },
   link: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s2,
-    paddingBlock: size.s12,
-    paddingInline: size.s12,
-    marginInline: `-${size.s12}`,
+    gap: spacing.s2,
+    paddingBlock: spacing.s12,
+    paddingInline: spacing.s12,
+    marginInline: `-${spacing.s12}`,
     borderRadius: radii.r8,
     textDecoration: 'none',
     transition: 'background-color 0.1s',

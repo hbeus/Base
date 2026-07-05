@@ -1,7 +1,7 @@
 import { Button, Dialog, Input, Text, Toggle } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
-import { size } from '@base/ui/tokens/size.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -14,26 +14,26 @@ const styles = stylex.create({
   header: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s8,
-    marginBottom: size.s32,
+    gap: spacing.s8,
+    marginBottom: spacing.s32,
   },
   capitalize: {
     textTransform: 'capitalize',
   },
   section: {
-    marginBottom: size.s32,
+    marginBottom: spacing.s32,
   },
   sectionTitle: {
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
-    marginBottom: size.s12,
+    marginBottom: spacing.s12,
   },
   preview: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: size.s12,
+    gap: spacing.s12,
     alignItems: 'center',
-    padding: size.s20,
+    padding: spacing.s20,
     borderRadius: radii.r12,
     borderWidth: '1px',
     borderStyle: 'solid',
@@ -42,8 +42,8 @@ const styles = stylex.create({
   previewColumn: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s12,
-    padding: size.s20,
+    gap: spacing.s12,
+    padding: spacing.s20,
     borderRadius: radii.r12,
     borderWidth: '1px',
     borderStyle: 'solid',
@@ -100,9 +100,9 @@ function InputsShowcase() {
           Sizes
         </Text>
         <div {...stylex.props(styles.previewColumn)}>
-          <Input inputSize='sm' placeholder='Small input' />
-          <Input inputSize='md' placeholder='Medium input' />
-          <Input inputSize='lg' placeholder='Large input' />
+          <Input size='sm' placeholder='Small input' />
+          <Input size='md' placeholder='Medium input' />
+          <Input size='lg' placeholder='Large input' />
         </div>
       </section>
       <section {...stylex.props(styles.section)}>
@@ -135,17 +135,10 @@ function DialogShowcase() {
                 This is a compound component dialog built with Base UI, styled with StyleX, and
                 animated with motion.dev.
               </Dialog.Description>
-              <div
-                style={{
-                  marginTop: '1rem',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  gap: '0.5rem',
-                }}
-              >
+              <Dialog.Footer>
                 <Dialog.Close render={<Button variant='ghost' size='sm' />}>Cancel</Dialog.Close>
                 <Dialog.Close render={<Button size='sm' />}>Confirm</Dialog.Close>
-              </div>
+              </Dialog.Footer>
             </Dialog.Content>
           </Dialog.Portal>
         </Dialog.Root>

@@ -1,20 +1,22 @@
-import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, ComponentRef, Ref } from 'react';
-
 import { colors } from '../../tokens/colors.stylex';
-import { size } from '../../tokens/size.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
+import type { PolymorphicComponent, PolymorphicProps } from '../../types/polymorphic';
+import { styleArray } from '../../utils/styleArray';
 
 type PressableVariant = 'filled' | 'outline' | 'ghost' | 'transparent';
+type PressableInset = 's2' | 's4' | 's8' | 's12' | 's16';
 
-type PressableProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = {
-  as?: T;
-  ref?: Ref<ComponentRef<T>>;
+interface PressableOwnProps {
   variant?: PressableVariant;
-  inset?: keyof typeof insets;
-  style?: StyleXStyles | StyleXStyles[];
-} & Omit<ComponentPropsWithoutRef<T>, 'as' | 'style'>;
+  inset?: PressableInset;
+}
+
+export type PressableProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = PolymorphicProps<
+  T,
+  PressableOwnProps
+>;
 
 const styles = stylex.create({
   base: {
@@ -49,35 +51,35 @@ const insets = stylex.create({
     '::before': {
       content: '""',
       position: 'absolute' as const,
-      inset: `0 -${size.s2}`,
+      inset: `0 -${spacing.s2}`,
     },
   },
   s4: {
     '::before': {
       content: '""',
       position: 'absolute' as const,
-      inset: `0 -${size.s4}`,
+      inset: `0 -${spacing.s4}`,
     },
   },
   s8: {
     '::before': {
       content: '""',
       position: 'absolute' as const,
-      inset: `0 -${size.s8}`,
+      inset: `0 -${spacing.s8}`,
     },
   },
   s12: {
     '::before': {
       content: '""',
       position: 'absolute' as const,
-      inset: `0 -${size.s12}`,
+      inset: `0 -${spacing.s12}`,
     },
   },
   s16: {
     '::before': {
       content: '""',
       position: 'absolute' as const,
-      inset: `0 -${size.s16}`,
+      inset: `0 -${spacing.s16}`,
     },
   },
 });
@@ -90,16 +92,13 @@ export const Pressable = function Pressable({
   style,
   ...props
 }: PressableProps) {
-  const MotionComponent: React.FC<Record<string, unknown>> = motion[as];
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  const MotionElement = motion[as as keyof typeof motion] as React.ElementType;
   return (
-    <MotionComponent
+    <MotionElement
       ref={ref}
       whileTap={{ scale: 0.98 }}
-      {...stylex.props(styles.base, styles[variant], inset && insets[inset], ...styleArr)}
+      {...stylex.props(styles.base, styles[variant], inset && insets[inset], ...styleArray(style))}
       {...props}
     />
   );
-} as <T extends keyof React.JSX.IntrinsicElements = 'div'>(
-  props: PressableProps<T>,
-) => React.JSX.Element;
+} as PolymorphicComponent<'div', PressableOwnProps>;

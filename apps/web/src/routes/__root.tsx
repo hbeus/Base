@@ -1,7 +1,9 @@
 /// <reference types="vite/client" />
 
-import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
-
+import { ComponentConfigProvider } from '@base/ui';
+import { colors, themeBackground } from '@base/ui/tokens/colors.stylex';
+import { radii } from '@base/ui/tokens/radii.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconArrowLeft, IconContrast } from '@tabler/icons-react';
 import {
@@ -51,11 +53,13 @@ function RootComponent() {
   return (
     <QueryProvider>
       <ThemeProvider initialTheme={theme}>
-        <MotionProvider>
-          <RootDocument>
-            <Outlet />
-          </RootDocument>
-        </MotionProvider>
+        <ComponentConfigProvider config={{}}>
+          <MotionProvider>
+            <RootDocument>
+              <Outlet />
+            </RootDocument>
+          </MotionProvider>
+        </ComponentConfigProvider>
       </ThemeProvider>
     </QueryProvider>
   );
@@ -88,30 +92,29 @@ const fixedButtonStyles = stylex.create({
   base: {
     position: 'fixed',
     zIndex: 9999,
-    width: '36px',
-    height: '36px',
+    width: spacing.s32,
+    height: spacing.s32,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: '8px',
+    borderRadius: radii.r8,
     backgroundColor: colors.lighten8,
     color: colors.foregroundPrimary,
     cursor: 'pointer',
-    fontSize: '18px',
     lineHeight: 1,
-    border: 'none',
+    borderWidth: 0,
     transition: 'background-color 0.15s',
     ':hover': {
       backgroundColor: colors.lighten16,
     },
   },
   topRight: {
-    top: '16px',
-    right: '16px',
+    top: spacing.s16,
+    right: spacing.s16,
   },
   topLeft: {
-    top: '16px',
-    left: '16px',
+    top: spacing.s16,
+    left: spacing.s16,
   },
 });
 
@@ -147,14 +150,9 @@ function BackButton() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
-  const themeStyle = theme === 'light' ? stylex.props(lightTheme) : {};
 
   return (
-    <html
-      lang='en'
-      className={themeStyle.className}
-      style={{ ...themeStyle.style, colorScheme: theme }}
-    >
+    <html lang='en' style={{ colorScheme: theme }}>
       <head>
         <HeadContent />
         <meta name='theme-color' content={themeBackground[theme]} />

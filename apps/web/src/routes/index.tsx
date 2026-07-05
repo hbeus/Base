@@ -1,7 +1,7 @@
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
-import { size } from '@base/ui/tokens/size.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconChevronRight } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
@@ -16,33 +16,33 @@ const styles = stylex.create({
   page: {
     maxWidth: '640px',
     display: 'flex',
-    gap: size.s48,
+    gap: spacing.s48,
     flexDirection: 'column',
     marginInline: 'auto',
-    paddingInline: size.s24,
-    paddingBlock: size.s64,
+    paddingInline: spacing.s24,
+    paddingBlock: spacing.s64,
   },
   header: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s8,
+    gap: spacing.s8,
   },
   section: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s16,
+    gap: spacing.s16,
   },
   nav: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s2,
+    gap: spacing.s2,
   },
   navLink: {
     position: 'relative',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBlock: size.s16,
+    paddingBlock: spacing.s16,
     textDecoration: 'none',
     '::before': {
       content: '',

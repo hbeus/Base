@@ -1,4 +1,4 @@
-import { size } from '@base/ui/tokens/size.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
@@ -10,8 +10,8 @@ const styles = stylex.create({
   page: {
     maxWidth: '640px',
     marginInline: 'auto',
-    paddingInline: size.s24,
-    paddingBlock: size.s64,
+    paddingInline: spacing.s24,
+    paddingBlock: spacing.s64,
   },
 });
 

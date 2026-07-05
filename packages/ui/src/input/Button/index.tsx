@@ -1,23 +1,25 @@
 import { Button as BaseButton } from '@base-ui/react/button';
-import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-
 import { colors } from '../../tokens/colors.stylex';
+import { elementSize } from '../../tokens/elementSize.stylex';
 import { radii } from '../../tokens/radii.stylex';
-import { size } from '../../tokens/size.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
 import { typography } from '../../tokens/typography.stylex';
+import type { BaseProps } from '../../types/BaseProps';
+import { styleArray } from '../../utils/styleArray';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
-interface ButtonProps extends Omit<ComponentPropsWithoutRef<typeof BaseButton>, 'style'> {
+export interface ButtonProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseButton>, 'style'>,
+    BaseProps {
   ref?: Ref<HTMLButtonElement>;
   variant?: ButtonVariant;
   size?: ButtonSize;
-  style?: StyleXStyles | StyleXStyles[];
 }
 
 const styles = stylex.create({
@@ -25,7 +27,7 @@ const styles = stylex.create({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: size.s8,
+    gap: spacing.s8,
     borderRadius: radii.r8,
     fontWeight: 500,
     cursor: 'pointer',
@@ -69,18 +71,18 @@ const styles = stylex.create({
     },
   },
   sm: {
-    height: size.s32,
-    paddingInline: size.s12,
+    height: elementSize.sm,
+    paddingInline: spacing.s12,
     fontSize: typography.labelSize,
   },
   md: {
-    height: size.s40,
-    paddingInline: size.s16,
+    height: elementSize.md,
+    paddingInline: spacing.s16,
     fontSize: typography.bodySmSize,
   },
   lg: {
-    height: size.s48,
-    paddingInline: size.s24,
+    height: elementSize.lg,
+    paddingInline: spacing.s24,
     fontSize: typography.bodySize,
   },
 });
@@ -88,12 +90,11 @@ const styles = stylex.create({
 const MotionBaseButton = motion.create(BaseButton as React.ComponentType<Record<string, unknown>>);
 
 export function Button({ variant = 'primary', size = 'md', style, ref, ...props }: ButtonProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
   return (
     <MotionBaseButton
       ref={ref}
       whileTap={{ scale: 0.98 }}
-      {...stylex.props(styles.base, styles[variant], styles[size], ...styleArr)}
+      {...stylex.props(styles.base, styles[variant], styles[size], ...styleArray(style))}
       {...props}
     />
   );

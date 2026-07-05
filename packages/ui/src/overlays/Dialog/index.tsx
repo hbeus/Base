@@ -1,14 +1,14 @@
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
-import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
-import { size } from '../../tokens/size.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
 import { typography } from '../../tokens/typography.stylex';
+import type { BaseProps } from '../../types/BaseProps';
+import { styleArray } from '../../utils/styleArray';
 
 type DialogSize = 'sm' | 'md' | 'lg';
 
@@ -18,12 +18,18 @@ function Root(props: ComponentPropsWithoutRef<typeof BaseDialog.Root>) {
 }
 
 /* ---------- Trigger ---------- */
-function Trigger({ ref, ...props }: ComponentPropsWithoutRef<typeof BaseDialog.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
+function Trigger({
+  ref,
+  ...props
+}: ComponentPropsWithoutRef<typeof BaseDialog.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
   return <BaseDialog.Trigger ref={ref} {...props} />;
 }
 
 /* ---------- Close ---------- */
-function Close({ ref, ...props }: ComponentPropsWithoutRef<typeof BaseDialog.Close> & { ref?: Ref<HTMLButtonElement> }) {
+function Close({
+  ref,
+  ...props
+}: ComponentPropsWithoutRef<typeof BaseDialog.Close> & { ref?: Ref<HTMLButtonElement> }) {
   return <BaseDialog.Close ref={ref} {...props} />;
 }
 
@@ -46,14 +52,13 @@ const MotionBackdrop = motion.create(
   BaseDialog.Backdrop as React.ComponentType<Record<string, unknown>>,
 );
 
-interface BackdropProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Backdrop>, 'style'> {
+export interface DialogBackdropProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Backdrop>, 'style'>,
+    BaseProps {
   ref?: Ref<HTMLDivElement>;
-  style?: StyleXStyles | StyleXStyles[];
 }
 
-function Backdrop({ style, ref, ...props }: BackdropProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+function Backdrop({ style, ref, ...props }: DialogBackdropProps) {
   return (
     <MotionBackdrop
       ref={ref}
@@ -61,7 +66,7 @@ function Backdrop({ style, ref, ...props }: BackdropProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      {...stylex.props(backdropStyles.base, ...styleArr)}
+      {...stylex.props(backdropStyles.base, ...styleArray(style))}
       {...props}
     />
   );
@@ -79,7 +84,7 @@ const contentStyles = stylex.create({
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r12,
-    padding: size.s24,
+    padding: spacing.s24,
     outline: 'none',
   },
   sm: {
@@ -98,14 +103,14 @@ const contentStyles = stylex.create({
 
 const MotionPopup = motion.create(BaseDialog.Popup as React.ComponentType<Record<string, unknown>>);
 
-interface ContentProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Popup>, 'style'> {
+export interface DialogContentProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Popup>, 'style'>,
+    BaseProps {
   ref?: Ref<HTMLDivElement>;
   size?: DialogSize;
-  style?: StyleXStyles | StyleXStyles[];
 }
 
-function Content({ size = 'md', style, ref, ...props }: ContentProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+function Content({ size = 'md', style, ref, ...props }: DialogContentProps) {
   return (
     <MotionPopup
       ref={ref}
@@ -113,7 +118,7 @@ function Content({ size = 'md', style, ref, ...props }: ContentProps) {
       animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
       exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
       transition={{ duration: 0.2 }}
-      {...stylex.props(contentStyles.base, contentStyles[size], ...styleArr)}
+      {...stylex.props(contentStyles.base, contentStyles[size], ...styleArray(style))}
       {...props}
     />
   );
@@ -126,18 +131,24 @@ const titleStyles = stylex.create({
     lineHeight: typography.titleLineHeight,
     fontWeight: 600,
     color: colors.foregroundPrimary,
-    marginBottom: size.s8,
+    marginBottom: spacing.s8,
   },
 });
 
-interface TitleProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Title>, 'style'> {
+export interface DialogTitleProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Title>, 'style'>,
+    BaseProps {
   ref?: Ref<HTMLHeadingElement>;
-  style?: StyleXStyles | StyleXStyles[];
 }
 
-function Title({ style, ref, ...props }: TitleProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-  return <BaseDialog.Title ref={ref} {...stylex.props(titleStyles.base, ...styleArr)} {...props} />;
+function Title({ style, ref, ...props }: DialogTitleProps) {
+  return (
+    <BaseDialog.Title
+      ref={ref}
+      {...stylex.props(titleStyles.base, ...styleArray(style))}
+      {...props}
+    />
+  );
 }
 
 /* ---------- Description ---------- */
@@ -149,21 +160,40 @@ const descriptionStyles = stylex.create({
   },
 });
 
-interface DescriptionProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Description>, 'style'> {
+export interface DialogDescriptionProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Description>, 'style'>,
+    BaseProps {
   ref?: Ref<HTMLParagraphElement>;
-  style?: StyleXStyles | StyleXStyles[];
 }
 
-function Description({ style, ref, ...props }: DescriptionProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+function Description({ style, ref, ...props }: DialogDescriptionProps) {
   return (
     <BaseDialog.Description
       ref={ref}
-      {...stylex.props(descriptionStyles.base, ...styleArr)}
+      {...stylex.props(descriptionStyles.base, ...styleArray(style))}
       {...props}
     />
   );
+}
+
+/* ---------- Footer ---------- */
+const footerStyles = stylex.create({
+  base: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: spacing.s8,
+    marginTop: spacing.s16,
+  },
+});
+
+export interface DialogFooterProps
+  extends Omit<ComponentPropsWithoutRef<'div'>, 'style'>,
+    BaseProps {
+  ref?: Ref<HTMLDivElement>;
+}
+
+function Footer({ style, ref, ...props }: DialogFooterProps) {
+  return <div ref={ref} {...stylex.props(footerStyles.base, ...styleArray(style))} {...props} />;
 }
 
 /* ---------- Export ---------- */
@@ -176,4 +206,5 @@ export const Dialog = {
   Close,
   Title,
   Description,
+  Footer,
 };

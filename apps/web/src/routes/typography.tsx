@@ -1,6 +1,7 @@
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
-import { size } from '@base/ui/tokens/size.stylex';
+import { radii } from '@base/ui/tokens/radii.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
@@ -28,27 +29,27 @@ const styles = stylex.create({
   page: {
     maxWidth: '640px',
     marginInline: 'auto',
-    paddingInline: size.s24,
-    paddingBlock: size.s64,
+    paddingInline: spacing.s24,
+    paddingBlock: spacing.s64,
   },
   header: {
-    marginBottom: size.s48,
+    marginBottom: spacing.s48,
   },
   headerTitle: {
-    marginBottom: size.s8,
+    marginBottom: spacing.s8,
   },
   section: {
-    marginBottom: size.s64,
+    marginBottom: spacing.s64,
   },
   sectionTitle: {
-    marginBottom: size.s24,
-    paddingBottom: size.s12,
+    marginBottom: spacing.s24,
+    paddingBottom: spacing.s12,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
     borderBottomColor: colors.border,
   },
   scaleRow: {
-    paddingBlock: size.s20,
+    paddingBlock: spacing.s20,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
     borderBottomColor: colors.border,
@@ -59,8 +60,8 @@ const styles = stylex.create({
   scaleMeta: {
     display: 'flex',
     alignItems: 'baseline',
-    gap: size.s12,
-    marginBottom: size.s8,
+    gap: spacing.s12,
+    marginBottom: spacing.s8,
   },
   scaleName: {
     textTransform: 'uppercase',
@@ -73,23 +74,23 @@ const styles = stylex.create({
   weightsGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: size.s24,
-    marginBottom: size.s48,
+    gap: spacing.s24,
+    marginBottom: spacing.s48,
   },
   weightCard: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s6,
+    gap: spacing.s6,
   },
   paragraphGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gap: size.s32,
+    gap: spacing.s32,
   },
   paragraphColumn: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s8,
+    gap: spacing.s8,
   },
   uppercase: {
     textTransform: 'uppercase',
@@ -98,22 +99,22 @@ const styles = stylex.create({
   colorGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gap: size.s24,
+    gap: spacing.s24,
   },
   colorCard: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s8,
-    padding: size.s20,
+    gap: spacing.s8,
+    padding: spacing.s20,
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: colors.border,
-    borderRadius: size.s12,
+    borderRadius: radii.r12,
   },
   mixedSection: {
     display: 'flex',
     flexDirection: 'column',
-    gap: size.s16,
+    gap: spacing.s16,
   },
 });
 

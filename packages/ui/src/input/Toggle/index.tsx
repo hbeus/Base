@@ -1,18 +1,20 @@
 import { Switch } from '@base-ui/react/switch';
-import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-
+import { useState } from 'react';
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
+import type { BaseProps } from '../../types/BaseProps';
+import { styleArray } from '../../utils/styleArray';
 
 type ToggleSize = 'sm' | 'md';
 
-interface ToggleProps extends Omit<ComponentPropsWithoutRef<typeof Switch.Root>, 'style'> {
+export interface ToggleProps
+  extends Omit<ComponentPropsWithoutRef<typeof Switch.Root>, 'style'>,
+    BaseProps {
   ref?: Ref<HTMLButtonElement>;
   size?: ToggleSize;
-  style?: StyleXStyles | StyleXStyles[];
 }
 
 const rootStyles = stylex.create({
@@ -63,25 +65,29 @@ const thumbStyles = stylex.create({
 
 export function Toggle({
   size = 'md',
-  checked,
-  defaultChecked,
+  checked: checkedProp,
+  defaultChecked = false,
   onCheckedChange,
   style,
   ref,
   ...props
 }: ToggleProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  const [internalChecked, setInternalChecked] = useState(defaultChecked);
+  const checked = checkedProp ?? internalChecked;
+
   return (
     <Switch.Root
       ref={ref}
       checked={checked}
-      defaultChecked={defaultChecked}
-      onCheckedChange={onCheckedChange}
+      onCheckedChange={(value, event) => {
+        setInternalChecked(value);
+        onCheckedChange?.(value, event);
+      }}
       {...stylex.props(
         rootStyles.base,
         rootStyles[size],
         checked && rootStyles.checked,
-        ...styleArr,
+        ...styleArray(style),
       )}
       {...props}
     >

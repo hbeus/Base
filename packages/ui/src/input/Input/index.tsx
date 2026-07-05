@@ -1,19 +1,21 @@
 import { Input as BaseInput } from '@base-ui/react/input';
-import type { StyleXStyles } from '@stylexjs/stylex';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-
 import { colors } from '../../tokens/colors.stylex';
+import { elementSize } from '../../tokens/elementSize.stylex';
 import { radii } from '../../tokens/radii.stylex';
-import { size } from '../../tokens/size.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
 import { typography } from '../../tokens/typography.stylex';
+import type { BaseProps } from '../../types/BaseProps';
+import { styleArray } from '../../utils/styleArray';
 
 type InputSize = 'sm' | 'md' | 'lg';
 
-interface InputProps extends Omit<ComponentPropsWithoutRef<typeof BaseInput>, 'style'> {
+export interface InputProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseInput>, 'size' | 'style'>,
+    BaseProps {
   ref?: Ref<HTMLInputElement>;
-  inputSize?: InputSize;
-  style?: StyleXStyles | StyleXStyles[];
+  size?: InputSize;
 }
 
 const styles = stylex.create({
@@ -39,28 +41,27 @@ const styles = stylex.create({
     },
   },
   sm: {
-    height: size.s32,
-    paddingInline: size.s12,
+    height: elementSize.sm,
+    paddingInline: spacing.s12,
     fontSize: typography.labelSize,
   },
   md: {
-    height: size.s40,
-    paddingInline: size.s16,
+    height: elementSize.md,
+    paddingInline: spacing.s16,
     fontSize: typography.bodySmSize,
   },
   lg: {
-    height: size.s48,
-    paddingInline: size.s16,
+    height: elementSize.lg,
+    paddingInline: spacing.s16,
     fontSize: typography.bodySize,
   },
 });
 
-export function Input({ inputSize = 'md', style, ref, ...props }: InputProps) {
-  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+export function Input({ size = 'md', style, ref, ...props }: InputProps) {
   return (
     <BaseInput
       ref={ref}
-      {...stylex.props(styles.base, styles[inputSize], ...styleArr)}
+      {...stylex.props(styles.base, styles[size], ...styleArray(style))}
       {...props}
     />
   );
