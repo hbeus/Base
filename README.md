@@ -20,6 +20,26 @@ packages/db/        → Drizzle ORM + PostgreSQL
 packages/canvas/    → Optional React Three Fiber setup
 ```
 
+## Component library (`@base/ui`)
+
+Styled components built on Base UI + StyleX + motion, organized by domain:
+
+```
+packages/ui/src/
+  components/
+    input/        Button, Input, Toggle, Pressable
+    layout/       Card
+    typography/   Text
+    overlays/     Dialog
+    alpha/        Unstable components (deep-import only)
+  tokens/         Design tokens (spacing, size, colors, radii, typography)
+  providers/      ComponentConfigProvider (app-wide component defaults)
+  types/          Shared polymorphic type utilities
+  utils/          styleArray, mergeProps, mergeRefs
+```
+
+All colors use oklch. Theming is handled via `stylex.createTheme()` with a `lightTheme` class override. See `packages/ui/AGENTS.md` for details.
+
 ## Getting started
 
 ```bash
