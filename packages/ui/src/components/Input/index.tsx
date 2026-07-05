@@ -1,12 +1,14 @@
-import * as stylex from '@stylexjs/stylex';
-import { Input as BaseInput } from '@base-ui/react/input';
-import { forwardRef } from 'react';
 import type { ComponentPropsWithoutRef } from 'react';
+import { forwardRef } from 'react';
+
+import { Input as BaseInput } from '@base-ui/react/input';
 import type { StyleXStyles } from '@stylexjs/stylex';
+import * as stylex from '@stylexjs/stylex';
+
 import { colors } from '../../tokens/colors.stylex';
+import { radii } from '../../tokens/radii.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { typography } from '../../tokens/typography.stylex';
-import { radii } from '../../tokens/radii.stylex';
 
 type InputSize = 'sm' | 'md' | 'lg';
 

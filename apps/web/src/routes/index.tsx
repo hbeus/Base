@@ -1,10 +1,13 @@
+import * as stylex from '@stylexjs/stylex';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
+
 import { Card, Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
-import * as stylex from '@stylexjs/stylex';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
+import { IconChevronRight } from '@tabler/icons-react';
+
 import { Link } from '~/components/Link';
 import { usersListOptions } from '~/features/users/queries';
 
@@ -49,17 +52,23 @@ const styles = stylex.create({
     gap: spacing.s2,
   },
   navLink: {
+    position: 'relative',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBlock: spacing.s10,
-    paddingInline: spacing.s12,
-    marginInline: `-${spacing.s12}`,
-    borderRadius: radii.r8,
+    paddingBlock: spacing.s16,
     textDecoration: 'none',
-    transition: 'background-color 0.1s',
-    ':hover': {
+    '::before': {
+      content: '',
+      position: 'absolute',
+      inset: '0 -16',
       backgroundColor: colors.lighten4,
+      borderRadius: radii.r12,
+      opacity: 0,
+      transition: 'opacity 0.1s',
+    },
+    ':hover::before': {
+      opacity: 1,
     },
   },
 });
@@ -79,21 +88,17 @@ function HomePage() {
       </header>
 
       <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='title' weight='medium' style={styles.sectionTitle}>
-          Pages
+        <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
+          Components & tokens
         </Text>
         <nav {...stylex.props(styles.nav)}>
           <Link to='/showcase' {...stylex.props(styles.navLink)}>
-            <Text size='bodySm'>Component showcase</Text>
-            <Text size='caption' color='secondary'>
-              →
-            </Text>
+            <Text>Components</Text>
+            <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
           </Link>
           <Link to='/typography' {...stylex.props(styles.navLink)}>
-            <Text size='bodySm'>Typography</Text>
-            <Text size='caption' color='secondary'>
-              →
-            </Text>
+            <Text>Typography</Text>
+            <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
           </Link>
         </nav>
       </section>

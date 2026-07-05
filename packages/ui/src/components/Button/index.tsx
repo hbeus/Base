@@ -1,13 +1,16 @@
-import * as stylex from '@stylexjs/stylex';
-import { Button as BaseButton } from '@base-ui/react/button';
-import { motion } from 'motion/react';
-import React, { forwardRef } from 'react';
+import type React from 'react';
 import type { ComponentPropsWithoutRef } from 'react';
+import { forwardRef } from 'react';
+
+import { Button as BaseButton } from '@base-ui/react/button';
 import type { StyleXStyles } from '@stylexjs/stylex';
+import * as stylex from '@stylexjs/stylex';
+import { motion } from 'motion/react';
+
 import { colors } from '../../tokens/colors.stylex';
+import { radii } from '../../tokens/radii.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { typography } from '../../tokens/typography.stylex';
-import { radii } from '../../tokens/radii.stylex';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -83,9 +86,7 @@ const styles = stylex.create({
   },
 });
 
-const MotionBaseButton = motion.create(
-  BaseButton as React.ComponentType<Record<string, unknown>>,
-);
+const MotionBaseButton = motion.create(BaseButton as React.ComponentType<Record<string, unknown>>);
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', style, ...props }, ref) => {

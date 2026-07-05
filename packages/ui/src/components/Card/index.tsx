@@ -1,7 +1,9 @@
-import type { StyleXStyles } from '@stylexjs/stylex';
-import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, ElementType } from 'react';
 import { forwardRef } from 'react';
+
+import type { StyleXStyles } from '@stylexjs/stylex';
+import * as stylex from '@stylexjs/stylex';
+
 import { colors } from '../../tokens/colors.stylex';
 import { radii } from '../../tokens/radii.stylex';
 import { spacing } from '../../tokens/spacing.stylex';

@@ -1,9 +1,11 @@
+import * as stylex from '@stylexjs/stylex';
+import { createFileRoute } from '@tanstack/react-router';
+
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
-import * as stylex from '@stylexjs/stylex';
-import { createFileRoute } from '@tanstack/react-router';
+
 import { Link } from '~/components/Link';
 
 export const Route = createFileRoute('/showcase/')({

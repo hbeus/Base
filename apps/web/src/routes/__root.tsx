@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
-import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
+import { useEffect } from 'react';
+
 import * as stylex from '@stylexjs/stylex';
-import { IconArrowLeft, IconContrast } from '@tabler/icons-react';
 import {
   createRootRoute,
   HeadContent,
@@ -11,7 +11,10 @@ import {
   useRouter,
   useRouterState,
 } from '@tanstack/react-router';
-import { useEffect } from 'react';
+
+import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
+import { IconArrowLeft, IconContrast } from '@tabler/icons-react';
+
 import { MotionProvider } from '~/providers/MotionProvider';
 import { QueryProvider } from '~/providers/QueryProvider';
 import { ThemeProvider, useTheme } from '~/providers/ThemeProvider';

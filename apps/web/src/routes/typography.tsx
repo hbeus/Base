@@ -1,9 +1,10 @@
+import * as stylex from '@stylexjs/stylex';
+import { createFileRoute } from '@tanstack/react-router';
+
 import { Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
-import * as stylex from '@stylexjs/stylex';
-import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/typography')({
   component: TypographyPage,

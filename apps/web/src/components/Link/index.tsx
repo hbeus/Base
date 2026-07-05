@@ -1,10 +1,9 @@
-import { Link as RouterLink, useRouter } from '@tanstack/react-router';
-import type { LinkComponentProps } from '@tanstack/react-router';
 import type { MouseEvent } from 'react';
-import {
-  navigateWithTransition,
-  type ViewTransitionEffect,
-} from '~/lib/view-transition';
+
+import type { LinkComponentProps } from '@tanstack/react-router';
+import { Link as RouterLink, useRouter } from '@tanstack/react-router';
+
+import { navigateWithTransition, type ViewTransitionEffect } from '~/lib/view-transition';
 
 type Props = LinkComponentProps & {
   transitionEffect?: ViewTransitionEffect;
@@ -24,10 +23,7 @@ export function Link({ transitionEffect, onClick, ...props }: Props) {
         if (!href) return;
 
         e.preventDefault();
-        navigateWithTransition(
-          () => router.navigate({ to: href }),
-          transitionEffect,
-        );
+        navigateWithTransition(() => router.navigate({ to: href }), transitionEffect);
       }}
     />
   );

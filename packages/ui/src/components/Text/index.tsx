@@ -1,7 +1,9 @@
-import type { StyleXStyles } from '@stylexjs/stylex';
-import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, ElementType } from 'react';
 import { forwardRef } from 'react';
+
+import type { StyleXStyles } from '@stylexjs/stylex';
+import * as stylex from '@stylexjs/stylex';
+
 import { colors } from '../../tokens/colors.stylex';
 import { typography } from '../../tokens/typography.stylex';
 
@@ -101,7 +103,13 @@ export const Text = forwardRef<HTMLElement, TextProps>(
     return (
       <Component
         ref={ref}
-        {...stylex.props(sizes[size], weights[weight], textColors[color], tight && tightStyle.tight, ...styleArr)}
+        {...stylex.props(
+          sizes[size],
+          weights[weight],
+          textColors[color],
+          tight && tightStyle.tight,
+          ...styleArr,
+        )}
         {...props}
       />
     );

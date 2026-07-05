@@ -22,5 +22,5 @@ export const getUserById = createServerFn({ method: 'GET' })
   .handler(async ({ data: id }): Promise<User | null> => {
     // Replace with: const user = await db.select().from(schema.users).where(eq(schema.users.id, id));
     const users = await getUsers();
-    return users.find((u) => u.id === id) ?? null;
+    return users.find(u => u.id === id) ?? null;
   });

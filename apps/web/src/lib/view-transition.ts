@@ -1,6 +1,7 @@
+import { flushSync } from 'react-dom';
+
 import type { AnimationOptions, DOMKeyframesDefinition } from 'motion-dom';
 import { animateView } from 'motion-dom';
-import { flushSync } from 'react-dom';
 
 export type ViewTransitionEffect = {
   old?: [DOMKeyframesDefinition, AnimationOptions?];
@@ -9,7 +10,10 @@ export type ViewTransitionEffect = {
 
 const defaultEffect: ViewTransitionEffect = {
   old: [{ opacity: [1, 0] }, { duration: 0.15 }],
-  new: [{ opacity: [0, 1], y: [8, 0] }, { duration: 0.2, ease: 'easeOut' }],
+  new: [
+    { opacity: [0, 1], y: [8, 0] },
+    { duration: 0.2, ease: 'easeOut' },
+  ],
 };
 
 export function navigateWithTransition(

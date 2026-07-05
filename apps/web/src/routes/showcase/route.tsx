@@ -1,6 +1,7 @@
-import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
+
+import { spacing } from '@base/ui/tokens/spacing.stylex';
 
 export const Route = createFileRoute('/showcase')({
   component: ShowcaseLayout,
