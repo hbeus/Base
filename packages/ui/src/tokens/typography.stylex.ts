@@ -6,48 +6,43 @@ export const typography = stylex.defineVars({
   fontMono:
     "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
 
-  // display — 31px
-  displaySize: '1.9375rem',
-  displayLineHeight: '2rem',
-  displayLetterSpacing: '-0.078rem',
+  // hero — 32px
+  heroSize: '2rem',
+  heroLineHeight: '1.2',
+  heroLetterSpacing: '-0.08rem',
 
-  // headline — 28px
-  headlineSize: '1.75rem',
-  headlineLineHeight: '2rem',
-  headlineLetterSpacing: '-0.085rem',
+  // display — 28px
+  displaySize: '1.75rem',
+  displayLineHeight: '1.2',
+  displayLetterSpacing: '-0.085rem',
 
-  // title — 22px
-  titleSize: '1.375rem',
-  titleLineHeight: '1.5rem',
-  titleLetterSpacing: '-0.031rem',
+  // headline — 22px
+  headlineSize: '1.375rem',
+  headlineLineHeight: '1.2',
+  headlineLetterSpacing: '-0.031rem',
 
-  // body-lg — 18px
-  bodyLgSize: '1.125rem',
-  bodyLgLineHeight: '1.5rem',
-  bodyLgLetterSpacing: '-0.025rem',
+  // title — 18px
+  titleSize: '1.125rem',
+  titleLineHeight: '1.5',
+  titleLetterSpacing: '-0.025rem',
 
   // body — 15px
   bodySize: '0.9375rem',
-  bodyLineHeight: '1.5rem',
+  bodyLineHeight: '1.4',
   bodyLetterSpacing: '-0.022rem',
 
-  // body-sm — 14px
-  bodySmSize: '0.875rem',
-  bodySmLineHeight: '1.25rem',
-  bodySmLetterSpacing: '-0.005rem',
+  // body-sm — 13px
+  bodySmSize: '0.8125rem',
+  bodySmLineHeight: '1.4',
+  bodySmLetterSpacing: '-0.006rem',
 
-  // label — 13px
-  labelSize: '0.8125rem',
-  labelLineHeight: '1.0625rem',
+  // label — 12px
+  labelSize: '0.75rem',
+  labelLineHeight: '1.35',
   labelLetterSpacing: '-0.009rem',
 
-  // caption — 12px
-  captionSize: '0.75rem',
-  captionLineHeight: '1rem',
-  captionLetterSpacing: '-0.009rem',
-
-  // tiny — 11px
-  tinySize: '0.6875rem',
-  tinyLineHeight: '0.875rem',
-  tinyLetterSpacing: '0',
+  // caption — 11px
+  captionSize: '0.6875rem',
+  captionLineHeight: '1.35',
+  captionLetterSpacing: '0',
 });

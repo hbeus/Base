@@ -1,19 +1,13 @@
 /// <reference types="vite/client" />
 
-import '@fontsource-variable/inter';
+import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
 import * as stylex from '@stylexjs/stylex';
-import {
-  createRootRoute,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from '@tanstack/react-router';
+import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { MotionProvider } from '~/providers/MotionProvider';
 import { QueryProvider } from '~/providers/QueryProvider';
 import { ThemeProvider, useTheme } from '~/providers/ThemeProvider';
 import { getThemeFromCookie } from '~/server/theme';
-import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
 import appCss from '~/styles/global.css?url';
 
 export const Route = createRootRoute({
@@ -27,7 +21,16 @@ export const Route = createRootRoute({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: 'base' },
     ],
-    links: [{ rel: 'stylesheet', href: appCss }],
+    links: [
+      {
+        rel: 'preload',
+        href: '/fonts/inter-latin-wght-normal.woff2',
+        as: 'font',
+        type: 'font/woff2',
+        crossOrigin: 'anonymous',
+      },
+      { rel: 'stylesheet', href: appCss },
+    ],
   }),
   component: RootComponent,
 });
@@ -51,15 +54,15 @@ function RootComponent() {
 function StyleXCSS() {
   useEffect(() => {
     if (import.meta.env.DEV) {
-      // @ts-ignore
+      // @ts-expect-error
       import('virtual:stylex:css-only');
     }
   }, []);
 
   return import.meta.env.DEV ? (
-    <link rel="stylesheet" href="/virtual:stylex.css" />
+    <link rel='stylesheet' href='/virtual:stylex.css' />
   ) : (
-    <link rel="stylesheet" href="/stylex.css" />
+    <link rel='stylesheet' href='/stylex.css' />
   );
 }
 

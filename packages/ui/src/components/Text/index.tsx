@@ -1,20 +1,11 @@
-import * as stylex from '@stylexjs/stylex';
-import { forwardRef } from 'react';
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
 import type { StyleXStyles } from '@stylexjs/stylex';
+import * as stylex from '@stylexjs/stylex';
+import type { ComponentPropsWithoutRef, ElementType } from 'react';
+import { forwardRef } from 'react';
 import { colors } from '../../tokens/colors.stylex';
 import { typography } from '../../tokens/typography.stylex';
 
-type TextSize =
-  | 'display'
-  | 'headline'
-  | 'title'
-  | 'bodyLg'
-  | 'body'
-  | 'bodySm'
-  | 'label'
-  | 'caption'
-  | 'tiny';
+type TextSize = 'hero' | 'display' | 'headline' | 'title' | 'body' | 'bodySm' | 'label' | 'caption';
 
 type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 type TextColor = 'primary' | 'secondary';
@@ -28,35 +19,41 @@ type TextProps<T extends ElementType = 'span'> = {
 } & Omit<ComponentPropsWithoutRef<T>, 'as' | 'size' | 'weight' | 'color' | 'style'>;
 
 const sizes = stylex.create({
+  hero: {
+    fontSize: typography.heroSize,
+    lineHeight: typography.heroLineHeight,
+    letterSpacing: typography.heroLetterSpacing,
+    textWrap: 'balance',
+  },
   display: {
     fontSize: typography.displaySize,
     lineHeight: typography.displayLineHeight,
     letterSpacing: typography.displayLetterSpacing,
+    textWrap: 'balance',
   },
   headline: {
     fontSize: typography.headlineSize,
     lineHeight: typography.headlineLineHeight,
     letterSpacing: typography.headlineLetterSpacing,
+    textWrap: 'balance',
   },
   title: {
     fontSize: typography.titleSize,
     lineHeight: typography.titleLineHeight,
     letterSpacing: typography.titleLetterSpacing,
-  },
-  bodyLg: {
-    fontSize: typography.bodyLgSize,
-    lineHeight: typography.bodyLgLineHeight,
-    letterSpacing: typography.bodyLgLetterSpacing,
+    textWrap: 'balance',
   },
   body: {
     fontSize: typography.bodySize,
     lineHeight: typography.bodyLineHeight,
     letterSpacing: typography.bodyLetterSpacing,
+    textWrap: 'pretty',
   },
   bodySm: {
     fontSize: typography.bodySmSize,
     lineHeight: typography.bodySmLineHeight,
     letterSpacing: typography.bodySmLetterSpacing,
+    textWrap: 'pretty',
   },
   label: {
     fontSize: typography.labelSize,
@@ -67,11 +64,6 @@ const sizes = stylex.create({
     fontSize: typography.captionSize,
     lineHeight: typography.captionLineHeight,
     letterSpacing: typography.captionLetterSpacing,
-  },
-  tiny: {
-    fontSize: typography.tinySize,
-    lineHeight: typography.tinyLineHeight,
-    letterSpacing: typography.tinyLetterSpacing,
   },
 });
 
@@ -88,7 +80,17 @@ const textColors = stylex.create({
 });
 
 export const Text = forwardRef<HTMLElement, TextProps>(
-  ({ as: Component = 'span', size = 'body', weight = 'medium', color = 'primary', style, ...props }, ref) => {
+  (
+    {
+      as: Component = 'span',
+      size = 'body',
+      weight = 'medium',
+      color = 'primary',
+      style,
+      ...props
+    },
+    ref,
+  ) => {
     const styleArr = Array.isArray(style) ? style : style ? [style] : [];
     return (
       <Component
@@ -98,4 +100,6 @@ export const Text = forwardRef<HTMLElement, TextProps>(
       />
     );
   },
-) as <T extends ElementType = 'span'>(props: TextProps<T> & { ref?: React.Ref<HTMLElement> }) => React.JSX.Element;
+) as <T extends ElementType = 'span'>(
+  props: TextProps<T> & { ref?: React.Ref<HTMLElement> },
+) => React.JSX.Element;

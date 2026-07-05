@@ -1,13 +1,14 @@
-import * as stylex from '@stylexjs/stylex';
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
-import { motion } from 'motion/react';
-import React, { forwardRef } from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
 import type { StyleXStyles } from '@stylexjs/stylex';
+import * as stylex from '@stylexjs/stylex';
+import { motion } from 'motion/react';
+import type React from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
+import { forwardRef } from 'react';
 import { colors } from '../../tokens/colors.stylex';
+import { radii } from '../../tokens/radii.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { typography } from '../../tokens/typography.stylex';
-import { radii } from '../../tokens/radii.stylex';
 
 type DialogSize = 'sm' | 'md' | 'lg';
 
@@ -17,21 +18,19 @@ function Root(props: ComponentPropsWithoutRef<typeof BaseDialog.Root>) {
 }
 
 /* ---------- Trigger ---------- */
-const Trigger = forwardRef<
-  HTMLButtonElement,
-  ComponentPropsWithoutRef<typeof BaseDialog.Trigger>
->((props, ref) => {
-  return <BaseDialog.Trigger ref={ref} {...props} />;
-});
+const Trigger = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof BaseDialog.Trigger>>(
+  (props, ref) => {
+    return <BaseDialog.Trigger ref={ref} {...props} />;
+  },
+);
 Trigger.displayName = 'Dialog.Trigger';
 
 /* ---------- Close ---------- */
-const Close = forwardRef<
-  HTMLButtonElement,
-  ComponentPropsWithoutRef<typeof BaseDialog.Close>
->((props, ref) => {
-  return <BaseDialog.Close ref={ref} {...props} />;
-});
+const Close = forwardRef<HTMLButtonElement, ComponentPropsWithoutRef<typeof BaseDialog.Close>>(
+  (props, ref) => {
+    return <BaseDialog.Close ref={ref} {...props} />;
+  },
+);
 Close.displayName = 'Dialog.Close';
 
 /* ---------- Portal ---------- */
@@ -53,26 +52,25 @@ const MotionBackdrop = motion.create(
   BaseDialog.Backdrop as React.ComponentType<Record<string, unknown>>,
 );
 
-interface BackdropProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Backdrop>, 'style'> {
+interface BackdropProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Backdrop>, 'style'> {
   style?: StyleXStyles | StyleXStyles[];
 }
 
-const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
-  ({ style, ...props }, ref) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return (
-      <MotionBackdrop
-        ref={ref}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        {...stylex.props(backdropStyles.base, ...styleArr)}
-        {...props}
-      />
-    );
-  },
-);
+const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(({ style, ...props }, ref) => {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return (
+    <MotionBackdrop
+      ref={ref}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      {...stylex.props(backdropStyles.base, ...styleArr)}
+      {...props}
+    />
+  );
+});
 Backdrop.displayName = 'Dialog.Backdrop';
 
 /* ---------- Content ---------- */
@@ -104,9 +102,7 @@ const contentStyles = stylex.create({
   },
 });
 
-const MotionPopup = motion.create(
-  BaseDialog.Popup as React.ComponentType<Record<string, unknown>>,
-);
+const MotionPopup = motion.create(BaseDialog.Popup as React.ComponentType<Record<string, unknown>>);
 
 interface ContentProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Popup>, 'style'> {
   size?: DialogSize;
@@ -134,8 +130,8 @@ Content.displayName = 'Dialog.Content';
 /* ---------- Title ---------- */
 const titleStyles = stylex.create({
   base: {
-    fontSize: typography.bodyLgSize,
-    lineHeight: typography.bodyLgLineHeight,
+    fontSize: typography.titleSize,
+    lineHeight: typography.titleLineHeight,
     fontWeight: 600,
     color: colors.foregroundPrimary,
     marginBottom: spacing.s8,
@@ -146,12 +142,10 @@ interface TitleProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Tit
   style?: StyleXStyles | StyleXStyles[];
 }
 
-const Title = forwardRef<HTMLHeadingElement, TitleProps>(
-  ({ style, ...props }, ref) => {
-    const styleArr = Array.isArray(style) ? style : style ? [style] : [];
-    return <BaseDialog.Title ref={ref} {...stylex.props(titleStyles.base, ...styleArr)} {...props} />;
-  },
-);
+const Title = forwardRef<HTMLHeadingElement, TitleProps>(({ style, ...props }, ref) => {
+  const styleArr = Array.isArray(style) ? style : style ? [style] : [];
+  return <BaseDialog.Title ref={ref} {...stylex.props(titleStyles.base, ...styleArr)} {...props} />;
+});
 Title.displayName = 'Dialog.Title';
 
 /* ---------- Description ---------- */
@@ -163,7 +157,8 @@ const descriptionStyles = stylex.create({
   },
 });
 
-interface DescriptionProps extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Description>, 'style'> {
+interface DescriptionProps
+  extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Description>, 'style'> {
   style?: StyleXStyles | StyleXStyles[];
 }
 

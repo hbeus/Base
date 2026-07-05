@@ -1,17 +1,21 @@
+import { Text } from '@base/ui';
+import { colors } from '@base/ui/tokens/colors.stylex';
+import { radii } from '@base/ui/tokens/radii.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { Link } from '~/components/Link';
-import * as stylex from '@stylexjs/stylex';
-import { colors } from '@base/ui/tokens/colors.stylex';
-import { typography } from '@base/ui/tokens/typography.stylex';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
-import { radii } from '@base/ui/tokens/radii.stylex';
 
 export const Route = createFileRoute('/showcase/')({
   component: ShowcaseIndex,
 });
 
 const components = [
-  { id: 'buttons', label: 'Buttons', description: 'Primary, secondary, ghost, and destructive variants' },
+  {
+    id: 'buttons',
+    label: 'Buttons',
+    description: 'Primary, secondary, ghost, and destructive variants',
+  },
   { id: 'inputs', label: 'Inputs', description: 'Text inputs with size variants' },
   { id: 'dialog', label: 'Dialog', description: 'Modal dialog with compound component pattern' },
   { id: 'toggle', label: 'Toggle', description: 'Switch control with spring animation' },
@@ -23,18 +27,6 @@ const styles = stylex.create({
     flexDirection: 'column',
     gap: spacing.s8,
     marginBottom: spacing.s32,
-  },
-  heading: {
-    fontSize: typography.headlineSize,
-    lineHeight: typography.headlineLineHeight,
-    letterSpacing: typography.headlineLetterSpacing,
-    fontWeight: 600,
-    color: colors.foregroundPrimary,
-  },
-  description: {
-    fontSize: typography.bodySmSize,
-    lineHeight: typography.bodySmLineHeight,
-    color: colors.foregroundSecondary,
   },
   list: {
     display: 'flex',
@@ -55,37 +47,26 @@ const styles = stylex.create({
       backgroundColor: colors.lighten4,
     },
   },
-  linkLabel: {
-    fontSize: typography.bodySmSize,
-    lineHeight: typography.bodySmLineHeight,
-    color: colors.foregroundPrimary,
-  },
-  linkDescription: {
-    fontSize: typography.captionSize,
-    lineHeight: typography.captionLineHeight,
-    color: colors.foregroundSecondary,
-  },
 });
 
 function ShowcaseIndex() {
   return (
     <>
       <header {...stylex.props(styles.header)}>
-        <h1 {...stylex.props(styles.heading)}>Components</h1>
-        <p {...stylex.props(styles.description)}>
+        <Text as='h1' size='display' weight='semibold'>
+          Components
+        </Text>
+        <Text as='p' size='bodySm' color='secondary'>
           Styled atoms from @base/ui — Base UI + StyleX + motion.dev.
-        </p>
+        </Text>
       </header>
       <nav {...stylex.props(styles.list)}>
-        {components.map((c) => (
-          <Link
-            key={c.id}
-            to='/showcase/$id'
-            params={{ id: c.id }}
-            {...stylex.props(styles.link)}
-          >
-            <span {...stylex.props(styles.linkLabel)}>{c.label}</span>
-            <span {...stylex.props(styles.linkDescription)}>{c.description}</span>
+        {components.map(c => (
+          <Link key={c.id} to='/showcase/$id' params={{ id: c.id }} {...stylex.props(styles.link)}>
+            <Text size='bodySm'>{c.label}</Text>
+            <Text size='caption' color='secondary'>
+              {c.description}
+            </Text>
           </Link>
         ))}
       </nav>

@@ -1,13 +1,12 @@
+import { Card, Text } from '@base/ui';
+import { colors } from '@base/ui/tokens/colors.stylex';
+import { radii } from '@base/ui/tokens/radii.stylex';
+import { spacing } from '@base/ui/tokens/spacing.stylex';
+import * as stylex from '@stylexjs/stylex';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Link } from '~/components/Link';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import * as stylex from '@stylexjs/stylex';
-import { colors } from '@base/ui/tokens/colors.stylex';
-import { typography } from '@base/ui/tokens/typography.stylex';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
-import { radii } from '@base/ui/tokens/radii.stylex';
 import { usersListOptions } from '~/features/users/queries';
-import { Card, Text } from '@base/ui';
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -25,18 +24,6 @@ const styles = stylex.create({
     flexDirection: 'column',
     gap: spacing.s8,
     marginBottom: spacing.s48,
-  },
-  heading: {
-    fontSize: typography.displaySize,
-    lineHeight: typography.displayLineHeight,
-    letterSpacing: typography.displayLetterSpacing,
-    fontWeight: 600,
-    color: colors.foregroundPrimary,
-  },
-  subtitle: {
-    fontSize: typography.bodySize,
-    lineHeight: typography.bodyLineHeight,
-    color: colors.foregroundSecondary,
   },
   section: {
     marginBottom: spacing.s40,
@@ -56,16 +43,6 @@ const styles = stylex.create({
     borderBottomStyle: 'solid',
     borderBottomColor: colors.border,
   },
-  userName: {
-    fontSize: typography.bodySmSize,
-    lineHeight: typography.bodySmLineHeight,
-    color: colors.foregroundPrimary,
-  },
-  userEmail: {
-    fontSize: typography.captionSize,
-    lineHeight: typography.captionLineHeight,
-    color: colors.foregroundSecondary,
-  },
   nav: {
     display: 'flex',
     flexDirection: 'column',
@@ -79,18 +56,11 @@ const styles = stylex.create({
     paddingInline: spacing.s12,
     marginInline: `-${spacing.s12}`,
     borderRadius: radii.r8,
-    fontSize: typography.bodySmSize,
-    lineHeight: typography.bodySmLineHeight,
-    color: colors.foregroundPrimary,
     textDecoration: 'none',
     transition: 'background-color 0.1s',
     ':hover': {
       backgroundColor: colors.lighten4,
     },
-  },
-  navArrow: {
-    color: colors.foregroundSecondary,
-    fontSize: typography.captionSize,
   },
 });
 
@@ -100,36 +70,51 @@ function HomePage() {
   return (
     <div {...stylex.props(styles.page)}>
       <header {...stylex.props(styles.header)}>
-        <h1 {...stylex.props(styles.heading)}>base</h1>
-        <p {...stylex.props(styles.subtitle)}>
+        <Text as='h1' size='hero' weight='semibold'>
+          base
+        </Text>
+        <Text as='p' size='body' color='secondary'>
           A monorepo starter with TanStack Start, StyleX, Base UI, and motion.dev.
-        </p>
+        </Text>
       </header>
 
       <section {...stylex.props(styles.section)}>
-        <h2 {...stylex.props(styles.sectionTitle)}>Pages</h2>
+        <Text as='h2' size='title' weight='medium' style={styles.sectionTitle}>
+          Pages
+        </Text>
         <nav {...stylex.props(styles.nav)}>
           <Link to='/showcase' {...stylex.props(styles.navLink)}>
-            Component showcase
-            <span {...stylex.props(styles.navArrow)}>→</span>
+            <Text size='bodySm'>Component showcase</Text>
+            <Text size='caption' color='secondary'>
+              →
+            </Text>
+          </Link>
+          <Link to='/typography' {...stylex.props(styles.navLink)}>
+            <Text size='bodySm'>Typography</Text>
+            <Text size='caption' color='secondary'>
+              →
+            </Text>
           </Link>
         </nav>
       </section>
 
       <section {...stylex.props(styles.section)}>
-      <Text size="bodyLg" as="h2" style={styles.sectionTitle}>Data (server function → React Query)</Text>
+        <Text size='title' as='h2' style={styles.sectionTitle}>
+          Data (server function → React Query)
+        </Text>
         <Card>
           {users.map((user, i) => (
             <div
               key={user.id}
-              {...stylex.props(
-                styles.userRow,
-                i < users.length - 1 && styles.userRowBorder,
-              )}
+              {...stylex.props(styles.userRow, i < users.length - 1 && styles.userRowBorder)}
             >
               <div>
-                <div {...stylex.props(styles.userName)}>{user.name}</div>
-                <div {...stylex.props(styles.userEmail)}>{user.email}</div>
+                <Text as='div' size='bodySm'>
+                  {user.name}
+                </Text>
+                <Text as='div' size='caption' color='secondary'>
+                  {user.email}
+                </Text>
               </div>
             </div>
           ))}
