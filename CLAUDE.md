@@ -2,7 +2,7 @@
 
 ## Stack
 
-TanStack Start (SSR/Nitro) + TanStack Router (folder-based) + React Query · StyleX · Base UI (`@base-ui/react`) · motion.dev (`motion/react`) · Zustand · Drizzle ORM + PostgreSQL (pgvector) · Iconify (lucide) · Biome · Vitest · Node 22, pnpm 11
+TanStack Start (SSR/Nitro) + TanStack Router (folder-based) + React Query · StyleX · Base UI (`@base-ui/react`) · motion.dev (`motion/react`) · Zustand · Drizzle ORM + PostgreSQL (pgvector) · Tabler Icons (`@tabler/icons-react`) · Biome · Vitest · Node 22, pnpm 11
 
 Component library: `@base/ui` (Base UI + StyleX + motion). Optional 3D: `@base/canvas` (R3F + drei + DialKit).
 

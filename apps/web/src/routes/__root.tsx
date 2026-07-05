@@ -2,6 +2,7 @@
 
 import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
 import * as stylex from '@stylexjs/stylex';
+import { IconArrowLeft, IconContrast } from '@tabler/icons-react';
 import {
   createRootRoute,
   HeadContent,
@@ -120,7 +121,7 @@ function ThemeToggle() {
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
-      {theme === 'dark' ? '☀' : '☾'}
+      <IconContrast size={18} />
     </button>
   );
 }
@@ -137,7 +138,7 @@ function BackButton() {
       onClick={() => router.history.back()}
       aria-label='Go back'
     >
-      ←
+      <IconArrowLeft size={18} />
     </button>
   );
 }
