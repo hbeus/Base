@@ -14,6 +14,9 @@ interface TextOwnProps {
   weight?: TextWeight;
   color?: TextColor;
   tight?: boolean;
+  uppercase?: boolean;
+  capitalize?: boolean;
+  mono?: boolean;
 }
 
 export type TextProps<T extends keyof React.JSX.IntrinsicElements = 'span'> = PolymorphicProps<
@@ -78,8 +81,11 @@ const weights = stylex.create({
   bold: { fontWeight: 700 },
 });
 
-const tightStyle = stylex.create({
+const modifiers = stylex.create({
   tight: { lineHeight: 1 },
+  uppercase: { textTransform: 'uppercase' },
+  capitalize: { textTransform: 'capitalize' },
+  mono: { fontFamily: typography.fontMono },
 });
 
 const textColors = stylex.create({
@@ -93,6 +99,9 @@ export const Text = function Text({
   weight = 'medium',
   color = 'primary',
   tight,
+  uppercase,
+  capitalize,
+  mono,
   style,
   ref,
   ...props
@@ -104,7 +113,10 @@ export const Text = function Text({
         sizes[size],
         weights[weight],
         textColors[color],
-        tight && tightStyle.tight,
+        tight && modifiers.tight,
+        uppercase && modifiers.uppercase,
+        capitalize && modifiers.capitalize,
+        mono && modifiers.mono,
         ...styleArray(style),
       )}
       {...props}
