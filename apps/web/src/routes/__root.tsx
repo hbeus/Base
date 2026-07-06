@@ -152,6 +152,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang='en'
+      data-theme={theme}
       className={themeStyle.className}
       style={{ ...themeStyle.style, colorScheme: theme }}
     >

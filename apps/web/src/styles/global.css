@@ -238,4 +238,14 @@
   [hidden]:where(:not([hidden="until-found"])) {
     display: none;
   }
+
+  :focus-visible {
+    outline: 2px solid oklch(0.7 0.15 250);
+    outline-offset: 2px;
+  }
+
+  [data-theme="light"] :focus-visible,
+  [data-theme="light"]:focus-visible {
+    outline-color: oklch(0.5 0.2 250);
+  }
 }

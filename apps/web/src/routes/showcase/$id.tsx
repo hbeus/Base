@@ -18,14 +18,11 @@ const styles = stylex.create({
     gap: spacing.s8,
     marginBottom: spacing.s32,
   },
-  capitalize: {
-    textTransform: 'capitalize',
-  },
   section: {
     marginBottom: spacing.s32,
   },
   sectionTitle: {
-    marginBottom: spacing.s12,
+    marginBottom: spacing.s8,
   },
   preview: {
     display: 'flex',
@@ -84,10 +81,18 @@ function ButtonsShowcase() {
           Disabled
         </Text>
         <div {...stylex.props(styles.preview)}>
-          <Button variant='primary' disabled>Primary</Button>
-          <Button variant='secondary' disabled>Secondary</Button>
-          <Button variant='ghost' disabled>Ghost</Button>
-          <Button variant='destructive' disabled>Destructive</Button>
+          <Button variant='primary' disabled>
+            Primary
+          </Button>
+          <Button variant='secondary' disabled>
+            Secondary
+          </Button>
+          <Button variant='ghost' disabled>
+            Ghost
+          </Button>
+          <Button variant='destructive' disabled>
+            Destructive
+          </Button>
         </div>
       </section>
     </>
@@ -307,7 +312,7 @@ function ShowcaseDetail() {
   return (
     <>
       <header {...stylex.props(styles.header)}>
-        <Text as='h1' size='display' weight='semibold' style={styles.capitalize}>
+        <Text as='h1' size='display' weight='semibold' capitalize>
           {showcase.title}
         </Text>
         <Text as='p' size='bodySm' color='secondary'>
