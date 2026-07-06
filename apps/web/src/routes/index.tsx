@@ -77,7 +77,7 @@ function HomePage() {
         </Text>
         <nav {...stylex.props(styles.nav)}>
           <Pressable inset='s16'>
-            <Link to='/showcase'>
+            <Link disabled to='/showcase'>
               <Flex
                 direction='row'
                 justify='between'
@@ -90,22 +90,34 @@ function HomePage() {
               </Flex>
             </Link>
           </Pressable>
-          <Link to='/typography' {...stylex.props(styles.navLink)}>
-            <Text>Typography</Text>
-            <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
-          </Link>
+          <Pressable inset='s16'>
+            <Link disabled to='/typography'>
+              <Flex
+                direction='row'
+                justify='between'
+                align='center'
+                gap='s16'
+                style={styles.navLink}
+              >
+                <Text>Typography</Text>
+                <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+              </Flex>
+            </Link>
+          </Pressable>
         </nav>
       </section>
       <section {...stylex.props(styles.section)}>
         <Text as='h2' size='label' weight='medium' color='secondary'>
           Patterns
         </Text>
-        <nav {...stylex.props(styles.nav)}>
-          <Link to='/data' {...stylex.props(styles.navLink)}>
-            <Text>Data</Text>
-            <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+        <Pressable inset='s16'>
+          <Link disabled to='/data'>
+            <Flex direction='row' justify='between' align='center' gap='s16' style={styles.navLink}>
+              <Text>Data</Text>
+              <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+            </Flex>
           </Link>
-        </nav>
+        </Pressable>
       </section>
     </div>
   );

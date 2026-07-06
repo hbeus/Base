@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import { useRef } from 'react';
-import { INPUT_SCALE_DOWN } from '../../../constants/motion';
+import { INPUT_FOCUS_SCALE, INPUT_SCALE_DOWN } from '../../../constants/motion';
 import { colors } from '../../../tokens/colors.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
@@ -221,7 +221,7 @@ export const Pressable = function Pressable({
       tabIndex={tabIndex}
       onKeyDown={handleKeyDown}
       whileTap={{ scale: INPUT_SCALE_DOWN }}
-      whileFocus={{ scale: 1.01 }}
+      whileFocus={{ scale: INPUT_FOCUS_SCALE }}
       transition={{ duration: 0.4, type: 'spring', bounce: 0.4 }}
       {...stylex.props(
         styles.base,
