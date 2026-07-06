@@ -4,6 +4,7 @@ export { Pressable, type PressableProps } from './components/input/Pressable';
 export { Toggle, type ToggleProps } from './components/input/Toggle';
 export { Accordion, type AccordionItemProps } from './components/layout/Accordion';
 export { Card, type CardProps } from './components/layout/Card';
+export { Flex, type FlexProps } from './components/layout/Flex';
 export {
   Dialog,
   type DialogBackdropProps,
