@@ -1,7 +1,6 @@
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { colors } from '../../../tokens/colors.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -35,7 +34,7 @@ function Close({
 
 /* ---------- Portal ---------- */
 function Portal(props: ComponentPropsWithoutRef<typeof BaseDialog.Portal>) {
-  return <BaseDialog.Portal {...props} />;
+  return <BaseDialog.Portal keepMounted {...props} />;
 }
 
 /* ---------- Backdrop ---------- */
@@ -48,10 +47,6 @@ const backdropStyles = stylex.create({
   },
 });
 
-const MotionBackdrop = motion.create(
-  BaseDialog.Backdrop as React.ComponentType<Record<string, unknown>>,
-);
-
 export interface DialogBackdropProps
   extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Backdrop>, 'style'>,
     BaseProps {
@@ -60,12 +55,16 @@ export interface DialogBackdropProps
 
 function Backdrop({ style, ref, ...props }: DialogBackdropProps) {
   return (
-    <MotionBackdrop
+    <BaseDialog.Backdrop
       ref={ref}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      render={
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        />
+      }
       {...stylex.props(backdropStyles.base, ...styleArray(style))}
       {...props}
     />
@@ -101,8 +100,6 @@ const contentStyles = stylex.create({
   },
 });
 
-const MotionPopup = motion.create(BaseDialog.Popup as React.ComponentType<Record<string, unknown>>);
-
 export interface DialogContentProps
   extends Omit<ComponentPropsWithoutRef<typeof BaseDialog.Popup>, 'style'>,
     BaseProps {
@@ -112,12 +109,16 @@ export interface DialogContentProps
 
 function Content({ size = 'md', style, ref, ...props }: DialogContentProps) {
   return (
-    <MotionPopup
+    <BaseDialog.Popup
       ref={ref}
-      initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-      animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-      exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-      transition={{ duration: 0.2 }}
+      render={
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+          animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+          exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+          transition={{ duration: 0.2 }}
+        />
+      }
       {...stylex.props(contentStyles.base, contentStyles[size], ...styleArray(style))}
       {...props}
     />

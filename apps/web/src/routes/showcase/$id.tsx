@@ -1,9 +1,10 @@
-import { Button, Dialog, Input, Text, Toggle } from '@base/ui';
+import { Accordion, Button, Dialog, Input, Text, Toggle } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
+import { AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/showcase/$id')({
@@ -24,8 +25,6 @@ const styles = stylex.create({
     marginBottom: spacing.s32,
   },
   sectionTitle: {
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
     marginBottom: spacing.s12,
   },
   preview: {
@@ -119,28 +118,36 @@ function InputsShowcase() {
 }
 
 function DialogShowcase() {
+  const [open, setOpen] = useState(false);
+
   return (
     <section {...stylex.props(styles.section)}>
       <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
         Modal
       </Text>
       <div {...stylex.props(styles.preview)}>
-        <Dialog.Root>
+        <Dialog.Root open={open} onOpenChange={setOpen}>
           <Dialog.Trigger render={<Button variant='secondary' />}>Open dialog</Dialog.Trigger>
-          <Dialog.Portal>
-            <Dialog.Backdrop />
-            <Dialog.Content>
-              <Dialog.Title>Dialog title</Dialog.Title>
-              <Dialog.Description>
-                This is a compound component dialog built with Base UI, styled with StyleX, and
-                animated with motion.dev.
-              </Dialog.Description>
-              <Dialog.Footer>
-                <Dialog.Close render={<Button variant='ghost' size='sm' />}>Cancel</Dialog.Close>
-                <Dialog.Close render={<Button size='sm' />}>Confirm</Dialog.Close>
-              </Dialog.Footer>
-            </Dialog.Content>
-          </Dialog.Portal>
+          <AnimatePresence>
+            {open && (
+              <Dialog.Portal>
+                <Dialog.Backdrop />
+                <Dialog.Content>
+                  <Dialog.Title>Dialog title</Dialog.Title>
+                  <Dialog.Description>
+                    This is a compound component dialog built with Base UI, styled with StyleX, and
+                    animated with motion.dev.
+                  </Dialog.Description>
+                  <Dialog.Footer>
+                    <Dialog.Close render={<Button variant='ghost' size='sm' />}>
+                      Cancel
+                    </Dialog.Close>
+                    <Dialog.Close render={<Button size='sm' />}>Confirm</Dialog.Close>
+                  </Dialog.Footer>
+                </Dialog.Content>
+              </Dialog.Portal>
+            )}
+          </AnimatePresence>
         </Dialog.Root>
       </div>
     </section>
@@ -183,10 +190,81 @@ function ToggleShowcase() {
   );
 }
 
+function AccordionShowcase() {
+  return (
+    <>
+      <section {...stylex.props(styles.section)}>
+        <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
+          Default
+        </Text>
+        <Accordion.Root>
+          <Accordion.Item trigger='What is Base UI?'>
+            <Text weight='regular' color='secondary'>
+              Base UI is an unstyled component library from the MUI team. It provides accessible,
+              headless primitives that you style yourself.
+            </Text>
+          </Accordion.Item>
+          <Accordion.Item trigger='Why StyleX?'>
+            <Text weight='regular' color='secondary'>
+              StyleX provides atomic CSS with type-safe design tokens, co-located styles, and
+              zero-runtime overhead in production.
+            </Text>
+          </Accordion.Item>
+          <Accordion.Item trigger='How are animations handled?'>
+            <Text weight='regular' color='secondary'>
+              Animations use motion.dev for declarative enter/exit transitions and spring physics.
+            </Text>
+          </Accordion.Item>
+        </Accordion.Root>
+      </section>
+      <section {...stylex.props(styles.section)}>
+        <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
+          Multiple
+        </Text>
+        <Accordion.Root multiple>
+          <Accordion.Item trigger='Section one'>
+            <Text weight='regular' color='secondary'>
+              Multiple items can be open at the same time when the multiple prop is set.
+            </Text>
+          </Accordion.Item>
+          <Accordion.Item trigger='Section two'>
+            <Text weight='regular' color='secondary'>
+              Try opening this while the first section is still expanded.
+            </Text>
+          </Accordion.Item>
+        </Accordion.Root>
+      </section>
+      <section {...stylex.props(styles.section)}>
+        <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
+          Disabled
+        </Text>
+        <Accordion.Root>
+          <Accordion.Item trigger='Enabled item'>
+            <Text weight='regular' color='secondary'>
+              This item can be toggled.
+            </Text>
+          </Accordion.Item>
+          <Accordion.Item trigger='Disabled item' disabled>
+            <Text weight='regular' color='secondary'>
+              This item cannot be toggled.
+            </Text>
+          </Accordion.Item>
+        </Accordion.Root>
+      </section>
+    </>
+  );
+}
+
 const showcases: Record<
   string,
   { title: string; description: string; component: () => React.JSX.Element }
 > = {
+  accordion: {
+    title: 'Accordion',
+    description:
+      'Compound component — Accordion.Root wraps Accordion.Item children with animated panels.',
+    component: AccordionShowcase,
+  },
   buttons: {
     title: 'Buttons',
     description: 'Wraps Base UI Button with variant and size props, motion whileTap.',

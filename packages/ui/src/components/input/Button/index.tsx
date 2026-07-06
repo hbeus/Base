@@ -3,7 +3,7 @@ import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-
+import { INPUT_SCALE_DOWN } from '../../../constants/motion';
 import { colors } from '../../../tokens/colors.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -94,7 +94,7 @@ export function Button({ variant = 'primary', size = 'md', style, ref, ...props 
   return (
     <MotionBaseButton
       ref={ref}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: INPUT_SCALE_DOWN }}
       {...stylex.props(styles.base, styles[variant], styles[size], ...styleArray(style))}
       {...props}
     />

@@ -12,6 +12,7 @@ export const Route = createFileRoute('/showcase/')({
 });
 
 const components = [
+  { id: 'accordion', label: 'Accordion', description: 'Collapsible sections with animated reveal' },
   {
     id: 'buttons',
     label: 'Buttons',
