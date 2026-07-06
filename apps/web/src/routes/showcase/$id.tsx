@@ -81,10 +81,13 @@ function ButtonsShowcase() {
       </section>
       <section {...stylex.props(styles.section)}>
         <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
-          States
+          Disabled
         </Text>
         <div {...stylex.props(styles.preview)}>
-          <Button disabled>Disabled</Button>
+          <Button variant='primary' disabled>Primary</Button>
+          <Button variant='secondary' disabled>Secondary</Button>
+          <Button variant='ghost' disabled>Ghost</Button>
+          <Button variant='destructive' disabled>Destructive</Button>
         </div>
       </section>
     </>

@@ -1,8 +1,8 @@
-import { Text } from '@base/ui';
+import { Flex, Pressable, Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
-import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
+import { IconChevronRight } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 
 import { Link } from '~/components/Link';
@@ -30,24 +30,14 @@ const styles = stylex.create({
     gap: spacing.s8,
     marginBottom: spacing.s32,
   },
-  list: {
+  nav: {
     display: 'flex',
     flexDirection: 'column',
     gap: spacing.s2,
   },
-  link: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.s2,
-    paddingBlock: spacing.s12,
-    paddingInline: spacing.s12,
-    marginInline: `-${spacing.s12}`,
-    borderRadius: radii.r8,
+  navLink: {
+    paddingBlock: spacing.s16,
     textDecoration: 'none',
-    transition: 'background-color 0.1s',
-    ':hover': {
-      backgroundColor: colors.lighten4,
-    },
   },
 });
 
@@ -63,14 +53,27 @@ function ShowcaseIndex() {
           Motion.
         </Text>
       </header>
-      <nav {...stylex.props(styles.list)}>
+      <nav {...stylex.props(styles.nav)}>
         {components.map(c => (
-          <Link key={c.id} to='/showcase/$id' params={{ id: c.id }} {...stylex.props(styles.link)}>
-            <Text size='bodySm'>{c.label}</Text>
-            <Text size='caption' color='secondary'>
-              {c.description}
-            </Text>
-          </Link>
+          <Pressable key={c.id} inset='s16' role='link'>
+            <Link to='/showcase/$id' params={{ id: c.id }}>
+              <Flex
+                direction='row'
+                justify='between'
+                align='center'
+                gap='s16'
+                style={styles.navLink}
+              >
+                <Flex direction='column' gap='s4'>
+                  <Text size='body'>{c.label}</Text>
+                  <Text size='bodySm' color='secondary'>
+                    {c.description}
+                  </Text>
+                </Flex>
+                <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+              </Flex>
+            </Link>
+          </Pressable>
         ))}
       </nav>
     </>

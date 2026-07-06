@@ -9,6 +9,9 @@ export const colors = stylex.defineVars({
   background: themeBackground.dark,
   foregroundPrimary: 'oklch(1 0 0)',
   foregroundSecondary: 'oklch(1 0 0 / 0.6)',
+  foregroundDisabled: 'oklch(1 0 0 / 0.3)',
+  foregroundPrimaryInverse: 'oklch(0.12 0 0)',
+  foregroundSecondaryInverse: 'oklch(0.12 0 0 / 0.6)',
 
   border: 'oklch(1 0 0 / 0.08)',
 
@@ -32,11 +35,11 @@ export const colors = stylex.defineVars({
   darken12: 'oklch(0 0 0 / 0.12)',
   darken16: 'oklch(0 0 0 / 0.16)',
 
-  hover4: 'oklch(0 0 0 / 0.04)',
-  hover6: 'oklch(0 0 0 / 0.06)',
-  hover8: 'oklch(0 0 0 / 0.08)',
-  hover12: 'oklch(0 0 0 / 0.12)',
-  hover16: 'oklch(0 0 0 / 0.16)',
+  hover4: 'oklch(1 0 0 / 0.04)',
+  hover6: 'oklch(1 0 0 / 0.06)',
+  hover8: 'oklch(1 0 0 / 0.08)',
+  hover12: 'oklch(1 0 0 / 0.12)',
+  hover16: 'oklch(1 0 0 / 0.16)',
 
   focusOutline: 'oklch(0.7 0.15 250)',
 });
@@ -45,6 +48,9 @@ export const lightTheme = stylex.createTheme(colors, {
   background: themeBackground.light,
   foregroundPrimary: 'oklch(0.12 0 0)',
   foregroundSecondary: 'oklch(0.12 0 0 / 0.6)',
+  foregroundDisabled: 'oklch(0.12 0 0 / 0.3)',
+  foregroundPrimaryInverse: 'oklch(1 0 0)',
+  foregroundSecondaryInverse: 'oklch(1 0 0 / 0.6)',
 
   border: 'oklch(0 0 0 / 0.08)',
 

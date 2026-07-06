@@ -38,8 +38,10 @@ const styles = stylex.create({
     whiteSpace: 'nowrap',
     borderWidth: 0,
     ':disabled': {
+      color: colors.foregroundDisabled,
       opacity: 0.5,
       cursor: 'not-allowed',
+      pointerEvents: 'none',
     },
   },
   primary: {
@@ -94,7 +96,7 @@ export function Button({ variant = 'primary', size = 'md', style, ref, ...props 
   return (
     <MotionBaseButton
       ref={ref}
-      whileTap={{ scale: INPUT_SCALE_DOWN }}
+      whileTap={props.disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
       {...stylex.props(styles.base, styles[variant], styles[size], ...styleArray(style))}
       {...props}
     />
