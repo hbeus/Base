@@ -1,4 +1,4 @@
-import { Pressable, Text } from '@base/ui';
+import { Flex, Pressable, Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
@@ -78,8 +78,16 @@ function HomePage() {
         <nav {...stylex.props(styles.nav)}>
           <Pressable inset='s16'>
             <Link to='/showcase'>
-              <Text>Components</Text>
-              <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+              <Flex
+                direction='row'
+                justify='between'
+                align='center'
+                gap='s16'
+                style={styles.navLink}
+              >
+                <Text>Components</Text>
+                <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+              </Flex>
             </Link>
           </Pressable>
           <Link to='/typography' {...stylex.props(styles.navLink)}>
