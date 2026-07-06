@@ -19,6 +19,7 @@ interface PressableOwnProps {
   variant?: PressableVariant;
   inset?: PressableInset;
   radius?: PressableRadius;
+  disabled?: boolean;
 }
 
 export type PressableProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = PolymorphicProps<
@@ -52,6 +53,11 @@ const styles = stylex.create({
   },
   transparent: {
     backgroundColor: 'transparent',
+  },
+  disabled: {
+    cursor: 'default',
+    opacity: 0.4,
+    pointerEvents: 'none',
   },
 });
 
@@ -187,6 +193,7 @@ export const Pressable = function Pressable({
   variant = 'ghost',
   inset = 's16',
   radius = 'r20',
+  disabled = false,
   style,
   tabIndex = 0,
   onKeyDown,
@@ -203,6 +210,7 @@ export const Pressable = function Pressable({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (disabled) return;
     onKeyDown?.(e as React.KeyboardEvent<HTMLDivElement>);
     if (e.defaultPrevented) return;
     if (e.key === 'Enter' || e.key === ' ') {
@@ -218,15 +226,17 @@ export const Pressable = function Pressable({
   return (
     <MotionElement
       ref={mergeRefs(internalRef, suppressChildFocus, ref)}
-      tabIndex={tabIndex}
+      tabIndex={disabled ? -1 : tabIndex}
+      aria-disabled={disabled || undefined}
       onKeyDown={handleKeyDown}
-      whileTap={{ scale: INPUT_SCALE_DOWN }}
-      whileFocus={{ scale: INPUT_FOCUS_SCALE }}
-      transition={{ duration: 0.4, type: 'spring', bounce: 0.4 }}
+      whileTap={disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
+      whileFocus={disabled ? undefined : { scale: INPUT_FOCUS_SCALE }}
+      transition={{ duration: 0.15, ease: 'easeOut' }}
       {...stylex.props(
         styles.base,
         inset ? insetStyles[inset] : styles[variant],
         inset && radiusStyles[radius],
+        disabled && styles.disabled,
         ...styleArray(style),
       )}
       {...props}

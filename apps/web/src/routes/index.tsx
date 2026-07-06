@@ -30,7 +30,7 @@ const styles = stylex.create({
   section: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s16,
+    gap: spacing.s8,
   },
   nav: {
     display: 'flex',
@@ -76,8 +76,8 @@ function HomePage() {
           Components
         </Text>
         <nav {...stylex.props(styles.nav)}>
-          <Pressable inset='s16'>
-            <Link disabled to='/showcase'>
+          <Pressable inset='s16' role='link'>
+            <Link to='/showcase'>
               <Flex
                 direction='row'
                 justify='between'
@@ -90,8 +90,8 @@ function HomePage() {
               </Flex>
             </Link>
           </Pressable>
-          <Pressable inset='s16'>
-            <Link disabled to='/typography'>
+          <Pressable inset='s16' role='link'>
+            <Link to='/typography'>
               <Flex
                 direction='row'
                 justify='between'
@@ -110,8 +110,8 @@ function HomePage() {
         <Text as='h2' size='label' weight='medium' color='secondary'>
           Patterns
         </Text>
-        <Pressable inset='s16'>
-          <Link disabled to='/data'>
+        <Pressable inset='s16' role='link'>
+          <Link to='/data'>
             <Flex direction='row' justify='between' align='center' gap='s16' style={styles.navLink}>
               <Text>Data</Text>
               <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
