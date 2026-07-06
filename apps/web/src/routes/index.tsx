@@ -1,4 +1,4 @@
-import { Text } from '@base/ui';
+import { Pressable, Text } from '@base/ui';
 import { colors } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
@@ -76,10 +76,12 @@ function HomePage() {
           Components
         </Text>
         <nav {...stylex.props(styles.nav)}>
-          <Link to='/showcase' {...stylex.props(styles.navLink)}>
-            <Text>Components</Text>
-            <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
-          </Link>
+          <Pressable inset='s16'>
+            <Link to='/showcase'>
+              <Text>Components</Text>
+              <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+            </Link>
+          </Pressable>
           <Link to='/typography' {...stylex.props(styles.navLink)}>
             <Text>Typography</Text>
             <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
