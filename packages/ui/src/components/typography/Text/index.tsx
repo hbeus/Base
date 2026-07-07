@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
 
-import { colors } from '../../../tokens/colors.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
 import { styleArray } from '../../../utils/styleArray';

@@ -5,7 +5,7 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { motion } from 'motion/react';
 import { type ComponentPropsWithoutRef, type ReactNode, type Ref, useState } from 'react';
 
-import { colors } from '../../../tokens/colors.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';

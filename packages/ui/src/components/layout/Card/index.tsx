@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
 
-import { colors } from '../../../tokens/colors.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
@@ -16,6 +16,7 @@ interface CardOwnProps {
   padding?: CardPadding;
   direction?: CardDirection;
   gap?: CardGap;
+  darken?: boolean;
 }
 
 export type CardProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = PolymorphicProps<
@@ -57,6 +58,10 @@ const variants = stylex.create({
     borderStyle: 'solid',
     borderColor: colors.border,
   },
+  darken: {
+    backgroundColor: colors.darken4,
+    borderWidth: 0,
+  },
 });
 
 const paddings = stylex.create({
@@ -72,6 +77,7 @@ export const Card = function Card({
   padding = 'md',
   direction = 'column',
   gap = 's16',
+  darken = false,
   style,
   ref,
   ...props
@@ -85,6 +91,7 @@ export const Card = function Card({
         gaps[gap],
         variants[variant],
         paddings[padding],
+        darken && variants.darken,
         ...styleArray(style),
       )}
       {...props}

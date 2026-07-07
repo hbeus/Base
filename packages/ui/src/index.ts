@@ -15,11 +15,21 @@ export {
 } from './components/overlays/Dialog';
 export { Text, type TextProps } from './components/typography/Text';
 
-export { colors, lightTheme } from './tokens/colors.stylex';
 export { elementSize } from './tokens/elementSize.stylex';
 export { radii } from './tokens/radii.stylex';
 export { size } from './tokens/size.stylex';
 export { spacing } from './tokens/spacing.stylex';
+export {
+  COLOR_SCHEMES,
+  type ColorScheme,
+  PALETTES,
+  type Palette,
+  type ThemeKey,
+  colors,
+  defaultLight,
+  themeBackgrounds,
+  themeMap,
+} from './tokens/themes.stylex';
 export { typography } from './tokens/typography.stylex';
 export type { BaseProps } from './types/BaseProps';
 export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic';

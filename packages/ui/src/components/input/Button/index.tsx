@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { INPUT_SCALE_DOWN } from '../../../constants/motion';
-import { colors } from '../../../tokens/colors.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -13,7 +13,7 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
-type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ButtonProps
   extends Omit<ComponentPropsWithoutRef<typeof BaseButton>, 'style'>,
@@ -21,6 +21,8 @@ export interface ButtonProps
   ref?: Ref<HTMLButtonElement>;
   variant?: ButtonVariant;
   size?: ButtonSize;
+  rounded?: boolean;
+  fill?: boolean;
 }
 
 const styles = stylex.create({
@@ -29,7 +31,6 @@ const styles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.s8,
-    borderRadius: radii.r8,
     fontWeight: 500,
     cursor: 'pointer',
     transition: 'background-color 0.15s, color 0.15s',
@@ -45,17 +46,17 @@ const styles = stylex.create({
     },
   },
   primary: {
-    backgroundColor: colors.foregroundPrimary,
-    color: colors.background,
+    backgroundColor: colors.buttonPrimaryBg,
+    color: colors.buttonPrimaryFg,
     ':hover': {
-      backgroundColor: colors.lighten50,
+      backgroundColor: colors.buttonPrimaryHover,
     },
   },
   secondary: {
-    backgroundColor: colors.lighten8,
-    color: colors.foregroundPrimary,
+    backgroundColor: colors.buttonSecondaryBg,
+    color: colors.buttonSecondaryFg,
     ':hover': {
-      backgroundColor: colors.lighten12,
+      backgroundColor: colors.buttonSecondaryHover,
     },
   },
   ghost: {
@@ -67,37 +68,73 @@ const styles = stylex.create({
     },
   },
   destructive: {
-    backgroundColor: colors.negative,
+    backgroundColor: colors.stateNegative,
     color: colors.foregroundPrimary,
     ':hover': {
       opacity: 0.9,
     },
   },
+  xs: {
+    height: elementSize.xs,
+    paddingInline: spacing.s8,
+    fontSize: typography.labelSize,
+    borderRadius: radii.r8,
+  },
   sm: {
     height: elementSize.sm,
     paddingInline: spacing.s12,
     fontSize: typography.labelSize,
+    borderRadius: radii.r8,
   },
   md: {
     height: elementSize.md,
     paddingInline: spacing.s16,
     fontSize: typography.bodySmSize,
+    borderRadius: radii.r10,
   },
   lg: {
     height: elementSize.lg,
     paddingInline: spacing.s24,
     fontSize: typography.bodySize,
+    borderRadius: radii.r12,
+  },
+});
+
+const shapeStyles = stylex.create({
+  rounded: {
+    borderRadius: radii.full,
+  },
+});
+
+const fillStyles = stylex.create({
+  fill: {
+    width: '100%',
   },
 });
 
 const MotionBaseButton = motion.create(BaseButton as React.ComponentType<Record<string, unknown>>);
 
-export function Button({ variant = 'primary', size = 'md', style, ref, ...props }: ButtonProps) {
+export function Button({
+  variant = 'primary',
+  size = 'md',
+  rounded = false,
+  fill = false,
+  style,
+  ref,
+  ...props
+}: ButtonProps) {
   return (
     <MotionBaseButton
       ref={ref}
       whileTap={props.disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
-      {...stylex.props(styles.base, styles[variant], styles[size], ...styleArray(style))}
+      {...stylex.props(
+        styles.base,
+        styles[variant],
+        styles[size],
+        rounded && shapeStyles.rounded,
+        fill && fillStyles.fill,
+        ...styleArray(style),
+      )}
       {...props}
     />
   );

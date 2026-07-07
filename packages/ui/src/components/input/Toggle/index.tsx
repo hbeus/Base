@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { useState } from 'react';
 
-import { colors } from '../../../tokens/colors.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';

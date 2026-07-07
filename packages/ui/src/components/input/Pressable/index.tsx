@@ -2,7 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import { useRef } from 'react';
 import { INPUT_FOCUS_SCALE, INPUT_SCALE_DOWN } from '../../../constants/motion';
-import { colors } from '../../../tokens/colors.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
 import { mergeRefs } from '../../../utils/mergeRefs';
