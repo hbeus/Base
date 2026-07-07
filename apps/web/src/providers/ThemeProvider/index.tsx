@@ -1,35 +1,53 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 
-import type { Theme } from '~/server/theme';
+import type { ColorScheme, Palette } from '@base/ui/tokens/themes.stylex';
 
 interface ThemeContextValue {
-  theme: Theme;
-  toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
+  colorScheme: ColorScheme;
+  palette: Palette;
+  toggleColorScheme: () => void;
+  setColorScheme: (scheme: ColorScheme) => void;
+  setPalette: (palette: Palette) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+function writeCookie(palette: Palette, colorScheme: ColorScheme) {
+  document.cookie = `theme=${palette}-${colorScheme};path=/;max-age=31536000`;
+}
+
 export function ThemeProvider({
-  initialTheme,
+  initialColorScheme,
+  initialPalette,
   children,
 }: {
-  initialTheme: Theme;
+  initialColorScheme: ColorScheme;
+  initialPalette: Palette;
   children: ReactNode;
 }) {
-  const [theme, setThemeState] = useState<Theme>(initialTheme);
+  const [colorScheme, setColorSchemeState] = useState<ColorScheme>(initialColorScheme);
+  const [palette, setPaletteState] = useState<Palette>(initialPalette);
 
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    document.cookie = `theme=${newTheme};path=/;max-age=31536000`;
+  const setColorScheme = (scheme: ColorScheme) => {
+    setColorSchemeState(scheme);
+    writeCookie(palette, scheme);
   };
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+  const setPalette = (p: Palette) => {
+    setPaletteState(p);
+    writeCookie(p, colorScheme);
   };
 
-  return <ThemeContext value={{ theme, toggleTheme, setTheme }}>{children}</ThemeContext>;
+  const toggleColorScheme = () => {
+    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+  };
+
+  return (
+    <ThemeContext value={{ colorScheme, palette, toggleColorScheme, setColorScheme, setPalette }}>
+      {children}
+    </ThemeContext>
+  );
 }
 
 export function useTheme() {

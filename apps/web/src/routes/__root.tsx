@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
-import { colors, lightTheme, themeBackground } from '@base/ui/tokens/colors.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { PALETTES, type Palette, colors, themeBackgrounds, themeMap } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconArrowLeft, IconContrast } from '@tabler/icons-react';
 import {
@@ -23,8 +23,8 @@ import appCss from '~/styles/global.css?url';
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
-    const theme = await getThemeFromCookie();
-    return { theme };
+    const { colorScheme, palette } = await getThemeFromCookie();
+    return { colorScheme, palette };
   },
   head: () => ({
     meta: [
@@ -47,11 +47,11 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
-  const { theme } = Route.useRouteContext();
+  const { colorScheme, palette } = Route.useRouteContext();
 
   return (
     <QueryProvider>
-      <ThemeProvider initialTheme={theme}>
+      <ThemeProvider initialColorScheme={colorScheme} initialPalette={palette}>
         <MotionProvider>
           <RootDocument>
             <Outlet />
@@ -115,16 +115,70 @@ const fixedButtonStyles = stylex.create({
   },
 });
 
+const palettePickerStyles = stylex.create({
+  container: {
+    position: 'fixed',
+    zIndex: 9999,
+    top: spacing.s16,
+    right: `calc(${spacing.s16} + ${spacing.s32} + ${spacing.s8})`,
+    display: 'flex',
+    gap: spacing.s4,
+    alignItems: 'center',
+  },
+  swatch: {
+    width: spacing.s16,
+    height: spacing.s16,
+    borderRadius: '50%',
+    cursor: 'pointer',
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    transition: 'border-color 0.15s, transform 0.15s',
+    ':hover': {
+      transform: 'scale(1.2)',
+    },
+  },
+  active: {
+    borderColor: colors.foregroundPrimary,
+  },
+});
+
+const PALETTE_COLORS: Record<Palette, string> = {
+  default: 'oklch(0.5 0 0)',
+  blueberry: 'oklch(0.5774 0.2092 275)',
+  warm: 'oklch(0.72 0.15 65)',
+};
+
 function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { colorScheme, toggleColorScheme } = useTheme();
   return (
     <button
       {...stylex.props(fixedButtonStyles.base, fixedButtonStyles.topRight)}
-      onClick={toggleTheme}
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      onClick={toggleColorScheme}
+      aria-label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} mode`}
     >
       <IconContrast size={18} />
     </button>
+  );
+}
+
+function PalettePicker() {
+  const { palette: currentPalette, setPalette } = useTheme();
+  return (
+    <div {...stylex.props(palettePickerStyles.container)}>
+      {PALETTES.map(p => (
+        <button
+          key={p}
+          onClick={() => setPalette(p)}
+          aria-label={`${p} palette`}
+          {...stylex.props(
+            palettePickerStyles.swatch,
+            p === currentPalette && palettePickerStyles.active,
+          )}
+          style={{ backgroundColor: PALETTE_COLORS[p] }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -146,23 +200,27 @@ function BackButton() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const { theme } = useTheme();
-  const themeStyle = theme === 'light' ? stylex.props(lightTheme) : {};
+  const { colorScheme, palette } = useTheme();
+  const themeKey = `${palette}-${colorScheme}` as const;
+  const theme = themeMap[themeKey];
+  const themeStyle = theme ? stylex.props(theme) : {};
 
   return (
     <html
       lang='en'
-      data-theme={theme}
+      data-theme={colorScheme}
+      data-palette={palette}
       className={themeStyle.className}
-      style={{ ...themeStyle.style, colorScheme: theme }}
+      style={{ ...themeStyle.style, colorScheme }}
     >
       <head>
         <HeadContent />
-        <meta name='theme-color' content={themeBackground[theme]} />
+        <meta name='theme-color' content={themeBackgrounds[themeKey]} />
         <StyleXCSS />
       </head>
       <body {...stylex.props(bodyStyles.base)}>
         <BackButton />
+        <PalettePicker />
         <ThemeToggle />
         {children}
       </body>

@@ -1,5 +1,5 @@
 import { Card, Text } from '@base/ui';
-import { colors } from '@base/ui/tokens/colors.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { useSuspenseQuery } from '@tanstack/react-query';
