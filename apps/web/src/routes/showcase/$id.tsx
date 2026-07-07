@@ -1,5 +1,5 @@
-import { Accordion, Button, Dialog, Input, Text, Toggle } from '@base/ui';
-import { colors } from '@base/ui/tokens/colors.stylex';
+import { Accordion, Button, Card, Dialog, Flex, Input, Text, Toggle } from '@base/ui';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
@@ -23,6 +23,7 @@ const styles = stylex.create({
   },
   sectionTitle: {
     marginBottom: spacing.s8,
+    paddingInline: spacing.s8,
   },
   preview: {
     display: 'flex',
@@ -54,48 +55,59 @@ const styles = stylex.create({
 
 function ButtonsShowcase() {
   return (
-    <>
-      <section {...stylex.props(styles.section)}>
+    <Flex direction='column' gap='s32'>
+      <section>
         <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
           Variants
         </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button variant='primary'>Primary</Button>
-          <Button variant='secondary'>Secondary</Button>
-          <Button variant='ghost'>Ghost</Button>
-          <Button variant='destructive'>Destructive</Button>
-        </div>
+        <Card>
+          <Flex direction='row' gap='s8'>
+            <Button variant='primary'>Primary</Button>
+            <Button variant='secondary'>Secondary</Button>
+            <Button variant='ghost'>Ghost</Button>
+            <Button variant='destructive'>Destructive</Button>
+          </Flex>
+        </Card>
       </section>
-      <section {...stylex.props(styles.section)}>
+      <section>
         <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
           Sizes
         </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button size='sm'>Small</Button>
-          <Button size='md'>Medium</Button>
-          <Button size='lg'>Large</Button>
-        </div>
+        <Card>
+          <Card>
+            <Flex direction='row' gap='s8' align='center'>
+              <Button size='xs'>Extra Small</Button>
+              <Button size='sm'>Small</Button>
+              <Button size='md'>Medium</Button>
+              <Button size='lg'>Large</Button>
+            </Flex>
+          </Card>
+        </Card>
       </section>
-      <section {...stylex.props(styles.section)}>
+      <section>
         <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
           Disabled
         </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button variant='primary' disabled>
-            Primary
-          </Button>
-          <Button variant='secondary' disabled>
-            Secondary
-          </Button>
-          <Button variant='ghost' disabled>
-            Ghost
-          </Button>
-          <Button variant='destructive' disabled>
-            Destructive
-          </Button>
-        </div>
+        <Card>
+          <Card>
+            <Flex direction='row' gap='s8'>
+              <Button variant='primary' disabled>
+                Primary
+              </Button>
+              <Button variant='secondary' disabled>
+                Secondary
+              </Button>
+              <Button variant='ghost' disabled>
+                Ghost
+              </Button>
+              <Button variant='destructive' disabled>
+                Destructive
+              </Button>
+            </Flex>
+          </Card>
+        </Card>
       </section>
-    </>
+    </Flex>
   );
 }
 
