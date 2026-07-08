@@ -1,6 +1,6 @@
 import { Flex, Pressable, Text } from '@base/ui';
-import { colors } from '@base/ui/tokens/themes.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconChevronRight } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
@@ -18,6 +18,7 @@ const components = [
     label: 'Buttons',
     description: 'Primary, secondary, ghost, and destructive variants',
   },
+  { id: 'button-states', label: 'Button States', description: 'Positive and negative states' },
   { id: 'inputs', label: 'Inputs', description: 'Text inputs with size variants' },
   { id: 'dialog', label: 'Dialog', description: 'Modal dialog with compound component pattern' },
   { id: 'toggle', label: 'Toggle', description: 'Switch control with spring animation' },

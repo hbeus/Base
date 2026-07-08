@@ -1,7 +1,7 @@
-import { Accordion, Button, Card, Dialog, Flex, Input, Text, Toggle } from '@base/ui';
-import { colors } from '@base/ui/tokens/themes.stylex';
+import { Accordion, Button, ButtonState, Card, Dialog, Flex, Input, Text, Toggle } from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence } from 'motion/react';
@@ -61,11 +61,17 @@ function ButtonsShowcase() {
           Variants
         </Text>
         <Card>
-          <Flex direction='row' gap='s8'>
-            <Button variant='primary'>Primary</Button>
-            <Button variant='secondary'>Secondary</Button>
-            <Button variant='ghost'>Ghost</Button>
-            <Button variant='destructive'>Destructive</Button>
+          <Flex direction='column' gap='s40'>
+            <Flex direction='row' gap='s8'>
+              <Button variant='primary'>Primary</Button>
+              <Button variant='secondary'>Secondary</Button>
+              <Button variant='ghost'>Ghost</Button>
+            </Flex>
+            <Flex direction='column' gap='s12'>
+              <Button variant='primary'>Primary</Button>
+              <Button variant='secondary'>Secondary</Button>
+              <Button variant='ghost'>Ghost</Button>
+            </Flex>
           </Flex>
         </Card>
       </section>
@@ -74,14 +80,12 @@ function ButtonsShowcase() {
           Sizes
         </Text>
         <Card>
-          <Card>
-            <Flex direction='row' gap='s8' align='center'>
-              <Button size='xs'>Extra Small</Button>
-              <Button size='sm'>Small</Button>
-              <Button size='md'>Medium</Button>
-              <Button size='lg'>Large</Button>
-            </Flex>
-          </Card>
+          <Flex direction='row' gap='s8' align='center'>
+            <Button size='xs'>Extra Small</Button>
+            <Button size='sm'>Small</Button>
+            <Button size='md'>Medium</Button>
+            <Button size='lg'>Large</Button>
+          </Flex>
         </Card>
       </section>
       <section>
@@ -100,11 +104,30 @@ function ButtonsShowcase() {
               <Button variant='ghost' disabled>
                 Ghost
               </Button>
-              <Button variant='destructive' disabled>
-                Destructive
-              </Button>
             </Flex>
           </Card>
+        </Card>
+      </section>
+    </Flex>
+  );
+}
+
+function ButtonStatesShowcase() {
+  return (
+    <Flex direction='column' gap='s32'>
+      <section>
+        <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
+          States
+        </Text>
+        <Card>
+          <Flex direction='row' gap='s8' wrap>
+            <ButtonState variant='positive'>Positive</ButtonState>
+            <ButtonState variant='negative'>Negative</ButtonState>
+            <ButtonState variant='semiNegative'>Semi Negative</ButtonState>
+            <ButtonState variant='semiPositive'>Semi Positive</ButtonState>
+            <ButtonState variant='neutral'>Neutral</ButtonState>
+            <ButtonState variant='highlight'>Highlight</ButtonState>
+          </Flex>
         </Card>
       </section>
     </Flex>
@@ -289,6 +312,11 @@ const showcases: Record<
     title: 'Buttons',
     description: 'Wraps Base UI Button with variant and size props, motion whileTap.',
     component: ButtonsShowcase,
+  },
+  'button-states': {
+    title: 'Button States',
+    description: 'Wraps Base UI ButtonState with color variants.',
+    component: ButtonStatesShowcase,
   },
   inputs: {
     title: 'Inputs',
