@@ -25,6 +25,12 @@ export type TextProps<T extends keyof React.JSX.IntrinsicElements = 'span'> = Po
   'size' | 'color'
 >;
 
+const styles = stylex.create({
+  base: {
+    display: 'block',
+  },
+});
+
 const sizes = stylex.create({
   hero: {
     fontSize: typography.heroSize,
@@ -110,6 +116,7 @@ export const Text = function Text({
     <Component
       ref={ref}
       {...stylex.props(
+        styles.base,
         sizes[size],
         weights[weight],
         textColors[color],
