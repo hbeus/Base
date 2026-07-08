@@ -77,6 +77,34 @@ function HomePage() {
         </Text>
         <nav {...stylex.props(styles.nav)}>
           <Pressable inset='s16' role='link'>
+            <Link to='/overview'>
+              <Flex
+                direction='row'
+                justify='between'
+                align='center'
+                gap='s16'
+                style={styles.navLink}
+              >
+                <Text>Overview</Text>
+                <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+              </Flex>
+            </Link>
+          </Pressable>
+          <Pressable inset='s16' role='link'>
+            <Link to='/mock'>
+              <Flex
+                direction='row'
+                justify='between'
+                align='center'
+                gap='s16'
+                style={styles.navLink}
+              >
+                <Text>Mock</Text>
+                <IconChevronRight size={16} stroke={1.5} color={colors.foregroundSecondary} />
+              </Flex>
+            </Link>
+          </Pressable>
+          <Pressable inset='s16' role='link'>
             <Link to='/showcase'>
               <Flex
                 direction='row'
