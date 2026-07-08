@@ -23,7 +23,7 @@ export const typography = stylex.defineVars({
 
   // title — 18px
   titleSize: '1.125rem',
-  titleLineHeight: '1.5',
+  titleLineHeight: '1.4',
   titleLetterSpacing: '-0.025rem',
 
   // body — 15px
@@ -38,11 +38,11 @@ export const typography = stylex.defineVars({
 
   // label — 12px
   labelSize: '0.75rem',
-  labelLineHeight: '1.35',
+  labelLineHeight: '1.4',
   labelLetterSpacing: '-0.009rem',
 
   // caption — 11px
   captionSize: '0.6875rem',
-  captionLineHeight: '1.35',
+  captionLineHeight: '1.4',
   captionLetterSpacing: '0',
 });

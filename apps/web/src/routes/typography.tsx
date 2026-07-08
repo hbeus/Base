@@ -18,11 +18,11 @@ const scales = [
   { name: 'Hero', size: 'hero', px: 32, ratio: 1.2 },
   { name: 'Display', size: 'display', px: 28, ratio: 1.2 },
   { name: 'Headline', size: 'headline', px: 22, ratio: 1.2 },
-  { name: 'Title', size: 'title', px: 18, ratio: 1.5 },
+  { name: 'Title', size: 'title', px: 18, ratio: 1.4 },
   { name: 'Body', size: 'body', px: 15, ratio: 1.4 },
   { name: 'Body Sm', size: 'bodySm', px: 13, ratio: 1.4 },
-  { name: 'Label', size: 'label', px: 12, ratio: 1.35 },
-  { name: 'Caption', size: 'caption', px: 11, ratio: 1.35 },
+  { name: 'Label', size: 'label', px: 12, ratio: 1.4 },
+  { name: 'Caption', size: 'caption', px: 11, ratio: 1.4 },
 ] as const;
 
 const styles = stylex.create({
@@ -126,7 +126,7 @@ function TypographyPage() {
           Typography
         </Text>
         <Text as='p' size='body' color='secondary'>
-          8 steps from 11px to 32px. Unitless line-heights: 1.2 headings, 1.4 body, 1.35 small text.
+          8 steps from 11px to 32px. Unitless line-heights: 1.2 headings, 1.4 body.
         </Text>
       </header>
 
@@ -295,7 +295,7 @@ function TypographyPage() {
           </Text>
           <Text as='p' size='bodySm' weight='regular' color='secondary'>
             Typography tokens were reorganised on 5 July 2026. The type scale now uses unitless
-            line-heights grouped by role: 1.2 for headings, 1.4 for body, 1.35 for small text.
+            line-heights grouped by role: 1.2 for headings, 1.4 for body.
           </Text>
           <Text size='label' weight='medium' color='secondary'>
             Last updated 3 minutes ago
