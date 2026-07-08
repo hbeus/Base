@@ -63,13 +63,13 @@ function ButtonsShowcase() {
         <Card>
           <Flex direction='column' gap='s40'>
             <Flex direction='row' gap='s8'>
+              <Button variant='accent'>Accent</Button>
               <Button variant='primary'>Primary</Button>
-              <Button variant='secondary'>Secondary</Button>
               <Button variant='ghost'>Ghost</Button>
             </Flex>
             <Flex direction='column' gap='s12'>
+              <Button variant='accent'>Accent</Button>
               <Button variant='primary'>Primary</Button>
-              <Button variant='secondary'>Secondary</Button>
               <Button variant='ghost'>Ghost</Button>
             </Flex>
           </Flex>
@@ -95,11 +95,11 @@ function ButtonsShowcase() {
         <Card>
           <Card>
             <Flex direction='row' gap='s8'>
+              <Button variant='accent' disabled>
+                Accent
+              </Button>
               <Button variant='primary' disabled>
                 Primary
-              </Button>
-              <Button variant='secondary' disabled>
-                Secondary
               </Button>
               <Button variant='ghost' disabled>
                 Ghost
@@ -170,7 +170,7 @@ function DialogShowcase() {
       </Text>
       <div {...stylex.props(styles.preview)}>
         <Dialog.Root open={open} onOpenChange={setOpen}>
-          <Dialog.Trigger render={<Button variant='secondary' />}>Open dialog</Dialog.Trigger>
+          <Dialog.Trigger render={<Button variant='primary' />}>Open dialog</Dialog.Trigger>
           <AnimatePresence>
             {open && (
               <Dialog.Portal>

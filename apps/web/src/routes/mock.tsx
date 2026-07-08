@@ -109,7 +109,7 @@ const styles = stylex.create({
     justifyContent: 'center',
     borderRadius: radii.r12,
     backgroundColor: colors.lighten6,
-    color: colors.accent,
+    color: colors.highlight,
   },
 
   statsBar: {
@@ -136,7 +136,7 @@ const styles = stylex.create({
   pricingHighlight: {
     borderWidth: '2px',
     borderStyle: 'solid',
-    borderColor: colors.accent,
+    borderColor: colors.highlight,
     borderRadius: radii.r24,
   },
   pricingBadge: {
@@ -147,8 +147,8 @@ const styles = stylex.create({
     paddingInline: spacing.s12,
     paddingBlock: spacing.s4,
     borderRadius: radii.full,
-    backgroundColor: colors.accent,
-    color: colors.accentForeground,
+    backgroundColor: colors.highlight,
+    color: colors.highlightForeground,
     whiteSpace: 'nowrap',
   },
   pricingCardWrapper: {
@@ -320,10 +320,10 @@ function HeroSection() {
         A modern toolkit for teams who care about craft. Ship faster without compromising on quality.
       </Text>
       <Flex direction='row' gap='s12' align='center'>
-        <Button size='lg' rounded>
+        <Button variant='accent' size='lg' rounded>
           Get started free
         </Button>
-        <Button variant='secondary' size='lg' rounded>
+        <Button variant='primary' size='lg' rounded>
           View demo
         </Button>
       </Flex>
@@ -434,7 +434,7 @@ function PricingSection() {
       description: 'For individuals and side projects',
       features: ['Up to 3 projects', '1 GB storage', 'Community support', 'Basic analytics'],
       cta: 'Start free',
-      variant: 'secondary' as const,
+      variant: 'primary' as const,
       highlight: false,
     },
     {
@@ -451,7 +451,7 @@ function PricingSection() {
         'Team collaboration',
       ],
       cta: 'Start trial',
-      variant: 'primary' as const,
+      variant: 'accent' as const,
       highlight: true,
     },
     {
@@ -468,7 +468,7 @@ function PricingSection() {
         'Audit logs',
       ],
       cta: 'Contact sales',
-      variant: 'secondary' as const,
+      variant: 'primary' as const,
       highlight: false,
     },
   ];
@@ -546,7 +546,7 @@ function DashboardPreview() {
       <Card variant='outline' padding='none'>
         <Card padding='md' direction='row' gap='s16' style={styles.dashboardBar}>
           <Flex direction='row' gap='s8' align='center'>
-            <IconRocket size={18} color={colors.accent} />
+            <IconRocket size={18} color={colors.highlight} />
             <Text size='body' weight='semibold'>
               Acme Dashboard
             </Text>
@@ -715,7 +715,7 @@ function SettingsSection() {
               <Button variant='ghost' size='sm'>
                 Cancel
               </Button>
-              <Button size='sm'>Save changes</Button>
+              <Button variant='accent' size='sm'>Save changes</Button>
             </Flex>
           </div>
         </Card>
@@ -932,7 +932,7 @@ function ContactDialog() {
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger render={<Button variant='secondary' size='lg' rounded />}>
+      <Dialog.Trigger render={<Button variant='primary' size='lg' rounded />}>
         <Flex direction='row' gap='s8' align='center'>
           <IconSend size={16} />
           <span>Contact us</span>
@@ -971,7 +971,7 @@ function ContactDialog() {
               </div>
               <Dialog.Footer>
                 <Dialog.Close render={<Button variant='ghost' size='sm' />}>Cancel</Dialog.Close>
-                <Dialog.Close render={<Button size='sm' />}>
+                <Dialog.Close render={<Button variant='accent' size='sm' />}>
                   <Flex direction='row' gap='s8' align='center'>
                     <IconSend size={14} />
                     <span>Send</span>
@@ -990,7 +990,7 @@ function CTASection() {
   return (
     <div {...stylex.props(styles.ctaSection)}>
       <div {...stylex.props(styles.ctaInner)}>
-        <IconPalette size={32} color={colors.accent} />
+        <IconPalette size={32} color={colors.highlight} />
         <Text as='h2' size='display' weight='semibold'>
           Ready to get started?
         </Text>
@@ -998,7 +998,7 @@ function CTASection() {
           Join thousands of teams already building with us. Free to start, no credit card required.
         </Text>
         <Flex direction='row' gap='s12' align='center'>
-          <Button size='lg' rounded>
+          <Button variant='accent' size='lg' rounded>
             Create free account
           </Button>
           <ContactDialog />

@@ -12,7 +12,7 @@ import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'inherit';
+type ButtonVariant = 'accent' | 'primary' | 'ghost' | 'inherit';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ButtonProps
@@ -45,18 +45,18 @@ const styles = stylex.create({
       pointerEvents: 'none',
     },
   },
+  accent: {
+    backgroundColor: colors.buttonAccentBg,
+    color: colors.buttonAccentFg,
+    ':hover': {
+      backgroundColor: colors.buttonAccentHover,
+    },
+  },
   primary: {
     backgroundColor: colors.buttonPrimaryBg,
     color: colors.buttonPrimaryFg,
     ':hover': {
       backgroundColor: colors.buttonPrimaryHover,
-    },
-  },
-  secondary: {
-    backgroundColor: colors.buttonSecondaryBg,
-    color: colors.buttonSecondaryFg,
-    ':hover': {
-      backgroundColor: colors.buttonSecondaryHover,
     },
   },
   ghost: {

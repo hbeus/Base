@@ -137,7 +137,7 @@ const styles = stylex.create({
   },
   spacingBar: {
     height: spacing.s16,
-    backgroundColor: colors.accent,
+    backgroundColor: colors.highlight,
     borderRadius: radii.r4,
   },
   elementSizeBar: {
@@ -159,8 +159,8 @@ const swatchColors = stylex.create({
   foregroundSecondaryInverse: { backgroundColor: colors.foregroundSecondaryInverse },
   foregroundDisabled: { backgroundColor: colors.foregroundDisabled },
   border: { backgroundColor: colors.border },
-  accent: { backgroundColor: colors.accent },
-  accentForeground: { backgroundColor: colors.accentForeground },
+  highlight: { backgroundColor: colors.highlight },
+  highlightForeground: { backgroundColor: colors.highlightForeground },
   statePositive: { backgroundColor: colors.statePositive },
   stateNegative: { backgroundColor: colors.stateNegative },
   surfaceRaised: { backgroundColor: colors.surfaceRaised },
@@ -182,12 +182,12 @@ const swatchColors = stylex.create({
   hover8: { backgroundColor: colors.hover8 },
   hover12: { backgroundColor: colors.hover12 },
   hover16: { backgroundColor: colors.hover16 },
+  buttonAccentBg: { backgroundColor: colors.buttonAccentBg },
+  buttonAccentFg: { backgroundColor: colors.buttonAccentFg },
+  buttonAccentHover: { backgroundColor: colors.buttonAccentHover },
   buttonPrimaryBg: { backgroundColor: colors.buttonPrimaryBg },
   buttonPrimaryFg: { backgroundColor: colors.buttonPrimaryFg },
   buttonPrimaryHover: { backgroundColor: colors.buttonPrimaryHover },
-  buttonSecondaryBg: { backgroundColor: colors.buttonSecondaryBg },
-  buttonSecondaryFg: { backgroundColor: colors.buttonSecondaryFg },
-  buttonSecondaryHover: { backgroundColor: colors.buttonSecondaryHover },
 });
 
 const spacingBarWidths = stylex.create({
@@ -272,8 +272,8 @@ function ColorTokensSection() {
           <Swatch name='background' colorStyle={swatchColors.background} />
           <Swatch name='surfaceRaised' colorStyle={swatchColors.surfaceRaised} />
           <Swatch name='border' colorStyle={swatchColors.border} />
-          <Swatch name='accent' colorStyle={swatchColors.accent} />
-          <Swatch name='accentFg' colorStyle={swatchColors.accentForeground} />
+          <Swatch name='highlight' colorStyle={swatchColors.highlight} />
+          <Swatch name='highlightFg' colorStyle={swatchColors.highlightForeground} />
           <Swatch name='focusOutline' colorStyle={swatchColors.focusOutline} />
         </div>
       </div>
@@ -349,12 +349,12 @@ function ColorTokensSection() {
           Button
         </Text>
         <div {...stylex.props(styles.swatchGrid)}>
+          <Swatch name='accentBg' colorStyle={swatchColors.buttonAccentBg} />
+          <Swatch name='accentFg' colorStyle={swatchColors.buttonAccentFg} />
+          <Swatch name='accentHover' colorStyle={swatchColors.buttonAccentHover} />
           <Swatch name='primaryBg' colorStyle={swatchColors.buttonPrimaryBg} />
           <Swatch name='primaryFg' colorStyle={swatchColors.buttonPrimaryFg} />
           <Swatch name='primaryHover' colorStyle={swatchColors.buttonPrimaryHover} />
-          <Swatch name='secondaryBg' colorStyle={swatchColors.buttonSecondaryBg} />
-          <Swatch name='secondaryFg' colorStyle={swatchColors.buttonSecondaryFg} />
-          <Swatch name='secondaryHover' colorStyle={swatchColors.buttonSecondaryHover} />
         </div>
       </div>
     </section>
@@ -373,10 +373,9 @@ function ButtonSection() {
           Variants
         </Text>
         <div {...stylex.props(styles.preview)}>
-          <Button variant='primary'>Primary</Button>
-          <Button variant='secondary'>Secondary</Button>
+          <Button variant='accent'>Accent</Button>
+          <Button>Primary</Button>
           <Button variant='ghost'>Ghost</Button>
-          <Button variant='destructive'>Destructive</Button>
         </div>
       </div>
 
@@ -397,15 +396,10 @@ function ButtonSection() {
           Rounded
         </Text>
         <div {...stylex.props(styles.preview)}>
+          <Button variant='accent' rounded>Accent</Button>
           <Button rounded>Primary</Button>
-          <Button variant='secondary' rounded>
-            Secondary
-          </Button>
           <Button variant='ghost' rounded>
             Ghost
-          </Button>
-          <Button variant='destructive' rounded>
-            Destructive
           </Button>
         </div>
       </div>
@@ -415,10 +409,8 @@ function ButtonSection() {
           Fill
         </Text>
         <div {...stylex.props(styles.preview)}>
+          <Button variant='accent' fill>Accent Fill</Button>
           <Button fill>Primary Fill</Button>
-          <Button variant='secondary' fill>
-            Secondary Fill
-          </Button>
         </div>
       </div>
 
@@ -427,15 +419,10 @@ function ButtonSection() {
           Disabled
         </Text>
         <div {...stylex.props(styles.preview)}>
+          <Button variant='accent' disabled>Accent</Button>
           <Button disabled>Primary</Button>
-          <Button variant='secondary' disabled>
-            Secondary
-          </Button>
           <Button variant='ghost' disabled>
             Ghost
-          </Button>
-          <Button variant='destructive' disabled>
-            Destructive
           </Button>
         </div>
       </div>
@@ -725,7 +712,7 @@ function DialogSection() {
 
       <div {...stylex.props(styles.preview)}>
         <Dialog.Root open={open} onOpenChange={setOpen}>
-          <Dialog.Trigger render={<Button variant='secondary' />}>Open dialog</Dialog.Trigger>
+          <Dialog.Trigger render={<Button variant='primary' />}>Open dialog</Dialog.Trigger>
           <AnimatePresence>
             {open && (
               <Dialog.Portal>
