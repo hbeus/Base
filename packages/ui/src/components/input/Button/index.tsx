@@ -28,6 +28,7 @@ export interface ButtonProps
 const styles = stylex.create({
   base: {
     display: 'inline-flex',
+    width: 'fit-content',
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.s8,
@@ -39,9 +40,7 @@ const styles = stylex.create({
     whiteSpace: 'nowrap',
     borderWidth: 0,
     ':disabled': {
-      color: colors.foregroundDisabled,
       opacity: 0.5,
-      cursor: 'not-allowed',
       pointerEvents: 'none',
     },
   },

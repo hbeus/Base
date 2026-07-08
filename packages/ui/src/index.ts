@@ -1,7 +1,7 @@
 export { Button, type ButtonProps } from './components/input/Button';
+export { ButtonState, type ButtonStateProps } from './components/input/ButtonState';
 export { Input, type InputProps } from './components/input/Input';
 export { Pressable, type PressableProps } from './components/input/Pressable';
-export { ButtonState, type ButtonStateProps } from './components/input/StateButton';
 export { Toggle, type ToggleProps } from './components/input/Toggle';
 export { Accordion, type AccordionItemProps } from './components/layout/Accordion';
 export { Card, type CardProps } from './components/layout/Card';

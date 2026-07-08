@@ -29,14 +29,17 @@ export interface ButtonStateProps
   size?: ButtonSize;
   rounded?: boolean;
   fill?: boolean;
+  leadingSlot?: React.ReactNode;
+  trailingSlot?: React.ReactNode;
 }
 
 const styles = stylex.create({
   base: {
     display: 'inline-flex',
+    width: 'fit-content',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.s8,
+    gap: spacing.s2,
     fontWeight: 500,
     cursor: 'pointer',
     transition: 'background-color 0.15s, color 0.15s',
@@ -130,37 +133,37 @@ const styles = stylex.create({
     height: elementSize.xs,
     paddingInline: spacing.s8,
     fontSize: typography.labelSize,
-    borderRadius: radii.r8,
     '::before': {
       borderRadius: radii.r8,
     },
   },
   sm: {
     height: elementSize.sm,
-    paddingInline: spacing.s12,
+    paddingInline: spacing.s10,
     fontSize: typography.labelSize,
-    borderRadius: radii.r8,
-    '::before': {
-      borderRadius: radii.r8,
-    },
-  },
-  md: {
-    height: elementSize.md,
-    paddingInline: spacing.s16,
-    fontSize: typography.bodySmSize,
-    borderRadius: radii.r10,
     '::before': {
       borderRadius: radii.r10,
     },
   },
-  lg: {
-    height: elementSize.lg,
-    paddingInline: spacing.s24,
-    fontSize: typography.bodySize,
-    borderRadius: radii.r12,
+  md: {
+    height: elementSize.md,
+    paddingInline: spacing.s10,
+    fontSize: typography.bodySmSize,
     '::before': {
       borderRadius: radii.r12,
     },
+  },
+  lg: {
+    height: elementSize.lg,
+    paddingInline: spacing.s14,
+    fontSize: typography.bodySize,
+    '::before': {
+      borderRadius: radii.r14,
+    },
+  },
+  children: {
+    display: 'block',
+    paddingInline: spacing.s4,
   },
 });
 
@@ -188,6 +191,9 @@ export function ButtonState({
   fill = false,
   style,
   ref,
+  children,
+  leadingSlot,
+  trailingSlot,
   ...props
 }: ButtonStateProps) {
   return (
@@ -203,6 +209,10 @@ export function ButtonState({
         ...styleArray(style),
       )}
       {...props}
-    />
+    >
+      {leadingSlot && leadingSlot}
+      <span {...stylex.props(styles.children)}>{children}</span>
+      {trailingSlot && trailingSlot}
+    </MotionBaseButton>
   );
 }
