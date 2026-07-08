@@ -34,20 +34,28 @@ type ThemeMode = {
   };
   state: {
     positive: string;
+    semiNegative: string;
     negative: string;
+    semiPositive: string;
+    neutral: string;
+    highlight: string;
   };
   accent: {
     base: string;
     foreground: string;
   };
+  shadow: {
+    drop: string;
+    inner: string;
+  };
   border: string;
   button: {
+    accentBg: string;
+    accentFg: string;
+    accentHover: string;
     primaryBg: string;
     primaryFg: string;
     primaryHover: string;
-    secondaryBg: string;
-    secondaryFg: string;
-    secondaryHover: string;
   };
 };
 
@@ -62,28 +70,36 @@ export const THEME = {
   default: {
     dark: {
       foreground: {
-        primary: WHITE,
-        primaryHover: '0.9 0 0',
+        primary: '1 0 0',
+        primaryHover: '1 0 0',
         primaryInverse: '0.12 0 0',
-        secondary: WHITE,
-        secondaryHover: WHITE,
+        secondary: '1 0 0',
+        secondaryHover: '1 0 0',
         secondaryInverse: '0.12 0 0',
-        disabled: WHITE,
+        disabled: '1 0 0',
       },
       background: {
         base: '0.12 0 0',
-        lighten: WHITE,
-        darken: BLACK,
-        hover: WHITE,
-        surface: '0.16 0 0',
+        lighten: '1 0 0',
+        darken: '0 0 0',
+        hover: '1 0 0',
+        surface: '0 0',
       },
       state: {
-        positive: '0.879 0.227 133.1',
-        negative: '0.635 0.239 19.3',
+        positive: '0.8 0.2 135',
+        negative: '0.8 0.28 25',
+        semiNegative: '0.8 0.2 50',
+        semiPositive: '0.8 0.2 115',
+        neutral: '0.8 0.2 90',
+        highlight: '0.8 0.15 250',
       },
       accent: {
         base: '0.7 0.15 250',
         foreground: WHITE,
+      },
+      shadow: {
+        drop: BLACK,
+        inner: `${WHITE} / 0.02`,
       },
       border: `${WHITE} / 0.08`,
       button: {
@@ -106,19 +122,27 @@ export const THEME = {
         disabled: '0.12 0 0',
       },
       background: {
-        base: '0.98 0 0',
-        lighten: BLACK,
+        base: '0.96 0 0',
+        lighten: '1 0 0',
         darken: WHITE,
         hover: BLACK,
         surface: WHITE,
       },
       state: {
-        positive: '0.879 0.227 133.1',
-        negative: '0.635 0.239 19.3',
+        positive: '0.65 0.5 125',
+        negative: '0.635 0.2 40',
+        semiNegative: '0.675 0.24 70',
+        semiPositive: '0.68 1 118',
+        neutral: '0.725 0.7 110',
+        highlight: '0.7 0.15 240',
       },
       accent: {
         base: '0.5 0.2 250',
         foreground: WHITE,
+      },
+      shadow: {
+        drop: BLACK,
+        inner: `${WHITE} / 0.5`,
       },
       border: `${BLACK} / 0.08`,
       button: {
@@ -135,37 +159,41 @@ export const THEME = {
   blueberry: {
     dark: {
       foreground: {
-        primary: BLUEBERRY_FG,
-        primaryHover: '0.705 0.02 275',
-        primaryInverse: BLUEBERRY_FG_ON_LIGHT,
-        secondary: BLUEBERRY_FG,
+        primary: '1 0.05 275',
+        primaryHover: '1 0.05 275',
+        primaryInverse: '0.12 0.01 275',
+        secondary: '1 0.025 275',
         secondaryHover: BLUEBERRY_FG,
         secondaryInverse: BLUEBERRY_FG_ON_LIGHT,
-        disabled: BLUEBERRY_FG,
+        disabled: '1 0.05 275',
       },
       background: {
-        base: '0.12 0.01 275',
-        lighten: WHITE,
-        darken: BLACK,
-        hover: WHITE,
+        base: '0.12 0.02 280',
+        lighten: '1 0.02 275',
+        darken: '0.05 0.02 275',
+        hover: '1 0.05 275',
         surface: '0.2103 0.02 275',
       },
       state: {
-        positive: '0.8548 0.1967 150.16',
-        negative: '0.6318 0.2075 24.57',
+        positive: '0.85 0.2 150.16',
+        negative: '0.6 0.2 20',
       },
       accent: {
         base: BLUEBERRY_ACCENT,
         foreground: WHITE,
       },
+      shadow: {
+        drop: BLACK,
+        inner: `${WHITE} / 0.02`,
+      },
       border: '0.28 0.01 275',
       button: {
-        primaryBg: BLUEBERRY_ACCENT,
+        primaryBg: '0.55 0.2 275',
         primaryFg: '0.9911 0 0',
         primaryHover: '0.64 0.18 275',
-        secondaryBg: '0.274 0.01 275',
-        secondaryFg: '0.9911 0 0',
-        secondaryHover: '0.38 0.009 275',
+        secondaryBg: '0.5 0.075 280',
+        secondaryFg: '1 0.025 275',
+        secondaryHover: '0.5 0.075 280',
       },
     },
     light: {
@@ -192,6 +220,10 @@ export const THEME = {
       accent: {
         base: BLUEBERRY_ACCENT,
         foreground: '0.9911 0 0',
+      },
+      shadow: {
+        drop: BLACK,
+        inner: `${WHITE} / 0.5`,
       },
       border: '0.90 0.01 275',
       button: {
@@ -231,6 +263,10 @@ export const THEME = {
         base: '0.72 0.15 65',
         foreground: WHITE,
       },
+      shadow: {
+        drop: BLACK,
+        inner: `${WHITE} / 0.02`,
+      },
       border: `${WARM_FG} / 0.08`,
       button: {
         primaryBg: '0.72 0.15 65',
@@ -266,6 +302,10 @@ export const THEME = {
         base: '0.6 0.18 55',
         foreground: WHITE,
       },
+      shadow: {
+        drop: BLACK,
+        inner: `${WHITE} / 0.5`,
+      },
       border: `${WARM_FG_ON_LIGHT} / 0.08`,
       button: {
         primaryBg: '0.6 0.18 55',
@@ -296,6 +336,28 @@ const defaultDarkMode = THEME.default.dark;
 
 export const colors = stylex.defineVars({
   background: `oklch(${defaultDarkMode.background.base})`,
+  surfaceRaised: `oklch(50 ${defaultDarkMode.background.surface})`,
+
+  lighten4: `oklch(${defaultDarkMode.background.lighten} / 0.04)`,
+  lighten6: `oklch(${defaultDarkMode.background.lighten} / 0.06)`,
+  lighten8: `oklch(${defaultDarkMode.background.lighten} / 0.08)`,
+  lighten12: `oklch(${defaultDarkMode.background.lighten} / 0.12)`,
+  lighten16: `oklch(${defaultDarkMode.background.lighten} / 0.16)`,
+  lighten50: `oklch(${defaultDarkMode.background.lighten} / 0.5)`,
+
+  darken4: `oklch(${defaultDarkMode.background.darken} / 0.04)`,
+  darken6: `oklch(${defaultDarkMode.background.darken} / 0.06)`,
+  darken8: `oklch(${defaultDarkMode.background.darken} / 0.08)`,
+  darken12: `oklch(${defaultDarkMode.background.darken} / 0.12)`,
+  darken16: `oklch(${defaultDarkMode.background.darken} / 0.16)`,
+  darken50: `oklch(${defaultDarkMode.background.darken} / 0.5)`,
+
+  hover4: `oklch(${defaultDarkMode.background.hover} / 0.04)`,
+  hover6: `oklch(${defaultDarkMode.background.hover} / 0.06)`,
+  hover8: `oklch(${defaultDarkMode.background.hover} / 0.08)`,
+  hover12: `oklch(${defaultDarkMode.background.hover} / 0.12)`,
+  hover16: `oklch(${defaultDarkMode.background.hover} / 0.16)`,
+
   foregroundPrimary: `oklch(${defaultDarkMode.foreground.primary})`,
   foregroundPrimaryHover: `oklch(${defaultDarkMode.foreground.primaryHover})`,
   foregroundPrimaryInverse: `oklch(${defaultDarkMode.foreground.primaryInverse})`,
@@ -303,36 +365,29 @@ export const colors = stylex.defineVars({
   foregroundSecondaryHover: `oklch(${defaultDarkMode.foreground.secondaryHover} / 0.7)`,
   foregroundSecondaryInverse: `oklch(${defaultDarkMode.foreground.secondaryInverse} / 0.6)`,
   foregroundDisabled: `oklch(${defaultDarkMode.foreground.disabled} / 0.3)`,
+
   border: `oklch(${defaultDarkMode.border})`,
+  focusOutline: `oklch(${defaultDarkMode.accent.base})`,
+
   accent: `oklch(${defaultDarkMode.accent.base})`,
   accentForeground: `oklch(${defaultDarkMode.accent.foreground})`,
+
   statePositive: `oklch(${defaultDarkMode.state.positive})`,
   stateNegative: `oklch(${defaultDarkMode.state.negative})`,
-  surfaceRaised: `oklch(${defaultDarkMode.background.surface})`,
-  lighten4: `oklch(${defaultDarkMode.background.lighten} / 0.04)`,
-  lighten6: `oklch(${defaultDarkMode.background.lighten} / 0.06)`,
-  lighten8: `oklch(${defaultDarkMode.background.lighten} / 0.08)`,
-  lighten12: `oklch(${defaultDarkMode.background.lighten} / 0.12)`,
-  lighten16: `oklch(${defaultDarkMode.background.lighten} / 0.16)`,
-  lighten50: `oklch(${defaultDarkMode.background.lighten} / 0.5)`,
-  darken4: `oklch(${defaultDarkMode.background.darken} / 0.04)`,
-  darken6: `oklch(${defaultDarkMode.background.darken} / 0.06)`,
-  darken8: `oklch(${defaultDarkMode.background.darken} / 0.08)`,
-  darken12: `oklch(${defaultDarkMode.background.darken} / 0.12)`,
-  darken16: `oklch(${defaultDarkMode.background.darken} / 0.16)`,
-  darken50: `oklch(${defaultDarkMode.background.darken} / 0.5)`,
-  hover4: `oklch(${defaultDarkMode.background.hover} / 0.04)`,
-  hover6: `oklch(${defaultDarkMode.background.hover} / 0.06)`,
-  hover8: `oklch(${defaultDarkMode.background.hover} / 0.08)`,
-  hover12: `oklch(${defaultDarkMode.background.hover} / 0.12)`,
-  hover16: `oklch(${defaultDarkMode.background.hover} / 0.16)`,
-  focusOutline: `oklch(${defaultDarkMode.accent.base})`,
+  stateSemiNegative: `oklch(${defaultDarkMode.state.semiNegative})`,
+  stateSemiPositive: `oklch(${defaultDarkMode.state.semiPositive})`,
+  stateNeutral: `oklch(${defaultDarkMode.state.neutral})`,
+  stateHighlight: `oklch(${defaultDarkMode.state.highlight})`,
+
   buttonPrimaryBg: `oklch(${defaultDarkMode.button.primaryBg})`,
   buttonPrimaryFg: `oklch(${defaultDarkMode.button.primaryFg})`,
   buttonPrimaryHover: `oklch(${defaultDarkMode.button.primaryHover})`,
   buttonSecondaryBg: `oklch(${defaultDarkMode.button.secondaryBg})`,
   buttonSecondaryFg: `oklch(${defaultDarkMode.button.secondaryFg})`,
   buttonSecondaryHover: `oklch(${defaultDarkMode.button.secondaryHover})`,
+
+  shadowElevated: `0 0 0 1px oklch(${defaultDarkMode.shadow.drop} / 0.04), 0 2px 8px oklch(${defaultDarkMode.shadow.drop} / 0.01), 0 2px 6px -4px oklch(${defaultDarkMode.shadow.drop} / 0.08), 0 4px 10px oklch(${defaultDarkMode.shadow.drop} / 0.02), 0 4px 24px oklch(${defaultDarkMode.shadow.drop} / 0.02)`,
+  shadowElevatedInner: `inset 0 0 0 1px oklch(${defaultDarkMode.shadow.inner})`,
 });
 
 // ——— default light ———
@@ -341,6 +396,28 @@ const defaultLightMode = THEME.default.light;
 
 export const defaultLight = stylex.createTheme(colors, {
   background: `oklch(${defaultLightMode.background.base})`,
+  surfaceRaised: `oklch(${defaultLightMode.background.surface})`,
+
+  lighten4: `oklch(${defaultLightMode.background.lighten} / 0.5)`,
+  lighten6: `oklch(${defaultLightMode.background.lighten} / 0.75)`,
+  lighten8: `oklch(${defaultLightMode.background.lighten} / 0.9)`,
+  lighten12: `oklch(${defaultLightMode.background.lighten} / 0.95)`,
+  lighten16: `oklch(${defaultLightMode.background.lighten} / 0.98)`,
+  lighten50: `oklch(${defaultLightMode.background.lighten} / 0.99)`,
+
+  darken4: `oklch(${defaultLightMode.background.darken} / 0.04)`,
+  darken6: `oklch(${defaultLightMode.background.darken} / 0.06)`,
+  darken8: `oklch(${defaultLightMode.background.darken} / 0.08)`,
+  darken12: `oklch(${defaultLightMode.background.darken} / 0.12)`,
+  darken16: `oklch(${defaultLightMode.background.darken} / 0.16)`,
+  darken50: `oklch(${defaultLightMode.background.darken} / 0.5)`,
+
+  hover4: `oklch(${defaultLightMode.background.hover} / 0.04)`,
+  hover6: `oklch(${defaultLightMode.background.hover} / 0.06)`,
+  hover8: `oklch(${defaultLightMode.background.hover} / 0.08)`,
+  hover12: `oklch(${defaultLightMode.background.hover} / 0.12)`,
+  hover16: `oklch(${defaultLightMode.background.hover} / 0.16)`,
+
   foregroundPrimary: `oklch(${defaultLightMode.foreground.primary})`,
   foregroundPrimaryHover: `oklch(${defaultLightMode.foreground.primaryHover})`,
   foregroundPrimaryInverse: `oklch(${defaultLightMode.foreground.primaryInverse})`,
@@ -348,36 +425,29 @@ export const defaultLight = stylex.createTheme(colors, {
   foregroundSecondaryHover: `oklch(${defaultLightMode.foreground.secondaryHover} / 0.7)`,
   foregroundSecondaryInverse: `oklch(${defaultLightMode.foreground.secondaryInverse} / 0.6)`,
   foregroundDisabled: `oklch(${defaultLightMode.foreground.disabled} / 0.3)`,
+
   border: `oklch(${defaultLightMode.border})`,
+  focusOutline: `oklch(${defaultLightMode.accent.base})`,
+
   accent: `oklch(${defaultLightMode.accent.base})`,
   accentForeground: `oklch(${defaultLightMode.accent.foreground})`,
+
   statePositive: `oklch(${defaultLightMode.state.positive})`,
   stateNegative: `oklch(${defaultLightMode.state.negative})`,
-  surfaceRaised: `oklch(${defaultLightMode.background.surface})`,
-  lighten4: `oklch(${defaultLightMode.background.lighten} / 0.04)`,
-  lighten6: `oklch(${defaultLightMode.background.lighten} / 0.06)`,
-  lighten8: `oklch(${defaultLightMode.background.lighten} / 0.08)`,
-  lighten12: `oklch(${defaultLightMode.background.lighten} / 0.12)`,
-  lighten16: `oklch(${defaultLightMode.background.lighten} / 0.16)`,
-  lighten50: `oklch(${defaultLightMode.background.lighten} / 0.5)`,
-  darken4: `oklch(${defaultLightMode.background.darken} / 0.04)`,
-  darken6: `oklch(${defaultLightMode.background.darken} / 0.06)`,
-  darken8: `oklch(${defaultLightMode.background.darken} / 0.08)`,
-  darken12: `oklch(${defaultLightMode.background.darken} / 0.12)`,
-  darken16: `oklch(${defaultLightMode.background.darken} / 0.16)`,
-  darken50: `oklch(${defaultLightMode.background.darken} / 0.5)`,
-  hover4: `oklch(${defaultLightMode.background.hover} / 0.04)`,
-  hover6: `oklch(${defaultLightMode.background.hover} / 0.06)`,
-  hover8: `oklch(${defaultLightMode.background.hover} / 0.08)`,
-  hover12: `oklch(${defaultLightMode.background.hover} / 0.12)`,
-  hover16: `oklch(${defaultLightMode.background.hover} / 0.16)`,
-  focusOutline: `oklch(${defaultLightMode.accent.base})`,
+  stateSemiNegative: `oklch(${defaultLightMode.state.semiNegative})`,
+  stateSemiPositive: `oklch(${defaultLightMode.state.semiPositive})`,
+  stateNeutral: `oklch(${defaultLightMode.state.neutral})`,
+  stateHighlight: `oklch(${defaultLightMode.state.highlight})`,
+
   buttonPrimaryBg: `oklch(${defaultLightMode.button.primaryBg})`,
   buttonPrimaryFg: `oklch(${defaultLightMode.button.primaryFg})`,
   buttonPrimaryHover: `oklch(${defaultLightMode.button.primaryHover})`,
   buttonSecondaryBg: `oklch(${defaultLightMode.button.secondaryBg})`,
   buttonSecondaryFg: `oklch(${defaultLightMode.button.secondaryFg})`,
   buttonSecondaryHover: `oklch(${defaultLightMode.button.secondaryHover})`,
+
+  shadowElevated: `0 0 0 1px oklch(${defaultLightMode.shadow.drop} / 0.04), 0 2px 8px oklch(${defaultLightMode.shadow.drop} / 0.01), 0 2px 6px -4px oklch(${defaultLightMode.shadow.drop} / 0.08), 0 4px 10px oklch(${defaultLightMode.shadow.drop} / 0.02), 0 4px 24px oklch(${defaultLightMode.shadow.drop} / 0.02)`,
+  shadowElevatedInner: `inset 0 0 0 1px oklch(${defaultLightMode.shadow.inner})`,
 });
 
 // ——— blueberry dark ———
@@ -385,7 +455,6 @@ export const defaultLight = stylex.createTheme(colors, {
 const blueberryDarkMode = THEME.blueberry.dark;
 
 export const blueberryDark = stylex.createTheme(colors, {
-  background: `oklch(${blueberryDarkMode.background.base})`,
   foregroundPrimary: `oklch(${blueberryDarkMode.foreground.primary})`,
   foregroundPrimaryHover: `oklch(${blueberryDarkMode.foreground.primaryHover})`,
   foregroundPrimaryInverse: `oklch(${blueberryDarkMode.foreground.primaryInverse})`,
@@ -393,36 +462,47 @@ export const blueberryDark = stylex.createTheme(colors, {
   foregroundSecondaryHover: `oklch(${blueberryDarkMode.foreground.secondaryHover} / 0.7)`,
   foregroundSecondaryInverse: `oklch(${blueberryDarkMode.foreground.secondaryInverse} / 0.6)`,
   foregroundDisabled: `oklch(${blueberryDarkMode.foreground.disabled} / 0.3)`,
-  border: `oklch(${blueberryDarkMode.border})`,
+
+  background: `oklch(${blueberryDarkMode.background.base})`,
   accent: `oklch(${blueberryDarkMode.accent.base})`,
   accentForeground: `oklch(${blueberryDarkMode.accent.foreground})`,
+
   statePositive: `oklch(${blueberryDarkMode.state.positive})`,
   stateNegative: `oklch(${blueberryDarkMode.state.negative})`,
   surfaceRaised: `oklch(${blueberryDarkMode.background.surface})`,
+
   lighten4: `oklch(${blueberryDarkMode.background.lighten} / 0.04)`,
   lighten6: `oklch(${blueberryDarkMode.background.lighten} / 0.06)`,
   lighten8: `oklch(${blueberryDarkMode.background.lighten} / 0.08)`,
   lighten12: `oklch(${blueberryDarkMode.background.lighten} / 0.12)`,
   lighten16: `oklch(${blueberryDarkMode.background.lighten} / 0.16)`,
   lighten50: `oklch(${blueberryDarkMode.background.lighten} / 0.5)`,
+
   darken4: `oklch(${blueberryDarkMode.background.darken} / 0.04)`,
   darken6: `oklch(${blueberryDarkMode.background.darken} / 0.06)`,
   darken8: `oklch(${blueberryDarkMode.background.darken} / 0.08)`,
   darken12: `oklch(${blueberryDarkMode.background.darken} / 0.12)`,
   darken16: `oklch(${blueberryDarkMode.background.darken} / 0.16)`,
   darken50: `oklch(${blueberryDarkMode.background.darken} / 0.5)`,
+
   hover4: `oklch(${blueberryDarkMode.background.hover} / 0.04)`,
   hover6: `oklch(${blueberryDarkMode.background.hover} / 0.06)`,
   hover8: `oklch(${blueberryDarkMode.background.hover} / 0.08)`,
   hover12: `oklch(${blueberryDarkMode.background.hover} / 0.12)`,
   hover16: `oklch(${blueberryDarkMode.background.hover} / 0.16)`,
+
+  border: `oklch(${blueberryDarkMode.border})`,
   focusOutline: `oklch(${blueberryDarkMode.accent.base})`,
+
   buttonPrimaryBg: `oklch(${blueberryDarkMode.button.primaryBg})`,
   buttonPrimaryFg: `oklch(${blueberryDarkMode.button.primaryFg})`,
   buttonPrimaryHover: `oklch(${blueberryDarkMode.button.primaryHover})`,
-  buttonSecondaryBg: `oklch(${blueberryDarkMode.button.secondaryBg})`,
+  buttonSecondaryBg: `oklch(${blueberryDarkMode.button.secondaryBg} / 0.25)`,
   buttonSecondaryFg: `oklch(${blueberryDarkMode.button.secondaryFg})`,
-  buttonSecondaryHover: `oklch(${blueberryDarkMode.button.secondaryHover})`,
+  buttonSecondaryHover: `oklch(${blueberryDarkMode.button.secondaryHover} / 0.3)`,
+
+  shadowElevated: `0 0 0 1px oklch(${blueberryDarkMode.shadow.drop} / 0.04), 0 2px 8px oklch(${blueberryDarkMode.shadow.drop} / 0.01), 0 2px 6px -4px oklch(${blueberryDarkMode.shadow.drop} / 0.08), 0 4px 10px oklch(${blueberryDarkMode.shadow.drop} / 0.02), 0 4px 24px oklch(${blueberryDarkMode.shadow.drop} / 0.02)`,
+  shadowElevatedInner: `inset 0 0 0 1px oklch(${blueberryDarkMode.shadow.inner})`,
 });
 
 // ——— blueberry light ———
@@ -468,6 +548,9 @@ export const blueberryLight = stylex.createTheme(colors, {
   buttonSecondaryBg: `oklch(${blueberryLightMode.button.secondaryBg})`,
   buttonSecondaryFg: `oklch(${blueberryLightMode.button.secondaryFg})`,
   buttonSecondaryHover: `oklch(${blueberryLightMode.button.secondaryHover})`,
+
+  shadowElevated: `0 0 0 1px oklch(${blueberryLightMode.shadow.drop} / 0.04), 0 2px 8px oklch(${blueberryLightMode.shadow.drop} / 0.01), 0 2px 6px -4px oklch(${blueberryLightMode.shadow.drop} / 0.08), 0 4px 10px oklch(${blueberryLightMode.shadow.drop} / 0.02), 0 4px 24px oklch(${blueberryLightMode.shadow.drop} / 0.02)`,
+  shadowElevatedInner: `inset 0 0 0 1px oklch(${blueberryLightMode.shadow.inner})`,
 });
 
 // ——— warm dark ———
@@ -513,6 +596,9 @@ export const warmDark = stylex.createTheme(colors, {
   buttonSecondaryBg: `oklch(${warmDarkMode.button.secondaryBg})`,
   buttonSecondaryFg: `oklch(${warmDarkMode.button.secondaryFg})`,
   buttonSecondaryHover: `oklch(${warmDarkMode.button.secondaryHover})`,
+
+  shadowElevated: `0 0 0 1px oklch(${warmDarkMode.shadow.drop} / 0.04), 0 2px 8px oklch(${warmDarkMode.shadow.drop} / 0.01), 0 2px 6px -4px oklch(${warmDarkMode.shadow.drop} / 0.08), 0 4px 10px oklch(${warmDarkMode.shadow.drop} / 0.02), 0 4px 24px oklch(${warmDarkMode.shadow.drop} / 0.02)`,
+  shadowElevatedInner: `inset 0 0 0 1px oklch(${warmDarkMode.shadow.inner})`,
 });
 
 // ——— warm light ———
@@ -558,6 +644,9 @@ export const warmLight = stylex.createTheme(colors, {
   buttonSecondaryBg: `oklch(${warmLightMode.button.secondaryBg})`,
   buttonSecondaryFg: `oklch(${warmLightMode.button.secondaryFg})`,
   buttonSecondaryHover: `oklch(${warmLightMode.button.secondaryHover})`,
+
+  shadowElevated: `0 0 0 1px oklch(${warmLightMode.shadow.drop} / 0.04), 0 2px 8px oklch(${warmLightMode.shadow.drop} / 0.01), 0 2px 6px -4px oklch(${warmLightMode.shadow.drop} / 0.08), 0 4px 10px oklch(${warmLightMode.shadow.drop} / 0.02), 0 4px 24px oklch(${warmLightMode.shadow.drop} / 0.02)`,
+  shadowElevatedInner: `inset 0 0 0 1px oklch(${warmLightMode.shadow.inner})`,
 });
 
 // ——— Theme switching ———
