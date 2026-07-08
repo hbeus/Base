@@ -1,3 +1,4 @@
+export { Icon, type IconProps } from './components/display/Icon';
 export { Button, type ButtonProps } from './components/input/Button';
 export { ButtonState, type ButtonStateProps } from './components/input/ButtonState';
 export { Input, type InputProps } from './components/input/Input';
