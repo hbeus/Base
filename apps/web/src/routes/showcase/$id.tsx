@@ -1,8 +1,20 @@
-import { Accordion, Button, ButtonState, Card, Dialog, Flex, Input, Text, Toggle } from '@base/ui';
+import {
+  Accordion,
+  Button,
+  ButtonState,
+  Card,
+  Dialog,
+  Flex,
+  Icon,
+  Input,
+  Text,
+  Toggle,
+} from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
+import { IconAsterisk } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence } from 'motion/react';
 import { useState } from 'react';
@@ -115,21 +127,70 @@ function ButtonsShowcase() {
 function ButtonStatesShowcase() {
   return (
     <Flex direction='column' gap='s32'>
-      <section>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
+      <Flex as='section' direction='column' gap='s8'>
+        <Text as='h2' size='label' weight='medium' color='secondary'>
           States
         </Text>
-        <Card>
-          <Flex direction='row' gap='s8' wrap>
-            <ButtonState variant='positive'>Positive</ButtonState>
-            <ButtonState variant='negative'>Negative</ButtonState>
-            <ButtonState variant='semiNegative'>Semi Negative</ButtonState>
-            <ButtonState variant='semiPositive'>Semi Positive</ButtonState>
-            <ButtonState variant='neutral'>Neutral</ButtonState>
-            <ButtonState variant='highlight'>Highlight</ButtonState>
-          </Flex>
-        </Card>
-      </section>
+
+        <Flex direction='column' gap='s8' wrap>
+          <ButtonState variant='positive'>Positive</ButtonState>
+          <ButtonState variant='negative'>Negative</ButtonState>
+          <ButtonState variant='semiNegative'>Semi Negative</ButtonState>
+          <ButtonState variant='semiPositive'>Semi Positive</ButtonState>
+          <ButtonState variant='neutral'>Neutral</ButtonState>
+          <ButtonState variant='highlight'>Highlight</ButtonState>
+        </Flex>
+      </Flex>
+      <Flex as='section' direction='column' gap='s8'>
+        <Text as='h2' size='label' weight='medium' color='secondary'>
+          Sizes
+        </Text>
+        <Flex gap='s8' wrap>
+          <ButtonState variant='positive' size='xs'>
+            Positive
+          </ButtonState>
+          <ButtonState variant='positive' size='sm'>
+            Positive
+          </ButtonState>
+          <ButtonState variant='positive' size='md'>
+            Positive
+          </ButtonState>
+          <ButtonState variant='positive' size='lg'>
+            Positive
+          </ButtonState>
+        </Flex>
+      </Flex>
+      <Flex as='section' direction='column' gap='s8'>
+        <Text as='h2' size='label' weight='medium' color='secondary'>
+          Shape
+        </Text>
+        <Flex gap='s8' wrap>
+          <ButtonState variant='positive'>Square</ButtonState>
+          <ButtonState variant='positive' rounded>
+            Rounded
+          </ButtonState>
+        </Flex>
+      </Flex>
+      <Flex as='section' direction='column' gap='s8'>
+        <Text as='h2' size='label' weight='medium' color='secondary'>
+          Leading and trailing slots
+        </Text>
+        <Flex gap='s8' wrap>
+          <ButtonState variant='positive' leadingSlot={<Icon icon={IconAsterisk} />}>
+            Leading slot icon
+          </ButtonState>
+          <ButtonState variant='positive' trailingSlot={<Icon icon={IconAsterisk} />}>
+            Trailing slot icon
+          </ButtonState>
+          <ButtonState
+            variant='positive'
+            leadingSlot={<Icon icon={IconAsterisk} />}
+            trailingSlot={<Icon icon={IconAsterisk} />}
+          >
+            Leading and trailing slot icons
+          </ButtonState>
+        </Flex>
+      </Flex>
     </Flex>
   );
 }
