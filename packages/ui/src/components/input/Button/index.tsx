@@ -4,15 +4,15 @@ import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { INPUT_SCALE_DOWN } from '../../../constants/motion';
-import { colors } from '../../../tokens/themes.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'inherit';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ButtonProps
@@ -67,11 +67,12 @@ const styles = stylex.create({
       color: colors.foregroundPrimary,
     },
   },
-  destructive: {
-    backgroundColor: colors.stateNegative,
-    color: colors.foregroundPrimary,
+  inherit: {
+    position: 'relative',
+    backgroundColor: 'transparent',
+    color: 'inherit',
     ':hover': {
-      opacity: 0.9,
+      backgroundColor: colors.lighten4,
     },
   },
   xs: {
