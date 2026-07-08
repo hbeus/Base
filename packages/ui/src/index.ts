@@ -1,6 +1,7 @@
 export { Button, type ButtonProps } from './components/input/Button';
 export { Input, type InputProps } from './components/input/Input';
 export { Pressable, type PressableProps } from './components/input/Pressable';
+export { ButtonState, type ButtonStateProps } from './components/input/StateButton';
 export { Toggle, type ToggleProps } from './components/input/Toggle';
 export { Accordion, type AccordionItemProps } from './components/layout/Accordion';
 export { Card, type CardProps } from './components/layout/Card';
@@ -22,14 +23,15 @@ export { spacing } from './tokens/spacing.stylex';
 export {
   COLOR_SCHEMES,
   type ColorScheme,
+  colors,
+  defaultLight,
   PALETTES,
   type Palette,
   type ThemeKey,
-  colors,
-  defaultLight,
   themeBackgrounds,
   themeMap,
 } from './tokens/themes.stylex';
+export { easing } from './tokens/transitionTiming.stylex';
 export { typography } from './tokens/typography.stylex';
 export type { BaseProps } from './types/BaseProps';
 export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic';
