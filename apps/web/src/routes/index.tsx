@@ -1,4 +1,4 @@
-import { Card, Flex, Pressable, Text } from '@base/ui';
+import { Card, Flex, Grid, Pressable, SidebarAnchor, Text } from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
@@ -14,6 +14,7 @@ export const Route = createFileRoute('/')({
 
 const styles = stylex.create({
   main: {
+    position: 'relative',
     maxWidth: '640px',
     minHeight: '100vh',
     marginInline: 'auto',
@@ -29,7 +30,9 @@ const styles = stylex.create({
   section: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     gap: spacing.s8,
+    minHeight: '100vh',
   },
   nav: {
     display: 'flex',
@@ -39,30 +42,46 @@ const styles = stylex.create({
   navLink: {
     paddingBlock: spacing.s16,
   },
+  introductionContainer: {
+    paddingBlock: spacing.s16,
+  },
 });
 
 function HomePage() {
   return (
     <Flex as='main' direction='column' justify='center' gap={'s40'} style={styles.main}>
-      <Flex as='header' direction='column' gap={'s4'} style={styles.header}>
-        <Text as='h1' size='hero'>
-          Base
-        </Text>
-        <Text as='p' size='display' color='secondary'>
-          Simple monorepo starter built with TanStack Start, StyleX, and Base UI.
-        </Text>
-      </Flex>
-      <Pressable as='section' role='link' variant='filled'>
-        <Flex direction='column' gap={'s4'}>
-          <Text as='h2' size='title'>
-            Introduction
+      <section {...stylex.props(styles.section)}>
+        <Flex as='header' direction='column' gap={'s4'} style={styles.header}>
+          <Text as='h1' size='hero'>
+            Base
           </Text>
-          <Text as='p' size='body' color='secondary'>
-            The principles and building blocks
+          <Text as='p' size='display' color='secondary'>
+            Simple monorepo starter built with TanStack Start, StyleX, and Base UI.
           </Text>
         </Flex>
-      </Pressable>
-
+        <Grid columns={2} gap='s40'>
+          <Pressable as='section' role='link' variant='filled' style={styles.introductionContainer}>
+            <Flex direction='column' gap={'s4'}>
+              <Text as='h2' size='title'>
+                Introduction
+              </Text>
+              <Text as='p' size='body' color='secondary'>
+                The principles and building blocks
+              </Text>
+            </Flex>
+          </Pressable>
+          <Pressable as='section' role='link' variant='filled' style={styles.introductionContainer}>
+            <Flex direction='column' gap={'s4'}>
+              <Text as='h2' size='title'>
+                Introduction
+              </Text>
+              <Text as='p' size='body' color='secondary'>
+                The principles and building blocks
+              </Text>
+            </Flex>
+          </Pressable>
+        </Grid>
+      </section>
       <section {...stylex.props(styles.section)}>
         <Text as='h2' size='label' weight='medium' color='secondary'>
           Components
@@ -139,6 +158,9 @@ function HomePage() {
           </Link>
         </Pressable>
       </section>
+      <SidebarAnchor href='/introduction'>
+        <Text>Introduction</Text>
+      </SidebarAnchor>
     </Flex>
   );
 }
