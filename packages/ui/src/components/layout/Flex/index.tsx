@@ -17,6 +17,7 @@ interface FlexOwnProps {
   gap?: FlexGap;
   wrap?: FlexWrap;
   inline?: boolean;
+  grow?: boolean;
 }
 
 export type FlexProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = PolymorphicProps<
@@ -27,6 +28,7 @@ export type FlexProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = Pol
 const styles = stylex.create({
   flex: { display: 'flex' },
   inlineFlex: { display: 'inline-flex' },
+  grow: { flexGrow: 1 },
 });
 
 const directions = stylex.create({
@@ -78,6 +80,7 @@ export const Flex = function Flex({
   gap = 'none',
   wrap,
   inline,
+  grow,
   style,
   ref,
   ...props
@@ -93,6 +96,7 @@ export const Flex = function Flex({
         gaps[gap],
         wrap === true && wraps.wrap,
         wrap === 'reverse' && wraps.reverse,
+        grow && styles.grow,
         ...styleArray(style),
       )}
       {...props}
