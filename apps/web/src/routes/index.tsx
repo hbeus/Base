@@ -1,7 +1,7 @@
-import { Flex, Pressable, Text } from '@base/ui';
-import { colors } from '@base/ui/tokens/themes.stylex';
+import { Card, Flex, Pressable, Text } from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconChevronRight } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
@@ -13,19 +13,18 @@ export const Route = createFileRoute('/')({
 });
 
 const styles = stylex.create({
-  page: {
+  main: {
     maxWidth: '640px',
-    display: 'flex',
-    gap: spacing.s48,
-    flexDirection: 'column',
+    minHeight: '100vh',
     marginInline: 'auto',
     paddingInline: spacing.s24,
     paddingBlock: spacing.s64,
   },
+
   header: {
     display: 'flex',
     flexDirection: 'column',
-    gap: spacing.s8,
+    gap: spacing.s4,
   },
   section: {
     display: 'flex',
@@ -38,38 +37,31 @@ const styles = stylex.create({
     gap: spacing.s2,
   },
   navLink: {
-    position: 'relative',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     paddingBlock: spacing.s16,
-    textDecoration: 'none',
-    '::before': {
-      content: '',
-      position: 'absolute',
-      inset: '0 -16',
-      backgroundColor: colors.lighten4,
-      borderRadius: radii.r20,
-      opacity: 0,
-      transition: 'opacity 0.1s',
-    },
-    ':hover::before': {
-      opacity: 1,
-    },
   },
 });
 
 function HomePage() {
   return (
-    <div {...stylex.props(styles.page)}>
-      <header {...stylex.props(styles.header)}>
+    <Flex as='main' direction='column' justify='center' gap={'s40'} style={styles.main}>
+      <Flex as='header' direction='column' gap={'s4'} style={styles.header}>
         <Text as='h1' size='hero'>
           Base
         </Text>
-        <Text as='p' size='body' color='secondary'>
-          A monorepo starter with TanStack Start, StyleX, and Base UI.
+        <Text as='p' size='display' color='secondary'>
+          Simple monorepo starter built with TanStack Start, StyleX, and Base UI.
         </Text>
-      </header>
+      </Flex>
+      <Pressable as='section' role='link' variant='filled'>
+        <Flex direction='column' gap={'s4'}>
+          <Text as='h2' size='title'>
+            Introduction
+          </Text>
+          <Text as='p' size='body' color='secondary'>
+            The principles and building blocks
+          </Text>
+        </Flex>
+      </Pressable>
 
       <section {...stylex.props(styles.section)}>
         <Text as='h2' size='label' weight='medium' color='secondary'>
@@ -147,6 +139,6 @@ function HomePage() {
           </Link>
         </Pressable>
       </section>
-    </div>
+    </Flex>
   );
 }

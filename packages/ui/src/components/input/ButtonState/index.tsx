@@ -29,8 +29,8 @@ export interface ButtonStateProps
   size?: ButtonSize;
   rounded?: boolean;
   fill?: boolean;
-  leadingSlot?: React.ReactNode;
-  trailingSlot?: React.ReactNode;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
 }
 
 const styles = stylex.create({
@@ -140,7 +140,7 @@ const styles = stylex.create({
   sm: {
     height: elementSize.sm,
     paddingInline: spacing.s10,
-    fontSize: typography.labelSize,
+    fontSize: typography.bodySmSize,
     '::before': {
       borderRadius: radii.r10,
     },
@@ -192,8 +192,8 @@ export function ButtonState({
   style,
   ref,
   children,
-  leadingSlot,
-  trailingSlot,
+  leading,
+  trailing,
   ...props
 }: ButtonStateProps) {
   return (
@@ -210,9 +210,9 @@ export function ButtonState({
       )}
       {...props}
     >
-      {leadingSlot && leadingSlot}
+      {leading && leading}
       <span {...stylex.props(styles.children)}>{children}</span>
-      {trailingSlot && trailingSlot}
+      {trailing && trailing}
     </MotionBaseButton>
   );
 }

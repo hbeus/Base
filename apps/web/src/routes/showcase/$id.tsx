@@ -14,7 +14,14 @@ import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
-import { IconAsterisk } from '@tabler/icons-react';
+import {
+  IconAsterisk,
+  IconCalendar,
+  IconCheck,
+  IconChevronLeft,
+  IconChevronRight,
+  IconCirclePlus,
+} from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence } from 'motion/react';
 import { useState } from 'react';
@@ -147,16 +154,16 @@ function ButtonStatesShowcase() {
         </Text>
         <Flex gap='s8' wrap>
           <ButtonState variant='positive' size='xs'>
-            Positive
+            Extra Small
           </ButtonState>
           <ButtonState variant='positive' size='sm'>
-            Positive
+            Small
           </ButtonState>
           <ButtonState variant='positive' size='md'>
-            Positive
+            Medium
           </ButtonState>
           <ButtonState variant='positive' size='lg'>
-            Positive
+            Large
           </ButtonState>
         </Flex>
       </Flex>
@@ -176,16 +183,16 @@ function ButtonStatesShowcase() {
           Leading and trailing slots
         </Text>
         <Flex gap='s8' wrap>
-          <ButtonState variant='positive' leadingSlot={<Icon icon={IconAsterisk} />}>
+          <ButtonState variant='positive' leading={<Icon icon={IconCheck} />}>
             Leading slot icon
           </ButtonState>
-          <ButtonState variant='positive' trailingSlot={<Icon icon={IconAsterisk} />}>
+          <ButtonState variant='positive' trailing={<Icon icon={IconChevronRight} />}>
             Trailing slot icon
           </ButtonState>
           <ButtonState
             variant='positive'
-            leadingSlot={<Icon icon={IconAsterisk} />}
-            trailingSlot={<Icon icon={IconAsterisk} />}
+            leading={<Icon icon={IconCirclePlus} />}
+            trailing={<Icon icon={IconChevronRight} />}
           >
             Leading and trailing slot icons
           </ButtonState>

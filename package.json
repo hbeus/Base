@@ -15,7 +15,8 @@
     "test": "pnpm --filter @base/web test",
     "db:generate": "pnpm --filter @base/db generate",
     "db:migrate": "pnpm --filter @base/db migrate",
-    "db:studio": "pnpm --filter @base/db studio"
+    "db:studio": "pnpm --filter @base/db studio",
+    "generate:themes": "npx tsx packages/ui/scripts/generate-themes.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.1"

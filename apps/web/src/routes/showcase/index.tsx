@@ -22,6 +22,7 @@ const components = [
   { id: 'inputs', label: 'Inputs', description: 'Text inputs with size variants' },
   { id: 'dialog', label: 'Dialog', description: 'Modal dialog with compound component pattern' },
   { id: 'toggle', label: 'Toggle', description: 'Switch control with spring animation' },
+  { id: 'themes', label: 'Themes', description: 'OKLCH-generated color themes with relative chroma' },
 ];
 
 const styles = stylex.create({

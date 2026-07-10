@@ -1,6 +1,6 @@
-import { Card, Text } from '@base/ui';
-import { colors } from '@base/ui/tokens/themes.stylex';
+import { Card, Flex, Text } from '@base/ui';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
@@ -59,28 +59,20 @@ function DataPage() {
         </Text>
       </header>
 
-      <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={styles.sectionTitle}>
-          Users (server function → React Query)
-        </Text>
-        <Card>
-          {users.map((user, i) => (
-            <div
-              key={user.id}
-              {...stylex.props(styles.userRow, i < users.length - 1 && styles.userRowBorder)}
-            >
-              <div>
-                <Text as='div' size='bodySm'>
-                  {user.name}
-                </Text>
-                <Text as='div' size='caption' color='secondary'>
-                  {user.email}
-                </Text>
-              </div>
+      <Flex direction='column' gap={'s8'} as='ul'>
+        {users.map((user, i) => (
+          <Card key={user.id} as='li'>
+            <div>
+              <Text as='div' size='bodySm'>
+                {user.name}
+              </Text>
+              <Text as='div' size='caption' color='secondary'>
+                {user.email}
+              </Text>
             </div>
-          ))}
-        </Card>
-      </section>
+          </Card>
+        ))}
+      </Flex>
     </div>
   );
 }
