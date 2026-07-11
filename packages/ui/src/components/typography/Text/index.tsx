@@ -7,7 +7,7 @@ import { styleArray } from '../../../utils/styleArray';
 
 type TextSize = 'hero' | 'display' | 'headline' | 'title' | 'body' | 'bodySm' | 'label' | 'caption';
 type TextWeight = 'regular' | 'medium' | 'semibold' | 'bold';
-type TextColor = 'primary' | 'secondary';
+type TextColor = 'primary' | 'secondary' | 'inherit';
 
 interface TextOwnProps {
   size?: TextSize;
@@ -97,6 +97,7 @@ const modifiers = stylex.create({
 const textColors = stylex.create({
   primary: { color: colors.foregroundPrimary },
   secondary: { color: colors.foregroundSecondary },
+  inherit: { color: 'inherit' },
 });
 
 export const Text = function Text({
