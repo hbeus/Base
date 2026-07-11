@@ -117,11 +117,24 @@ function Anchor({ id, href, children, style, ref }: SidebarAnchorProps) {
   const [hovered, setHovered] = useState(false);
   const expanded = isActive || hovered;
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const hash = href.startsWith('#') ? href.slice(1) : undefined;
+    if (!hash) return;
+
+    const target = document.getElementById(hash);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+      history.replaceState(null, '', href);
+    }
+  };
+
   return (
     <li {...stylex.props(anchorStyles.item, ...styleArray(style))}>
       <a
         ref={ref}
         href={href}
+        onClick={handleClick}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         {...stylex.props(
