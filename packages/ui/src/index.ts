@@ -15,7 +15,11 @@ export { Flex, type FlexProps } from './components/layout/Flex';
 export { Grid, type GridProps } from './components/layout/Grid';
 
 // navigation
-export { SidebarAnchor, type SidebarAnchorProps } from './components/navigation/SidebarAnchor';
+export {
+  Sidebar,
+  type SidebarAnchorProps,
+  type SidebarRootProps,
+} from './components/navigation/Sidebar';
 
 // overlays
 export {
@@ -52,6 +56,9 @@ export { Text, type TextProps } from './components/typography/Text';
 // types
 export type { BaseProps } from './types/BaseProps';
 export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic';
+
+// hooks
+export { useActiveSection } from './hooks/useActiveSection';
 
 // utils
 export { mergeProps } from './utils/mergeProps';
