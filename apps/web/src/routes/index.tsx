@@ -1,4 +1,4 @@
-import { Card, Flex, Grid, Pressable, SidebarAnchor, Text } from '@base/ui';
+import { Card, Flex, Grid, Pressable, Sidebar, Text, useActiveSection } from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
@@ -31,7 +31,7 @@ const styles = stylex.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    gap: spacing.s8,
+    gap: spacing.s40,
     minHeight: '100vh',
   },
   nav: {
@@ -47,10 +47,14 @@ const styles = stylex.create({
   },
 });
 
+const SECTION_IDS = ['introduction', 'components', 'patterns'];
+
 function HomePage() {
+  const activeId = useActiveSection(SECTION_IDS);
+
   return (
     <Flex as='main' direction='column' justify='center' gap={'s40'} style={styles.main}>
-      <section {...stylex.props(styles.section)}>
+      <section id='introduction' {...stylex.props(styles.section)}>
         <Flex as='header' direction='column' gap={'s4'} style={styles.header}>
           <Text as='h1' size='hero'>
             Base
@@ -80,12 +84,37 @@ function HomePage() {
               </Text>
             </Flex>
           </Pressable>
+          <Pressable as='section' role='link' variant='filled' style={styles.introductionContainer}>
+            <Flex direction='column' gap={'s4'}>
+              <Text as='h2' size='title'>
+                Introduction
+              </Text>
+              <Text as='p' size='body' color='secondary'>
+                The principles and building blocks
+              </Text>
+            </Flex>
+          </Pressable>
+          <Pressable as='section' role='link' variant='filled' style={styles.introductionContainer}>
+            <Flex direction='column' gap={'s4'}>
+              <Text as='h2' size='title'>
+                Introduction
+              </Text>
+              <Text as='p' size='body' color='secondary'>
+                The principles and building blocks
+              </Text>
+            </Flex>
+          </Pressable>
         </Grid>
       </section>
-      <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary'>
-          Components
-        </Text>
+      <section id='components' {...stylex.props(styles.section)}>
+        <Flex direction='column' gap='s4'>
+          <Text as='h2' size='display' weight='medium'>
+            Components
+          </Text>
+          <Text as='p' size='headline' color='secondary'>
+            A collection of components to build your next project.
+          </Text>
+        </Flex>
         <nav {...stylex.props(styles.nav)}>
           <Pressable inset='s16' role='link'>
             <Link to='/overview'>
@@ -145,7 +174,7 @@ function HomePage() {
           </Pressable>
         </nav>
       </section>
-      <section {...stylex.props(styles.section)}>
+      <section id='patterns' {...stylex.props(styles.section)}>
         <Text as='h2' size='label' weight='medium' color='secondary'>
           Patterns
         </Text>
@@ -158,9 +187,17 @@ function HomePage() {
           </Link>
         </Pressable>
       </section>
-      <SidebarAnchor href='/introduction'>
-        <Text>Introduction</Text>
-      </SidebarAnchor>
+      <Sidebar.Root activeId={activeId}>
+        <Sidebar.Anchor id='introduction' href='#introduction'>
+          Introduction
+        </Sidebar.Anchor>
+        <Sidebar.Anchor id='components' href='#components'>
+          Components
+        </Sidebar.Anchor>
+        <Sidebar.Anchor id='patterns' href='#patterns'>
+          Patterns
+        </Sidebar.Anchor>
+      </Sidebar.Root>
     </Flex>
   );
 }
