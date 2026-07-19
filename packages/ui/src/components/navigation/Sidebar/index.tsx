@@ -3,6 +3,7 @@ import { createContext, type ReactNode, type Ref, useContext, useState } from 'r
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
+import { breakpoints } from '../../../tokens/breakpoints';
 import { zIndex } from '../../../tokens/zIndex.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
@@ -39,7 +40,10 @@ export interface SidebarRootProps extends BaseProps {
 const rootStyles = stylex.create({
   base: {
     position: 'fixed',
-    display: 'flex',
+    display: {
+      default: 'flex',
+      [`@media (max-width: ${breakpoints.md}px)`]: 'none',
+    },
     justifyContent: 'center',
     flexDirection: 'column',
     gap: spacing.s4,

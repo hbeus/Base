@@ -32,6 +32,7 @@ export {
 } from './components/overlays/Dialog';
 
 // tokens
+export { breakpoints, type Breakpoint } from './tokens/breakpoints';
 export { elementSize } from './tokens/elementSize.stylex';
 export { radii } from './tokens/radii.stylex';
 export { size } from './tokens/size.stylex';
