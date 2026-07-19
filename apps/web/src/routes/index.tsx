@@ -4,7 +4,7 @@ import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconChevronRight } from '@tabler/icons-react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
 import { Link } from '~/components/Link';
 
@@ -51,6 +51,7 @@ const SECTION_IDS = ['introduction', 'components', 'patterns'];
 
 function HomePage() {
   const activeId = useActiveSection(SECTION_IDS);
+  const navigate = useNavigate();
 
   return (
     <Flex as='main' direction='column' justify='center' gap={'s40'} style={styles.main}>
@@ -187,7 +188,12 @@ function HomePage() {
           </Link>
         </Pressable>
       </section>
-      <Sidebar.Root activeId={activeId}>
+      <Sidebar.Root
+        activeId={activeId}
+        onNavigate={(hash) =>
+          navigate({ hash, hashScrollIntoView: { behavior: 'smooth' } })
+        }
+      >
         <Sidebar.Anchor id='introduction' href='#introduction'>
           Introduction
         </Sidebar.Anchor>

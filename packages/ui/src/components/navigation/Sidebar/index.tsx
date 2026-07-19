@@ -22,6 +22,7 @@ type SidebarPosition = 'left' | 'right';
 interface SidebarContextValue {
   activeId: string | null;
   position: SidebarPosition;
+  onNavigate?: (hash: string) => void;
 }
 
 const SidebarContext = createContext<SidebarContextValue>({ activeId: null, position: 'left' });
@@ -32,6 +33,7 @@ export interface SidebarRootProps extends BaseProps {
   children: ReactNode;
   activeId?: string | null;
   position?: SidebarPosition;
+  onNavigate?: (hash: string) => void;
 }
 
 const rootStyles = stylex.create({
@@ -60,9 +62,9 @@ const rootStyles = stylex.create({
   },
 });
 
-function Root({ children, activeId, position = 'left', style }: SidebarRootProps) {
+function Root({ children, activeId, position = 'left', onNavigate, style }: SidebarRootProps) {
   return (
-    <SidebarContext.Provider value={{ activeId: activeId ?? null, position }}>
+    <SidebarContext.Provider value={{ activeId: activeId ?? null, position, onNavigate }}>
       <ul {...stylex.props(rootStyles.base, rootStyles[position], ...styleArray(style))}>
         {children}
       </ul>
@@ -112,7 +114,7 @@ const anchorStyles = stylex.create({
 });
 
 function Anchor({ id, href, children, style, ref }: SidebarAnchorProps) {
-  const { activeId, position } = useContext(SidebarContext);
+  const { activeId, position, onNavigate } = useContext(SidebarContext);
   const isActive = activeId === id;
   const [hovered, setHovered] = useState(false);
   const expanded = isActive || hovered;
@@ -121,9 +123,15 @@ function Anchor({ id, href, children, style, ref }: SidebarAnchorProps) {
     const hash = href.startsWith('#') ? href.slice(1) : undefined;
     if (!hash) return;
 
+    e.preventDefault();
+
+    if (onNavigate) {
+      onNavigate(hash);
+      return;
+    }
+
     const target = document.getElementById(hash);
     if (target) {
-      e.preventDefault();
       target.scrollIntoView({ behavior: 'smooth' });
       history.replaceState(null, '', href);
     }
