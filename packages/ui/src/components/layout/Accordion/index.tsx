@@ -4,13 +4,11 @@ import * as stylex from '@stylexjs/stylex';
 import { IconChevronDown } from '@tabler/icons-react';
 import { motion } from 'motion/react';
 import { type ComponentPropsWithoutRef, type ReactNode, type Ref, useState } from 'react';
-
-import { colors } from '../../../tokens/themes.stylex';
+import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
-import { typography } from '../../../tokens/typography.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
-import { Pressable } from '../../input/Pressable';
 import { Text } from '../../typography/Text';
 
 /* ---------- Root ---------- */
@@ -24,7 +22,7 @@ function Root(props: AccordionRootProps) {
 const styles = stylex.create({
   item: {
     overflow: 'visible',
-    borderBottomWidth: '1px',
+    borderBottomWidth: size.s1,
     borderBottomStyle: 'solid',
     borderBottomColor: colors.border,
   },

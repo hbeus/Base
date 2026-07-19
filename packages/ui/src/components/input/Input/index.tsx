@@ -1,11 +1,11 @@
 import { Input as BaseInput } from '@base-ui/react/input';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-
-import { colors } from '../../../tokens/themes.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
+import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
@@ -23,7 +23,7 @@ const styles = stylex.create({
   base: {
     width: '100%',
     borderRadius: radii.r8,
-    borderWidth: '1px',
+    borderWidth: size.s1,
     borderStyle: 'solid',
     borderColor: colors.border,
     backgroundColor: 'transparent',

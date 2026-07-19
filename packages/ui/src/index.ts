@@ -73,13 +73,55 @@ export { Flex, type FlexProps } from './components/layout/Flex';
 export { Grid, type GridProps } from './components/layout/Grid';
 
 // navigation
+export { Menubar, type MenubarProps } from './components/navigation/Menubar';
+export {
+  NavigationMenu,
+  type NavigationMenuArrowProps,
+  type NavigationMenuBackdropProps,
+  type NavigationMenuContentProps,
+  type NavigationMenuLinkProps,
+  type NavigationMenuListProps,
+  type NavigationMenuPopupProps,
+  type NavigationMenuRootProps,
+  type NavigationMenuTriggerProps,
+} from './components/navigation/NavigationMenu';
 export {
   Sidebar,
   type SidebarAnchorProps,
   type SidebarRootProps,
 } from './components/navigation/Sidebar';
+export {
+  Tabs,
+  type TabsIndicatorProps,
+  type TabsListProps,
+  type TabsPanelProps,
+  type TabsRootProps,
+  type TabsTabProps,
+} from './components/navigation/Tabs';
+export {
+  Toolbar,
+  type ToolbarButtonProps,
+  type ToolbarGroupProps,
+  type ToolbarLinkProps,
+  type ToolbarRootProps,
+  type ToolbarSeparatorProps,
+} from './components/navigation/Toolbar';
 
 // overlays
+export {
+  AlertDialog,
+  type AlertDialogBackdropProps,
+  type AlertDialogContentProps,
+  type AlertDialogDescriptionProps,
+  type AlertDialogTitleProps,
+} from './components/overlays/AlertDialog';
+export {
+  ContextMenu,
+  type ContextMenuGroupLabelProps,
+  type ContextMenuItemProps,
+  type ContextMenuPopupProps,
+  type ContextMenuSeparatorProps,
+} from './components/overlays/ContextMenu';
 export {
   Dialog,
   type DialogBackdropProps,
@@ -88,12 +130,51 @@ export {
   type DialogFooterProps,
   type DialogTitleProps,
 } from './components/overlays/Dialog';
+export {
+  Drawer,
+  type DrawerBackdropProps,
+  type DrawerContentProps,
+  type DrawerDescriptionProps,
+  type DrawerPopupProps,
+  type DrawerTitleProps,
+} from './components/overlays/Drawer';
+export {
+  Menu,
+  type MenuArrowProps,
+  type MenuCheckboxItemProps,
+  type MenuGroupLabelProps,
+  type MenuItemProps,
+  type MenuLinkItemProps,
+  type MenuPopupProps,
+  type MenuRadioItemProps,
+  type MenuSeparatorProps,
+  type MenuSubmenuTriggerProps,
+} from './components/overlays/Menu';
+export {
+  Popover,
+  type PopoverArrowProps,
+  type PopoverDescriptionProps,
+  type PopoverPopupProps,
+  type PopoverTitleProps,
+} from './components/overlays/Popover';
+export {
+  Toast,
+  type ToastDescriptionProps,
+  type ToastRootProps,
+  type ToastTitleProps,
+  type ToastViewportProps,
+} from './components/overlays/Toast';
+export {
+  Tooltip,
+  type TooltipArrowProps,
+  type TooltipPopupProps,
+} from './components/overlays/Tooltip';
 // typography
 export { Text, type TextProps } from './components/typography/Text';
+// tokens
+export { type Breakpoint, breakpoints } from './constants/breakpoints';
 // hooks
 export { useActiveSection } from './hooks/useActiveSection';
-// tokens
-export { breakpoints, type Breakpoint } from './tokens/breakpoints';
 export { elementSize } from './tokens/elementSize.stylex';
 export { radii } from './tokens/radii.stylex';
 export { size } from './tokens/size.stylex';

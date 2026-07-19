@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
+import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
@@ -32,7 +33,7 @@ const triggerStyles = stylex.create({
     justifyContent: 'space-between',
     gap: spacing.s8,
     width: '100%',
-    borderWidth: '1px',
+    borderWidth: size.s1,
     borderStyle: 'solid',
     borderColor: colors.border,
     backgroundColor: 'transparent',
@@ -128,7 +129,7 @@ export interface SelectPopupProps
 const popupStyles = stylex.create({
   base: {
     backgroundColor: colors.surfaceRaised,
-    borderWidth: '1px',
+    borderWidth: size.s1,
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r12,
@@ -271,7 +272,7 @@ const arrowStyles = stylex.create({
   base: {
     fill: colors.surfaceRaised,
     stroke: colors.border,
-    strokeWidth: '1px',
+    strokeWidth: size.s1,
   },
 });
 
@@ -294,7 +295,7 @@ export interface SelectSeparatorProps
 
 const separatorStyles = stylex.create({
   base: {
-    height: '1px',
+    height: size.s1,
     backgroundColor: colors.border,
     marginBlock: spacing.s4,
   },

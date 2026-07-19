@@ -1,9 +1,10 @@
 import * as stylex from '@stylexjs/stylex';
 import { createContext, type ReactNode, type Ref, useContext, useState } from 'react';
+import { breakpoints } from '../../../constants/breakpoints';
 import { radii } from '../../../tokens/radii.stylex';
+import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
-import { breakpoints } from '../../../tokens/breakpoints';
 import { zIndex } from '../../../tokens/zIndex.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
@@ -106,7 +107,7 @@ const anchorStyles = stylex.create({
   },
   bar: {
     flexShrink: 0,
-    height: '2px',
+    height: size.s2,
     borderRadius: radii.full,
     backgroundColor: 'currentcolor',
     transition: 'width 0.2s',

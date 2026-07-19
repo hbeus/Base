@@ -1,8 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
-
-import { colors } from '../../../tokens/themes.stylex';
 import { radii } from '../../../tokens/radii.stylex';
+import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
 import { styleArray } from '../../../utils/styleArray';
 
@@ -54,7 +54,7 @@ const variants = stylex.create({
   },
   outline: {
     backgroundColor: 'transparent',
-    borderWidth: '1px',
+    borderWidth: size.s1,
     borderStyle: 'solid',
     borderColor: colors.border,
   },

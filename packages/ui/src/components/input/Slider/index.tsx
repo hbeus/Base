@@ -184,7 +184,7 @@ const thumbStyles = stylex.create({
       outlineWidth: '3px',
       outlineStyle: 'solid',
       outlineColor: colors.focusOutline,
-      outlineOffset: '2px',
+      outlineOffset: size.s2,
     },
     ':active': {
       cursor: 'grabbing',

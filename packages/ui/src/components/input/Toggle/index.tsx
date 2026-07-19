@@ -3,9 +3,9 @@ import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
 import { useState } from 'react';
-
-import { colors } from '../../../tokens/themes.stylex';
 import { radii } from '../../../tokens/radii.stylex';
+import { size } from '../../../tokens/size.stylex';
+import { colors } from '../../../tokens/themes.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
@@ -27,7 +27,7 @@ const rootStyles = stylex.create({
     cursor: 'pointer',
     borderWidth: 0,
     outline: 'none',
-    padding: '2px',
+    padding: size.s2,
     backgroundColor: colors.lighten12,
     transition: 'background-color 0.2s',
     ':disabled': {
