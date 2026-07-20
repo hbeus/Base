@@ -1128,18 +1128,10 @@ function ProgressShowcase() {
           </Progress.Track>
         </Progress.Root>
         <Flex direction='row' gap='s8'>
-          <Button
-            variant='ghost'
-            size='xs'
-            onClick={() => setValue(v => Math.max(0, v - 10))}
-          >
+          <Button variant='ghost' size='xs' onClick={() => setValue(v => Math.max(0, v - 10))}>
             -10
           </Button>
-          <Button
-            variant='ghost'
-            size='xs'
-            onClick={() => setValue(v => Math.min(100, v + 10))}
-          >
+          <Button variant='ghost' size='xs' onClick={() => setValue(v => Math.min(100, v + 10))}>
             +10
           </Button>
         </Flex>

@@ -2,7 +2,13 @@
 
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
-import { PALETTES, type Palette, colors, themeBackgrounds, themeMap } from '@base/ui/tokens/themes.stylex';
+import {
+  colors,
+  PALETTES,
+  type Palette,
+  themeBackgrounds,
+  themeMap,
+} from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconArrowLeft, IconContrast } from '@tabler/icons-react';
 import {

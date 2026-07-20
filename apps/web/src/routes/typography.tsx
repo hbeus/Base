@@ -1,7 +1,7 @@
 import { Text } from '@base/ui';
-import { colors } from '@base/ui/tokens/themes.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';

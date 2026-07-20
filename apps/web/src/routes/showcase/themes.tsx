@@ -1,13 +1,13 @@
 import { ButtonState, Card, Flex, Text } from '@base/ui';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import {
-  PALETTES,
   COLOR_SCHEMES,
-  THEME,
-  colors,
-  themeMap,
-  type Palette,
   type ColorScheme,
+  colors,
+  PALETTES,
+  type Palette,
+  THEME,
+  themeMap,
 } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
@@ -204,7 +204,8 @@ function ThemesShowcase() {
           Themes
         </Text>
         <Text as='p' size='bodySm' color='secondary'>
-          OKLCH-generated color themes with relative chroma. Each card applies its own theme override.
+          OKLCH-generated color themes with relative chroma. Each card applies its own theme
+          override.
         </Text>
       </header>
       <div {...stylex.props(styles.grid)}>

@@ -1,7 +1,6 @@
+import { type ColorScheme, PALETTES, type Palette } from '@base/ui/tokens/themes.stylex';
 import { createServerFn } from '@tanstack/react-start';
 import { getCookie } from '@tanstack/react-start/server';
-
-import { PALETTES, type ColorScheme, type Palette } from '@base/ui/tokens/themes.stylex';
 
 function parsePalette(value: string | undefined): Palette {
   if (PALETTES.includes(value as Palette)) return value as Palette;

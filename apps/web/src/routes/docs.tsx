@@ -77,10 +77,7 @@ const styles = stylex.create({
   },
 });
 
-function Section({
-  title,
-  children,
-}: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section {...stylex.props(styles.section)}>
       <Text as='h2' size='heading' weight='semibold' style={{ marginBottom: spacing.s12 }}>
@@ -108,8 +105,8 @@ function DocsPage() {
             Theme Builder
           </Text>
           <Text as='p' color='secondary'>
-            OKLCH-based color theme generator with relative chroma for consistent perceived vividness
-            across hues.
+            OKLCH-based color theme generator with relative chroma for consistent perceived
+            vividness across hues.
           </Text>
         </Flex>
       </header>
@@ -155,8 +152,8 @@ function DocsPage() {
                   </td>
                   <td {...stylex.props(styles.td)}>number | null</td>
                   <td {...stylex.props(styles.td)}>
-                    Hue angle (0-360) for accent, highlight, and hue harmonization. Null = achromatic
-                    theme.
+                    Hue angle (0-360) for accent, highlight, and hue harmonization. Null =
+                    achromatic theme.
                   </td>
                 </tr>
                 <tr>
@@ -174,7 +171,8 @@ function DocsPage() {
                   </td>
                   <td {...stylex.props(styles.td)}>number</td>
                   <td {...stylex.props(styles.td)}>
-                    How much state hues rotate toward the brand hue (0 = canonical, 1 = fully brand).
+                    How much state hues rotate toward the brand hue (0 = canonical, 1 = fully
+                    brand).
                   </td>
                 </tr>
               </tbody>
@@ -215,9 +213,8 @@ warm:      { brandHue: 65,   neutralTint: 0.02,  stateHarmony: 0.12 }`}</Code>
       <Section title='Color configs'>
         <Flex direction='column' gap='s12'>
           <Text as='p' size='bodySm' color='secondary'>
-            Every token value is derived from an exported config in{' '}
-            <IC>theme-config.ts</IC>. Edit any value and run <IC>pnpm generate:themes</IC> to
-            regenerate.
+            Every token value is derived from an exported config in <IC>theme-config.ts</IC>. Edit
+            any value and run <IC>pnpm generate:themes</IC> to regenerate.
           </Text>
           <Text as='p' size='bodySm' weight='medium'>
             STATE_CONFIG — state colors (relative chroma)
@@ -274,12 +271,11 @@ warm:      { brandHue: 65,   neutralTint: 0.02,  stateHarmony: 0.12 }`}</Code>
       <Section title='Editing and regenerating'>
         <Flex direction='column' gap='s12'>
           <Text as='p' size='bodySm' color='secondary'>
-            The theme config lives at{' '}
-            <IC>packages/ui/src/utils/theme-config.ts</IC>. The codegen script at{' '}
-            <IC>packages/ui/scripts/generate-themes.ts</IC> runs the generator and writes static
-            values to <IC>themes.stylex.ts</IC>. This two-step process exists because StyleX
-            requires fully static string values in <IC>defineVars()</IC> and{' '}
-            <IC>createTheme()</IC> — no function calls allowed at compile time.
+            The theme config lives at <IC>packages/ui/src/utils/theme-config.ts</IC>. The codegen
+            script at <IC>packages/ui/scripts/generate-themes.ts</IC> runs the generator and writes
+            static values to <IC>themes.stylex.ts</IC>. This two-step process exists because StyleX
+            requires fully static string values in <IC>defineVars()</IC> and <IC>createTheme()</IC>{' '}
+            — no function calls allowed at compile time.
           </Text>
           <Code>{`# Edit any config (STATE_CONFIG, HIGHLIGHT_CONFIG, ACCENT_CONFIG,
 # PRIMARY_BUTTON_CONFIG, FOREGROUND_CONFIG, BACKGROUND_CONFIG,
@@ -290,8 +286,8 @@ pnpm generate:themes
 # Preview at /showcase/themes`}</Code>
           <Text as='p' size='bodySm' color='secondary'>
             The safety guarantee: <IC>maxChroma(L, H)</IC> binary-searches for the sRGB boundary, so
-            the output is always a valid sRGB color. You can freely change any lightness or vividness
-            value without risk of gamut clipping.
+            the output is always a valid sRGB color. You can freely change any lightness or
+            vividness value without risk of gamut clipping.
           </Text>
         </Flex>
       </Section>

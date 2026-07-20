@@ -190,9 +190,7 @@ function HomePage() {
       </section>
       <Sidebar.Root
         activeId={activeId}
-        onNavigate={(hash) =>
-          navigate({ hash, hashScrollIntoView: { behavior: 'smooth' } })
-        }
+        onNavigate={hash => navigate({ hash, hashScrollIntoView: { behavior: 'smooth' } })}
       >
         <Sidebar.Anchor id='introduction' href='#introduction'>
           Introduction

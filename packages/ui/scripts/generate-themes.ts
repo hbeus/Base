@@ -1,19 +1,13 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { CONFIGS } from '../src/utils/theme-config';
-import {
-  generateTheme,
-  modeToVars,
-} from '../src/utils/generate-theme';
+import { generateTheme, modeToVars } from '../src/utils/generate-theme';
 import type { ThemeMode } from '../src/utils/theme-config';
+import { CONFIGS } from '../src/utils/theme-config';
 
 // ——— Compute all themes ———
 
 const themes = Object.fromEntries(
-  Object.entries(CONFIGS).map(([name, config]) => [
-    name,
-    generateTheme(config),
-  ]),
+  Object.entries(CONFIGS).map(([name, config]) => [name, generateTheme(config)]),
 ) as Record<string, { dark: ThemeMode; light: ThemeMode }>;
 
 // ——— Serialization helpers ———
@@ -64,7 +58,7 @@ function themeExportName(palette: string, mode: string) {
 const paletteNames = Object.keys(themes);
 
 const themeDataBlock = paletteNames
-  .map((name) => {
+  .map(name => {
     const { dark, light } = themes[name];
     return `  ${name}: {
     dark: {
@@ -77,8 +71,8 @@ ${serializeThemeMode(light, 6)}
   })
   .join(',\n');
 
-const variants = paletteNames.flatMap((palette) =>
-  (['dark', 'light'] as const).map((mode) => ({
+const variants = paletteNames.flatMap(palette =>
+  (['dark', 'light'] as const).map(mode => ({
     palette,
     mode,
     exportName: themeExportName(palette, mode),
@@ -87,15 +81,15 @@ const variants = paletteNames.flatMap((palette) =>
 );
 
 const createThemeBlocks = variants
-  .filter((v) => v.exportName !== null)
+  .filter(v => v.exportName !== null)
   .map(
-    (v) =>
+    v =>
       `export const ${v.exportName} = stylex.createTheme(colors, {\n${serializeVars(v.data, 2)}\n});`,
   )
   .join('\n\n');
 
 const themeMapEntries = variants
-  .map((v) => {
+  .map(v => {
     const key = `${v.palette}-${v.mode}`;
     return `  '${key}': ${v.exportName ?? 'null'},`;
   })
@@ -103,8 +97,7 @@ const themeMapEntries = variants
 
 const bgEntries = variants
   .map(
-    (v) =>
-      `  '${v.palette}-${v.mode}': \`oklch(\${THEME.${v.palette}.${v.mode}.background.base})\`,`,
+    v => `  '${v.palette}-${v.mode}': \`oklch(\${THEME.${v.palette}.${v.mode}.background.base})\`,`,
   )
   .join('\n');
 
@@ -148,13 +141,6 @@ ${bgEntries}
 };
 `;
 
-const outPath = resolve(
-  import.meta.dirname,
-  '..',
-  'src',
-  'tokens',
-  'themes.stylex.ts',
-);
+const outPath = resolve(import.meta.dirname, '..', 'src', 'tokens', 'themes.stylex.ts');
 writeFileSync(outPath, output);
 console.log('Generated', outPath);
-

@@ -1,7 +1,6 @@
+import type { ColorScheme, Palette } from '@base/ui/tokens/themes.stylex';
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
-
-import type { ColorScheme, Palette } from '@base/ui/tokens/themes.stylex';
 
 interface ThemeContextValue {
   colorScheme: ColorScheme;
