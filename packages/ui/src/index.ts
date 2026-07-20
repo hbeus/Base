@@ -1,7 +1,40 @@
 // display
+export {
+  Avatar,
+  type AvatarFallbackProps,
+  type AvatarImageProps,
+  type AvatarRootProps,
+} from './components/display/Avatar';
 export { Icon, type IconProps } from './components/display/Icon';
+export {
+  Meter,
+  type MeterIndicatorProps,
+  type MeterLabelProps,
+  type MeterRootProps,
+  type MeterTrackProps,
+  type MeterValueProps,
+} from './components/display/Meter';
+export {
+  Progress,
+  type ProgressIndicatorProps,
+  type ProgressLabelProps,
+  type ProgressRootProps,
+  type ProgressTrackProps,
+  type ProgressValueProps,
+} from './components/display/Progress';
+export { Separator, type SeparatorProps } from './components/display/Separator';
 
 // input
+export {
+  Autocomplete,
+  type AutocompleteArrowProps,
+  type AutocompleteEmptyProps,
+  type AutocompleteGroupLabelProps,
+  type AutocompleteInputGroupProps,
+  type AutocompleteInputProps,
+  type AutocompleteItemProps,
+  type AutocompletePopupProps,
+} from './components/input/Autocomplete';
 export { Button, type ButtonProps } from './components/input/Button';
 export { ButtonState, type ButtonStateProps } from './components/input/ButtonState';
 export {
@@ -10,6 +43,17 @@ export {
   type CheckboxRootProps,
 } from './components/input/Checkbox';
 export { CheckboxGroup, type CheckboxGroupProps } from './components/input/CheckboxGroup';
+export {
+  Combobox,
+  type ComboboxArrowProps,
+  type ComboboxEmptyProps,
+  type ComboboxGroupLabelProps,
+  type ComboboxInputGroupProps,
+  type ComboboxInputProps,
+  type ComboboxItemProps,
+  type ComboboxLabelProps,
+  type ComboboxPopupProps,
+} from './components/input/Combobox';
 export {
   Field,
   type FieldDescriptionProps,
@@ -31,6 +75,12 @@ export {
   type NumberFieldIncrementProps,
   type NumberFieldInputProps,
 } from './components/input/NumberField';
+export {
+  OtpField,
+  type OtpFieldInputProps,
+  type OtpFieldRootProps,
+  type OtpFieldSeparatorProps,
+} from './components/input/OtpField';
 export { Pressable, type PressableProps } from './components/input/Pressable';
 export {
   Radio,
@@ -69,8 +119,20 @@ export {
 // layout
 export { Accordion, type AccordionItemProps } from './components/layout/Accordion';
 export { Card, type CardProps } from './components/layout/Card';
+export {
+  Collapsible,
+  type CollapsiblePanelProps,
+  type CollapsibleRootProps,
+} from './components/layout/Collapsible';
 export { Flex, type FlexProps } from './components/layout/Flex';
 export { Grid, type GridProps } from './components/layout/Grid';
+export {
+  ScrollArea,
+  type ScrollAreaRootProps,
+  type ScrollAreaScrollbarProps,
+  type ScrollAreaThumbProps,
+  type ScrollAreaViewportProps,
+} from './components/layout/ScrollArea';
 
 // navigation
 export { Menubar, type MenubarProps } from './components/navigation/Menubar';
@@ -157,6 +219,11 @@ export {
   type PopoverPopupProps,
   type PopoverTitleProps,
 } from './components/overlays/Popover';
+export {
+  PreviewCard,
+  type PreviewCardArrowProps,
+  type PreviewCardPopupProps,
+} from './components/overlays/PreviewCard';
 export {
   Toast,
   type ToastDescriptionProps,
