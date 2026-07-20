@@ -1,106 +1,54 @@
-import { Switch } from '@base-ui/react/switch';
+import { Toggle as BaseToggle } from '@base-ui/react/toggle';
 import * as stylex from '@stylexjs/stylex';
-import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
-import { useState } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
-import { size } from '../../../tokens/size.stylex';
+import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
-type ToggleSize = 'sm' | 'md';
-
 export interface ToggleProps
-  extends Omit<ComponentPropsWithoutRef<typeof Switch.Root>, 'style'>,
+  extends Omit<ComponentPropsWithoutRef<typeof BaseToggle>, 'style'>,
     BaseProps {
   ref?: Ref<HTMLButtonElement>;
-  size?: ToggleSize;
 }
 
-const rootStyles = stylex.create({
+const styles = stylex.create({
   base: {
-    position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',
-    borderRadius: radii.full,
-    cursor: 'pointer',
+    justifyContent: 'center',
+    gap: spacing.s4,
+    paddingInline: spacing.s8,
+    paddingBlock: spacing.s4,
+    borderRadius: radii.r8,
+    color: colors.foregroundSecondary,
+    backgroundColor: 'transparent',
     borderWidth: 0,
+    cursor: 'pointer',
     outline: 'none',
-    padding: size.s2,
-    backgroundColor: colors.lighten12,
-    transition: 'background-color 0.2s',
+    transition: 'background-color 0.1s, color 0.1s',
+    ':hover': {
+      backgroundColor: colors.lighten4,
+      color: colors.foregroundPrimary,
+    },
     ':disabled': {
       opacity: 0.5,
-      cursor: 'not-allowed',
+      pointerEvents: 'none',
     },
   },
-  checked: {
-    backgroundColor: colors.foregroundPrimary,
-  },
-  sm: {
-    width: '2.25rem',
-    height: '1.25rem',
-  },
-  md: {
-    width: '2.75rem',
-    height: '1.5rem',
+  pressed: {
+    backgroundColor: colors.lighten8,
+    color: colors.foregroundPrimary,
   },
 });
 
-const thumbStyles = stylex.create({
-  base: {
-    display: 'block',
-    borderRadius: radii.full,
-    backgroundColor: colors.background,
-  },
-  sm: {
-    width: '0.875rem',
-    height: '0.875rem',
-  },
-  md: {
-    width: '1.125rem',
-    height: '1.125rem',
-  },
-});
-
-export function Toggle({
-  size = 'md',
-  checked: checkedProp,
-  defaultChecked = false,
-  onCheckedChange,
-  style,
-  ref,
-  ...props
-}: ToggleProps) {
-  const [internalChecked, setInternalChecked] = useState(defaultChecked);
-  const checked = checkedProp ?? internalChecked;
-
+export function Toggle({ style, ref, ...props }: ToggleProps) {
   return (
-    <Switch.Root
+    <BaseToggle
       ref={ref}
-      checked={checked}
-      onCheckedChange={(value, event) => {
-        setInternalChecked(value);
-        onCheckedChange?.(value, event);
-      }}
-      {...stylex.props(
-        rootStyles.base,
-        rootStyles[size],
-        checked && rootStyles.checked,
-        ...styleArray(style),
-      )}
+      {...stylex.props(styles.base, props.pressed && styles.pressed, ...styleArray(style))}
       {...props}
-    >
-      <Switch.Thumb
-        render={
-          <motion.span
-            layout
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            {...stylex.props(thumbStyles.base, thumbStyles[size])}
-          />
-        }
-      />
-    </Switch.Root>
+    />
   );
 }

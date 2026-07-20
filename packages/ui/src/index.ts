@@ -109,6 +109,7 @@ export {
   type SliderTrackProps,
   type SliderValueProps,
 } from './components/input/Slider';
+export { Switch, type SwitchProps } from './components/input/Switch';
 export { Toggle, type ToggleProps } from './components/input/Toggle';
 export {
   ToggleGroup,
