@@ -134,7 +134,6 @@ export {
   type ScrollAreaThumbProps,
   type ScrollAreaViewportProps,
 } from './components/layout/ScrollArea';
-
 // navigation
 export { Menubar, type MenubarProps } from './components/navigation/Menubar';
 export {
@@ -169,7 +168,6 @@ export {
   type ToolbarRootProps,
   type ToolbarSeparatorProps,
 } from './components/navigation/Toolbar';
-
 // overlays
 export {
   AlertDialog,
@@ -237,13 +235,16 @@ export {
   type TooltipArrowProps,
   type TooltipPopupProps,
 } from './components/overlays/Tooltip';
+// providers
+export { SurfaceLevel, type SurfaceLevelProps } from './components/providers/SurfaceLevel';
 // typography
 export { Text, type TextProps } from './components/typography/Text';
-// tokens
-export { breakpoints } from './tokens/breakpoints.stylex';
 // hooks
 export { useActiveSection } from './hooks/useActiveSection';
+export { useSurface } from './hooks/useSurface';
 export { borders } from './tokens/borders.stylex';
+// tokens
+export { breakpoints } from './tokens/breakpoints.stylex';
 export { elementSize } from './tokens/elementSize.stylex';
 export { radii } from './tokens/radii.stylex';
 export { size } from './tokens/size.stylex';
