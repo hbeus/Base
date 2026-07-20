@@ -6,8 +6,8 @@ import {
   HIGHLIGHT_CONFIG,
   OPACITY_CONFIG,
   PRIMARY_BUTTON_CONFIG,
-  STATE_CONFIG,
   type Schemes,
+  STATE_CONFIG,
   type ThemeConfig,
   type ThemeMode,
 } from './theme-config';

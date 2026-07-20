@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import { useRef } from 'react';
-import { INPUT_FOCUS_SCALE, INPUT_SCALE_DOWN } from '../../../constants/motion';
+import { INPUT_SCALE_DOWN, INPUT_SCALE_FOCUS } from '../../../constants/motion';
 import { radii } from '../../../tokens/radii.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
@@ -236,7 +236,7 @@ export const Pressable = function Pressable({
       aria-disabled={disabled || undefined}
       onKeyDown={handleKeyDown}
       whileTap={disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
-      whileFocus={disabled ? undefined : { scale: INPUT_FOCUS_SCALE }}
+      whileFocus={disabled ? undefined : { scale: INPUT_SCALE_FOCUS }}
       transition={{ duration: 0.15, ease: 'easeOut' }}
       {...stylex.props(
         styles.base,

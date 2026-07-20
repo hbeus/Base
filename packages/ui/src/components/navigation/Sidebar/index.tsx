@@ -1,6 +1,5 @@
 import * as stylex from '@stylexjs/stylex';
 import { createContext, type ReactNode, type Ref, useContext, useState } from 'react';
-import { breakpoints } from '../../../constants/breakpoints';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -43,7 +42,7 @@ const rootStyles = stylex.create({
     position: 'fixed',
     display: {
       default: 'flex',
-      [`@media (max-width: ${breakpoints.md}px)`]: 'none',
+      '@media (max-width: 768px)': 'none',
     },
     justifyContent: 'center',
     flexDirection: 'column',

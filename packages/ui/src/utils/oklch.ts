@@ -35,11 +35,7 @@ export function maxChroma(L: number, H: number): number {
   return lo;
 }
 
-export function harmonizeHue(
-  hue: number,
-  target: number,
-  factor: number,
-): number {
+export function harmonizeHue(hue: number, target: number, factor: number): number {
   let d = target - hue;
   if (d > 180) d -= 360;
   if (d < -180) d += 360;
