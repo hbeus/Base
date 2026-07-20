@@ -1,18 +1,8 @@
-import {
-  Accordion,
-  Button,
-  Card,
-  Dialog,
-  Flex,
-  Input,
-  Pressable,
-  Text,
-  Toggle,
-} from '@base/ui';
-import { colors } from '@base/ui/tokens/themes.stylex';
+import { Accordion, Button, Card, Dialog, Flex, Input, Pressable, Switch, Text } from '@base/ui';
 import { elementSize } from '@base/ui/tokens/elementSize.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
@@ -396,7 +386,9 @@ function ButtonSection() {
           Rounded
         </Text>
         <div {...stylex.props(styles.preview)}>
-          <Button variant='accent' rounded>Accent</Button>
+          <Button variant='accent' rounded>
+            Accent
+          </Button>
           <Button rounded>Primary</Button>
           <Button variant='ghost' rounded>
             Ghost
@@ -409,7 +401,9 @@ function ButtonSection() {
           Fill
         </Text>
         <div {...stylex.props(styles.preview)}>
-          <Button variant='accent' fill>Accent Fill</Button>
+          <Button variant='accent' fill>
+            Accent Fill
+          </Button>
           <Button fill>Primary Fill</Button>
         </div>
       </div>
@@ -419,7 +413,9 @@ function ButtonSection() {
           Disabled
         </Text>
         <div {...stylex.props(styles.preview)}>
-          <Button variant='accent' disabled>Accent</Button>
+          <Button variant='accent' disabled>
+            Accent
+          </Button>
           <Button disabled>Primary</Button>
           <Button variant='ghost' disabled>
             Ghost
@@ -467,7 +463,7 @@ function ToggleSection() {
   return (
     <section {...stylex.props(styles.section)}>
       <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Toggle
+        Switch
       </Text>
 
       <div {...stylex.props(styles.subsection)}>
@@ -477,11 +473,11 @@ function ToggleSection() {
         <div {...stylex.props(styles.previewColumn)}>
           <div {...stylex.props(styles.toggleRow)}>
             <Text size='bodySm'>Small</Text>
-            <Toggle size='sm' checked={checked} onCheckedChange={setChecked} />
+            <Switch size='sm' checked={checked} onCheckedChange={setChecked} />
           </div>
           <div {...stylex.props(styles.toggleRow)}>
             <Text size='bodySm'>Medium</Text>
-            <Toggle size='md' checked={checked} onCheckedChange={setChecked} />
+            <Switch size='md' checked={checked} onCheckedChange={setChecked} />
           </div>
         </div>
       </div>
@@ -493,11 +489,11 @@ function ToggleSection() {
         <div {...stylex.props(styles.previewColumn)}>
           <div {...stylex.props(styles.toggleRow)}>
             <Text size='bodySm'>Disabled off</Text>
-            <Toggle disabled checked={false} onCheckedChange={() => {}} />
+            <Switch disabled checked={false} onCheckedChange={() => {}} />
           </div>
           <div {...stylex.props(styles.toggleRow)}>
             <Text size='bodySm'>Disabled on</Text>
-            <Toggle disabled checked onCheckedChange={() => {}} />
+            <Switch disabled checked onCheckedChange={() => {}} />
           </div>
         </div>
       </div>

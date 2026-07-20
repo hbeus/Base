@@ -12,17 +12,53 @@ export const Route = createFileRoute('/showcase/')({
 });
 
 const components = [
-  { id: 'accordion', label: 'Accordion', description: 'Collapsible sections with animated reveal' },
+  { id: 'buttons', label: 'Button', description: 'Primary, ghost, and accent variants with sizes' },
   {
-    id: 'buttons',
-    label: 'Buttons',
-    description: 'Primary, secondary, ghost, and destructive variants',
+    id: 'button-states',
+    label: 'Button States',
+    description: 'Positive, negative, and neutral state indicators',
   },
-  { id: 'button-states', label: 'Button States', description: 'Positive and negative states' },
-  { id: 'inputs', label: 'Inputs', description: 'Text inputs with size variants' },
+  { id: 'inputs', label: 'Input', description: 'Text inputs with size variants' },
+  { id: 'checkbox', label: 'Checkbox', description: 'Checkbox with animated indicator and group' },
+  { id: 'radio', label: 'Radio', description: 'Radio group with spring-animated indicator' },
+  { id: 'select', label: 'Select', description: 'Dropdown select with animated popup' },
+  { id: 'slider', label: 'Slider', description: 'Range slider with label and value output' },
+  {
+    id: 'number-field',
+    label: 'Number Field',
+    description: 'Numeric input with increment/decrement',
+  },
+  { id: 'switch', label: 'Switch', description: 'Toggle switch with spring-animated thumb' },
+  { id: 'toggle', label: 'Toggle', description: 'Pressable two-state toggle button' },
+  {
+    id: 'toggle-group',
+    label: 'Toggle Group',
+    description: 'Segmented control with size variants',
+  },
+  { id: 'otp-field', label: 'OTP Field', description: 'One-time password input field' },
+  { id: 'accordion', label: 'Accordion', description: 'Collapsible sections with animated reveal' },
+  { id: 'collapsible', label: 'Collapsible', description: 'Single collapsible section' },
+  { id: 'tabs', label: 'Tabs', description: 'Tabbed content with animated indicator' },
+  { id: 'toolbar', label: 'Toolbar', description: 'Grouped action buttons with separators' },
+  { id: 'separator', label: 'Separator', description: 'Horizontal and vertical dividers' },
   { id: 'dialog', label: 'Dialog', description: 'Modal dialog with compound component pattern' },
-  { id: 'toggle', label: 'Toggle', description: 'Switch control with spring animation' },
-  { id: 'themes', label: 'Themes', description: 'OKLCH-generated color themes with relative chroma' },
+  {
+    id: 'alert-dialog',
+    label: 'Alert Dialog',
+    description: 'Confirmation dialog for destructive actions',
+  },
+  { id: 'drawer', label: 'Drawer', description: 'Side panel overlay' },
+  { id: 'popover', label: 'Popover', description: 'Positioned popup with arrow' },
+  { id: 'tooltip', label: 'Tooltip', description: 'Hover-triggered informational popup' },
+  { id: 'menu', label: 'Menu', description: 'Dropdown menu with items and separators' },
+  { id: 'avatar', label: 'Avatar', description: 'User avatar with sizes and fallback' },
+  { id: 'progress', label: 'Progress', description: 'Progress bar with label' },
+  { id: 'meter', label: 'Meter', description: 'Meter gauge for measured values' },
+  {
+    id: 'themes',
+    label: 'Themes',
+    description: 'OKLCH-generated color themes with relative chroma',
+  },
 ];
 
 const styles = stylex.create({

@@ -1,17 +1,7 @@
-import {
-  Accordion,
-  Button,
-  Card,
-  Dialog,
-  Flex,
-  Input,
-  Pressable,
-  Text,
-  Toggle,
-} from '@base/ui';
-import { colors } from '@base/ui/tokens/themes.stylex';
+import { Accordion, Button, Card, Dialog, Flex, Input, Pressable, Switch, Text } from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { colors } from '@base/ui/tokens/themes.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
 import {
@@ -317,7 +307,8 @@ function HeroSection() {
         Build better products with less complexity
       </Text>
       <Text as='p' size='title' color='secondary' weight='regular' style={styles.heroSubtitle}>
-        A modern toolkit for teams who care about craft. Ship faster without compromising on quality.
+        A modern toolkit for teams who care about craft. Ship faster without compromising on
+        quality.
       </Text>
       <Flex direction='row' gap='s12' align='center'>
         <Button variant='accent' size='lg' rounded>
@@ -687,7 +678,13 @@ function SettingsSection() {
 
       <Flex direction='column' gap='s32'>
         <Card variant='outline' padding='lg' gap='s4'>
-          <Text size='label' weight='medium' color='secondary' uppercase style={styles.settingsLabel}>
+          <Text
+            size='label'
+            weight='medium'
+            color='secondary'
+            uppercase
+            style={styles.settingsLabel}
+          >
             Profile
           </Text>
           <div {...stylex.props(styles.contactForm)}>
@@ -715,13 +712,21 @@ function SettingsSection() {
               <Button variant='ghost' size='sm'>
                 Cancel
               </Button>
-              <Button variant='accent' size='sm'>Save changes</Button>
+              <Button variant='accent' size='sm'>
+                Save changes
+              </Button>
             </Flex>
           </div>
         </Card>
 
         <Card variant='outline' padding='lg' gap='s4'>
-          <Text size='label' weight='medium' color='secondary' uppercase style={styles.settingsLabel}>
+          <Text
+            size='label'
+            weight='medium'
+            color='secondary'
+            uppercase
+            style={styles.settingsLabel}
+          >
             Notifications
           </Text>
           <div {...stylex.props(styles.settingsRow)}>
@@ -733,7 +738,7 @@ function SettingsSection() {
                 Receive updates about your projects via email
               </Text>
             </Flex>
-            <Toggle checked={emailNotifs} onCheckedChange={setEmailNotifs} />
+            <Switch checked={emailNotifs} onCheckedChange={setEmailNotifs} />
           </div>
           <div {...stylex.props(styles.settingsRow)}>
             <Flex direction='column' gap='s2'>
@@ -744,7 +749,7 @@ function SettingsSection() {
                 Get notified in your browser
               </Text>
             </Flex>
-            <Toggle checked={pushNotifs} onCheckedChange={setPushNotifs} />
+            <Switch checked={pushNotifs} onCheckedChange={setPushNotifs} />
           </div>
           <div {...stylex.props(styles.settingsRow, styles.settingsRowLast)}>
             <Flex direction='column' gap='s2'>
@@ -755,12 +760,18 @@ function SettingsSection() {
                 Help us improve by sharing anonymous usage data
               </Text>
             </Flex>
-            <Toggle size='sm' checked={analytics} onCheckedChange={setAnalytics} />
+            <Switch size='sm' checked={analytics} onCheckedChange={setAnalytics} />
           </div>
         </Card>
 
         <Card variant='outline' padding='lg' gap='s4'>
-          <Text size='label' weight='medium' color='secondary' uppercase style={styles.settingsLabel}>
+          <Text
+            size='label'
+            weight='medium'
+            color='secondary'
+            uppercase
+            style={styles.settingsLabel}
+          >
             Security
           </Text>
           <div {...stylex.props(styles.settingsRow)}>
@@ -772,7 +783,7 @@ function SettingsSection() {
                 Add an extra layer of security to your account
               </Text>
             </Flex>
-            <Toggle checked={twoFactor} onCheckedChange={setTwoFactor} />
+            <Switch checked={twoFactor} onCheckedChange={setTwoFactor} />
           </div>
           <div {...stylex.props(styles.settingsRow, styles.settingsRowLast)}>
             <Flex direction='column' gap='s2'>
@@ -783,7 +794,7 @@ function SettingsSection() {
                 Use dark theme across the application
               </Text>
             </Flex>
-            <Toggle checked={darkMode} onCheckedChange={setDarkMode} />
+            <Switch checked={darkMode} onCheckedChange={setDarkMode} />
           </div>
         </Card>
 
@@ -797,7 +808,7 @@ function SettingsSection() {
                 Permanently delete your account and all associated data
               </Text>
             </Flex>
-            <Button variant='destructive' size='sm'>
+            <Button variant='ghost' size='sm'>
               Delete
             </Button>
           </Flex>
@@ -898,8 +909,9 @@ function FAQSection() {
         </Accordion.Item>
         <Accordion.Item trigger='Can I switch plans at any time?'>
           <Text weight='regular' color='secondary'>
-            Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately,
-            and we prorate billing for the remainder of your cycle. No lock-in, no penalties.
+            Yes, you can upgrade or downgrade your plan at any time. Changes take effect
+            immediately, and we prorate billing for the remainder of your cycle. No lock-in, no
+            penalties.
           </Text>
         </Accordion.Item>
         <Accordion.Item trigger='What kind of support do you offer?'>
