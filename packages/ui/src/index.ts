@@ -240,7 +240,7 @@ export {
 // typography
 export { Text, type TextProps } from './components/typography/Text';
 // tokens
-export { type Breakpoint, breakpoints } from './constants/breakpoints';
+export { breakpoints } from './tokens/breakpoints.stylex';
 // hooks
 export { useActiveSection } from './hooks/useActiveSection';
 export { borders } from './tokens/borders.stylex';
