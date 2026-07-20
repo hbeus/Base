@@ -1,11 +1,10 @@
 import { type ReactNode, useContext } from 'react';
-
-import { SurfaceContext } from '../../../contexts/SurfaceContext';
 import {
   SURFACE_MAX,
   SURFACE_STEP,
+  SurfaceContext,
   type SurfaceLevel as SurfaceLevelType,
-} from '../../../tokens/surface.stylex';
+} from '../../../contexts/SurfaceContext';
 
 export interface SurfaceLevelProps {
   level?: SurfaceLevelType;

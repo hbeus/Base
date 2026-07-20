@@ -153,7 +153,7 @@ const swatchColors = stylex.create({
   highlightForeground: { backgroundColor: colors.highlightForeground },
   statePositive: { backgroundColor: colors.statePositive },
   stateNegative: { backgroundColor: colors.stateNegative },
-  surfaceRaised: { backgroundColor: colors.surfaceRaised },
+  surface300: { backgroundColor: colors.surface300 },
   focusOutline: { backgroundColor: colors.focusOutline },
   lighten4: { backgroundColor: colors.lighten4 },
   lighten6: { backgroundColor: colors.lighten6 },
@@ -260,7 +260,7 @@ function ColorTokensSection() {
         </Text>
         <div {...stylex.props(styles.swatchGrid)}>
           <Swatch name='background' colorStyle={swatchColors.background} />
-          <Swatch name='surfaceRaised' colorStyle={swatchColors.surfaceRaised} />
+          <Swatch name='surface300' colorStyle={swatchColors.surface300} />
           <Swatch name='border' colorStyle={swatchColors.border} />
           <Swatch name='highlight' colorStyle={swatchColors.highlight} />
           <Swatch name='highlightFg' colorStyle={swatchColors.highlightForeground} />

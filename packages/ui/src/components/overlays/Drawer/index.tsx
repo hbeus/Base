@@ -81,7 +81,7 @@ const popupStyles = stylex.create({
   base: {
     position: 'fixed',
     zIndex: 51,
-    backgroundColor: colors.surfaceRaised,
+    backgroundColor: colors.surface300,
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,

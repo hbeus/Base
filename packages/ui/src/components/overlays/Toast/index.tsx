@@ -55,7 +55,7 @@ export interface ToastRootProps
 
 const rootStyles = stylex.create({
   base: {
-    backgroundColor: colors.surfaceRaised,
+    backgroundColor: colors.surface300,
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,

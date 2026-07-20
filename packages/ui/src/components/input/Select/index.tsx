@@ -128,7 +128,7 @@ export interface SelectPopupProps
 
 const popupStyles = stylex.create({
   base: {
-    backgroundColor: colors.surfaceRaised,
+    backgroundColor: colors.surface300,
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
@@ -270,7 +270,7 @@ export interface SelectArrowProps
 
 const arrowStyles = stylex.create({
   base: {
-    fill: colors.surfaceRaised,
+    fill: colors.surface300,
     stroke: colors.border,
     strokeWidth: borders.default,
   },

@@ -26,7 +26,7 @@ const rootStyles = stylex.create({
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r12,
-    backgroundColor: colors.surfaceRaised,
+    backgroundColor: colors.surface300,
   },
 });
 

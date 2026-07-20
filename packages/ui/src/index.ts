@@ -239,6 +239,7 @@ export {
 export { SurfaceLevel, type SurfaceLevelProps } from './components/providers/SurfaceLevel';
 // typography
 export { Text, type TextProps } from './components/typography/Text';
+export type { SurfaceLevel as SurfaceLevelValue } from './contexts/SurfaceContext';
 // hooks
 export { useActiveSection } from './hooks/useActiveSection';
 export { useSurface } from './hooks/useSurface';

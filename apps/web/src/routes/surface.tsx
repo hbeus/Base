@@ -1,16 +1,10 @@
-import { SurfaceLevel, Text, useSurface } from '@base/ui';
+import { SurfaceLevel, type SurfaceLevelValue, Text, useSurface } from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
-import {
-  type SurfaceLevel as SurfaceLevelType,
-  surfaceLight,
-} from '@base/ui/tokens/surface.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
-
-import { useTheme } from '~/providers/ThemeProvider';
 
 export const Route = createFileRoute('/surface')({
   component: SurfacePage,
@@ -92,7 +86,7 @@ function SurfaceBox({ label, children }: { label: string; children?: ReactNode }
   );
 }
 
-function SurfaceGridItem({ level }: { level: SurfaceLevelType }) {
+function SurfaceGridItem({ level }: { level: SurfaceLevelValue }) {
   return (
     <SurfaceLevel level={level}>
       <SurfaceGridItemInner level={level} />
@@ -100,7 +94,7 @@ function SurfaceGridItem({ level }: { level: SurfaceLevelType }) {
   );
 }
 
-function SurfaceGridItemInner({ level }: { level: SurfaceLevelType }) {
+function SurfaceGridItemInner({ level }: { level: SurfaceLevelValue }) {
   const bg = useSurface();
   return (
     <div {...stylex.props(bg, styles.gridItem)}>
@@ -113,10 +107,8 @@ function SurfaceGridItemInner({ level }: { level: SurfaceLevelType }) {
 }
 
 function SurfacePage() {
-  const { colorScheme } = useTheme();
-
   return (
-    <div {...stylex.props(styles.page, colorScheme === 'light' && surfaceLight)}>
+    <div {...stylex.props(styles.page)}>
       <div {...stylex.props(styles.header)}>
         <Text as='h1' size='headline' weight='bold' style={styles.headerTitle}>
           Surface Levels

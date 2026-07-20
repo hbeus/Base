@@ -86,7 +86,7 @@ const contentStyles = stylex.create({
     top: '50%',
     left: '50%',
     zIndex: 51,
-    backgroundColor: colors.surfaceRaised,
+    backgroundColor: colors.surface300,
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
