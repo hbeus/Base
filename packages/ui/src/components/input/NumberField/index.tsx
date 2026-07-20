@@ -1,9 +1,9 @@
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
+import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
-import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
@@ -52,7 +52,7 @@ export interface NumberFieldInputProps
 const inputStyles = stylex.create({
   base: {
     width: '100%',
-    borderWidth: size.s1,
+    borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
     backgroundColor: 'transparent',
@@ -114,7 +114,7 @@ const buttonStyles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: spacing.s32,
-    borderWidth: size.s1,
+    borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
     backgroundColor: 'transparent',

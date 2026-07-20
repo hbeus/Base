@@ -2,9 +2,9 @@ import { Select as BaseSelect } from '@base-ui/react/select';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
+import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
-import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
@@ -33,7 +33,7 @@ const triggerStyles = stylex.create({
     justifyContent: 'space-between',
     gap: spacing.s8,
     width: '100%',
-    borderWidth: size.s1,
+    borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
     backgroundColor: 'transparent',
@@ -129,7 +129,7 @@ export interface SelectPopupProps
 const popupStyles = stylex.create({
   base: {
     backgroundColor: colors.surfaceRaised,
-    borderWidth: size.s1,
+    borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r12,
@@ -272,7 +272,7 @@ const arrowStyles = stylex.create({
   base: {
     fill: colors.surfaceRaised,
     stroke: colors.border,
-    strokeWidth: size.s1,
+    strokeWidth: borders.default,
   },
 });
 
@@ -295,7 +295,7 @@ export interface SelectSeparatorProps
 
 const separatorStyles = stylex.create({
   base: {
-    height: size.s1,
+    height: borders.default,
     backgroundColor: colors.border,
     marginBlock: spacing.s4,
   },

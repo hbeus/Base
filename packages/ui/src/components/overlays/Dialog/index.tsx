@@ -2,8 +2,8 @@ import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
+import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
-import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
@@ -80,7 +80,7 @@ const contentStyles = stylex.create({
     left: '50%',
     zIndex: 51,
     backgroundColor: colors.surfaceRaised,
-    borderWidth: size.s1,
+    borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r12,

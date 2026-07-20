@@ -175,6 +175,7 @@ export { Text, type TextProps } from './components/typography/Text';
 export { type Breakpoint, breakpoints } from './constants/breakpoints';
 // hooks
 export { useActiveSection } from './hooks/useActiveSection';
+export { borders } from './tokens/borders.stylex';
 export { elementSize } from './tokens/elementSize.stylex';
 export { radii } from './tokens/radii.stylex';
 export { size } from './tokens/size.stylex';

@@ -1,6 +1,7 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
+import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -41,7 +42,7 @@ const listStyles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     gap: spacing.s4,
-    borderBottomWidth: size.s1,
+    borderBottomWidth: borders.default,
     borderBottomStyle: 'solid',
     borderBottomColor: colors.border,
   },
@@ -80,7 +81,7 @@ const tabStyles = stylex.create({
     cursor: 'pointer',
     outline: 'none',
     transition: 'color 0.15s, border-color 0.15s',
-    marginBottom: '-1px',
+    marginBottom: size.n1,
     ':hover': {
       color: colors.foregroundPrimary,
     },
@@ -103,7 +104,7 @@ export interface TabsIndicatorProps
 const indicatorStyles = stylex.create({
   base: {
     position: 'absolute',
-    bottom: '-1px',
+    bottom: size.n1,
     height: size.s2,
     backgroundColor: colors.foregroundPrimary,
     borderRadius: radii.full,

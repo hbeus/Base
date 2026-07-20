@@ -1,8 +1,8 @@
 import { Menubar as BaseMenubar } from '@base-ui/react/menubar';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentPropsWithoutRef, Ref } from 'react';
+import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
-import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
@@ -20,7 +20,7 @@ const styles = stylex.create({
     alignItems: 'center',
     gap: spacing.s4,
     padding: spacing.s4,
-    borderWidth: size.s1,
+    borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r12,

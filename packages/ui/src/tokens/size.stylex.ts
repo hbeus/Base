@@ -1,6 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
 
 export const size = stylex.defineVars({
+  n2: '-0.125rem',
+  n1: '-0.0625rem',
   s1: '0.0625rem',
   s2: '0.125rem',
   s4: '0.25rem',
