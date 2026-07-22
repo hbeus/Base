@@ -4,7 +4,12 @@
 
 TanStack Start (SSR/Nitro) + TanStack Router (folder-based) + React Query · StyleX · Base UI (`@base-ui/react`) · motion.dev (`motion/react`) · Zustand · Drizzle ORM + PostgreSQL (pgvector) · Tabler Icons (`@tabler/icons-react`) · Biome · Vitest · Node 22, pnpm 11
 
-Component library: `@base/ui` (Base UI + StyleX + motion). Optional 3D: `@base/canvas` (R3F + drei + DialKit).
+Component library: `@base/ui` (Base UI + StyleX + motion). Shared providers: `@base/shared` (ThemeProvider, MotionProvider, QueryProvider, theme server fn, global CSS). Optional 3D: `@base/canvas` (R3F + drei + DialKit).
+
+## Apps
+
+- **`apps/web`** (port 3000) — App template/scaffolding with data fetching patterns, route structure, server functions
+- **`apps/docs`** (port 3001) — UI component documentation site for `@base/ui`. File-tree sidebar, individual route per component. Public deployment at `base.beus.dev`
 
 ## Design rules
 
@@ -19,6 +24,7 @@ Component library: `@base/ui` (Base UI + StyleX + motion). Optional 3D: `@base/c
 - **Agent guide**: see `packages/ui/AGENTS.md` (or `CLAUDE.md`) for @base/ui structure and key decisions
 - **motion.dev**: use `/motion` skill or motion MCP — do not rely on training data for motion APIs
 - **Figma**: invoke `/figma-use` skill before calling `use_figma`
+- **Dev servers**: `pnpm dev` (both apps), `pnpm dev:app` (web only, port 3000), `pnpm dev:docs` (docs only, port 3001)
 - **Deploy**: Dokploy MCP, or push to `main` (auto-deploys). Host: Hetzner VPS (`ssh hetzner`), Traefik proxy
 - **Local Postgres**: `docker compose -f docker-compose.dev.yml up -d`
 - **DB migrations**: `pnpm db:generate` then `pnpm db:migrate`. Studio: `pnpm db:studio`
