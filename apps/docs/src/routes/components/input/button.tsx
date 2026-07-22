@@ -10,6 +10,7 @@ import ButtonHero from '~/examples/button/hero';
 import ButtonRounded from '~/examples/button/rounded';
 import ButtonSizes from '~/examples/button/sizes';
 import ButtonVariants from '~/examples/button/variants';
+import ButtonWithIcon from '~/examples/button/with-icon';
 import { highlightCode } from '~/lib/highlight';
 import { docStyles } from '~/styles/docs';
 
@@ -19,10 +20,11 @@ import heroRaw from '~/examples/button/hero.tsx?raw';
 import roundedRaw from '~/examples/button/rounded.tsx?raw';
 import sizesRaw from '~/examples/button/sizes.tsx?raw';
 import variantsRaw from '~/examples/button/variants.tsx?raw';
+import withIconRaw from '~/examples/button/with-icon.tsx?raw';
 
 export const Route = createFileRoute('/components/input/button')({
   loader: async () => {
-    const sources = { heroRaw, variantsRaw, sizesRaw, roundedRaw, fullWidthRaw, disabledRaw };
+    const sources = { heroRaw, variantsRaw, sizesRaw, withIconRaw, roundedRaw, fullWidthRaw, disabledRaw };
     const entries = await Promise.all(
       Object.entries(sources).map(async ([key, code]) => {
         const html = await highlightCode({ data: { code } });
@@ -44,7 +46,9 @@ function PageComponent() {
           Button
         </Text>
         <Text as='p' size='bodySm' color='secondary'>
-          A button with variant and size props, powered by Base UI and motion.dev.
+          Wraps Base UI Button with variant and size styling, plus a subtle
+          scale-down tap animation via motion.dev. Accepts icons as children
+          alongside text.
         </Text>
       </header>
 
@@ -71,6 +75,14 @@ function PageComponent() {
         rawCode={sizesRaw}
       >
         <ButtonSizes />
+      </ComponentExample>
+
+      <ComponentExample
+        title='With Icon'
+        code={highlighted.withIconRaw}
+        rawCode={withIconRaw}
+      >
+        <ButtonWithIcon />
       </ComponentExample>
 
       <ComponentExample
