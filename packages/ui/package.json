@@ -12,6 +12,9 @@
     "./layout/*": "./src/components/layout/*/index.tsx",
     "./typography/*": "./src/components/typography/*/index.tsx",
     "./overlays/*": "./src/components/overlays/*/index.tsx",
+    "./navigation/*": "./src/components/navigation/*/index.tsx",
+    "./display/*": "./src/components/display/*/index.tsx",
+    "./providers/*": "./src/components/providers/*/index.tsx",
     "./alpha/*": "./src/components/alpha/*/index.tsx",
     "./tokens/*.stylex": "./src/tokens/*.stylex.ts"
   },

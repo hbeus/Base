@@ -168,6 +168,12 @@ export {
   type ToolbarRootProps,
   type ToolbarSeparatorProps,
 } from './components/navigation/Toolbar';
+export {
+  TreeView,
+  type TreeViewGroupProps,
+  type TreeViewItemProps,
+  type TreeViewRootProps,
+} from './components/navigation/TreeView';
 // overlays
 export {
   AlertDialog,
