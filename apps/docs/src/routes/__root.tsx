@@ -236,8 +236,8 @@ function DocsSidebar() {
 
   return (
     <TreeView.Root activeHref={pathname}>
-      <TreeView.Group label='Components' defaultOpen>
-        <TreeView.Group label='Input' defaultOpen>
+      <TreeView.Group label='Components'>
+        <TreeView.Group label='Input'>
           <TreeView.Item href='/components/input/button' onClick={handleClick}>
             Button
           </TreeView.Item>
@@ -350,7 +350,7 @@ function DocsSidebar() {
           </TreeView.Item>
         </TreeView.Group>
       </TreeView.Group>
-      <TreeView.Group label='Tokens' defaultOpen>
+      <TreeView.Group label='Tokens'>
         <TreeView.Item href='/tokens/overview' onClick={handleClick}>
           Overview
         </TreeView.Item>
@@ -364,7 +364,7 @@ function DocsSidebar() {
           Surface
         </TreeView.Item>
       </TreeView.Group>
-      <TreeView.Group label='Guides' defaultOpen>
+      <TreeView.Group label='Guides'>
         <TreeView.Item href='/guides/theming' onClick={handleClick}>
           Theming
         </TreeView.Item>
