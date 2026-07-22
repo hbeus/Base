@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
 
+import { MotionProvider, QueryProvider, ThemeProvider, useTheme } from '@base/shared';
+import { getThemeFromCookie } from '@base/shared/server';
+import appCss from '@base/shared/styles/global.css?url';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import {
@@ -20,12 +23,6 @@ import {
   useRouterState,
 } from '@tanstack/react-router';
 import { useEffect } from 'react';
-
-import { MotionProvider } from '~/providers/MotionProvider';
-import { QueryProvider } from '~/providers/QueryProvider';
-import { ThemeProvider, useTheme } from '~/providers/ThemeProvider';
-import { getThemeFromCookie } from '~/server/theme';
-import appCss from '~/styles/global.css?url';
 
 export const Route = createRootRoute({
   beforeLoad: async () => {

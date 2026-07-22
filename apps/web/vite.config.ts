@@ -23,6 +23,7 @@ export default defineConfig({
       aliases: {
         '~/*': [path.resolve(__dirname, 'src', '*')],
         '@base/ui/*': [path.resolve(__dirname, '..', '..', 'packages', 'ui', 'src', '*')],
+        '@base/shared/*': [path.resolve(__dirname, '..', '..', 'packages', 'shared', 'src', '*')],
       },
     }),
     tanstackStart({
