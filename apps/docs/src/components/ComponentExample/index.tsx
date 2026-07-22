@@ -102,7 +102,9 @@ const styles = stylex.create({
     flexWrap: 'wrap',
     gap: spacing.s12,
     alignItems: 'center',
-    padding: spacing.s20,
+    justifyContent: 'center',
+    padding: spacing.s32,
+    minHeight: '200px',
   },
   toolbar: {
     display: 'flex',
