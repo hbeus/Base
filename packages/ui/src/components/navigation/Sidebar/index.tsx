@@ -1,4 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
+import { useMediaQuery } from '@uidotdev/usehooks';
+import { motion } from 'motion/react';
 import { createContext, type ReactNode, type Ref, useContext, useState } from 'react';
 import { breakpoints } from '../../../tokens/breakpoints.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -47,7 +49,10 @@ const rootStyles = stylex.create({
     },
     justifyContent: 'center',
     flexDirection: 'column',
-    gap: spacing.s4,
+    gap: {
+      default: spacing.s8,
+      [breakpoints.lg]: 0,
+    },
     top: 0,
     paddingBlock: spacing.s16,
     paddingInline: spacing.s16,
@@ -123,6 +128,8 @@ function Anchor({ id, href, children, style, ref }: SidebarAnchorProps) {
   const isActive = activeId === id;
   const [hovered, setHovered] = useState(false);
   const expanded = isActive || hovered;
+  const compact = useMediaQuery(breakpoints.lg.replace('@media ', ''));
+  const textVisible = !compact || hovered;
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const hash = href.startsWith('#') ? href.slice(1) : undefined;
@@ -157,7 +164,17 @@ function Anchor({ id, href, children, style, ref }: SidebarAnchorProps) {
         )}
       >
         <span {...stylex.props(anchorStyles.bar, expanded && anchorStyles.barActive)} />
-        <Text color='inherit'>{children}</Text>
+        <motion.span
+          initial={false}
+          animate={
+            textVisible ? { opacity: 1, filter: 'blur(0px)' } : { opacity: 0, filter: 'blur(2px)' }
+          }
+          transition={{ duration: 0.15 }}
+        >
+          <Text color='inherit' size={compact ? 'bodySm' : 'body'} tight>
+            {children}
+          </Text>
+        </motion.span>
       </a>
     </li>
   );

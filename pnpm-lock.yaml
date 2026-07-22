@@ -170,6 +170,9 @@ importers:
       '@tabler/icons-react':
         specifier: ^3.44.0
         version: 3.44.0(react@19.2.7)
+      '@uidotdev/usehooks':
+        specifier: ^2.4.1
+        version: 2.4.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       motion:
         specifier: ^12.42.0
         version: 12.42.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
