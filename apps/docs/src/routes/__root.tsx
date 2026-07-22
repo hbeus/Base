@@ -3,6 +3,7 @@
 import { MotionProvider, QueryProvider, ThemeProvider, useTheme } from '@base/shared';
 import { getThemeFromCookie } from '@base/shared/server';
 import appCss from '@base/shared/styles/global.css?url';
+import shikiCss from '~/styles/shiki.css?url';
 import { TreeView } from '@base/ui';
 import { breakpoints } from '@base/ui/tokens/breakpoints.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
@@ -46,6 +47,7 @@ export const Route = createRootRoute({
         crossOrigin: 'anonymous',
       },
       { rel: 'stylesheet', href: appCss },
+      { rel: 'stylesheet', href: shikiCss },
     ],
   }),
   component: RootComponent,

@@ -1,0 +1,34 @@
+import type { PropDef } from '~/components/PropsTable';
+
+export const buttonProps: PropDef[] = [
+  {
+    name: 'variant',
+    type: "'accent' | 'primary' | 'ghost' | 'inherit'",
+    default: "'primary'",
+    description: 'The visual style of the button.',
+  },
+  {
+    name: 'size',
+    type: "'xs' | 'sm' | 'md' | 'lg'",
+    default: "'md'",
+    description: 'Controls height, padding, and font size.',
+  },
+  {
+    name: 'rounded',
+    type: 'boolean',
+    default: 'false',
+    description: 'Applies full border-radius for a pill shape.',
+  },
+  {
+    name: 'fill',
+    type: 'boolean',
+    default: 'false',
+    description: 'Stretches the button to full container width.',
+  },
+  {
+    name: 'disabled',
+    type: 'boolean',
+    default: 'false',
+    description: 'Disables the button and reduces opacity.',
+  },
+];
