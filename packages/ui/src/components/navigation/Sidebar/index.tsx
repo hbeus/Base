@@ -137,14 +137,14 @@ function Anchor({ id, href, children, style, ref }: SidebarAnchorProps) {
 
     e.preventDefault();
 
-    if (onNavigate) {
-      onNavigate(hash);
-      return;
-    }
-
     const target = document.getElementById(hash);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    if (onNavigate) {
+      onNavigate(hash);
+    } else {
       history.replaceState(null, '', href);
     }
   };
