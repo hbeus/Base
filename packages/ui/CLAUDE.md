@@ -12,7 +12,7 @@ src/
     alpha/        Unstable — deep-import only, not in barrel
   tokens/         spacing, size, elementSize, colors, radii, typography
   types/          polymorphic.ts (read before creating polymorphic components)
-  utils/          styleArray, mergeProps, mergeRefs
+  utils/          styleArray, mergeRefs
 ```
 
 ## Key decisions

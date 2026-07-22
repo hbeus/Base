@@ -274,6 +274,5 @@ export type { BaseProps } from './types/BaseProps';
 export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic';
 
 // utils
-export { mergeProps } from './utils/mergeProps';
 export { mergeRefs } from './utils/mergeRefs';
 export { styleArray } from './utils/styleArray';
