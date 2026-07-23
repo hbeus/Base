@@ -33,3 +33,17 @@ Component library: `@base/ui` (Base UI + StyleX + motion). Shared providers: `@b
 
 - `minimumReleaseAge: 10080` in `pnpm-workspace.yaml` — 7-day minimum package age
 - Production env vars managed via Dokploy
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues at `hbeus/Base` via `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default label vocabulary. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout: `CONTEXT.md` + `docs/adr/` at repo root. See `docs/agents/domain.md`.
