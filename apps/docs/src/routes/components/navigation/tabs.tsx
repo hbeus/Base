@@ -8,6 +8,12 @@ export const Route = createFileRoute('/components/navigation/tabs')({
   component: PageComponent,
 });
 
+const styles = stylex.create({
+  overflowPreview: {
+    maxWidth: '20rem',
+  },
+});
+
 function PageComponent() {
   return (
     <>
@@ -173,6 +179,62 @@ function PageComponent() {
             <Tabs.Panel value='billing'>
               <Text size='bodySm' color='secondary'>
                 View your billing history and update payment methods.
+              </Text>
+            </Tabs.Panel>
+          </Tabs.Root>
+        </div>
+      </section>
+      <section {...stylex.props(docStyles.section)}>
+        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
+          Overflow
+        </Text>
+        <Text as='p' size='bodySm' color='secondary' style={docStyles.sectionTitle}>
+          When tabs don't fit, trailing items collapse into a More menu automatically.
+        </Text>
+        <div {...stylex.props(docStyles.previewColumn, styles.overflowPreview)}>
+          <Tabs.Root defaultValue='account'>
+            <Tabs.List variant='button' background fill>
+              <Tabs.Tab value='account'>Account</Tabs.Tab>
+              <Tabs.Tab value='settings'>Settings</Tabs.Tab>
+              <Tabs.Tab value='billing'>Billing</Tabs.Tab>
+              <Tabs.Tab value='team'>Team</Tabs.Tab>
+              <Tabs.Tab value='security'>Security</Tabs.Tab>
+              <Tabs.Tab value='notifications'>Notifications</Tabs.Tab>
+              <Tabs.Tab value='integrations'>Integrations</Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value='account'>
+              <Text size='bodySm' color='secondary'>
+                Manage your account details and profile information.
+              </Text>
+            </Tabs.Panel>
+            <Tabs.Panel value='settings'>
+              <Text size='bodySm' color='secondary'>
+                Configure your notification preferences and privacy settings.
+              </Text>
+            </Tabs.Panel>
+            <Tabs.Panel value='billing'>
+              <Text size='bodySm' color='secondary'>
+                View your billing history and update payment methods.
+              </Text>
+            </Tabs.Panel>
+            <Tabs.Panel value='team'>
+              <Text size='bodySm' color='secondary'>
+                Invite teammates and manage roles.
+              </Text>
+            </Tabs.Panel>
+            <Tabs.Panel value='security'>
+              <Text size='bodySm' color='secondary'>
+                Passkeys, sessions, and two-factor authentication.
+              </Text>
+            </Tabs.Panel>
+            <Tabs.Panel value='notifications'>
+              <Text size='bodySm' color='secondary'>
+                Email and push notification preferences.
+              </Text>
+            </Tabs.Panel>
+            <Tabs.Panel value='integrations'>
+              <Text size='bodySm' color='secondary'>
+                Connected apps and API tokens.
               </Text>
             </Tabs.Panel>
           </Tabs.Root>
