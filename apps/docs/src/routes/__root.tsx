@@ -300,6 +300,11 @@ function DocsSidebar() {
             Scroll Area
           </TreeView.Item>
         </TreeView.Group>
+        <TreeView.Group label='Data'>
+          <TreeView.Item href='/components/data/table' onClick={handleClick}>
+            Table
+          </TreeView.Item>
+        </TreeView.Group>
         <TreeView.Group label='Display'>
           <TreeView.Item href='/components/display/avatar' onClick={handleClick}>
             Avatar
