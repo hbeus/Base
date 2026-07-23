@@ -1,6 +1,6 @@
 import { Input as BaseInput } from '@base-ui/react/input';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -13,9 +13,8 @@ import { styleArray } from '../../../utils/styleArray';
 type InputSize = 'sm' | 'md' | 'lg';
 
 export interface InputProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseInput>, 'size' | 'style'>,
+  extends Omit<ComponentProps<typeof BaseInput>, 'size' | 'style'>,
     BaseProps {
-  ref?: Ref<HTMLInputElement>;
   size?: InputSize;
 }
 
@@ -61,6 +60,8 @@ const styles = stylex.create({
 export function Input({ size = 'md', style, ref, ...props }: InputProps) {
   return (
     <BaseInput
+      data-slot="input"
+      data-size={size}
       ref={ref}
       {...stylex.props(styles.base, styles[size], ...styleArray(style))}
       {...props}

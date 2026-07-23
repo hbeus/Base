@@ -1,6 +1,6 @@
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -13,16 +13,14 @@ import { styleArray } from '../../../utils/styleArray';
 type NumberFieldSize = 'sm' | 'md' | 'lg';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseNumberField.Root>) {
+function Root(props: ComponentProps<typeof BaseNumberField.Root>) {
   return <BaseNumberField.Root {...props} />;
 }
 
 /* ---------- Group ---------- */
 export interface NumberFieldGroupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseNumberField.Group>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseNumberField.Group>, 'style'>,
+    BaseProps {}
 
 const groupStyles = stylex.create({
   base: {
@@ -34,6 +32,7 @@ const groupStyles = stylex.create({
 function Group({ style, ref, ...props }: NumberFieldGroupProps) {
   return (
     <BaseNumberField.Group
+      data-slot="number-field-group"
       ref={ref}
       {...stylex.props(groupStyles.base, ...styleArray(style))}
       {...props}
@@ -43,9 +42,8 @@ function Group({ style, ref, ...props }: NumberFieldGroupProps) {
 
 /* ---------- Input ---------- */
 export interface NumberFieldInputProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseNumberField.Input>, 'size' | 'style'>,
+  extends Omit<ComponentProps<typeof BaseNumberField.Input>, 'size' | 'style'>,
     BaseProps {
-  ref?: Ref<HTMLInputElement>;
   size?: NumberFieldSize;
 }
 
@@ -94,6 +92,8 @@ const inputStyles = stylex.create({
 function Input({ size = 'md', style, ref, ...props }: NumberFieldInputProps) {
   return (
     <BaseNumberField.Input
+      data-slot="number-field-input"
+      data-size={size}
       ref={ref}
       {...stylex.props(inputStyles.base, inputStyles[size], ...styleArray(style))}
       {...props}
@@ -103,10 +103,8 @@ function Input({ size = 'md', style, ref, ...props }: NumberFieldInputProps) {
 
 /* ---------- Increment ---------- */
 export interface NumberFieldIncrementProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseNumberField.Increment>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLButtonElement>;
-}
+  extends Omit<ComponentProps<typeof BaseNumberField.Increment>, 'style'>,
+    BaseProps {}
 
 const buttonStyles = stylex.create({
   base: {
@@ -145,6 +143,7 @@ const buttonStyles = stylex.create({
 function Increment({ style, ref, ...props }: NumberFieldIncrementProps) {
   return (
     <BaseNumberField.Increment
+      data-slot="number-field-increment"
       ref={ref}
       {...stylex.props(buttonStyles.base, buttonStyles.increment, ...styleArray(style))}
       {...props}
@@ -154,14 +153,13 @@ function Increment({ style, ref, ...props }: NumberFieldIncrementProps) {
 
 /* ---------- Decrement ---------- */
 export interface NumberFieldDecrementProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseNumberField.Decrement>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLButtonElement>;
-}
+  extends Omit<ComponentProps<typeof BaseNumberField.Decrement>, 'style'>,
+    BaseProps {}
 
 function Decrement({ style, ref, ...props }: NumberFieldDecrementProps) {
   return (
     <BaseNumberField.Decrement
+      data-slot="number-field-decrement"
       ref={ref}
       {...stylex.props(buttonStyles.base, buttonStyles.decrement, ...styleArray(style))}
       {...props}
@@ -170,13 +168,13 @@ function Decrement({ style, ref, ...props }: NumberFieldDecrementProps) {
 }
 
 /* ---------- ScrubArea ---------- */
-function ScrubArea(props: ComponentPropsWithoutRef<typeof BaseNumberField.ScrubArea>) {
-  return <BaseNumberField.ScrubArea {...props} />;
+function ScrubArea(props: ComponentProps<typeof BaseNumberField.ScrubArea>) {
+  return <BaseNumberField.ScrubArea data-slot="number-field-scrub-area" {...props} />;
 }
 
 /* ---------- ScrubAreaCursor ---------- */
-function ScrubAreaCursor(props: ComponentPropsWithoutRef<typeof BaseNumberField.ScrubAreaCursor>) {
-  return <BaseNumberField.ScrubAreaCursor {...props} />;
+function ScrubAreaCursor(props: ComponentProps<typeof BaseNumberField.ScrubAreaCursor>) {
+  return <BaseNumberField.ScrubAreaCursor data-slot="number-field-scrub-area-cursor" {...props} />;
 }
 
 /* ---------- Export ---------- */

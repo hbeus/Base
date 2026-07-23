@@ -1,7 +1,7 @@
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -12,16 +12,14 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseCombobox.Root>) {
+function Root(props: ComponentProps<typeof BaseCombobox.Root>) {
   return <BaseCombobox.Root {...props} />;
 }
 
 /* ---------- Label ---------- */
 export interface ComboboxLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.Label>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.Label>, 'style'>,
+    BaseProps {}
 
 const labelStyles = stylex.create({
   base: {
@@ -36,6 +34,7 @@ const labelStyles = stylex.create({
 function Label({ style, ref, ...props }: ComboboxLabelProps) {
   return (
     <BaseCombobox.Label
+      data-slot="combobox-label"
       ref={ref}
       {...stylex.props(labelStyles.base, ...styleArray(style))}
       {...props}
@@ -44,16 +43,14 @@ function Label({ style, ref, ...props }: ComboboxLabelProps) {
 }
 
 /* ---------- Value ---------- */
-function Value(props: ComponentPropsWithoutRef<typeof BaseCombobox.Value>) {
-  return <BaseCombobox.Value {...props} />;
+function Value(props: ComponentProps<typeof BaseCombobox.Value>) {
+  return <BaseCombobox.Value data-slot="combobox-value" {...props} />;
 }
 
 /* ---------- Input ---------- */
 export interface ComboboxInputProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.Input>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLInputElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.Input>, 'style'>,
+    BaseProps {}
 
 const inputStyles = stylex.create({
   base: {
@@ -75,6 +72,7 @@ const inputStyles = stylex.create({
 function Input({ style, ref, ...props }: ComboboxInputProps) {
   return (
     <BaseCombobox.Input
+      data-slot="combobox-input"
       ref={ref}
       {...stylex.props(inputStyles.base, ...styleArray(style))}
       {...props}
@@ -84,10 +82,8 @@ function Input({ style, ref, ...props }: ComboboxInputProps) {
 
 /* ---------- InputGroup ---------- */
 export interface ComboboxInputGroupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.InputGroup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.InputGroup>, 'style'>,
+    BaseProps {}
 
 const inputGroupStyles = stylex.create({
   base: {
@@ -108,6 +104,7 @@ const inputGroupStyles = stylex.create({
 function InputGroup({ style, ref, ...props }: ComboboxInputGroupProps) {
   return (
     <BaseCombobox.InputGroup
+      data-slot="combobox-input-group"
       ref={ref}
       {...stylex.props(inputGroupStyles.base, ...styleArray(style))}
       {...props}
@@ -119,39 +116,37 @@ function InputGroup({ style, ref, ...props }: ComboboxInputGroupProps) {
 function Trigger({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseCombobox.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseCombobox.Trigger ref={ref} {...props} />;
+}: ComponentProps<typeof BaseCombobox.Trigger>) {
+  return <BaseCombobox.Trigger data-slot="combobox-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Icon ---------- */
-function Icon(props: ComponentPropsWithoutRef<typeof BaseCombobox.Icon>) {
-  return <BaseCombobox.Icon {...props} />;
+function Icon(props: ComponentProps<typeof BaseCombobox.Icon>) {
+  return <BaseCombobox.Icon data-slot="combobox-icon" {...props} />;
 }
 
 /* ---------- Clear ---------- */
 function Clear({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseCombobox.Clear> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseCombobox.Clear ref={ref} {...props} />;
+}: ComponentProps<typeof BaseCombobox.Clear>) {
+  return <BaseCombobox.Clear data-slot="combobox-clear" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseCombobox.Portal>) {
+function Portal(props: ComponentProps<typeof BaseCombobox.Portal>) {
   return <BaseCombobox.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BaseCombobox.Positioner>) {
-  return <BaseCombobox.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BaseCombobox.Positioner>) {
+  return <BaseCombobox.Positioner data-slot="combobox-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface ComboboxPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -169,6 +164,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: ComboboxPopupProps) {
   return (
     <BaseCombobox.Popup
+      data-slot="combobox-popup"
       ref={ref}
       render={
         <motion.div
@@ -185,16 +181,14 @@ function Popup({ style, ref, ...props }: ComboboxPopupProps) {
 }
 
 /* ---------- List ---------- */
-function List(props: ComponentPropsWithoutRef<typeof BaseCombobox.List>) {
-  return <BaseCombobox.List {...props} />;
+function List(props: ComponentProps<typeof BaseCombobox.List>) {
+  return <BaseCombobox.List data-slot="combobox-list" {...props} />;
 }
 
 /* ---------- Item ---------- */
 export interface ComboboxItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.Item>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.Item>, 'style'>,
+    BaseProps {}
 
 const itemStyles = stylex.create({
   base: {
@@ -223,6 +217,7 @@ const itemStyles = stylex.create({
 function Item({ style, ref, ...props }: ComboboxItemProps) {
   return (
     <BaseCombobox.Item
+      data-slot="combobox-item"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -231,21 +226,19 @@ function Item({ style, ref, ...props }: ComboboxItemProps) {
 }
 
 /* ---------- ItemIndicator ---------- */
-function ItemIndicator(props: ComponentPropsWithoutRef<typeof BaseCombobox.ItemIndicator>) {
-  return <BaseCombobox.ItemIndicator {...props} />;
+function ItemIndicator(props: ComponentProps<typeof BaseCombobox.ItemIndicator>) {
+  return <BaseCombobox.ItemIndicator data-slot="combobox-item-indicator" {...props} />;
 }
 
 /* ---------- Group ---------- */
-function Group(props: ComponentPropsWithoutRef<typeof BaseCombobox.Group>) {
-  return <BaseCombobox.Group {...props} />;
+function Group(props: ComponentProps<typeof BaseCombobox.Group>) {
+  return <BaseCombobox.Group data-slot="combobox-group" {...props} />;
 }
 
 /* ---------- GroupLabel ---------- */
 export interface ComboboxGroupLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.GroupLabel>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.GroupLabel>, 'style'>,
+    BaseProps {}
 
 const groupLabelStyles = stylex.create({
   base: {
@@ -260,6 +253,7 @@ const groupLabelStyles = stylex.create({
 function GroupLabel({ style, ref, ...props }: ComboboxGroupLabelProps) {
   return (
     <BaseCombobox.GroupLabel
+      data-slot="combobox-group-label"
       ref={ref}
       {...stylex.props(groupLabelStyles.base, ...styleArray(style))}
       {...props}
@@ -269,10 +263,8 @@ function GroupLabel({ style, ref, ...props }: ComboboxGroupLabelProps) {
 
 /* ---------- Empty ---------- */
 export interface ComboboxEmptyProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.Empty>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.Empty>, 'style'>,
+    BaseProps {}
 
 const emptyStyles = stylex.create({
   base: {
@@ -287,6 +279,7 @@ const emptyStyles = stylex.create({
 function Empty({ style, ref, ...props }: ComboboxEmptyProps) {
   return (
     <BaseCombobox.Empty
+      data-slot="combobox-empty"
       ref={ref}
       {...stylex.props(emptyStyles.base, ...styleArray(style))}
       {...props}
@@ -296,10 +289,8 @@ function Empty({ style, ref, ...props }: ComboboxEmptyProps) {
 
 /* ---------- Arrow ---------- */
 export interface ComboboxArrowProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCombobox.Arrow>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseCombobox.Arrow>, 'style'>,
+    BaseProps {}
 
 const arrowStyles = stylex.create({
   base: {
@@ -312,6 +303,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: ComboboxArrowProps) {
   return (
     <BaseCombobox.Arrow
+      data-slot="combobox-arrow"
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -320,23 +312,23 @@ function Arrow({ style, ref, ...props }: ComboboxArrowProps) {
 }
 
 /* ---------- Status ---------- */
-function Status(props: ComponentPropsWithoutRef<typeof BaseCombobox.Status>) {
-  return <BaseCombobox.Status {...props} />;
+function Status(props: ComponentProps<typeof BaseCombobox.Status>) {
+  return <BaseCombobox.Status data-slot="combobox-status" {...props} />;
 }
 
 /* ---------- Chips ---------- */
-function Chips(props: ComponentPropsWithoutRef<typeof BaseCombobox.Chips>) {
-  return <BaseCombobox.Chips {...props} />;
+function Chips(props: ComponentProps<typeof BaseCombobox.Chips>) {
+  return <BaseCombobox.Chips data-slot="combobox-chips" {...props} />;
 }
 
 /* ---------- Chip ---------- */
-function Chip(props: ComponentPropsWithoutRef<typeof BaseCombobox.Chip>) {
-  return <BaseCombobox.Chip {...props} />;
+function Chip(props: ComponentProps<typeof BaseCombobox.Chip>) {
+  return <BaseCombobox.Chip data-slot="combobox-chip" {...props} />;
 }
 
 /* ---------- ChipRemove ---------- */
-function ChipRemove(props: ComponentPropsWithoutRef<typeof BaseCombobox.ChipRemove>) {
-  return <BaseCombobox.ChipRemove {...props} />;
+function ChipRemove(props: ComponentProps<typeof BaseCombobox.ChipRemove>) {
+  return <BaseCombobox.ChipRemove data-slot="combobox-chip-remove" {...props} />;
 }
 
 /* ---------- Export ---------- */

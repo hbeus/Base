@@ -2,7 +2,7 @@ import { Button as BaseButton } from '@base-ui/react/button';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { INPUT_SCALE_DOWN } from '../../../constants/motion';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -22,9 +22,8 @@ type ButtonVariant =
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ButtonStateProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseButton>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseButton>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
   variant?: ButtonVariant;
   size?: ButtonSize;
   rounded?: boolean;
@@ -198,6 +197,9 @@ export function ButtonState({
 }: ButtonStateProps) {
   return (
     <MotionBaseButton
+      data-slot="button-state"
+      data-variant={variant}
+      data-size={size}
       ref={ref}
       whileTap={props.disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
       {...stylex.props(

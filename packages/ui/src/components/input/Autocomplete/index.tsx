@@ -1,7 +1,7 @@
 import { Autocomplete as BaseAutocomplete } from '@base-ui/react/autocomplete';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -12,29 +12,27 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.Root>) {
+function Root(props: ComponentProps<typeof BaseAutocomplete.Root>) {
   return <BaseAutocomplete.Root {...props} />;
 }
 
 /* ---------- Value ---------- */
-function Value(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.Value>) {
-  return <BaseAutocomplete.Value {...props} />;
+function Value(props: ComponentProps<typeof BaseAutocomplete.Value>) {
+  return <BaseAutocomplete.Value data-slot="autocomplete-value" {...props} />;
 }
 
 /* ---------- Trigger ---------- */
 function Trigger({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseAutocomplete.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseAutocomplete.Trigger ref={ref} {...props} />;
+}: ComponentProps<typeof BaseAutocomplete.Trigger>) {
+  return <BaseAutocomplete.Trigger data-slot="autocomplete-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Input ---------- */
 export interface AutocompleteInputProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAutocomplete.Input>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLInputElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAutocomplete.Input>, 'style'>,
+    BaseProps {}
 
 const inputStyles = stylex.create({
   base: {
@@ -56,6 +54,7 @@ const inputStyles = stylex.create({
 function Input({ style, ref, ...props }: AutocompleteInputProps) {
   return (
     <BaseAutocomplete.Input
+      data-slot="autocomplete-input"
       ref={ref}
       {...stylex.props(inputStyles.base, ...styleArray(style))}
       {...props}
@@ -65,10 +64,8 @@ function Input({ style, ref, ...props }: AutocompleteInputProps) {
 
 /* ---------- InputGroup ---------- */
 export interface AutocompleteInputGroupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAutocomplete.InputGroup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAutocomplete.InputGroup>, 'style'>,
+    BaseProps {}
 
 const inputGroupStyles = stylex.create({
   base: {
@@ -89,6 +86,7 @@ const inputGroupStyles = stylex.create({
 function InputGroup({ style, ref, ...props }: AutocompleteInputGroupProps) {
   return (
     <BaseAutocomplete.InputGroup
+      data-slot="autocomplete-input-group"
       ref={ref}
       {...stylex.props(inputGroupStyles.base, ...styleArray(style))}
       {...props}
@@ -97,34 +95,32 @@ function InputGroup({ style, ref, ...props }: AutocompleteInputGroupProps) {
 }
 
 /* ---------- Icon ---------- */
-function Icon(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.Icon>) {
-  return <BaseAutocomplete.Icon {...props} />;
+function Icon(props: ComponentProps<typeof BaseAutocomplete.Icon>) {
+  return <BaseAutocomplete.Icon data-slot="autocomplete-icon" {...props} />;
 }
 
 /* ---------- Clear ---------- */
 function Clear({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseAutocomplete.Clear> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseAutocomplete.Clear ref={ref} {...props} />;
+}: ComponentProps<typeof BaseAutocomplete.Clear>) {
+  return <BaseAutocomplete.Clear data-slot="autocomplete-clear" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.Portal>) {
+function Portal(props: ComponentProps<typeof BaseAutocomplete.Portal>) {
   return <BaseAutocomplete.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.Positioner>) {
-  return <BaseAutocomplete.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BaseAutocomplete.Positioner>) {
+  return <BaseAutocomplete.Positioner data-slot="autocomplete-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface AutocompletePopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAutocomplete.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAutocomplete.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -142,6 +138,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: AutocompletePopupProps) {
   return (
     <BaseAutocomplete.Popup
+      data-slot="autocomplete-popup"
       ref={ref}
       render={
         <motion.div
@@ -158,16 +155,14 @@ function Popup({ style, ref, ...props }: AutocompletePopupProps) {
 }
 
 /* ---------- List ---------- */
-function List(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.List>) {
-  return <BaseAutocomplete.List {...props} />;
+function List(props: ComponentProps<typeof BaseAutocomplete.List>) {
+  return <BaseAutocomplete.List data-slot="autocomplete-list" {...props} />;
 }
 
 /* ---------- Item ---------- */
 export interface AutocompleteItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAutocomplete.Item>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAutocomplete.Item>, 'style'>,
+    BaseProps {}
 
 const itemStyles = stylex.create({
   base: {
@@ -196,6 +191,7 @@ const itemStyles = stylex.create({
 function Item({ style, ref, ...props }: AutocompleteItemProps) {
   return (
     <BaseAutocomplete.Item
+      data-slot="autocomplete-item"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -204,16 +200,14 @@ function Item({ style, ref, ...props }: AutocompleteItemProps) {
 }
 
 /* ---------- Group ---------- */
-function Group(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.Group>) {
-  return <BaseAutocomplete.Group {...props} />;
+function Group(props: ComponentProps<typeof BaseAutocomplete.Group>) {
+  return <BaseAutocomplete.Group data-slot="autocomplete-group" {...props} />;
 }
 
 /* ---------- GroupLabel ---------- */
 export interface AutocompleteGroupLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAutocomplete.GroupLabel>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAutocomplete.GroupLabel>, 'style'>,
+    BaseProps {}
 
 const groupLabelStyles = stylex.create({
   base: {
@@ -228,6 +222,7 @@ const groupLabelStyles = stylex.create({
 function GroupLabel({ style, ref, ...props }: AutocompleteGroupLabelProps) {
   return (
     <BaseAutocomplete.GroupLabel
+      data-slot="autocomplete-group-label"
       ref={ref}
       {...stylex.props(groupLabelStyles.base, ...styleArray(style))}
       {...props}
@@ -237,10 +232,8 @@ function GroupLabel({ style, ref, ...props }: AutocompleteGroupLabelProps) {
 
 /* ---------- Empty ---------- */
 export interface AutocompleteEmptyProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAutocomplete.Empty>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAutocomplete.Empty>, 'style'>,
+    BaseProps {}
 
 const emptyStyles = stylex.create({
   base: {
@@ -255,6 +248,7 @@ const emptyStyles = stylex.create({
 function Empty({ style, ref, ...props }: AutocompleteEmptyProps) {
   return (
     <BaseAutocomplete.Empty
+      data-slot="autocomplete-empty"
       ref={ref}
       {...stylex.props(emptyStyles.base, ...styleArray(style))}
       {...props}
@@ -264,10 +258,8 @@ function Empty({ style, ref, ...props }: AutocompleteEmptyProps) {
 
 /* ---------- Arrow ---------- */
 export interface AutocompleteArrowProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAutocomplete.Arrow>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAutocomplete.Arrow>, 'style'>,
+    BaseProps {}
 
 const arrowStyles = stylex.create({
   base: {
@@ -280,6 +272,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: AutocompleteArrowProps) {
   return (
     <BaseAutocomplete.Arrow
+      data-slot="autocomplete-arrow"
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -288,8 +281,8 @@ function Arrow({ style, ref, ...props }: AutocompleteArrowProps) {
 }
 
 /* ---------- Status ---------- */
-function Status(props: ComponentPropsWithoutRef<typeof BaseAutocomplete.Status>) {
-  return <BaseAutocomplete.Status {...props} />;
+function Status(props: ComponentProps<typeof BaseAutocomplete.Status>) {
+  return <BaseAutocomplete.Status data-slot="autocomplete-status" {...props} />;
 }
 
 /* ---------- Export ---------- */

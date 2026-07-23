@@ -1,6 +1,6 @@
 import { Slider as BaseSlider } from '@base-ui/react/slider';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,10 +11,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface SliderRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSlider.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSlider.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -28,6 +26,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, ...props }: SliderRootProps) {
   return (
     <BaseSlider.Root
+      data-slot="slider"
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -37,10 +36,8 @@ function Root({ style, ref, ...props }: SliderRootProps) {
 
 /* ---------- Label ---------- */
 export interface SliderLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSlider.Label>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSlider.Label>, 'style'>,
+    BaseProps {}
 
 const labelStyles = stylex.create({
   base: {
@@ -54,6 +51,7 @@ const labelStyles = stylex.create({
 function Label({ style, ref, ...props }: SliderLabelProps) {
   return (
     <BaseSlider.Label
+      data-slot="slider-label"
       ref={ref}
       {...stylex.props(labelStyles.base, ...styleArray(style))}
       {...props}
@@ -63,10 +61,8 @@ function Label({ style, ref, ...props }: SliderLabelProps) {
 
 /* ---------- Value ---------- */
 export interface SliderValueProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSlider.Value>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLOutputElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSlider.Value>, 'style'>,
+    BaseProps {}
 
 const valueStyles = stylex.create({
   base: {
@@ -78,6 +74,7 @@ const valueStyles = stylex.create({
 function Value({ style, ref, ...props }: SliderValueProps) {
   return (
     <BaseSlider.Value
+      data-slot="slider-value"
       ref={ref}
       {...stylex.props(valueStyles.base, ...styleArray(style))}
       {...props}
@@ -87,10 +84,8 @@ function Value({ style, ref, ...props }: SliderValueProps) {
 
 /* ---------- Control ---------- */
 export interface SliderControlProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSlider.Control>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSlider.Control>, 'style'>,
+    BaseProps {}
 
 const controlStyles = stylex.create({
   base: {
@@ -105,6 +100,7 @@ const controlStyles = stylex.create({
 function Control({ style, ref, ...props }: SliderControlProps) {
   return (
     <BaseSlider.Control
+      data-slot="slider-control"
       ref={ref}
       {...stylex.props(controlStyles.base, ...styleArray(style))}
       {...props}
@@ -114,10 +110,8 @@ function Control({ style, ref, ...props }: SliderControlProps) {
 
 /* ---------- Track ---------- */
 export interface SliderTrackProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSlider.Track>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSlider.Track>, 'style'>,
+    BaseProps {}
 
 const trackStyles = stylex.create({
   base: {
@@ -132,6 +126,7 @@ const trackStyles = stylex.create({
 function Track({ style, ref, ...props }: SliderTrackProps) {
   return (
     <BaseSlider.Track
+      data-slot="slider-track"
       ref={ref}
       {...stylex.props(trackStyles.base, ...styleArray(style))}
       {...props}
@@ -141,10 +136,8 @@ function Track({ style, ref, ...props }: SliderTrackProps) {
 
 /* ---------- Indicator ---------- */
 export interface SliderIndicatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSlider.Indicator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSlider.Indicator>, 'style'>,
+    BaseProps {}
 
 const indicatorStyles = stylex.create({
   base: {
@@ -158,6 +151,7 @@ const indicatorStyles = stylex.create({
 function Indicator({ style, ref, ...props }: SliderIndicatorProps) {
   return (
     <BaseSlider.Indicator
+      data-slot="slider-indicator"
       ref={ref}
       {...stylex.props(indicatorStyles.base, ...styleArray(style))}
       {...props}
@@ -167,10 +161,8 @@ function Indicator({ style, ref, ...props }: SliderIndicatorProps) {
 
 /* ---------- Thumb ---------- */
 export interface SliderThumbProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSlider.Thumb>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSlider.Thumb>, 'style'>,
+    BaseProps {}
 
 const thumbStyles = stylex.create({
   base: {
@@ -195,6 +187,7 @@ const thumbStyles = stylex.create({
 function Thumb({ style, ref, ...props }: SliderThumbProps) {
   return (
     <BaseSlider.Thumb
+      data-slot="slider-thumb"
       ref={ref}
       {...stylex.props(thumbStyles.base, ...styleArray(style))}
       {...props}

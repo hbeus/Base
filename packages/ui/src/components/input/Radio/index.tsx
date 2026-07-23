@@ -2,7 +2,7 @@ import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -14,10 +14,8 @@ type RadioSize = 'sm' | 'md';
 
 /* ---------- Group ---------- */
 export interface RadioGroupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseRadioGroup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseRadioGroup>, 'style'>,
+    BaseProps {}
 
 const groupStyles = stylex.create({
   base: {
@@ -30,6 +28,7 @@ const groupStyles = stylex.create({
 function Group({ style, ref, ...props }: RadioGroupProps) {
   return (
     <BaseRadioGroup
+      data-slot="radio-group"
       ref={ref}
       {...stylex.props(groupStyles.base, ...styleArray(style))}
       {...props}
@@ -39,9 +38,8 @@ function Group({ style, ref, ...props }: RadioGroupProps) {
 
 /* ---------- Item ---------- */
 export interface RadioItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseRadio.Root>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseRadio.Root>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
   size?: RadioSize;
 }
 
@@ -77,6 +75,8 @@ const itemStyles = stylex.create({
 function Item({ size = 'md', style, ref, ...props }: RadioItemProps) {
   return (
     <BaseRadio.Root
+      data-slot="radio-item"
+      data-size={size}
       ref={ref}
       {...stylex.props(itemStyles.base, itemStyles[size], ...styleArray(style))}
       {...props}
@@ -86,10 +86,8 @@ function Item({ size = 'md', style, ref, ...props }: RadioItemProps) {
 
 /* ---------- Indicator ---------- */
 export interface RadioIndicatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseRadio.Indicator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLSpanElement>;
-}
+  extends Omit<ComponentProps<typeof BaseRadio.Indicator>, 'style'>,
+    BaseProps {}
 
 const indicatorStyles = stylex.create({
   base: {
@@ -104,6 +102,7 @@ const indicatorStyles = stylex.create({
 function Indicator({ style, ref, ...props }: RadioIndicatorProps) {
   return (
     <BaseRadio.Indicator
+      data-slot="radio-indicator"
       ref={ref}
       render={
         <motion.span

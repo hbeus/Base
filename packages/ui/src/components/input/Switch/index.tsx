@@ -1,7 +1,7 @@
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
@@ -12,9 +12,8 @@ import { styleArray } from '../../../utils/styleArray';
 type SwitchSize = 'sm' | 'md';
 
 export interface SwitchProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSwitch.Root>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseSwitch.Root>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
   size?: SwitchSize;
 }
 
@@ -78,6 +77,8 @@ export function Switch({
 
   return (
     <BaseSwitch.Root
+      data-slot="switch"
+      data-size={size}
       ref={ref}
       checked={checked}
       onCheckedChange={(value, event) => {

@@ -1,7 +1,7 @@
 import { Select as BaseSelect } from '@base-ui/react/select';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -14,15 +14,14 @@ import { styleArray } from '../../../utils/styleArray';
 type SelectSize = 'sm' | 'md' | 'lg';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseSelect.Root>) {
+function Root(props: ComponentProps<typeof BaseSelect.Root>) {
   return <BaseSelect.Root {...props} />;
 }
 
 /* ---------- Trigger ---------- */
 export interface SelectTriggerProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.Trigger>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseSelect.Trigger>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
   size?: SelectSize;
 }
 
@@ -72,6 +71,8 @@ const triggerStyles = stylex.create({
 function Trigger({ size = 'md', style, ref, ...props }: SelectTriggerProps) {
   return (
     <BaseSelect.Trigger
+      data-slot="select-trigger"
+      data-size={size}
       ref={ref}
       {...stylex.props(triggerStyles.base, triggerStyles[size], ...styleArray(style))}
       {...props}
@@ -80,16 +81,14 @@ function Trigger({ size = 'md', style, ref, ...props }: SelectTriggerProps) {
 }
 
 /* ---------- Value ---------- */
-function Value(props: ComponentPropsWithoutRef<typeof BaseSelect.Value>) {
-  return <BaseSelect.Value {...props} />;
+function Value(props: ComponentProps<typeof BaseSelect.Value>) {
+  return <BaseSelect.Value data-slot="select-value" {...props} />;
 }
 
 /* ---------- Icon ---------- */
 export interface SelectIconProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.Icon>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLSpanElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSelect.Icon>, 'style'>,
+    BaseProps {}
 
 const iconStyles = stylex.create({
   base: {
@@ -102,6 +101,7 @@ const iconStyles = stylex.create({
 function Icon({ style, ref, ...props }: SelectIconProps) {
   return (
     <BaseSelect.Icon
+      data-slot="select-icon"
       ref={ref}
       {...stylex.props(iconStyles.base, ...styleArray(style))}
       {...props}
@@ -110,21 +110,19 @@ function Icon({ style, ref, ...props }: SelectIconProps) {
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseSelect.Portal>) {
+function Portal(props: ComponentProps<typeof BaseSelect.Portal>) {
   return <BaseSelect.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BaseSelect.Positioner>) {
-  return <BaseSelect.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BaseSelect.Positioner>) {
+  return <BaseSelect.Positioner data-slot="select-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface SelectPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSelect.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -144,6 +142,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: SelectPopupProps) {
   return (
     <BaseSelect.Popup
+      data-slot="select-popup"
       ref={ref}
       render={
         <motion.div
@@ -161,10 +160,8 @@ function Popup({ style, ref, ...props }: SelectPopupProps) {
 
 /* ---------- Item ---------- */
 export interface SelectItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.Item>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSelect.Item>, 'style'>,
+    BaseProps {}
 
 const itemStyles = stylex.create({
   base: {
@@ -193,6 +190,7 @@ const itemStyles = stylex.create({
 function Item({ style, ref, ...props }: SelectItemProps) {
   return (
     <BaseSelect.Item
+      data-slot="select-item"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -202,10 +200,8 @@ function Item({ style, ref, ...props }: SelectItemProps) {
 
 /* ---------- ItemIndicator ---------- */
 export interface SelectItemIndicatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.ItemIndicator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLSpanElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSelect.ItemIndicator>, 'style'>,
+    BaseProps {}
 
 const itemIndicatorStyles = stylex.create({
   base: {
@@ -217,6 +213,7 @@ const itemIndicatorStyles = stylex.create({
 function ItemIndicator({ style, ref, ...props }: SelectItemIndicatorProps) {
   return (
     <BaseSelect.ItemIndicator
+      data-slot="select-item-indicator"
       ref={ref}
       {...stylex.props(itemIndicatorStyles.base, ...styleArray(style))}
       {...props}
@@ -225,21 +222,19 @@ function ItemIndicator({ style, ref, ...props }: SelectItemIndicatorProps) {
 }
 
 /* ---------- ItemText ---------- */
-function ItemText(props: ComponentPropsWithoutRef<typeof BaseSelect.ItemText>) {
-  return <BaseSelect.ItemText {...props} />;
+function ItemText(props: ComponentProps<typeof BaseSelect.ItemText>) {
+  return <BaseSelect.ItemText data-slot="select-item-text" {...props} />;
 }
 
 /* ---------- Group ---------- */
-function SelectGroup(props: ComponentPropsWithoutRef<typeof BaseSelect.Group>) {
-  return <BaseSelect.Group {...props} />;
+function SelectGroup(props: ComponentProps<typeof BaseSelect.Group>) {
+  return <BaseSelect.Group data-slot="select-group" {...props} />;
 }
 
 /* ---------- GroupLabel ---------- */
 export interface SelectGroupLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.GroupLabel>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSelect.GroupLabel>, 'style'>,
+    BaseProps {}
 
 const groupLabelStyles = stylex.create({
   base: {
@@ -254,6 +249,7 @@ const groupLabelStyles = stylex.create({
 function GroupLabel({ style, ref, ...props }: SelectGroupLabelProps) {
   return (
     <BaseSelect.GroupLabel
+      data-slot="select-group-label"
       ref={ref}
       {...stylex.props(groupLabelStyles.base, ...styleArray(style))}
       {...props}
@@ -263,10 +259,8 @@ function GroupLabel({ style, ref, ...props }: SelectGroupLabelProps) {
 
 /* ---------- Arrow ---------- */
 export interface SelectArrowProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.Arrow>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSelect.Arrow>, 'style'>,
+    BaseProps {}
 
 const arrowStyles = stylex.create({
   base: {
@@ -279,6 +273,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: SelectArrowProps) {
   return (
     <BaseSelect.Arrow
+      data-slot="select-arrow"
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -288,10 +283,8 @@ function Arrow({ style, ref, ...props }: SelectArrowProps) {
 
 /* ---------- Separator ---------- */
 export interface SelectSeparatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSelect.Separator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSelect.Separator>, 'style'>,
+    BaseProps {}
 
 const separatorStyles = stylex.create({
   base: {
@@ -304,6 +297,7 @@ const separatorStyles = stylex.create({
 function Separator({ style, ref, ...props }: SelectSeparatorProps) {
   return (
     <BaseSelect.Separator
+      data-slot="select-separator"
       ref={ref}
       {...stylex.props(separatorStyles.base, ...styleArray(style))}
       {...props}
@@ -312,13 +306,13 @@ function Separator({ style, ref, ...props }: SelectSeparatorProps) {
 }
 
 /* ---------- ScrollUpArrow ---------- */
-function ScrollUpArrow(props: ComponentPropsWithoutRef<typeof BaseSelect.ScrollUpArrow>) {
-  return <BaseSelect.ScrollUpArrow {...props} />;
+function ScrollUpArrow(props: ComponentProps<typeof BaseSelect.ScrollUpArrow>) {
+  return <BaseSelect.ScrollUpArrow data-slot="select-scroll-up-arrow" {...props} />;
 }
 
 /* ---------- ScrollDownArrow ---------- */
-function ScrollDownArrow(props: ComponentPropsWithoutRef<typeof BaseSelect.ScrollDownArrow>) {
-  return <BaseSelect.ScrollDownArrow {...props} />;
+function ScrollDownArrow(props: ComponentProps<typeof BaseSelect.ScrollDownArrow>) {
+  return <BaseSelect.ScrollDownArrow data-slot="select-scroll-down-arrow" {...props} />;
 }
 
 /* ---------- Export ---------- */

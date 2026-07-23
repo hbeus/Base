@@ -1,6 +1,6 @@
 import { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
@@ -9,10 +9,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface FieldsetRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseFieldset.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLFieldSetElement>;
-}
+  extends Omit<ComponentProps<typeof BaseFieldset.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -28,6 +26,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, ...props }: FieldsetRootProps) {
   return (
     <BaseFieldset.Root
+      data-slot="fieldset"
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -37,10 +36,8 @@ function Root({ style, ref, ...props }: FieldsetRootProps) {
 
 /* ---------- Legend ---------- */
 export interface FieldsetLegendProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseFieldset.Legend>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLLegendElement>;
-}
+  extends Omit<ComponentProps<typeof BaseFieldset.Legend>, 'style'>,
+    BaseProps {}
 
 const legendStyles = stylex.create({
   base: {
@@ -55,6 +52,7 @@ const legendStyles = stylex.create({
 function Legend({ style, ref, ...props }: FieldsetLegendProps) {
   return (
     <BaseFieldset.Legend
+      data-slot="fieldset-legend"
       ref={ref}
       {...stylex.props(legendStyles.base, ...styleArray(style))}
       {...props}

@@ -1,7 +1,7 @@
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, ReactNode, Ref } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { useState } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
@@ -14,9 +14,8 @@ type CheckboxSize = 'sm' | 'md';
 
 /* ---------- Root ---------- */
 export interface CheckboxRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCheckbox.Root>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseCheckbox.Root>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
   size?: CheckboxSize;
 }
 
@@ -68,6 +67,8 @@ function Root({
 
   return (
     <BaseCheckbox.Root
+      data-slot="checkbox"
+      data-size={size}
       ref={ref}
       checked={checked}
       onCheckedChange={(value, event) => {
@@ -87,9 +88,8 @@ function Root({
 
 /* ---------- Indicator ---------- */
 export interface CheckboxIndicatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseCheckbox.Indicator>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseCheckbox.Indicator>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLSpanElement>;
   children?: ReactNode;
 }
 
@@ -105,6 +105,7 @@ const indicatorStyles = stylex.create({
 function Indicator({ children, style, ref, ...props }: CheckboxIndicatorProps) {
   return (
     <BaseCheckbox.Indicator
+      data-slot="checkbox-indicator"
       ref={ref}
       render={
         <motion.span

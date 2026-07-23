@@ -1,7 +1,7 @@
 import { OTPField as BaseOTPField } from '@base-ui/react/otp-field';
 import { Separator as BaseSeparator } from '@base-ui/react/separator';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -13,10 +13,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface OtpFieldRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseOTPField.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseOTPField.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -29,6 +27,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, ...props }: OtpFieldRootProps) {
   return (
     <BaseOTPField.Root
+      data-slot="otp-field"
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -38,10 +37,8 @@ function Root({ style, ref, ...props }: OtpFieldRootProps) {
 
 /* ---------- Input ---------- */
 export interface OtpFieldInputProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseOTPField.Input>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLInputElement>;
-}
+  extends Omit<ComponentProps<typeof BaseOTPField.Input>, 'style'>,
+    BaseProps {}
 
 const inputStyles = stylex.create({
   base: {
@@ -67,6 +64,7 @@ const inputStyles = stylex.create({
 function Input({ style, ref, ...props }: OtpFieldInputProps) {
   return (
     <BaseOTPField.Input
+      data-slot="otp-field-input"
       ref={ref}
       {...stylex.props(inputStyles.base, ...styleArray(style))}
       {...props}
@@ -76,10 +74,8 @@ function Input({ style, ref, ...props }: OtpFieldInputProps) {
 
 /* ---------- Separator ---------- */
 export interface OtpFieldSeparatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSeparator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSeparator>, 'style'>,
+    BaseProps {}
 
 const separatorStyles = stylex.create({
   base: {
@@ -92,6 +88,7 @@ const separatorStyles = stylex.create({
 function OtpSeparator({ style, ref, ...props }: OtpFieldSeparatorProps) {
   return (
     <BaseSeparator
+      data-slot="otp-field-separator"
       ref={ref}
       {...stylex.props(separatorStyles.base, ...styleArray(style))}
       {...props}

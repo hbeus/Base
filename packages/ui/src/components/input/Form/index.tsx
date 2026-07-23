@@ -1,15 +1,13 @@
 import { Form as BaseForm } from '@base-ui/react/form';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { spacing } from '../../../tokens/spacing.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 export interface FormProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseForm>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLFormElement>;
-}
+  extends Omit<ComponentProps<typeof BaseForm>, 'style'>,
+    BaseProps {}
 
 const styles = stylex.create({
   base: {
@@ -20,5 +18,5 @@ const styles = stylex.create({
 });
 
 export function Form({ style, ref, ...props }: FormProps) {
-  return <BaseForm ref={ref} {...stylex.props(styles.base, ...styleArray(style))} {...props} />;
+  return <BaseForm data-slot="form" ref={ref} {...stylex.props(styles.base, ...styleArray(style))} {...props} />;
 }

@@ -1,6 +1,6 @@
 import { Field as BaseField } from '@base-ui/react/field';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
@@ -9,10 +9,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface FieldRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseField.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseField.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -24,16 +22,14 @@ const rootStyles = stylex.create({
 
 function Root({ style, ref, ...props }: FieldRootProps) {
   return (
-    <BaseField.Root ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))} {...props} />
+    <BaseField.Root data-slot="field" ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))} {...props} />
   );
 }
 
 /* ---------- Label ---------- */
 export interface FieldLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseField.Label>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLLabelElement>;
-}
+  extends Omit<ComponentProps<typeof BaseField.Label>, 'style'>,
+    BaseProps {}
 
 const labelStyles = stylex.create({
   base: {
@@ -47,6 +43,7 @@ const labelStyles = stylex.create({
 function Label({ style, ref, ...props }: FieldLabelProps) {
   return (
     <BaseField.Label
+      data-slot="field-label"
       ref={ref}
       {...stylex.props(labelStyles.base, ...styleArray(style))}
       {...props}
@@ -56,10 +53,8 @@ function Label({ style, ref, ...props }: FieldLabelProps) {
 
 /* ---------- Description ---------- */
 export interface FieldDescriptionProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseField.Description>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLParagraphElement>;
-}
+  extends Omit<ComponentProps<typeof BaseField.Description>, 'style'>,
+    BaseProps {}
 
 const descriptionStyles = stylex.create({
   base: {
@@ -72,6 +67,7 @@ const descriptionStyles = stylex.create({
 function Description({ style, ref, ...props }: FieldDescriptionProps) {
   return (
     <BaseField.Description
+      data-slot="field-description"
       ref={ref}
       {...stylex.props(descriptionStyles.base, ...styleArray(style))}
       {...props}
@@ -81,10 +77,8 @@ function Description({ style, ref, ...props }: FieldDescriptionProps) {
 
 /* ---------- Error ---------- */
 export interface FieldErrorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseField.Error>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLParagraphElement>;
-}
+  extends Omit<ComponentProps<typeof BaseField.Error>, 'style'>,
+    BaseProps {}
 
 const errorStyles = stylex.create({
   base: {
@@ -97,6 +91,7 @@ const errorStyles = stylex.create({
 function FieldError({ style, ref, ...props }: FieldErrorProps) {
   return (
     <BaseField.Error
+      data-slot="field-error"
       ref={ref}
       {...stylex.props(errorStyles.base, ...styleArray(style))}
       {...props}
@@ -105,12 +100,12 @@ function FieldError({ style, ref, ...props }: FieldErrorProps) {
 }
 
 /* ---------- Control ---------- */
-function Control(props: ComponentPropsWithoutRef<typeof BaseField.Control>) {
-  return <BaseField.Control {...props} />;
+function Control(props: ComponentProps<typeof BaseField.Control>) {
+  return <BaseField.Control data-slot="field-control" {...props} />;
 }
 
 /* ---------- Validity ---------- */
-function Validity(props: ComponentPropsWithoutRef<typeof BaseField.Validity>) {
+function Validity(props: ComponentProps<typeof BaseField.Validity>) {
   return <BaseField.Validity {...props} />;
 }
 

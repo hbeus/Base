@@ -231,6 +231,8 @@ export const Pressable = function Pressable({
   const MotionElement = motion[as as keyof typeof motion] as React.ElementType;
   return (
     <MotionElement
+      data-slot="pressable"
+      data-variant={variant}
       ref={mergeRefs(internalRef, suppressChildFocus, ref)}
       tabIndex={disabled ? -1 : tabIndex}
       aria-disabled={disabled || undefined}
