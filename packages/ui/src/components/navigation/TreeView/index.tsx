@@ -1,7 +1,7 @@
 import { Collapsible } from '@base-ui/react/collapsible';
 import * as stylex from '@stylexjs/stylex';
 import { IconChevronRight } from '@tabler/icons-react';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import { createContext, type ReactNode, type Ref, useContext, useState } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -41,7 +41,7 @@ const rootStyles = stylex.create({
 function Root({ children, activeHref, style, ref }: TreeViewRootProps) {
   return (
     <TreeViewContext.Provider value={{ activeHref: activeHref ?? null, depth: 0 }}>
-      <nav ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))}>
+      <nav data-slot='tree-view' ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))}>
         {children}
       </nav>
     </TreeViewContext.Provider>
@@ -57,6 +57,13 @@ export interface TreeViewGroupProps extends BaseProps {
   ref?: Ref<HTMLDivElement>;
 }
 
+const TREE_TRANSITION = { duration: 0.15, ease: 'easeOut' } as const;
+
+const panelVariants = {
+  open: { height: 'auto', opacity: 1, filter: 'blur(0px)' },
+  closed: { height: 0, opacity: 0, filter: 'blur(2px)' },
+} satisfies Variants;
+
 const groupStyles = stylex.create({
   trigger: {
     display: 'flex',
@@ -68,7 +75,7 @@ const groupStyles = stylex.create({
     paddingInline: spacing.s8,
     borderRadius: radii.r6,
     color: colors.foregroundSecondary,
-    transition: 'color 0.15s, background-color 0.15s',
+    transition: 'color 0.15s, background-color 0.15s ease-out',
     ':hover': {
       color: colors.foregroundPrimary,
       backgroundColor: colors.lighten4,
@@ -93,6 +100,7 @@ function Group({ label, children, defaultOpen = false, style, ref }: TreeViewGro
   return (
     <TreeViewContext.Provider value={{ activeHref, depth: depth + 1 }}>
       <Collapsible.Root
+        data-slot='tree-view-group'
         ref={ref}
         open={open}
         onOpenChange={setOpen}
@@ -102,7 +110,7 @@ function Group({ label, children, defaultOpen = false, style, ref }: TreeViewGro
           <motion.span
             {...stylex.props(groupStyles.chevron)}
             animate={{ rotate: open ? 90 : 0 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
+            transition={TREE_TRANSITION}
           >
             <IconChevronRight size={14} />
           </motion.span>
@@ -110,11 +118,12 @@ function Group({ label, children, defaultOpen = false, style, ref }: TreeViewGro
             {label}
           </Text>
         </Collapsible.Trigger>
-        <Collapsible.Panel>
+        <Collapsible.Panel keepMounted hidden={false}>
           <motion.div
             initial={false}
-            animate={open ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
+            animate={open ? 'open' : 'closed'}
+            variants={panelVariants}
+            transition={TREE_TRANSITION}
             style={{ overflow: 'hidden' }}
           >
             <div {...stylex.props(groupStyles.children)}>{children}</div>
@@ -161,6 +170,7 @@ function Item({ children, href, style, ref, onClick }: TreeViewItemProps) {
 
   return (
     <a
+      data-slot='tree-view-item'
       ref={ref}
       href={href}
       onClick={onClick}
