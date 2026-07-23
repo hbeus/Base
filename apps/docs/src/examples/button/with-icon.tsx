@@ -5,13 +5,9 @@ import { IconPlus, IconArrowRight } from '@tabler/icons-react';
 export default function ButtonWithIcon() {
   return (
     <Flex direction='row' gap='s8'>
-      <Button>
-        <Icon icon={IconPlus} />
-        Create
-      </Button>
-      <Button variant='ghost'>
+      <Button leading={<Icon icon={IconPlus} />}>Create</Button>
+      <Button variant='ghost' trailing={<Icon icon={IconArrowRight} />}>
         Continue
-        <Icon icon={IconArrowRight} />
       </Button>
     </Flex>
   );

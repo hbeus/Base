@@ -47,8 +47,8 @@ function PageComponent() {
         </Text>
         <Text as='p' size='bodySm' color='secondary'>
           Wraps Base UI Button with variant and size styling, plus a subtle
-          scale-down tap animation via motion.dev. Accepts icons as children
-          alongside text.
+          scale-down tap animation via motion.dev. Use leading and trailing
+          slots for icons beside the label.
         </Text>
       </header>
 

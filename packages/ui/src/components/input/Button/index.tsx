@@ -2,7 +2,7 @@ import { Button as BaseButton } from '@base-ui/react/button';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { INPUT_SCALE_DOWN } from '../../../constants/motion';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -15,14 +15,13 @@ import { styleArray } from '../../../utils/styleArray';
 type ButtonVariant = 'accent' | 'primary' | 'ghost' | 'inherit';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
-export interface ButtonProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseButton>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLButtonElement>;
+export interface ButtonProps extends Omit<ComponentProps<typeof BaseButton>, 'style'>, BaseProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   rounded?: boolean;
   fill?: boolean;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
 }
 
 const styles = stylex.create({
@@ -31,7 +30,7 @@ const styles = stylex.create({
     width: 'fit-content',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.s8,
+    gap: spacing.s4,
     fontWeight: 500,
     cursor: 'pointer',
     transition: 'background-color 0.15s, color 0.15s',
@@ -98,6 +97,10 @@ const styles = stylex.create({
     fontSize: typography.bodySize,
     borderRadius: radii.r12,
   },
+  children: {
+    display: 'block',
+    paddingInline: spacing.s4,
+  },
 });
 
 const shapeStyles = stylex.create({
@@ -121,10 +124,16 @@ export function Button({
   fill = false,
   style,
   ref,
+  children,
+  leading,
+  trailing,
   ...props
 }: ButtonProps) {
   return (
     <MotionBaseButton
+      data-slot='button'
+      data-variant={variant}
+      data-size={size}
       ref={ref}
       whileTap={props.disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
       {...stylex.props(
@@ -136,6 +145,10 @@ export function Button({
         ...styleArray(style),
       )}
       {...props}
-    />
+    >
+      {leading && leading}
+      <span {...stylex.props(styles.children)}>{children}</span>
+      {trailing && trailing}
+    </MotionBaseButton>
   );
 }

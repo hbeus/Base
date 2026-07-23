@@ -26,6 +26,18 @@ export const buttonProps: PropDef[] = [
     description: 'Stretches the button to full container width.',
   },
   {
+    name: 'leading',
+    type: 'React.ReactNode',
+    default: 'undefined',
+    description: 'Content rendered before the label, typically an icon.',
+  },
+  {
+    name: 'trailing',
+    type: 'React.ReactNode',
+    default: 'undefined',
+    description: 'Content rendered after the label, typically an icon.',
+  },
+  {
     name: 'disabled',
     type: 'boolean',
     default: 'false',
