@@ -3,7 +3,7 @@ import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type React from 'react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { INPUT_SCALE_DOWN } from '../../../constants/motion';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -18,9 +18,8 @@ type ToggleGroupSize = 'sm' | 'md' | 'lg';
 
 /* ---------- Root ---------- */
 export interface ToggleGroupRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToggleGroup>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseToggleGroup>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLDivElement>;
   size?: ToggleGroupSize;
 }
 
@@ -38,6 +37,8 @@ const rootStyles = stylex.create({
 function Root({ size = 'md', style, ref, ...props }: ToggleGroupRootProps) {
   return (
     <BaseToggleGroup
+      data-slot="toggle-group"
+      data-size={size}
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -47,10 +48,11 @@ function Root({ size = 'md', style, ref, ...props }: ToggleGroupRootProps) {
 
 /* ---------- Item ---------- */
 export interface ToggleGroupItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToggle>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseToggle>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
   size?: ToggleGroupSize;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
 }
 
 const itemStyles = stylex.create({
@@ -97,13 +99,27 @@ const itemStyles = stylex.create({
     fontSize: typography.bodySize,
     borderRadius: radii.r10,
   },
+  children: {
+    display: 'block',
+    paddingInline: spacing.s4,
+  },
 });
 
 const MotionToggle = motion.create(BaseToggle as React.ComponentType<Record<string, unknown>>);
 
-function Item({ size = 'md', style, ref, ...props }: ToggleGroupItemProps) {
+function Item({
+  size = 'md',
+  style,
+  ref,
+  children,
+  leading,
+  trailing,
+  ...props
+}: ToggleGroupItemProps) {
   return (
     <MotionToggle
+      data-slot="toggle-group-item"
+      data-size={size}
       ref={ref}
       whileTap={props.disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
       {...stylex.props(
@@ -113,7 +129,11 @@ function Item({ size = 'md', style, ref, ...props }: ToggleGroupItemProps) {
         ...styleArray(style),
       )}
       {...props}
-    />
+    >
+      {leading && leading}
+      <span {...stylex.props(itemStyles.children)}>{children}</span>
+      {trailing && trailing}
+    </MotionToggle>
   );
 }
 

@@ -1,6 +1,7 @@
 import { Toggle as BaseToggle } from '@base-ui/react/toggle';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type React from 'react';
+import type { ComponentProps } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
@@ -8,9 +9,10 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 export interface ToggleProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToggle>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseToggle>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
 }
 
 const styles = stylex.create({
@@ -41,14 +43,23 @@ const styles = stylex.create({
     backgroundColor: colors.lighten8,
     color: colors.foregroundPrimary,
   },
+  children: {
+    display: 'block',
+    paddingInline: spacing.s4,
+  },
 });
 
-export function Toggle({ style, ref, ...props }: ToggleProps) {
+export function Toggle({ style, ref, children, leading, trailing, ...props }: ToggleProps) {
   return (
     <BaseToggle
+      data-slot="toggle"
       ref={ref}
       {...stylex.props(styles.base, props.pressed && styles.pressed, ...styleArray(style))}
       {...props}
-    />
+    >
+      {leading && leading}
+      <span {...stylex.props(styles.children)}>{children}</span>
+      {trailing && trailing}
+    </BaseToggle>
   );
 }

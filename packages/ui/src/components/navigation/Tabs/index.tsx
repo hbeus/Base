@@ -1,6 +1,7 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type React from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
@@ -12,10 +13,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface TabsRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseTabs.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseTabs.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -26,16 +25,14 @@ const rootStyles = stylex.create({
 
 function Root({ style, ref, ...props }: TabsRootProps) {
   return (
-    <BaseTabs.Root ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))} {...props} />
+    <BaseTabs.Root data-slot="tabs" ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))} {...props} />
   );
 }
 
 /* ---------- List ---------- */
 export interface TabsListProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseTabs.List>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseTabs.List>, 'style'>,
+    BaseProps {}
 
 const listStyles = stylex.create({
   base: {
@@ -50,15 +47,16 @@ const listStyles = stylex.create({
 
 function List({ style, ref, ...props }: TabsListProps) {
   return (
-    <BaseTabs.List ref={ref} {...stylex.props(listStyles.base, ...styleArray(style))} {...props} />
+    <BaseTabs.List data-slot="tabs-list" ref={ref} {...stylex.props(listStyles.base, ...styleArray(style))} {...props} />
   );
 }
 
 /* ---------- Tab ---------- */
 export interface TabsTabProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseTabs.Tab>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseTabs.Tab>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
 }
 
 const tabStyles = stylex.create({
@@ -86,20 +84,31 @@ const tabStyles = stylex.create({
       color: colors.foregroundPrimary,
     },
   },
+  children: {
+    display: 'block',
+    paddingInline: spacing.s4,
+  },
 });
 
-function Tab({ style, ref, ...props }: TabsTabProps) {
+function Tab({ style, ref, children, leading, trailing, ...props }: TabsTabProps) {
   return (
-    <BaseTabs.Tab ref={ref} {...stylex.props(tabStyles.base, ...styleArray(style))} {...props} />
+    <BaseTabs.Tab
+      data-slot="tabs-tab"
+      ref={ref}
+      {...stylex.props(tabStyles.base, ...styleArray(style))}
+      {...props}
+    >
+      {leading && leading}
+      <span {...stylex.props(tabStyles.children)}>{children}</span>
+      {trailing && trailing}
+    </BaseTabs.Tab>
   );
 }
 
 /* ---------- Indicator ---------- */
 export interface TabsIndicatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseTabs.Indicator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLSpanElement>;
-}
+  extends Omit<ComponentProps<typeof BaseTabs.Indicator>, 'style'>,
+    BaseProps {}
 
 const indicatorStyles = stylex.create({
   base: {
@@ -115,6 +124,7 @@ const indicatorStyles = stylex.create({
 function Indicator({ style, ref, ...props }: TabsIndicatorProps) {
   return (
     <BaseTabs.Indicator
+      data-slot="tabs-indicator"
       ref={ref}
       {...stylex.props(indicatorStyles.base, ...styleArray(style))}
       {...props}
@@ -124,10 +134,8 @@ function Indicator({ style, ref, ...props }: TabsIndicatorProps) {
 
 /* ---------- Panel ---------- */
 export interface TabsPanelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseTabs.Panel>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseTabs.Panel>, 'style'>,
+    BaseProps {}
 
 const panelStyles = stylex.create({
   base: {
@@ -139,6 +147,7 @@ const panelStyles = stylex.create({
 function Panel({ style, ref, ...props }: TabsPanelProps) {
   return (
     <BaseTabs.Panel
+      data-slot="tabs-panel"
       ref={ref}
       {...stylex.props(panelStyles.base, ...styleArray(style))}
       {...props}

@@ -1,6 +1,7 @@
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type React from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,10 +12,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface ToolbarRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToolbar.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseToolbar.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -33,6 +32,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, ...props }: ToolbarRootProps) {
   return (
     <BaseToolbar.Root
+      data-slot="toolbar"
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -42,10 +42,8 @@ function Root({ style, ref, ...props }: ToolbarRootProps) {
 
 /* ---------- Group ---------- */
 export interface ToolbarGroupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToolbar.Group>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseToolbar.Group>, 'style'>,
+    BaseProps {}
 
 const groupStyles = stylex.create({
   base: {
@@ -58,6 +56,7 @@ const groupStyles = stylex.create({
 function Group({ style, ref, ...props }: ToolbarGroupProps) {
   return (
     <BaseToolbar.Group
+      data-slot="toolbar-group"
       ref={ref}
       {...stylex.props(groupStyles.base, ...styleArray(style))}
       {...props}
@@ -67,9 +66,10 @@ function Group({ style, ref, ...props }: ToolbarGroupProps) {
 
 /* ---------- Button ---------- */
 export interface ToolbarButtonProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToolbar.Button>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseToolbar.Button>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLButtonElement>;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
 }
 
 const buttonStyles = stylex.create({
@@ -96,41 +96,54 @@ const buttonStyles = stylex.create({
       pointerEvents: 'none',
     },
   },
+  children: {
+    display: 'block',
+    paddingInline: spacing.s4,
+  },
 });
 
-function Button({ style, ref, ...props }: ToolbarButtonProps) {
+function Button({ style, ref, children, leading, trailing, ...props }: ToolbarButtonProps) {
   return (
     <BaseToolbar.Button
+      data-slot="toolbar-button"
       ref={ref}
       {...stylex.props(buttonStyles.base, ...styleArray(style))}
       {...props}
-    />
+    >
+      {leading && leading}
+      <span {...stylex.props(buttonStyles.children)}>{children}</span>
+      {trailing && trailing}
+    </BaseToolbar.Button>
   );
 }
 
 /* ---------- Link ---------- */
 export interface ToolbarLinkProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToolbar.Link>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseToolbar.Link>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLAnchorElement>;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
 }
 
-function Link({ style, ref, ...props }: ToolbarLinkProps) {
+function Link({ style, ref, children, leading, trailing, ...props }: ToolbarLinkProps) {
   return (
     <BaseToolbar.Link
+      data-slot="toolbar-link"
       ref={ref}
       {...stylex.props(buttonStyles.base, ...styleArray(style))}
       {...props}
-    />
+    >
+      {leading && leading}
+      <span {...stylex.props(buttonStyles.children)}>{children}</span>
+      {trailing && trailing}
+    </BaseToolbar.Link>
   );
 }
 
 /* ---------- Separator ---------- */
 export interface ToolbarSeparatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToolbar.Separator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseToolbar.Separator>, 'style'>,
+    BaseProps {}
 
 const separatorStyles = stylex.create({
   base: {
@@ -144,6 +157,7 @@ const separatorStyles = stylex.create({
 function ToolbarSeparator({ style, ref, ...props }: ToolbarSeparatorProps) {
   return (
     <BaseToolbar.Separator
+      data-slot="toolbar-separator"
       ref={ref}
       {...stylex.props(separatorStyles.base, ...styleArray(style))}
       {...props}
@@ -152,8 +166,8 @@ function ToolbarSeparator({ style, ref, ...props }: ToolbarSeparatorProps) {
 }
 
 /* ---------- Input ---------- */
-function Input(props: ComponentPropsWithoutRef<typeof BaseToolbar.Input>) {
-  return <BaseToolbar.Input {...props} />;
+function Input(props: ComponentProps<typeof BaseToolbar.Input>) {
+  return <BaseToolbar.Input data-slot="toolbar-input" {...props} />;
 }
 
 /* ---------- Export ---------- */

@@ -1,5 +1,6 @@
-import { Text, ToggleGroup } from '@base/ui';
+import { Icon, Text, ToggleGroup } from '@base/ui';
 import * as stylex from '@stylexjs/stylex';
+import { IconAlignCenter, IconAlignLeft, IconAlignRight } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { docStyles } from '~/styles/docs';
 
@@ -15,7 +16,8 @@ function PageComponent() {
           Toggle Group
         </Text>
         <Text as='p' size='bodySm' color='secondary'>
-          Segmented control with size variants.
+          Segmented control with size variants. Use leading and trailing slots
+          for icons beside item labels.
         </Text>
       </header>
       <section {...stylex.props(docStyles.section)}>
@@ -27,6 +29,24 @@ function PageComponent() {
             <ToggleGroup.Item value='left'>Left</ToggleGroup.Item>
             <ToggleGroup.Item value='center'>Center</ToggleGroup.Item>
             <ToggleGroup.Item value='right'>Right</ToggleGroup.Item>
+          </ToggleGroup.Root>
+        </div>
+      </section>
+      <section {...stylex.props(docStyles.section)}>
+        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
+          Leading slots
+        </Text>
+        <div {...stylex.props(docStyles.preview)}>
+          <ToggleGroup.Root defaultValue={['center']}>
+            <ToggleGroup.Item value='left' leading={<Icon icon={IconAlignLeft} />}>
+              Left
+            </ToggleGroup.Item>
+            <ToggleGroup.Item value='center' leading={<Icon icon={IconAlignCenter} />}>
+              Center
+            </ToggleGroup.Item>
+            <ToggleGroup.Item value='right' leading={<Icon icon={IconAlignRight} />}>
+              Right
+            </ToggleGroup.Item>
           </ToggleGroup.Root>
         </div>
       </section>
@@ -64,3 +84,4 @@ function PageComponent() {
     </>
   );
 }
+
