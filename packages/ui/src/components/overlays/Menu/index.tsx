@@ -2,13 +2,16 @@ import { Menu as BaseMenu } from '@base-ui/react/menu';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
+import { zIndex } from '../../../tokens/zIndex.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 /* ---------- Root ---------- */
 function Root(props: ComponentProps<typeof BaseMenu.Root>) {
@@ -16,11 +19,8 @@ function Root(props: ComponentProps<typeof BaseMenu.Root>) {
 }
 
 /* ---------- Trigger ---------- */
-function Trigger({
-  ref,
-  ...props
-}: ComponentProps<typeof BaseMenu.Trigger>) {
-  return <BaseMenu.Trigger data-slot="menu-trigger" ref={ref} {...props} />;
+function Trigger({ ref, ...props }: ComponentProps<typeof BaseMenu.Trigger>) {
+  return <BaseMenu.Trigger data-slot='menu-trigger' ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
@@ -29,8 +29,25 @@ function Portal(props: ComponentProps<typeof BaseMenu.Portal>) {
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentProps<typeof BaseMenu.Positioner>) {
-  return <BaseMenu.Positioner data-slot="menu-positioner" {...props} />;
+export interface MenuPositionerProps
+  extends Omit<ComponentProps<typeof BaseMenu.Positioner>, 'style'>,
+    BaseProps {}
+
+const positionerStyles = stylex.create({
+  base: {
+    zIndex: zIndex.dropdown,
+  },
+});
+
+function Positioner({ style, ref, ...props }: MenuPositionerProps) {
+  return (
+    <BaseMenu.Positioner
+      data-slot='menu-positioner'
+      ref={ref}
+      {...stylex.props(positionerStyles.base, ...styleArray(style))}
+      {...props}
+    />
+  );
 }
 
 /* ---------- Popup ---------- */
@@ -40,7 +57,6 @@ export interface MenuPopupProps
 
 const popupStyles = stylex.create({
   base: {
-    backgroundColor: colors.surface300,
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
@@ -54,8 +70,18 @@ const popupStyles = stylex.create({
 
 function Popup({ style, ref, ...props }: MenuPopupProps) {
   return (
+    <SurfaceLevel level={300}>
+      <PopupSurface style={style} ref={ref} {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function PopupSurface({ style, ref, ...props }: MenuPopupProps) {
+  const surface = useSurface();
+
+  return (
     <BaseMenu.Popup
-      data-slot="menu-popup"
+      data-slot='menu-popup'
       ref={ref}
       render={
         <motion.div
@@ -65,7 +91,7 @@ function Popup({ style, ref, ...props }: MenuPopupProps) {
           transition={{ duration: 0.15 }}
         />
       }
-      {...stylex.props(popupStyles.base, ...styleArray(style))}
+      {...stylex.props(popupStyles.base, surface, ...styleArray(style))}
       {...props}
     />
   );
@@ -102,7 +128,12 @@ const itemStyles = stylex.create({
 
 function Item({ style, ref, ...props }: MenuItemProps) {
   return (
-    <BaseMenu.Item data-slot="menu-item" ref={ref} {...stylex.props(itemStyles.base, ...styleArray(style))} {...props} />
+    <BaseMenu.Item
+      data-slot='menu-item'
+      ref={ref}
+      {...stylex.props(itemStyles.base, ...styleArray(style))}
+      {...props}
+    />
   );
 }
 
@@ -114,7 +145,7 @@ export interface MenuLinkItemProps
 function LinkItem({ style, ref, ...props }: MenuLinkItemProps) {
   return (
     <BaseMenu.LinkItem
-      data-slot="menu-link-item"
+      data-slot='menu-link-item'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -130,7 +161,7 @@ export interface MenuCheckboxItemProps
 function CheckboxItem({ style, ref, ...props }: MenuCheckboxItemProps) {
   return (
     <BaseMenu.CheckboxItem
-      data-slot="menu-checkbox-item"
+      data-slot='menu-checkbox-item'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -139,15 +170,13 @@ function CheckboxItem({ style, ref, ...props }: MenuCheckboxItemProps) {
 }
 
 /* ---------- CheckboxItemIndicator ---------- */
-function CheckboxItemIndicator(
-  props: ComponentProps<typeof BaseMenu.CheckboxItemIndicator>,
-) {
-  return <BaseMenu.CheckboxItemIndicator data-slot="menu-checkbox-item-indicator" {...props} />;
+function CheckboxItemIndicator(props: ComponentProps<typeof BaseMenu.CheckboxItemIndicator>) {
+  return <BaseMenu.CheckboxItemIndicator data-slot='menu-checkbox-item-indicator' {...props} />;
 }
 
 /* ---------- RadioGroup ---------- */
 function RadioGroup(props: ComponentProps<typeof BaseMenu.RadioGroup>) {
-  return <BaseMenu.RadioGroup data-slot="menu-radio-group" {...props} />;
+  return <BaseMenu.RadioGroup data-slot='menu-radio-group' {...props} />;
 }
 
 /* ---------- RadioItem ---------- */
@@ -158,7 +187,7 @@ export interface MenuRadioItemProps
 function RadioItem({ style, ref, ...props }: MenuRadioItemProps) {
   return (
     <BaseMenu.RadioItem
-      data-slot="menu-radio-item"
+      data-slot='menu-radio-item'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -168,12 +197,12 @@ function RadioItem({ style, ref, ...props }: MenuRadioItemProps) {
 
 /* ---------- RadioItemIndicator ---------- */
 function RadioItemIndicator(props: ComponentProps<typeof BaseMenu.RadioItemIndicator>) {
-  return <BaseMenu.RadioItemIndicator data-slot="menu-radio-item-indicator" {...props} />;
+  return <BaseMenu.RadioItemIndicator data-slot='menu-radio-item-indicator' {...props} />;
 }
 
 /* ---------- Group ---------- */
 function Group(props: ComponentProps<typeof BaseMenu.Group>) {
-  return <BaseMenu.Group data-slot="menu-group" {...props} />;
+  return <BaseMenu.Group data-slot='menu-group' {...props} />;
 }
 
 /* ---------- GroupLabel ---------- */
@@ -194,7 +223,7 @@ const groupLabelStyles = stylex.create({
 function GroupLabel({ style, ref, ...props }: MenuGroupLabelProps) {
   return (
     <BaseMenu.GroupLabel
-      data-slot="menu-group-label"
+      data-slot='menu-group-label'
       ref={ref}
       {...stylex.props(groupLabelStyles.base, ...styleArray(style))}
       {...props}
@@ -218,7 +247,7 @@ const separatorStyles = stylex.create({
 function MenuSeparator({ style, ref, ...props }: MenuSeparatorProps) {
   return (
     <BaseMenu.Separator
-      data-slot="menu-separator"
+      data-slot='menu-separator'
       ref={ref}
       {...stylex.props(separatorStyles.base, ...styleArray(style))}
       {...props}
@@ -242,7 +271,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: MenuArrowProps) {
   return (
     <BaseMenu.Arrow
-      data-slot="menu-arrow"
+      data-slot='menu-arrow'
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -263,7 +292,7 @@ export interface MenuSubmenuTriggerProps
 function SubmenuTrigger({ style, ref, ...props }: MenuSubmenuTriggerProps) {
   return (
     <BaseMenu.SubmenuTrigger
-      data-slot="menu-submenu-trigger"
+      data-slot='menu-submenu-trigger'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}

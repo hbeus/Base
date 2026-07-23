@@ -212,6 +212,7 @@ export {
   type MenuItemProps,
   type MenuLinkItemProps,
   type MenuPopupProps,
+  type MenuPositionerProps,
   type MenuRadioItemProps,
   type MenuSeparatorProps,
   type MenuSubmenuTriggerProps,

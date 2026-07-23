@@ -24,6 +24,7 @@ import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
+import { zIndex } from '../../../tokens/zIndex.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { mergeRefs } from '../../../utils/mergeRefs';
 import { styleArray } from '../../../utils/styleArray';
@@ -288,7 +289,7 @@ const moreStyles = stylex.create({
   },
   triggerContent: {
     position: 'relative',
-    zIndex: 1,
+    zIndex: zIndex.raised,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -645,7 +646,7 @@ const tabStyles = stylex.create({
   },
   content: {
     position: 'relative',
-    zIndex: 1,
+    zIndex: zIndex.raised,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -668,7 +669,7 @@ const indicatorStyles = stylex.create({
   base: {
     position: 'absolute',
     pointerEvents: 'none',
-    zIndex: 0,
+    zIndex: zIndex.base,
   },
   underline: {
     left: 0,
