@@ -75,7 +75,7 @@ const rootStyles = stylex.create({
 function Root({ children, activeId, position = 'left', onNavigate, style }: SidebarRootProps) {
   return (
     <SidebarContext.Provider value={{ activeId: activeId ?? null, position, onNavigate }}>
-      <ul {...stylex.props(rootStyles.base, rootStyles[position], ...styleArray(style))}>
+      <ul data-slot="sidebar" {...stylex.props(rootStyles.base, rootStyles[position], ...styleArray(style))}>
         {children}
       </ul>
     </SidebarContext.Provider>
@@ -150,7 +150,7 @@ function Anchor({ id, href, children, style, ref }: SidebarAnchorProps) {
   };
 
   return (
-    <li {...stylex.props(anchorStyles.item, ...styleArray(style))}>
+    <li data-slot="sidebar-anchor" {...stylex.props(anchorStyles.item, ...styleArray(style))}>
       <a
         ref={ref}
         href={href}
