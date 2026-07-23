@@ -1,7 +1,7 @@
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
@@ -10,39 +10,34 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Provider ---------- */
-function Provider(props: ComponentPropsWithoutRef<typeof BaseTooltip.Provider>) {
+function Provider(props: ComponentProps<typeof BaseTooltip.Provider>) {
   return <BaseTooltip.Provider {...props} />;
 }
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseTooltip.Root>) {
+function Root(props: ComponentProps<typeof BaseTooltip.Root>) {
   return <BaseTooltip.Root {...props} />;
 }
 
 /* ---------- Trigger ---------- */
-function Trigger({
-  ref,
-  ...props
-}: ComponentPropsWithoutRef<typeof BaseTooltip.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseTooltip.Trigger ref={ref} {...props} />;
+function Trigger({ ref, ...props }: ComponentProps<typeof BaseTooltip.Trigger>) {
+  return <BaseTooltip.Trigger data-slot="tooltip-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseTooltip.Portal>) {
+function Portal(props: ComponentProps<typeof BaseTooltip.Portal>) {
   return <BaseTooltip.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BaseTooltip.Positioner>) {
-  return <BaseTooltip.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BaseTooltip.Positioner>) {
+  return <BaseTooltip.Positioner data-slot="tooltip-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface TooltipPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseTooltip.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseTooltip.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -60,6 +55,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: TooltipPopupProps) {
   return (
     <BaseTooltip.Popup
+      data-slot="tooltip-popup"
       ref={ref}
       render={
         <motion.div
@@ -77,10 +73,8 @@ function Popup({ style, ref, ...props }: TooltipPopupProps) {
 
 /* ---------- Arrow ---------- */
 export interface TooltipArrowProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseTooltip.Arrow>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseTooltip.Arrow>, 'style'>,
+    BaseProps {}
 
 const arrowStyles = stylex.create({
   base: {
@@ -91,6 +85,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: TooltipArrowProps) {
   return (
     <BaseTooltip.Arrow
+      data-slot="tooltip-arrow"
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}

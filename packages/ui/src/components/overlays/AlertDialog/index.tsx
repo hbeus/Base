@@ -1,7 +1,7 @@
 import { AlertDialog as BaseAlertDialog } from '@base-ui/react/alert-dialog';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -13,7 +13,7 @@ import { styleArray } from '../../../utils/styleArray';
 type AlertDialogSize = 'sm' | 'md' | 'lg';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseAlertDialog.Root>) {
+function Root(props: ComponentProps<typeof BaseAlertDialog.Root>) {
   return <BaseAlertDialog.Root {...props} />;
 }
 
@@ -21,29 +21,27 @@ function Root(props: ComponentPropsWithoutRef<typeof BaseAlertDialog.Root>) {
 function Trigger({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseAlertDialog.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseAlertDialog.Trigger ref={ref} {...props} />;
+}: ComponentProps<typeof BaseAlertDialog.Trigger>) {
+  return <BaseAlertDialog.Trigger data-slot="alert-dialog-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Close ---------- */
 function Close({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseAlertDialog.Close> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseAlertDialog.Close ref={ref} {...props} />;
+}: ComponentProps<typeof BaseAlertDialog.Close>) {
+  return <BaseAlertDialog.Close data-slot="alert-dialog-close" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseAlertDialog.Portal>) {
+function Portal(props: ComponentProps<typeof BaseAlertDialog.Portal>) {
   return <BaseAlertDialog.Portal keepMounted {...props} />;
 }
 
 /* ---------- Backdrop ---------- */
 export interface AlertDialogBackdropProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAlertDialog.Backdrop>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAlertDialog.Backdrop>, 'style'>,
+    BaseProps {}
 
 const backdropStyles = stylex.create({
   base: {
@@ -57,6 +55,7 @@ const backdropStyles = stylex.create({
 function Backdrop({ style, ref, ...props }: AlertDialogBackdropProps) {
   return (
     <BaseAlertDialog.Backdrop
+      data-slot="alert-dialog-backdrop"
       ref={ref}
       render={
         <motion.div
@@ -74,9 +73,8 @@ function Backdrop({ style, ref, ...props }: AlertDialogBackdropProps) {
 
 /* ---------- Content ---------- */
 export interface AlertDialogContentProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAlertDialog.Popup>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseAlertDialog.Popup>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLDivElement>;
   size?: AlertDialogSize;
 }
 
@@ -111,6 +109,8 @@ const contentStyles = stylex.create({
 function Content({ size = 'md', style, ref, ...props }: AlertDialogContentProps) {
   return (
     <BaseAlertDialog.Popup
+      data-slot="alert-dialog-content"
+      data-size={size}
       ref={ref}
       render={
         <motion.div
@@ -128,10 +128,8 @@ function Content({ size = 'md', style, ref, ...props }: AlertDialogContentProps)
 
 /* ---------- Title ---------- */
 export interface AlertDialogTitleProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAlertDialog.Title>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLHeadingElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAlertDialog.Title>, 'style'>,
+    BaseProps {}
 
 const titleStyles = stylex.create({
   base: {
@@ -146,6 +144,7 @@ const titleStyles = stylex.create({
 function Title({ style, ref, ...props }: AlertDialogTitleProps) {
   return (
     <BaseAlertDialog.Title
+      data-slot="alert-dialog-title"
       ref={ref}
       {...stylex.props(titleStyles.base, ...styleArray(style))}
       {...props}
@@ -155,10 +154,8 @@ function Title({ style, ref, ...props }: AlertDialogTitleProps) {
 
 /* ---------- Description ---------- */
 export interface AlertDialogDescriptionProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAlertDialog.Description>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLParagraphElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAlertDialog.Description>, 'style'>,
+    BaseProps {}
 
 const descriptionStyles = stylex.create({
   base: {
@@ -171,6 +168,7 @@ const descriptionStyles = stylex.create({
 function Description({ style, ref, ...props }: AlertDialogDescriptionProps) {
   return (
     <BaseAlertDialog.Description
+      data-slot="alert-dialog-description"
       ref={ref}
       {...stylex.props(descriptionStyles.base, ...styleArray(style))}
       {...props}

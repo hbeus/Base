@@ -1,7 +1,7 @@
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,7 +11,7 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseMenu.Root>) {
+function Root(props: ComponentProps<typeof BaseMenu.Root>) {
   return <BaseMenu.Root {...props} />;
 }
 
@@ -19,26 +19,24 @@ function Root(props: ComponentPropsWithoutRef<typeof BaseMenu.Root>) {
 function Trigger({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseMenu.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseMenu.Trigger ref={ref} {...props} />;
+}: ComponentProps<typeof BaseMenu.Trigger>) {
+  return <BaseMenu.Trigger data-slot="menu-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseMenu.Portal>) {
+function Portal(props: ComponentProps<typeof BaseMenu.Portal>) {
   return <BaseMenu.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BaseMenu.Positioner>) {
-  return <BaseMenu.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BaseMenu.Positioner>) {
+  return <BaseMenu.Positioner data-slot="menu-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface MenuPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -57,6 +55,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: MenuPopupProps) {
   return (
     <BaseMenu.Popup
+      data-slot="menu-popup"
       ref={ref}
       render={
         <motion.div
@@ -74,10 +73,8 @@ function Popup({ style, ref, ...props }: MenuPopupProps) {
 
 /* ---------- Item ---------- */
 export interface MenuItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.Item>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.Item>, 'style'>,
+    BaseProps {}
 
 const itemStyles = stylex.create({
   base: {
@@ -105,20 +102,19 @@ const itemStyles = stylex.create({
 
 function Item({ style, ref, ...props }: MenuItemProps) {
   return (
-    <BaseMenu.Item ref={ref} {...stylex.props(itemStyles.base, ...styleArray(style))} {...props} />
+    <BaseMenu.Item data-slot="menu-item" ref={ref} {...stylex.props(itemStyles.base, ...styleArray(style))} {...props} />
   );
 }
 
 /* ---------- LinkItem ---------- */
 export interface MenuLinkItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.LinkItem>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLAnchorElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.LinkItem>, 'style'>,
+    BaseProps {}
 
 function LinkItem({ style, ref, ...props }: MenuLinkItemProps) {
   return (
     <BaseMenu.LinkItem
+      data-slot="menu-link-item"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -128,14 +124,13 @@ function LinkItem({ style, ref, ...props }: MenuLinkItemProps) {
 
 /* ---------- CheckboxItem ---------- */
 export interface MenuCheckboxItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.CheckboxItem>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.CheckboxItem>, 'style'>,
+    BaseProps {}
 
 function CheckboxItem({ style, ref, ...props }: MenuCheckboxItemProps) {
   return (
     <BaseMenu.CheckboxItem
+      data-slot="menu-checkbox-item"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -145,26 +140,25 @@ function CheckboxItem({ style, ref, ...props }: MenuCheckboxItemProps) {
 
 /* ---------- CheckboxItemIndicator ---------- */
 function CheckboxItemIndicator(
-  props: ComponentPropsWithoutRef<typeof BaseMenu.CheckboxItemIndicator>,
+  props: ComponentProps<typeof BaseMenu.CheckboxItemIndicator>,
 ) {
-  return <BaseMenu.CheckboxItemIndicator {...props} />;
+  return <BaseMenu.CheckboxItemIndicator data-slot="menu-checkbox-item-indicator" {...props} />;
 }
 
 /* ---------- RadioGroup ---------- */
-function RadioGroup(props: ComponentPropsWithoutRef<typeof BaseMenu.RadioGroup>) {
-  return <BaseMenu.RadioGroup {...props} />;
+function RadioGroup(props: ComponentProps<typeof BaseMenu.RadioGroup>) {
+  return <BaseMenu.RadioGroup data-slot="menu-radio-group" {...props} />;
 }
 
 /* ---------- RadioItem ---------- */
 export interface MenuRadioItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.RadioItem>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.RadioItem>, 'style'>,
+    BaseProps {}
 
 function RadioItem({ style, ref, ...props }: MenuRadioItemProps) {
   return (
     <BaseMenu.RadioItem
+      data-slot="menu-radio-item"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -173,21 +167,19 @@ function RadioItem({ style, ref, ...props }: MenuRadioItemProps) {
 }
 
 /* ---------- RadioItemIndicator ---------- */
-function RadioItemIndicator(props: ComponentPropsWithoutRef<typeof BaseMenu.RadioItemIndicator>) {
-  return <BaseMenu.RadioItemIndicator {...props} />;
+function RadioItemIndicator(props: ComponentProps<typeof BaseMenu.RadioItemIndicator>) {
+  return <BaseMenu.RadioItemIndicator data-slot="menu-radio-item-indicator" {...props} />;
 }
 
 /* ---------- Group ---------- */
-function Group(props: ComponentPropsWithoutRef<typeof BaseMenu.Group>) {
-  return <BaseMenu.Group {...props} />;
+function Group(props: ComponentProps<typeof BaseMenu.Group>) {
+  return <BaseMenu.Group data-slot="menu-group" {...props} />;
 }
 
 /* ---------- GroupLabel ---------- */
 export interface MenuGroupLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.GroupLabel>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.GroupLabel>, 'style'>,
+    BaseProps {}
 
 const groupLabelStyles = stylex.create({
   base: {
@@ -202,6 +194,7 @@ const groupLabelStyles = stylex.create({
 function GroupLabel({ style, ref, ...props }: MenuGroupLabelProps) {
   return (
     <BaseMenu.GroupLabel
+      data-slot="menu-group-label"
       ref={ref}
       {...stylex.props(groupLabelStyles.base, ...styleArray(style))}
       {...props}
@@ -211,10 +204,8 @@ function GroupLabel({ style, ref, ...props }: MenuGroupLabelProps) {
 
 /* ---------- Separator ---------- */
 export interface MenuSeparatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.Separator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.Separator>, 'style'>,
+    BaseProps {}
 
 const separatorStyles = stylex.create({
   base: {
@@ -227,6 +218,7 @@ const separatorStyles = stylex.create({
 function MenuSeparator({ style, ref, ...props }: MenuSeparatorProps) {
   return (
     <BaseMenu.Separator
+      data-slot="menu-separator"
       ref={ref}
       {...stylex.props(separatorStyles.base, ...styleArray(style))}
       {...props}
@@ -236,10 +228,8 @@ function MenuSeparator({ style, ref, ...props }: MenuSeparatorProps) {
 
 /* ---------- Arrow ---------- */
 export interface MenuArrowProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.Arrow>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.Arrow>, 'style'>,
+    BaseProps {}
 
 const arrowStyles = stylex.create({
   base: {
@@ -252,6 +242,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: MenuArrowProps) {
   return (
     <BaseMenu.Arrow
+      data-slot="menu-arrow"
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -260,20 +251,19 @@ function Arrow({ style, ref, ...props }: MenuArrowProps) {
 }
 
 /* ---------- SubmenuRoot ---------- */
-function SubmenuRoot(props: ComponentPropsWithoutRef<typeof BaseMenu.SubmenuRoot>) {
+function SubmenuRoot(props: ComponentProps<typeof BaseMenu.SubmenuRoot>) {
   return <BaseMenu.SubmenuRoot {...props} />;
 }
 
 /* ---------- SubmenuTrigger ---------- */
 export interface MenuSubmenuTriggerProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMenu.SubmenuTrigger>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMenu.SubmenuTrigger>, 'style'>,
+    BaseProps {}
 
 function SubmenuTrigger({ style, ref, ...props }: MenuSubmenuTriggerProps) {
   return (
     <BaseMenu.SubmenuTrigger
+      data-slot="menu-submenu-trigger"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}

@@ -1,7 +1,7 @@
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,7 +11,7 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseDrawer.Root>) {
+function Root(props: ComponentProps<typeof BaseDrawer.Root>) {
   return <BaseDrawer.Root {...props} />;
 }
 
@@ -19,29 +19,27 @@ function Root(props: ComponentPropsWithoutRef<typeof BaseDrawer.Root>) {
 function Trigger({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseDrawer.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseDrawer.Trigger ref={ref} {...props} />;
+}: ComponentProps<typeof BaseDrawer.Trigger>) {
+  return <BaseDrawer.Trigger data-slot="drawer-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Close ---------- */
 function Close({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseDrawer.Close> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseDrawer.Close ref={ref} {...props} />;
+}: ComponentProps<typeof BaseDrawer.Close>) {
+  return <BaseDrawer.Close data-slot="drawer-close" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseDrawer.Portal>) {
+function Portal(props: ComponentProps<typeof BaseDrawer.Portal>) {
   return <BaseDrawer.Portal keepMounted {...props} />;
 }
 
 /* ---------- Backdrop ---------- */
 export interface DrawerBackdropProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseDrawer.Backdrop>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseDrawer.Backdrop>, 'style'>,
+    BaseProps {}
 
 const backdropStyles = stylex.create({
   base: {
@@ -55,6 +53,7 @@ const backdropStyles = stylex.create({
 function Backdrop({ style, ref, ...props }: DrawerBackdropProps) {
   return (
     <BaseDrawer.Backdrop
+      data-slot="drawer-backdrop"
       ref={ref}
       render={
         <motion.div
@@ -72,10 +71,8 @@ function Backdrop({ style, ref, ...props }: DrawerBackdropProps) {
 
 /* ---------- Popup ---------- */
 export interface DrawerPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseDrawer.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseDrawer.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -102,6 +99,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: DrawerPopupProps) {
   return (
     <BaseDrawer.Popup
+      data-slot="drawer-popup"
       ref={ref}
       {...stylex.props(popupStyles.base, popupStyles.right, ...styleArray(style))}
       {...props}
@@ -111,10 +109,8 @@ function Popup({ style, ref, ...props }: DrawerPopupProps) {
 
 /* ---------- Content ---------- */
 export interface DrawerContentProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseDrawer.Content>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseDrawer.Content>, 'style'>,
+    BaseProps {}
 
 const contentStyles = stylex.create({
   base: {
@@ -125,6 +121,7 @@ const contentStyles = stylex.create({
 function Content({ style, ref, ...props }: DrawerContentProps) {
   return (
     <BaseDrawer.Content
+      data-slot="drawer-content"
       ref={ref}
       {...stylex.props(contentStyles.base, ...styleArray(style))}
       {...props}
@@ -134,10 +131,8 @@ function Content({ style, ref, ...props }: DrawerContentProps) {
 
 /* ---------- Title ---------- */
 export interface DrawerTitleProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseDrawer.Title>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLHeadingElement>;
-}
+  extends Omit<ComponentProps<typeof BaseDrawer.Title>, 'style'>,
+    BaseProps {}
 
 const titleStyles = stylex.create({
   base: {
@@ -152,6 +147,7 @@ const titleStyles = stylex.create({
 function Title({ style, ref, ...props }: DrawerTitleProps) {
   return (
     <BaseDrawer.Title
+      data-slot="drawer-title"
       ref={ref}
       {...stylex.props(titleStyles.base, ...styleArray(style))}
       {...props}
@@ -161,10 +157,8 @@ function Title({ style, ref, ...props }: DrawerTitleProps) {
 
 /* ---------- Description ---------- */
 export interface DrawerDescriptionProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseDrawer.Description>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLParagraphElement>;
-}
+  extends Omit<ComponentProps<typeof BaseDrawer.Description>, 'style'>,
+    BaseProps {}
 
 const descriptionStyles = stylex.create({
   base: {
@@ -177,6 +171,7 @@ const descriptionStyles = stylex.create({
 function Description({ style, ref, ...props }: DrawerDescriptionProps) {
   return (
     <BaseDrawer.Description
+      data-slot="drawer-description"
       ref={ref}
       {...stylex.props(descriptionStyles.base, ...styleArray(style))}
       {...props}

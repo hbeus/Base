@@ -1,7 +1,7 @@
 import { PreviewCard as BasePreviewCard } from '@base-ui/react/preview-card';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -10,34 +10,29 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BasePreviewCard.Root>) {
+function Root(props: ComponentProps<typeof BasePreviewCard.Root>) {
   return <BasePreviewCard.Root {...props} />;
 }
 
 /* ---------- Trigger ---------- */
-function Trigger({
-  ref,
-  ...props
-}: ComponentPropsWithoutRef<typeof BasePreviewCard.Trigger> & { ref?: Ref<HTMLAnchorElement> }) {
-  return <BasePreviewCard.Trigger ref={ref} {...props} />;
+function Trigger({ ref, ...props }: ComponentProps<typeof BasePreviewCard.Trigger>) {
+  return <BasePreviewCard.Trigger data-slot="preview-card-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BasePreviewCard.Portal>) {
+function Portal(props: ComponentProps<typeof BasePreviewCard.Portal>) {
   return <BasePreviewCard.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BasePreviewCard.Positioner>) {
-  return <BasePreviewCard.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BasePreviewCard.Positioner>) {
+  return <BasePreviewCard.Positioner data-slot="preview-card-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface PreviewCardPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BasePreviewCard.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BasePreviewCard.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -56,6 +51,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: PreviewCardPopupProps) {
   return (
     <BasePreviewCard.Popup
+      data-slot="preview-card-popup"
       ref={ref}
       render={
         <motion.div
@@ -73,10 +69,8 @@ function Popup({ style, ref, ...props }: PreviewCardPopupProps) {
 
 /* ---------- Arrow ---------- */
 export interface PreviewCardArrowProps
-  extends Omit<ComponentPropsWithoutRef<typeof BasePreviewCard.Arrow>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BasePreviewCard.Arrow>, 'style'>,
+    BaseProps {}
 
 const arrowStyles = stylex.create({
   base: {
@@ -89,6 +83,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: PreviewCardArrowProps) {
   return (
     <BasePreviewCard.Arrow
+      data-slot="preview-card-arrow"
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -97,8 +92,8 @@ function Arrow({ style, ref, ...props }: PreviewCardArrowProps) {
 }
 
 /* ---------- Backdrop ---------- */
-function Backdrop(props: ComponentPropsWithoutRef<typeof BasePreviewCard.Backdrop>) {
-  return <BasePreviewCard.Backdrop {...props} />;
+function Backdrop(props: ComponentProps<typeof BasePreviewCard.Backdrop>) {
+  return <BasePreviewCard.Backdrop data-slot="preview-card-backdrop" {...props} />;
 }
 
 /* ---------- Export ---------- */

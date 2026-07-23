@@ -1,7 +1,7 @@
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,7 +11,7 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BaseContextMenu.Root>) {
+function Root(props: ComponentProps<typeof BaseContextMenu.Root>) {
   return <BaseContextMenu.Root {...props} />;
 }
 
@@ -19,26 +19,24 @@ function Root(props: ComponentPropsWithoutRef<typeof BaseContextMenu.Root>) {
 function Trigger({
   ref,
   ...props
-}: ComponentPropsWithoutRef<typeof BaseContextMenu.Trigger> & { ref?: Ref<HTMLDivElement> }) {
-  return <BaseContextMenu.Trigger ref={ref} {...props} />;
+}: ComponentProps<typeof BaseContextMenu.Trigger>) {
+  return <BaseContextMenu.Trigger data-slot="context-menu-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BaseContextMenu.Portal>) {
+function Portal(props: ComponentProps<typeof BaseContextMenu.Portal>) {
   return <BaseContextMenu.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BaseContextMenu.Positioner>) {
-  return <BaseContextMenu.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BaseContextMenu.Positioner>) {
+  return <BaseContextMenu.Positioner data-slot="context-menu-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface ContextMenuPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseContextMenu.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseContextMenu.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -57,6 +55,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: ContextMenuPopupProps) {
   return (
     <BaseContextMenu.Popup
+      data-slot="context-menu-popup"
       ref={ref}
       render={
         <motion.div
@@ -74,10 +73,8 @@ function Popup({ style, ref, ...props }: ContextMenuPopupProps) {
 
 /* ---------- Item ---------- */
 export interface ContextMenuItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseContextMenu.Item>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseContextMenu.Item>, 'style'>,
+    BaseProps {}
 
 const itemStyles = stylex.create({
   base: {
@@ -106,6 +103,7 @@ const itemStyles = stylex.create({
 function Item({ style, ref, ...props }: ContextMenuItemProps) {
   return (
     <BaseContextMenu.Item
+      data-slot="context-menu-item"
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -114,16 +112,14 @@ function Item({ style, ref, ...props }: ContextMenuItemProps) {
 }
 
 /* ---------- Group ---------- */
-function Group(props: ComponentPropsWithoutRef<typeof BaseContextMenu.Group>) {
-  return <BaseContextMenu.Group {...props} />;
+function Group(props: ComponentProps<typeof BaseContextMenu.Group>) {
+  return <BaseContextMenu.Group data-slot="context-menu-group" {...props} />;
 }
 
 /* ---------- GroupLabel ---------- */
 export interface ContextMenuGroupLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseContextMenu.GroupLabel>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseContextMenu.GroupLabel>, 'style'>,
+    BaseProps {}
 
 const groupLabelStyles = stylex.create({
   base: {
@@ -138,6 +134,7 @@ const groupLabelStyles = stylex.create({
 function GroupLabel({ style, ref, ...props }: ContextMenuGroupLabelProps) {
   return (
     <BaseContextMenu.GroupLabel
+      data-slot="context-menu-group-label"
       ref={ref}
       {...stylex.props(groupLabelStyles.base, ...styleArray(style))}
       {...props}
@@ -147,10 +144,8 @@ function GroupLabel({ style, ref, ...props }: ContextMenuGroupLabelProps) {
 
 /* ---------- Separator ---------- */
 export interface ContextMenuSeparatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseContextMenu.Separator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseContextMenu.Separator>, 'style'>,
+    BaseProps {}
 
 const separatorStyles = stylex.create({
   base: {
@@ -163,6 +158,7 @@ const separatorStyles = stylex.create({
 function ContextMenuSeparator({ style, ref, ...props }: ContextMenuSeparatorProps) {
   return (
     <BaseContextMenu.Separator
+      data-slot="context-menu-separator"
       ref={ref}
       {...stylex.props(separatorStyles.base, ...styleArray(style))}
       {...props}

@@ -1,7 +1,7 @@
 import { Toast as BaseToast } from '@base-ui/react/toast';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,16 +11,14 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Provider ---------- */
-function Provider(props: ComponentPropsWithoutRef<typeof BaseToast.Provider>) {
+function Provider(props: ComponentProps<typeof BaseToast.Provider>) {
   return <BaseToast.Provider {...props} />;
 }
 
 /* ---------- Viewport ---------- */
 export interface ToastViewportProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToast.Viewport>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseToast.Viewport>, 'style'>,
+    BaseProps {}
 
 const viewportStyles = stylex.create({
   base: {
@@ -39,6 +37,7 @@ const viewportStyles = stylex.create({
 function Viewport({ style, ref, ...props }: ToastViewportProps) {
   return (
     <BaseToast.Viewport
+      data-slot="toast-viewport"
       ref={ref}
       {...stylex.props(viewportStyles.base, ...styleArray(style))}
       {...props}
@@ -48,10 +47,8 @@ function Viewport({ style, ref, ...props }: ToastViewportProps) {
 
 /* ---------- Root ---------- */
 export interface ToastRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToast.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseToast.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -69,6 +66,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, ...props }: ToastRootProps) {
   return (
     <BaseToast.Root
+      data-slot="toast"
       ref={ref}
       render={
         <motion.div
@@ -86,10 +84,8 @@ function Root({ style, ref, ...props }: ToastRootProps) {
 
 /* ---------- Title ---------- */
 export interface ToastTitleProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToast.Title>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLHeadingElement>;
-}
+  extends Omit<ComponentProps<typeof BaseToast.Title>, 'style'>,
+    BaseProps {}
 
 const titleStyles = stylex.create({
   base: {
@@ -103,6 +99,7 @@ const titleStyles = stylex.create({
 function Title({ style, ref, ...props }: ToastTitleProps) {
   return (
     <BaseToast.Title
+      data-slot="toast-title"
       ref={ref}
       {...stylex.props(titleStyles.base, ...styleArray(style))}
       {...props}
@@ -112,10 +109,8 @@ function Title({ style, ref, ...props }: ToastTitleProps) {
 
 /* ---------- Description ---------- */
 export interface ToastDescriptionProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseToast.Description>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLParagraphElement>;
-}
+  extends Omit<ComponentProps<typeof BaseToast.Description>, 'style'>,
+    BaseProps {}
 
 const descriptionStyles = stylex.create({
   base: {
@@ -129,6 +124,7 @@ const descriptionStyles = stylex.create({
 function Description({ style, ref, ...props }: ToastDescriptionProps) {
   return (
     <BaseToast.Description
+      data-slot="toast-description"
       ref={ref}
       {...stylex.props(descriptionStyles.base, ...styleArray(style))}
       {...props}
@@ -137,19 +133,13 @@ function Description({ style, ref, ...props }: ToastDescriptionProps) {
 }
 
 /* ---------- Close ---------- */
-function Close({
-  ref,
-  ...props
-}: ComponentPropsWithoutRef<typeof BaseToast.Close> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseToast.Close ref={ref} {...props} />;
+function Close({ ref, ...props }: ComponentProps<typeof BaseToast.Close>) {
+  return <BaseToast.Close data-slot="toast-close" ref={ref} {...props} />;
 }
 
 /* ---------- Action ---------- */
-function Action({
-  ref,
-  ...props
-}: ComponentPropsWithoutRef<typeof BaseToast.Action> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BaseToast.Action ref={ref} {...props} />;
+function Action({ ref, ...props }: ComponentProps<typeof BaseToast.Action>) {
+  return <BaseToast.Action data-slot="toast-action" ref={ref} {...props} />;
 }
 
 /* ---------- Export ---------- */

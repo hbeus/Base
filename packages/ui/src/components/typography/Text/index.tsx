@@ -115,6 +115,8 @@ export const Text = function Text({
 }: TextProps) {
   return (
     <Component
+      data-slot="text"
+      data-size={size}
       ref={ref}
       {...stylex.props(
         styles.base,

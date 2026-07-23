@@ -1,7 +1,7 @@
 import { Popover as BasePopover } from '@base-ui/react/popover';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,42 +11,34 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-function Root(props: ComponentPropsWithoutRef<typeof BasePopover.Root>) {
+function Root(props: ComponentProps<typeof BasePopover.Root>) {
   return <BasePopover.Root {...props} />;
 }
 
 /* ---------- Trigger ---------- */
-function Trigger({
-  ref,
-  ...props
-}: ComponentPropsWithoutRef<typeof BasePopover.Trigger> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BasePopover.Trigger ref={ref} {...props} />;
+function Trigger({ ref, ...props }: ComponentProps<typeof BasePopover.Trigger>) {
+  return <BasePopover.Trigger data-slot="popover-trigger" ref={ref} {...props} />;
 }
 
 /* ---------- Close ---------- */
-function Close({
-  ref,
-  ...props
-}: ComponentPropsWithoutRef<typeof BasePopover.Close> & { ref?: Ref<HTMLButtonElement> }) {
-  return <BasePopover.Close ref={ref} {...props} />;
+function Close({ ref, ...props }: ComponentProps<typeof BasePopover.Close>) {
+  return <BasePopover.Close data-slot="popover-close" ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
-function Portal(props: ComponentPropsWithoutRef<typeof BasePopover.Portal>) {
+function Portal(props: ComponentProps<typeof BasePopover.Portal>) {
   return <BasePopover.Portal {...props} />;
 }
 
 /* ---------- Positioner ---------- */
-function Positioner(props: ComponentPropsWithoutRef<typeof BasePopover.Positioner>) {
-  return <BasePopover.Positioner {...props} />;
+function Positioner(props: ComponentProps<typeof BasePopover.Positioner>) {
+  return <BasePopover.Positioner data-slot="popover-positioner" {...props} />;
 }
 
 /* ---------- Popup ---------- */
 export interface PopoverPopupProps
-  extends Omit<ComponentPropsWithoutRef<typeof BasePopover.Popup>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BasePopover.Popup>, 'style'>,
+    BaseProps {}
 
 const popupStyles = stylex.create({
   base: {
@@ -64,6 +56,7 @@ const popupStyles = stylex.create({
 function Popup({ style, ref, ...props }: PopoverPopupProps) {
   return (
     <BasePopover.Popup
+      data-slot="popover-popup"
       ref={ref}
       render={
         <motion.div
@@ -81,10 +74,8 @@ function Popup({ style, ref, ...props }: PopoverPopupProps) {
 
 /* ---------- Arrow ---------- */
 export interface PopoverArrowProps
-  extends Omit<ComponentPropsWithoutRef<typeof BasePopover.Arrow>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BasePopover.Arrow>, 'style'>,
+    BaseProps {}
 
 const arrowStyles = stylex.create({
   base: {
@@ -97,6 +88,7 @@ const arrowStyles = stylex.create({
 function Arrow({ style, ref, ...props }: PopoverArrowProps) {
   return (
     <BasePopover.Arrow
+      data-slot="popover-arrow"
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -106,10 +98,8 @@ function Arrow({ style, ref, ...props }: PopoverArrowProps) {
 
 /* ---------- Title ---------- */
 export interface PopoverTitleProps
-  extends Omit<ComponentPropsWithoutRef<typeof BasePopover.Title>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLHeadingElement>;
-}
+  extends Omit<ComponentProps<typeof BasePopover.Title>, 'style'>,
+    BaseProps {}
 
 const titleStyles = stylex.create({
   base: {
@@ -124,6 +114,7 @@ const titleStyles = stylex.create({
 function Title({ style, ref, ...props }: PopoverTitleProps) {
   return (
     <BasePopover.Title
+      data-slot="popover-title"
       ref={ref}
       {...stylex.props(titleStyles.base, ...styleArray(style))}
       {...props}
@@ -133,10 +124,8 @@ function Title({ style, ref, ...props }: PopoverTitleProps) {
 
 /* ---------- Description ---------- */
 export interface PopoverDescriptionProps
-  extends Omit<ComponentPropsWithoutRef<typeof BasePopover.Description>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLParagraphElement>;
-}
+  extends Omit<ComponentProps<typeof BasePopover.Description>, 'style'>,
+    BaseProps {}
 
 const descriptionStyles = stylex.create({
   base: {
@@ -149,6 +138,7 @@ const descriptionStyles = stylex.create({
 function Description({ style, ref, ...props }: PopoverDescriptionProps) {
   return (
     <BasePopover.Description
+      data-slot="popover-description"
       ref={ref}
       {...stylex.props(descriptionStyles.base, ...styleArray(style))}
       {...props}
