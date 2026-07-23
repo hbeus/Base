@@ -60,7 +60,7 @@ const itemStyles = stylex.create({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.s4,
+    gap: spacing.s2,
     fontWeight: 500,
     cursor: 'pointer',
     outline: 'none',

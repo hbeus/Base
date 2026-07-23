@@ -30,7 +30,7 @@ const styles = stylex.create({
     width: 'fit-content',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.s4,
+    gap: spacing.s2,
     fontWeight: 500,
     cursor: 'pointer',
     transition: 'background-color 0.15s, color 0.15s',

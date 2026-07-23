@@ -20,7 +20,7 @@ const styles = stylex.create({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.s4,
+    gap: spacing.s2,
     paddingInline: spacing.s8,
     paddingBlock: spacing.s4,
     borderRadius: radii.r8,
