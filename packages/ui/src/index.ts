@@ -1,3 +1,17 @@
+// data
+export {
+  type ActionCellProps,
+  type BadgeCellProps,
+  type DateTimeCellProps,
+  type NumericCellProps,
+  type RowSelectionState,
+  type SortingState,
+  Table,
+  type TableRootProps,
+  type TextCellProps,
+  type UserCellProps,
+} from './components/data/Table';
+export { createTableHelper, type GridColumnMeta } from './components/data/Table/helpers';
 // display
 export {
   Avatar,
