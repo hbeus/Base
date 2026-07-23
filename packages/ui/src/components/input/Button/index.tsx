@@ -24,7 +24,7 @@ export interface ButtonProps extends Omit<ComponentProps<typeof BaseButton>, 'st
   trailing?: React.ReactNode;
 }
 
-const styles = stylex.create({
+export const buttonStyles = stylex.create({
   base: {
     display: 'inline-flex',
     width: 'fit-content',
@@ -137,9 +137,9 @@ export function Button({
       ref={ref}
       whileTap={props.disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
       {...stylex.props(
-        styles.base,
-        styles[variant],
-        styles[size],
+        buttonStyles.base,
+        buttonStyles[variant],
+        buttonStyles[size],
         rounded && shapeStyles.rounded,
         fill && fillStyles.fill,
         ...styleArray(style),
@@ -147,7 +147,7 @@ export function Button({
       {...props}
     >
       {leading && leading}
-      <span {...stylex.props(styles.children)}>{children}</span>
+      <span {...stylex.props(buttonStyles.children)}>{children}</span>
       {trailing && trailing}
     </MotionBaseButton>
   );

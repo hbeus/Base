@@ -35,7 +35,7 @@ export {
   type AutocompleteItemProps,
   type AutocompletePopupProps,
 } from './components/input/Autocomplete';
-export { Button, type ButtonProps } from './components/input/Button';
+export { Button, buttonStyles, type ButtonProps } from './components/input/Button';
 export { ButtonState, type ButtonStateProps } from './components/input/ButtonState';
 export {
   Checkbox,
