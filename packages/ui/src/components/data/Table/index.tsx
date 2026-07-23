@@ -625,8 +625,8 @@ function Root<TData>({
     enableColumnResizing,
     columnResizeMode: 'onChange' as const,
     getRowId: getRowId as ((row: TData, index: number) => string) | undefined,
-    onSortingChange,
-    onRowSelectionChange,
+    ...(onSortingChange !== undefined && { onSortingChange }),
+    ...(onRowSelectionChange !== undefined && { onRowSelectionChange }),
     enableRowSelection: enableRowSelection as boolean | ((row: Row<TData>) => boolean),
     state,
     initialState: {
