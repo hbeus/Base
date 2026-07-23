@@ -35,7 +35,7 @@ export {
   type AutocompleteItemProps,
   type AutocompletePopupProps,
 } from './components/input/Autocomplete';
-export { Button, buttonStyles, type ButtonProps } from './components/input/Button';
+export { Button, type ButtonProps, buttonStyles } from './components/input/Button';
 export { ButtonState, type ButtonStateProps } from './components/input/ButtonState';
 export {
   Checkbox,
@@ -154,7 +154,6 @@ export {
 } from './components/navigation/Sidebar';
 export {
   Tabs,
-  type TabsIndicatorProps,
   type TabsListProps,
   type TabsPanelProps,
   type TabsRootProps,
