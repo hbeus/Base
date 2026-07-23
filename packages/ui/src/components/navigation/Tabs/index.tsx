@@ -40,6 +40,7 @@ interface TabsListContextValue {
   variant: TabsVariant;
   size: TabsSize;
   background: boolean;
+  fill: boolean;
 }
 
 const TabsRootContext = createContext<TabsRootContextValue | null>(null);
@@ -47,6 +48,7 @@ const TabsListContext = createContext<TabsListContextValue>({
   variant: 'underline',
   size: 'md',
   background: false,
+  fill: false,
 });
 
 function useTabsRootContext() {
@@ -118,11 +120,13 @@ export type TabsListProps =
   | (TabsListBaseProps & {
       variant?: 'underline';
       size?: TabsSize;
+      fill?: boolean;
       background?: never;
     })
   | (TabsListBaseProps & {
       variant: 'button';
       size?: TabsSize;
+      fill?: boolean;
       background?: boolean;
     });
 
@@ -131,6 +135,10 @@ const listStyles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     position: 'relative',
+    width: 'fit-content',
+  },
+  fill: {
+    width: '100%',
   },
   underline: {
     gap: spacing.s4,
@@ -164,6 +172,7 @@ function List({
   ref,
   variant = 'underline',
   size: sizeProp = 'md',
+  fill = false,
   background,
   children,
   ...props
@@ -171,7 +180,9 @@ function List({
   const withBackground = variant === 'button' && Boolean(background);
 
   return (
-    <TabsListContext.Provider value={{ variant, size: sizeProp, background: withBackground }}>
+    <TabsListContext.Provider
+      value={{ variant, size: sizeProp, background: withBackground, fill }}
+    >
       <BaseTabs.List
         data-slot='tabs-list'
         data-variant={variant}
@@ -179,6 +190,7 @@ function List({
         ref={ref}
         {...stylex.props(
           listStyles.base,
+          fill && listStyles.fill,
           variant === 'underline' ? listStyles.underline : listStyles.button,
           withBackground && listStyles.background,
           withBackground && listRadiusStyles[sizeProp],
@@ -266,6 +278,11 @@ const tabStyles = stylex.create({
       color: colors.buttonPrimaryFg,
     },
   },
+  fill: {
+    flex: 1,
+    width: '100%',
+    minWidth: 0,
+  },
   content: {
     position: 'relative',
     zIndex: 1,
@@ -337,7 +354,7 @@ function TabIndicator({ duration }: { duration: number }) {
 
 function Tab({ style, ref, children, leading, trailing, value, ...props }: TabsTabProps) {
   const { activeValue, indicatorRectRef } = useTabsRootContext();
-  const { variant, size: sizeProp } = useContext(TabsListContext);
+  const { variant, size: sizeProp, fill } = useContext(TabsListContext);
   const tabRef = useRef<HTMLElement | null>(null);
   const active = activeValue === value;
   const wasActiveRef = useRef(active);
@@ -375,6 +392,7 @@ function Tab({ style, ref, children, leading, trailing, value, ...props }: TabsT
         variant === 'button' && buttonStyles.base,
         variant === 'button' && buttonStyles[sizeProp],
         variant === 'button' && (active ? tabStyles.buttonActive : tabStyles.buttonInactive),
+        fill && tabStyles.fill,
         ...styleArray(style),
       )}
       {...props}
