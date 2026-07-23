@@ -1,6 +1,6 @@
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { colors } from '../../../tokens/themes.stylex';
@@ -9,10 +9,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface ScrollAreaRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseScrollArea.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseScrollArea.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -24,6 +22,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, ...props }: ScrollAreaRootProps) {
   return (
     <BaseScrollArea.Root
+      data-slot="scroll-area"
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -33,10 +32,8 @@ function Root({ style, ref, ...props }: ScrollAreaRootProps) {
 
 /* ---------- Viewport ---------- */
 export interface ScrollAreaViewportProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseScrollArea.Viewport>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseScrollArea.Viewport>, 'style'>,
+    BaseProps {}
 
 const viewportStyles = stylex.create({
   base: {
@@ -50,6 +47,7 @@ const viewportStyles = stylex.create({
 function Viewport({ style, ref, ...props }: ScrollAreaViewportProps) {
   return (
     <BaseScrollArea.Viewport
+      data-slot="scroll-area-viewport"
       ref={ref}
       {...stylex.props(viewportStyles.base, ...styleArray(style))}
       {...props}
@@ -58,16 +56,14 @@ function Viewport({ style, ref, ...props }: ScrollAreaViewportProps) {
 }
 
 /* ---------- Content ---------- */
-function Content(props: ComponentPropsWithoutRef<typeof BaseScrollArea.Content>) {
-  return <BaseScrollArea.Content {...props} />;
+function Content(props: ComponentProps<typeof BaseScrollArea.Content>) {
+  return <BaseScrollArea.Content data-slot="scroll-area-content" {...props} />;
 }
 
 /* ---------- Scrollbar ---------- */
 export interface ScrollAreaScrollbarProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseScrollArea.Scrollbar>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseScrollArea.Scrollbar>, 'style'>,
+    BaseProps {}
 
 const scrollbarStyles = stylex.create({
   base: {
@@ -90,6 +86,7 @@ function Scrollbar({ style, ref, ...props }: ScrollAreaScrollbarProps) {
   const orientation = props.orientation ?? 'vertical';
   return (
     <BaseScrollArea.Scrollbar
+      data-slot="scroll-area-scrollbar"
       ref={ref}
       {...stylex.props(scrollbarStyles.base, scrollbarStyles[orientation], ...styleArray(style))}
       {...props}
@@ -99,10 +96,8 @@ function Scrollbar({ style, ref, ...props }: ScrollAreaScrollbarProps) {
 
 /* ---------- Thumb ---------- */
 export interface ScrollAreaThumbProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseScrollArea.Thumb>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseScrollArea.Thumb>, 'style'>,
+    BaseProps {}
 
 const thumbStyles = stylex.create({
   base: {
@@ -119,6 +114,7 @@ const thumbStyles = stylex.create({
 function Thumb({ style, ref, ...props }: ScrollAreaThumbProps) {
   return (
     <BaseScrollArea.Thumb
+      data-slot="scroll-area-thumb"
       ref={ref}
       {...stylex.props(thumbStyles.base, ...styleArray(style))}
       {...props}
@@ -127,8 +123,8 @@ function Thumb({ style, ref, ...props }: ScrollAreaThumbProps) {
 }
 
 /* ---------- Corner ---------- */
-function Corner(props: ComponentPropsWithoutRef<typeof BaseScrollArea.Corner>) {
-  return <BaseScrollArea.Corner {...props} />;
+function Corner(props: ComponentProps<typeof BaseScrollArea.Corner>) {
+  return <BaseScrollArea.Corner data-slot="scroll-area-corner" {...props} />;
 }
 
 /* ---------- Export ---------- */

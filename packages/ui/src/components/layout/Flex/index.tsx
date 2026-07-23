@@ -87,6 +87,7 @@ export const Flex = function Flex({
 }: FlexProps) {
   return (
     <Component
+      data-slot="flex"
       ref={ref}
       {...stylex.props(
         inline ? styles.inlineFlex : styles.flex,

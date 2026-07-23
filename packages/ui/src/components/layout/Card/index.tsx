@@ -84,6 +84,8 @@ export const Card = function Card({
 }: CardProps) {
   return (
     <Component
+      data-slot="card"
+      data-variant={variant}
       ref={ref}
       {...stylex.props(
         styles.base,

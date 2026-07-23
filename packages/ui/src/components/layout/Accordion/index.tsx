@@ -3,7 +3,7 @@ import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
 import * as stylex from '@stylexjs/stylex';
 import { IconChevronDown } from '@tabler/icons-react';
 import { motion } from 'motion/react';
-import { type ComponentPropsWithoutRef, type ReactNode, type Ref, useState } from 'react';
+import { type ComponentProps, type ReactNode, useState } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
@@ -14,7 +14,7 @@ import { Text } from '../../typography/Text';
 /* ---------- Root ---------- */
 
 function Root(props: AccordionRootProps) {
-  return <BaseAccordion.Root {...props} />;
+  return <BaseAccordion.Root data-slot="accordion" {...props} />;
 }
 
 /* ---------- Item ---------- */
@@ -56,9 +56,8 @@ const styles = stylex.create({
 });
 
 export interface AccordionItemProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAccordion.Item>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseAccordion.Item>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLDivElement>;
   trigger: ReactNode;
 }
 
@@ -67,6 +66,7 @@ function Item({ trigger, children, style, ref, ...props }: AccordionItemProps) {
 
   return (
     <BaseAccordion.Item
+      data-slot="accordion-item"
       ref={ref}
       onOpenChange={setOpen}
       {...stylex.props(styles.item, ...styleArray(style))}

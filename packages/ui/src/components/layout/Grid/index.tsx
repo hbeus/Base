@@ -106,6 +106,7 @@ export const Grid = function Grid({
 }: GridProps) {
   return (
     <Component
+      data-slot="grid"
       ref={ref}
       {...stylex.props(
         inline ? styles.inlineGrid : styles.grid,
