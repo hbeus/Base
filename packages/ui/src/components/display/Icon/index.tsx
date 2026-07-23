@@ -25,7 +25,7 @@ const styles = stylex.create({
 
 export function Icon({ icon: Component, size = 14, strokeWidth = 2, style, ...props }: IconProps) {
   return (
-    <span {...stylex.props(styles.base, ...styleArray(style))}>
+    <span data-slot="icon" {...stylex.props(styles.base, ...styleArray(style))}>
       <Component size={size} strokeWidth={strokeWidth} {...props} />
     </span>
   );

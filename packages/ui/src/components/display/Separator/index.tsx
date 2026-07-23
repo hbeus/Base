@@ -1,6 +1,6 @@
 import { Separator as BaseSeparator } from '@base-ui/react/separator';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
@@ -8,10 +8,8 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 export interface SeparatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseSeparator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseSeparator>, 'style'>,
+    BaseProps {}
 
 const styles = stylex.create({
   base: {
@@ -34,6 +32,7 @@ export function Separator({ style, ref, ...props }: SeparatorProps) {
   const orientation = props.orientation ?? 'horizontal';
   return (
     <BaseSeparator
+      data-slot="separator"
       ref={ref}
       {...stylex.props(styles.base, styles[orientation], ...styleArray(style))}
       {...props}

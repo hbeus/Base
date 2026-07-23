@@ -1,6 +1,6 @@
 import { Avatar as BaseAvatar } from '@base-ui/react/avatar';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { colors } from '../../../tokens/themes.stylex';
@@ -12,9 +12,8 @@ type AvatarSize = 'sm' | 'md' | 'lg';
 
 /* ---------- Root ---------- */
 export interface AvatarRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAvatar.Root>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseAvatar.Root>, 'style'>,
     BaseProps {
-  ref?: Ref<HTMLSpanElement>;
   size?: AvatarSize;
 }
 
@@ -46,6 +45,8 @@ const rootStyles = stylex.create({
 function Root({ size: avatarSize = 'md', style, ref, ...props }: AvatarRootProps) {
   return (
     <BaseAvatar.Root
+      data-slot="avatar"
+      data-size={avatarSize}
       ref={ref}
       {...stylex.props(rootStyles.base, rootStyles[avatarSize], ...styleArray(style))}
       {...props}
@@ -55,10 +56,8 @@ function Root({ size: avatarSize = 'md', style, ref, ...props }: AvatarRootProps
 
 /* ---------- Image ---------- */
 export interface AvatarImageProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAvatar.Image>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLImageElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAvatar.Image>, 'style'>,
+    BaseProps {}
 
 const imageStyles = stylex.create({
   base: {
@@ -71,6 +70,7 @@ const imageStyles = stylex.create({
 function Image({ style, ref, ...props }: AvatarImageProps) {
   return (
     <BaseAvatar.Image
+      data-slot="avatar-image"
       ref={ref}
       {...stylex.props(imageStyles.base, ...styleArray(style))}
       {...props}
@@ -80,10 +80,8 @@ function Image({ style, ref, ...props }: AvatarImageProps) {
 
 /* ---------- Fallback ---------- */
 export interface AvatarFallbackProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseAvatar.Fallback>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLSpanElement>;
-}
+  extends Omit<ComponentProps<typeof BaseAvatar.Fallback>, 'style'>,
+    BaseProps {}
 
 const fallbackStyles = stylex.create({
   base: {
@@ -101,6 +99,7 @@ const fallbackStyles = stylex.create({
 function Fallback({ style, ref, ...props }: AvatarFallbackProps) {
   return (
     <BaseAvatar.Fallback
+      data-slot="avatar-fallback"
       ref={ref}
       {...stylex.props(fallbackStyles.base, ...styleArray(style))}
       {...props}

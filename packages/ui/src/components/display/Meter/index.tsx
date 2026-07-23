@@ -1,6 +1,6 @@
 import { Meter as BaseMeter } from '@base-ui/react/meter';
 import * as stylex from '@stylexjs/stylex';
-import type { ComponentPropsWithoutRef, Ref } from 'react';
+import type { ComponentProps } from 'react';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { colors } from '../../../tokens/themes.stylex';
@@ -10,10 +10,8 @@ import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
 export interface MeterRootProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMeter.Root>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMeter.Root>, 'style'>,
+    BaseProps {}
 
 const rootStyles = stylex.create({
   base: {
@@ -25,16 +23,14 @@ const rootStyles = stylex.create({
 
 function Root({ style, ref, ...props }: MeterRootProps) {
   return (
-    <BaseMeter.Root ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))} {...props} />
+    <BaseMeter.Root data-slot="meter" ref={ref} {...stylex.props(rootStyles.base, ...styleArray(style))} {...props} />
   );
 }
 
 /* ---------- Track ---------- */
 export interface MeterTrackProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMeter.Track>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMeter.Track>, 'style'>,
+    BaseProps {}
 
 const trackStyles = stylex.create({
   base: {
@@ -49,6 +45,7 @@ const trackStyles = stylex.create({
 function Track({ style, ref, ...props }: MeterTrackProps) {
   return (
     <BaseMeter.Track
+      data-slot="meter-track"
       ref={ref}
       {...stylex.props(trackStyles.base, ...styleArray(style))}
       {...props}
@@ -58,10 +55,8 @@ function Track({ style, ref, ...props }: MeterTrackProps) {
 
 /* ---------- Indicator ---------- */
 export interface MeterIndicatorProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMeter.Indicator>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLDivElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMeter.Indicator>, 'style'>,
+    BaseProps {}
 
 const indicatorStyles = stylex.create({
   base: {
@@ -75,6 +70,7 @@ const indicatorStyles = stylex.create({
 function Indicator({ style, ref, ...props }: MeterIndicatorProps) {
   return (
     <BaseMeter.Indicator
+      data-slot="meter-indicator"
       ref={ref}
       {...stylex.props(indicatorStyles.base, ...styleArray(style))}
       {...props}
@@ -84,10 +80,8 @@ function Indicator({ style, ref, ...props }: MeterIndicatorProps) {
 
 /* ---------- Label ---------- */
 export interface MeterLabelProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMeter.Label>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLSpanElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMeter.Label>, 'style'>,
+    BaseProps {}
 
 const labelStyles = stylex.create({
   base: {
@@ -101,6 +95,7 @@ const labelStyles = stylex.create({
 function Label({ style, ref, ...props }: MeterLabelProps) {
   return (
     <BaseMeter.Label
+      data-slot="meter-label"
       ref={ref}
       {...stylex.props(labelStyles.base, ...styleArray(style))}
       {...props}
@@ -110,10 +105,8 @@ function Label({ style, ref, ...props }: MeterLabelProps) {
 
 /* ---------- Value ---------- */
 export interface MeterValueProps
-  extends Omit<ComponentPropsWithoutRef<typeof BaseMeter.Value>, 'style'>,
-    BaseProps {
-  ref?: Ref<HTMLSpanElement>;
-}
+  extends Omit<ComponentProps<typeof BaseMeter.Value>, 'style'>,
+    BaseProps {}
 
 const valueStyles = stylex.create({
   base: {
@@ -126,6 +119,7 @@ const valueStyles = stylex.create({
 function Value({ style, ref, ...props }: MeterValueProps) {
   return (
     <BaseMeter.Value
+      data-slot="meter-value"
       ref={ref}
       {...stylex.props(valueStyles.base, ...styleArray(style))}
       {...props}
