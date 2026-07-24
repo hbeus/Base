@@ -4,9 +4,13 @@ import { DocsPage } from '~/components/DocsPage';
 import TabsAlphaButton from '~/examples/tabs-alpha/button';
 import buttonRaw from '~/examples/tabs-alpha/button.tsx?raw';
 import TabsAlphaFill from '~/examples/tabs-alpha/fill';
+import fillRaw from '~/examples/tabs-alpha/fill.tsx?raw';
 import TabsAlphaFillButton from '~/examples/tabs-alpha/fill-button';
 import fillButtonRaw from '~/examples/tabs-alpha/fill-button.tsx?raw';
-import fillRaw from '~/examples/tabs-alpha/fill.tsx?raw';
+import TabsAlphaMenu from '~/examples/tabs-alpha/menu';
+import menuRaw from '~/examples/tabs-alpha/menu.tsx?raw';
+import TabsAlphaMenuFill from '~/examples/tabs-alpha/menu-fill';
+import menuFillRaw from '~/examples/tabs-alpha/menu-fill.tsx?raw';
 import TabsAlphaUnderline from '~/examples/tabs-alpha/underline';
 import underlineRaw from '~/examples/tabs-alpha/underline.tsx?raw';
 import { highlightCode } from '~/lib/highlight';
@@ -18,6 +22,8 @@ export const Route = createFileRoute('/components/navigation/tabs-alpha')({
       buttonRaw,
       fillRaw,
       fillButtonRaw,
+      menuRaw,
+      menuFillRaw,
     };
     const entries = await Promise.all(
       Object.entries(sources).map(async ([key, code]) => {
@@ -61,6 +67,14 @@ function PageComponent() {
         rawCode={fillButtonRaw}
       >
         <TabsAlphaFillButton />
+      </ComponentExample>
+
+      <ComponentExample title='Menu' code={highlighted.menuRaw} rawCode={menuRaw}>
+        <TabsAlphaMenu />
+      </ComponentExample>
+
+      <ComponentExample title='Menu with fill' code={highlighted.menuFillRaw} rawCode={menuFillRaw}>
+        <TabsAlphaMenuFill />
       </ComponentExample>
     </DocsPage>
   );

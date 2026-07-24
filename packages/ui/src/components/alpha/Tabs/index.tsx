@@ -1,14 +1,19 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import * as stylex from '@stylexjs/stylex';
+import { IconCheck, IconDots } from '@tabler/icons-react';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import {
   Children,
   type ComponentProps,
   createContext,
   isValidElement,
+  type ReactElement,
   type ReactNode,
+  type RefObject,
+  useCallback,
   useContext,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -20,11 +25,15 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { Icon } from '../../display/Icon';
 import { buttonStyles } from '../../input/Button';
+import { Menu } from '../../overlays/Menu';
 
 type TabsSize = 'xs' | 'sm' | 'md' | 'lg';
 type TabsVariant = 'underline' | 'button';
 type TabValue = ComponentProps<typeof BaseTabs.Tab>['value'];
+
+const INDICATOR_TRANSITION = { type: 'spring', bounce: 0.15, duration: 0.4 } as const;
 
 /* ---------- Contexts ---------- */
 
@@ -33,6 +42,9 @@ interface TabsRootContextValue {
   indicatorLayoutId: string;
   layoutGroupId: string;
   fill: boolean;
+  menuLabelId: string | undefined;
+  selectValue: (value: TabValue) => void;
+  setMenuLabelId: (id: string | undefined) => void;
 }
 
 interface TabsListContextValue {
@@ -41,8 +53,14 @@ interface TabsListContextValue {
   fill: boolean;
 }
 
+interface TabsMenuContextValue {
+  registerValue: (value: TabValue) => void;
+  unregisterValue: (value: TabValue) => void;
+}
+
 const TabsRootContext = createContext<TabsRootContextValue | null>(null);
 const TabsListContext = createContext<TabsListContextValue | null>(null);
+const TabsMenuContext = createContext<TabsMenuContextValue | null>(null);
 
 function useTabsRootContext() {
   const ctx = useContext(TabsRootContext);
@@ -58,6 +76,56 @@ function useTabsListContext() {
     throw new Error('Tabs.Tab must be used within Tabs.List');
   }
   return ctx;
+}
+
+/* ---------- Indicator ---------- */
+
+const indicatorStyles = stylex.create({
+  base: {
+    position: 'absolute',
+    pointerEvents: 'none',
+    zIndex: 0,
+  },
+  underline: {
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: borders.focus,
+    backgroundColor: colors.foregroundPrimary,
+  },
+  button: {
+    inset: 0,
+    backgroundColor: colors.buttonPrimaryBg,
+  },
+  radiusXs: { borderRadius: radii.r8 },
+  radiusSm: { borderRadius: radii.r8 },
+  radiusMd: { borderRadius: radii.r10 },
+  radiusLg: { borderRadius: radii.r12 },
+});
+
+const indicatorRadiusStyles = {
+  xs: indicatorStyles.radiusXs,
+  sm: indicatorStyles.radiusSm,
+  md: indicatorStyles.radiusMd,
+  lg: indicatorStyles.radiusLg,
+} as const;
+
+function ActiveIndicator({ variant, size }: { variant: TabsVariant; size: TabsSize }) {
+  const { indicatorLayoutId } = useTabsRootContext();
+
+  return (
+    <motion.span
+      aria-hidden
+      data-slot='tabs-indicator'
+      layoutId={indicatorLayoutId}
+      transition={INDICATOR_TRANSITION}
+      {...stylex.props(
+        indicatorStyles.base,
+        variant === 'underline' ? indicatorStyles.underline : indicatorStyles.button,
+        variant === 'button' && indicatorRadiusStyles[size],
+      )}
+    />
+  );
 }
 
 /* ---------- Root ---------- */
@@ -104,7 +172,27 @@ function Root({
   const [uncontrolledValue, setUncontrolledValue] = useState<TabValue>(() =>
     defaultValue === undefined ? 0 : defaultValue,
   );
+  const [menuLabelId, setMenuLabelId] = useState<string>();
   const activeValue = controlled ? value : uncontrolledValue;
+
+  const selectValue = useCallback(
+    (next: TabValue) => {
+      onValueChangeRef.current?.(next, {
+        reason: 'none',
+        event: new Event('tabs-value-change'),
+        cancel() {},
+        allowPropagation() {},
+        isCanceled: false,
+        isPropagationAllowed: false,
+        trigger: undefined,
+        activationDirection: 'none',
+      } as Parameters<NonNullable<ComponentProps<typeof BaseTabs.Root>['onValueChange']>>[1]);
+      if (!controlled) {
+        setUncontrolledValue(next);
+      }
+    },
+    [controlled],
+  );
 
   const rootContext = useMemo<TabsRootContextValue>(
     () => ({
@@ -112,8 +200,11 @@ function Root({
       layoutGroupId,
       indicatorLayoutId: `${layoutGroupId}-indicator`,
       fill,
+      menuLabelId,
+      selectValue,
+      setMenuLabelId,
     }),
-    [activeValue, layoutGroupId, fill],
+    [activeValue, layoutGroupId, fill, menuLabelId, selectValue],
   );
 
   const childArray = Children.toArray(children);
@@ -132,9 +223,12 @@ function Root({
       <BaseTabs.Root
         data-slot='tabs'
         ref={ref}
-        value={value}
-        defaultValue={defaultValue}
+        value={activeValue}
         onValueChange={(next, details) => {
+          // Menu-only values have no visible Tab; ignore Base UI's missing-tab fallback.
+          if (details.reason === 'missing') {
+            return;
+          }
           onValueChangeRef.current?.(next, details);
           if (!controlled && !details.isCanceled) {
             setUncontrolledValue(next);
@@ -302,38 +396,8 @@ const underlineSizeStyles = {
   lg: tabStyles.underlineLg,
 } as const;
 
-const indicatorStyles = stylex.create({
-  base: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    zIndex: 0,
-  },
-  underline: {
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: borders.focus,
-    backgroundColor: colors.foregroundPrimary,
-  },
-  button: {
-    inset: 0,
-    backgroundColor: colors.buttonPrimaryBg,
-  },
-  radiusXs: { borderRadius: radii.r8 },
-  radiusSm: { borderRadius: radii.r8 },
-  radiusMd: { borderRadius: radii.r10 },
-  radiusLg: { borderRadius: radii.r12 },
-});
-
-const indicatorRadiusStyles = {
-  xs: indicatorStyles.radiusXs,
-  sm: indicatorStyles.radiusSm,
-  md: indicatorStyles.radiusMd,
-  lg: indicatorStyles.radiusLg,
-} as const;
-
 function Tab({ style, ref, children, value, disabled, ...props }: TabsTabProps) {
-  const { activeValue, indicatorLayoutId } = useTabsRootContext();
+  const { activeValue } = useTabsRootContext();
   const { variant, size, fill } = useTabsListContext();
   const active = activeValue === value;
 
@@ -358,20 +422,198 @@ function Tab({ style, ref, children, value, disabled, ...props }: TabsTabProps) 
       {...props}
     >
       <span {...stylex.props(tabStyles.label)}>{children}</span>
-      {active && (
-        <motion.span
-          aria-hidden
-          data-slot='tabs-indicator'
-          layoutId={indicatorLayoutId}
-          transition={{ type: 'spring', bounce: 0.15, duration: 0.4 }}
-          {...stylex.props(
-            indicatorStyles.base,
-            variant === 'underline' ? indicatorStyles.underline : indicatorStyles.button,
-            variant === 'button' && indicatorRadiusStyles[size],
-          )}
-        />
-      )}
+      {active && <ActiveIndicator variant={variant} size={size} />}
     </BaseTabs.Tab>
+  );
+}
+
+/* ---------- Menu ---------- */
+
+export interface TabsMenuProps extends BaseProps {
+  children: ReactNode;
+  label?: string;
+  ref?: RefObject<HTMLButtonElement | null>;
+}
+
+const menuStyles = stylex.create({
+  trigger: {
+    position: 'relative',
+    // Never grow under fill — stay intrinsic width.
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: 'auto',
+    width: 'fit-content',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 0,
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    outline: 'none',
+    color: colors.foregroundSecondary,
+    transition: 'color 0.15s',
+    ':hover': {
+      color: colors.foregroundPrimary,
+      backgroundColor: 'transparent',
+    },
+  },
+  triggerActiveUnderline: {
+    color: colors.foregroundPrimary,
+  },
+  triggerActiveButton: {
+    color: colors.buttonPrimaryFg,
+    ':hover': {
+      color: colors.buttonPrimaryFg,
+      backgroundColor: 'transparent',
+    },
+  },
+  triggerContent: {
+    position: 'relative',
+    zIndex: 1,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  check: {
+    marginInlineStart: 'auto',
+    color: colors.foregroundSecondary,
+  },
+  // Keep Base UI aware of menu-only values without showing extra tabs.
+  hiddenTab: {
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    overflow: 'hidden',
+    padding: 0,
+    borderWidth: 0,
+    opacity: 0,
+    pointerEvents: 'none',
+  },
+});
+
+function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
+  const { activeValue, selectValue, setMenuLabelId } = useTabsRootContext();
+  const { variant, size } = useTabsListContext();
+  const triggerId = useId();
+  const valuesRef = useRef(new Set<TabValue>());
+  const [, rerender] = useState(0);
+
+  const activeInMenu = valuesRef.current.has(activeValue);
+
+  useLayoutEffect(() => {
+    setMenuLabelId(activeInMenu ? triggerId : undefined);
+    return () => setMenuLabelId(undefined);
+  }, [activeInMenu, setMenuLabelId, triggerId]);
+
+  const registerValue = useCallback((menuValue: TabValue) => {
+    valuesRef.current.add(menuValue);
+    rerender(n => n + 1);
+  }, []);
+
+  const unregisterValue = useCallback((menuValue: TabValue) => {
+    valuesRef.current.delete(menuValue);
+    rerender(n => n + 1);
+  }, []);
+
+  const menuContext = useMemo<TabsMenuContextValue>(
+    () => ({ registerValue, unregisterValue }),
+    [registerValue, unregisterValue],
+  );
+
+  const hiddenTabs = Children.map(children, child => {
+    if (!isValidElement(child) || child.type !== TabsMenuItem) {
+      return null;
+    }
+    const item = child as ReactElement<TabsMenuItemProps>;
+    return (
+      <BaseTabs.Tab
+        key={String(item.props.value)}
+        value={item.props.value}
+        disabled={item.props.disabled}
+        tabIndex={-1}
+        aria-hidden
+        {...stylex.props(menuStyles.hiddenTab)}
+      />
+    );
+  });
+
+  return (
+    <TabsMenuContext.Provider value={menuContext}>
+      {hiddenTabs}
+      <Menu.Root>
+        <Menu.Trigger
+          data-slot='tabs-menu'
+          data-active={activeInMenu ? '' : undefined}
+          id={triggerId}
+          aria-label={label ?? 'More tabs'}
+          ref={ref}
+          render={
+            <button
+              type='button'
+              {...stylex.props(
+                menuStyles.trigger,
+                buttonStyles[size],
+                activeInMenu && variant === 'underline' && menuStyles.triggerActiveUnderline,
+                activeInMenu && variant === 'button' && menuStyles.triggerActiveButton,
+                ...styleArray(style),
+              )}
+            />
+          }
+        >
+          <span {...stylex.props(menuStyles.triggerContent)}>
+            <Icon icon={IconDots} />
+          </span>
+          {activeInMenu && <ActiveIndicator variant={variant} size={size} />}
+        </Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Positioner align='end' sideOffset={4}>
+            <Menu.Popup>
+              <Menu.RadioGroup
+                value={activeValue}
+                onValueChange={next => {
+                  selectValue(next);
+                }}
+              >
+                {children}
+              </Menu.RadioGroup>
+            </Menu.Popup>
+          </Menu.Positioner>
+        </Menu.Portal>
+      </Menu.Root>
+    </TabsMenuContext.Provider>
+  );
+}
+
+/* ---------- MenuItem ---------- */
+
+export interface TabsMenuItemProps extends BaseProps {
+  value: TabValue;
+  children: ReactNode;
+  disabled?: boolean;
+  ref?: RefObject<HTMLElement | null>;
+}
+
+function TabsMenuItem({ value, children, disabled, style, ref }: TabsMenuItemProps) {
+  const menuCtx = useContext(TabsMenuContext);
+
+  useLayoutEffect(() => {
+    menuCtx?.registerValue(value);
+    return () => menuCtx?.unregisterValue(value);
+  }, [value, menuCtx]);
+
+  return (
+    <Menu.RadioItem
+      data-slot='tabs-menu-item'
+      value={value}
+      disabled={disabled}
+      ref={ref}
+      {...stylex.props(...styleArray(style))}
+    >
+      {children}
+      <Menu.RadioItemIndicator {...stylex.props(menuStyles.check)}>
+        <Icon icon={IconCheck} size={14} />
+      </Menu.RadioItemIndicator>
+    </Menu.RadioItem>
   );
 }
 
@@ -397,9 +639,18 @@ const panelStyles = stylex.create({
   },
 });
 
-function Panel({ style, ref, value, children, keepMounted, ...props }: TabsPanelProps) {
-  const { activeValue } = useTabsRootContext();
+function Panel({
+  style,
+  ref,
+  value,
+  children,
+  keepMounted,
+  'aria-labelledby': ariaLabelledBy,
+  ...props
+}: TabsPanelProps) {
+  const { activeValue, menuLabelId } = useTabsRootContext();
   const isActive = activeValue === value;
+  const labelledBy = isActive && menuLabelId ? menuLabelId : ariaLabelledBy;
 
   return (
     <BaseTabs.Panel
@@ -407,6 +658,7 @@ function Panel({ style, ref, value, children, keepMounted, ...props }: TabsPanel
       ref={ref}
       value={value}
       keepMounted={keepMounted ?? true}
+      aria-labelledby={labelledBy}
       {...stylex.props(panelStyles.base, ...styleArray(style))}
       {...props}
     >
@@ -438,5 +690,7 @@ export const Tabs = {
   Root,
   List,
   Tab,
+  Menu: TabsMenu,
+  MenuItem: TabsMenuItem,
   Panel,
 };
