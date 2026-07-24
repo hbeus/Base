@@ -5,6 +5,7 @@ import * as stylex from '@stylexjs/stylex';
 const styles = stylex.create({
   wrapper: {
     position: 'relative',
+    width: '100%',
     height: 300,
     overflow: 'hidden',
   },
