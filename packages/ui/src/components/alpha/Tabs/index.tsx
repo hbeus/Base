@@ -32,11 +32,13 @@ interface TabsRootContextValue {
   activeValue: TabValue;
   indicatorLayoutId: string;
   layoutGroupId: string;
+  fill: boolean;
 }
 
 interface TabsListContextValue {
   variant: TabsVariant;
   size: TabsSize;
+  fill: boolean;
 }
 
 const TabsRootContext = createContext<TabsRootContextValue | null>(null);
@@ -62,13 +64,20 @@ function useTabsListContext() {
 
 export interface TabsRootProps
   extends Omit<ComponentProps<typeof BaseTabs.Root>, 'style'>,
-    BaseProps {}
+    BaseProps {
+  /** Stretch the root and equal-width tab items to fill the parent. */
+  fill?: boolean;
+}
 
 const rootStyles = stylex.create({
   base: {
     display: 'flex',
     flexDirection: 'column',
     minWidth: 0,
+  },
+  fill: {
+    width: '100%',
+    alignSelf: 'stretch',
   },
   // Stack panels in one cell so enter/exit never sum heights.
   panelStack: {
@@ -84,6 +93,7 @@ function Root({
   value,
   defaultValue,
   onValueChange,
+  fill = false,
   ...props
 }: TabsRootProps) {
   const layoutGroupId = useId();
@@ -101,8 +111,9 @@ function Root({
       activeValue,
       layoutGroupId,
       indicatorLayoutId: `${layoutGroupId}-indicator`,
+      fill,
     }),
-    [activeValue, layoutGroupId],
+    [activeValue, layoutGroupId, fill],
   );
 
   const childArray = Children.toArray(children);
@@ -129,7 +140,7 @@ function Root({
             setUncontrolledValue(next);
           }
         }}
-        {...stylex.props(rootStyles.base, ...styleArray(style))}
+        {...stylex.props(rootStyles.base, fill && rootStyles.fill, ...styleArray(style))}
         {...props}
       >
         {rest}
@@ -155,6 +166,10 @@ const listStyles = stylex.create({
     position: 'relative',
     minWidth: 0,
   },
+  fill: {
+    width: '100%',
+    alignSelf: 'stretch',
+  },
   button: {
     gap: spacing.s4,
   },
@@ -168,8 +183,11 @@ function List({
   size = 'md',
   ...props
 }: TabsListProps) {
-  const { layoutGroupId } = useTabsRootContext();
-  const listContext = useMemo<TabsListContextValue>(() => ({ variant, size }), [variant, size]);
+  const { layoutGroupId, fill } = useTabsRootContext();
+  const listContext = useMemo<TabsListContextValue>(
+    () => ({ variant, size, fill }),
+    [variant, size, fill],
+  );
 
   return (
     <TabsListContext.Provider value={listContext}>
@@ -182,6 +200,7 @@ function List({
           ref={ref}
           {...stylex.props(
             listStyles.base,
+            fill && listStyles.fill,
             variant === 'button' && listStyles.button,
             ...styleArray(style),
           )}
@@ -269,6 +288,11 @@ const tabStyles = stylex.create({
     position: 'relative',
     zIndex: 1,
   },
+  fill: {
+    flex: 1,
+    width: '100%',
+    minWidth: 0,
+  },
 });
 
 const underlineSizeStyles = {
@@ -310,7 +334,7 @@ const indicatorRadiusStyles = {
 
 function Tab({ style, ref, children, value, disabled, ...props }: TabsTabProps) {
   const { activeValue, indicatorLayoutId } = useTabsRootContext();
-  const { variant, size } = useTabsListContext();
+  const { variant, size, fill } = useTabsListContext();
   const active = activeValue === value;
 
   return (
@@ -328,6 +352,7 @@ function Tab({ style, ref, children, value, disabled, ...props }: TabsTabProps) 
               buttonStyles[size],
               active ? tabStyles.buttonActive : tabStyles.buttonInactive,
             ]),
+        fill && tabStyles.fill,
         ...styleArray(style),
       )}
       {...props}
