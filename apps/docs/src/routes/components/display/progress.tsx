@@ -1,50 +1,45 @@
-import { Button, Flex, Progress, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { progressRootProps } from '~/data/components/progress';
+import ProgressHero from '~/examples/progress/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/progress/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/display/progress')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
-  const [value, setValue] = useState(65);
+  const highlighted = Route.useLoaderData();
 
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Progress
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Progress bar with label and value display.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Default
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Progress.Root value={value}>
-            <Flex direction='row' justify='between'>
-              <Progress.Label>Uploading...</Progress.Label>
-              <Progress.Value />
-            </Flex>
-            <Progress.Track>
-              <Progress.Indicator />
-            </Progress.Track>
-          </Progress.Root>
-          <Flex direction='row' gap='s8'>
-            <Button variant='ghost' size='xs' onClick={() => setValue(v => Math.max(0, v - 10))}>
-              -10
-            </Button>
-            <Button variant='ghost' size='xs' onClick={() => setValue(v => Math.min(100, v + 10))}>
-              +10
-            </Button>
-          </Flex>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Progress'
+      description='Progress bar with label and value display.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <ProgressHero />
+      </ComponentExample>
+
+      <PropsTable props={progressRootProps} title='Progress.Root Props' />
+    </DocsPage>
   );
 }

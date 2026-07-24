@@ -1,48 +1,45 @@
-import { Flex, Meter, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { meterRootProps } from '~/data/components/meter';
+import MeterHero from '~/examples/meter/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/meter/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/display/meter')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Meter
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Meter gauge for displaying measured values.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Default
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Meter.Root value={72}>
-            <Flex direction='row' justify='between'>
-              <Meter.Label>Storage used</Meter.Label>
-              <Meter.Value />
-            </Flex>
-            <Meter.Track>
-              <Meter.Indicator />
-            </Meter.Track>
-          </Meter.Root>
-          <Meter.Root value={30}>
-            <Flex direction='row' justify='between'>
-              <Meter.Label>CPU usage</Meter.Label>
-              <Meter.Value />
-            </Flex>
-            <Meter.Track>
-              <Meter.Indicator />
-            </Meter.Track>
-          </Meter.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Meter'
+      description='Meter gauge for displaying measured values.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <MeterHero />
+      </ComponentExample>
+
+      <PropsTable props={meterRootProps} title='Meter.Root Props' />
+    </DocsPage>
   );
 }

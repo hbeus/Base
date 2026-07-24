@@ -1,55 +1,55 @@
-import { Icon, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
-import {
-  IconBold,
-  IconCopy,
-  IconItalic,
-  IconShare,
-  IconTrash,
-  IconUnderline,
-} from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { iconProps } from '~/data/components/icon';
+import IconHero from '~/examples/icon/hero';
+import IconSizes from '~/examples/icon/sizes';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/icon/hero.tsx?raw';
+import sizesRaw from '~/examples/icon/sizes.tsx?raw';
 
 export const Route = createFileRoute('/components/display/icon')({
+  loader: async () => {
+    const sources = { heroRaw, sizesRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Icon
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Wrapper for Tabler icons with consistent sizing and alignment.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Default
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <Icon icon={IconBold} />
-          <Icon icon={IconItalic} />
-          <Icon icon={IconUnderline} />
-          <Icon icon={IconCopy} />
-          <Icon icon={IconShare} />
-          <Icon icon={IconTrash} />
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Sizes
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <Icon icon={IconCopy} size={12} />
-          <Icon icon={IconCopy} size={14} />
-          <Icon icon={IconCopy} size={18} />
-          <Icon icon={IconCopy} size={24} />
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Icon'
+      description='Wrapper for Tabler icons with consistent sizing and alignment.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <IconHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Sizes'
+        code={highlighted.sizesRaw}
+        rawCode={sizesRaw}
+      >
+        <IconSizes />
+      </ComponentExample>
+
+      <PropsTable props={iconProps} />
+    </DocsPage>
   );
 }
