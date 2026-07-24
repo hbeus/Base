@@ -33,6 +33,11 @@ type TabsSize = 'xs' | 'sm' | 'md' | 'lg';
 type TabsVariant = 'underline' | 'button';
 type TabValue = ComponentProps<typeof BaseTabs.Tab>['value'];
 
+interface MenuChrome {
+  triggerId: string;
+  values: ReadonlySet<TabValue>;
+}
+
 const INDICATOR_TRANSITION = { type: 'spring', bounce: 0.15, duration: 0.4 } as const;
 
 /* ---------- Contexts ---------- */
@@ -42,9 +47,8 @@ interface TabsRootContextValue {
   indicatorLayoutId: string;
   layoutGroupId: string;
   fill: boolean;
-  menuLabelId: string | undefined;
-  selectValue: (value: TabValue) => void;
-  setMenuLabelId: (id: string | undefined) => void;
+  setActive: (value: TabValue) => void;
+  setMenuChrome: (chrome: MenuChrome | null) => void;
 }
 
 interface TabsListContextValue {
@@ -55,6 +59,7 @@ interface TabsListContextValue {
 
 const TabsRootContext = createContext<TabsRootContextValue | null>(null);
 const TabsListContext = createContext<TabsListContextValue | null>(null);
+const MenuChromeContext = createContext<MenuChrome | null>(null);
 
 function useTabsRootContext() {
   const ctx = useContext(TabsRootContext);
@@ -125,9 +130,10 @@ function ActiveIndicator({ variant, size }: { variant: TabsVariant; size: TabsSi
 /* ---------- Root ---------- */
 
 export interface TabsRootProps
-  extends Omit<ComponentProps<typeof BaseTabs.Root>, 'style'>,
+  extends Omit<ComponentProps<typeof BaseTabs.Root>, 'style' | 'onValueChange'>,
     BaseProps {
   fill?: boolean;
+  onValueChange?: (value: TabValue) => void;
 }
 
 const rootStyles = stylex.create({
@@ -139,10 +145,6 @@ const rootStyles = stylex.create({
   fill: {
     width: '100%',
     alignSelf: 'stretch',
-  },
-  panelStack: {
-    display: 'grid',
-    minWidth: 0,
   },
 });
 
@@ -164,21 +166,12 @@ function Root({
   const [uncontrolledValue, setUncontrolledValue] = useState<TabValue>(() =>
     defaultValue === undefined ? 0 : defaultValue,
   );
-  const [menuLabelId, setMenuLabelId] = useState<string>();
+  const [menuChrome, setMenuChrome] = useState<MenuChrome | null>(null);
   const activeValue = controlled ? value : uncontrolledValue;
 
-  const selectValue = useCallback(
+  const setActive = useCallback(
     (next: TabValue) => {
-      onValueChangeRef.current?.(next, {
-        reason: 'none',
-        event: new Event('tabs-value-change'),
-        cancel() {},
-        allowPropagation() {},
-        isCanceled: false,
-        isPropagationAllowed: false,
-        trigger: undefined,
-        activationDirection: 'none',
-      } as Parameters<NonNullable<ComponentProps<typeof BaseTabs.Root>['onValueChange']>>[1]);
+      onValueChangeRef.current?.(next);
       if (!controlled) {
         setUncontrolledValue(next);
       }
@@ -192,45 +185,31 @@ function Root({
       layoutGroupId,
       indicatorLayoutId: `${layoutGroupId}-indicator`,
       fill,
-      menuLabelId,
-      selectValue,
-      setMenuLabelId,
+      setActive,
+      setMenuChrome,
     }),
-    [activeValue, layoutGroupId, fill, menuLabelId, selectValue],
+    [activeValue, layoutGroupId, fill, setActive],
   );
-
-  const childArray = Children.toArray(children);
-  const panels: ReactNode[] = [];
-  const rest: ReactNode[] = [];
-  for (const child of childArray) {
-    if (isValidElement(child) && child.type === Panel) {
-      panels.push(child);
-    } else {
-      rest.push(child);
-    }
-  }
 
   return (
     <TabsRootContext.Provider value={rootContext}>
-      <BaseTabs.Root
-        data-slot='tabs'
-        ref={ref}
-        value={activeValue}
-        onValueChange={(next, details) => {
-          if (details.reason === 'missing') {
-            return;
-          }
-          onValueChangeRef.current?.(next, details);
-          if (!controlled && !details.isCanceled) {
-            setUncontrolledValue(next);
-          }
-        }}
-        {...stylex.props(rootStyles.base, fill && rootStyles.fill, ...styleArray(style))}
-        {...props}
-      >
-        {rest}
-        {panels.length > 0 && <div {...stylex.props(rootStyles.panelStack)}>{panels}</div>}
-      </BaseTabs.Root>
+      <MenuChromeContext.Provider value={menuChrome}>
+        <BaseTabs.Root
+          data-slot='tabs'
+          ref={ref}
+          value={activeValue}
+          onValueChange={(next, details) => {
+            if (details.reason === 'missing' || details.isCanceled) {
+              return;
+            }
+            setActive(next);
+          }}
+          {...stylex.props(rootStyles.base, fill && rootStyles.fill, ...styleArray(style))}
+          {...props}
+        >
+          {children}
+        </BaseTabs.Root>
+      </MenuChromeContext.Provider>
     </TabsRootContext.Provider>
   );
 }
@@ -480,7 +459,7 @@ const menuStyles = stylex.create({
 });
 
 function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
-  const { activeValue, selectValue, setMenuLabelId } = useTabsRootContext();
+  const { activeValue, setActive, setMenuChrome } = useTabsRootContext();
   const { variant, size } = useTabsListContext();
   const triggerId = useId();
 
@@ -497,9 +476,9 @@ function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
   const activeInMenu = menuValues.has(activeValue);
 
   useLayoutEffect(() => {
-    setMenuLabelId(activeInMenu ? triggerId : undefined);
-    return () => setMenuLabelId(undefined);
-  }, [activeInMenu, setMenuLabelId, triggerId]);
+    setMenuChrome({ triggerId, values: menuValues });
+    return () => setMenuChrome(null);
+  }, [menuValues, setMenuChrome, triggerId]);
 
   const hiddenTabs = Children.map(children, child => {
     if (!isValidElement(child) || child.type !== TabsMenuItem) {
@@ -549,12 +528,7 @@ function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
         <Menu.Portal>
           <Menu.Positioner align='end' sideOffset={4}>
             <Menu.Popup>
-              <Menu.RadioGroup
-                value={activeValue}
-                onValueChange={next => {
-                  selectValue(next);
-                }}
-              >
+              <Menu.RadioGroup value={activeValue} onValueChange={setActive}>
                 {children}
               </Menu.RadioGroup>
             </Menu.Popup>
@@ -594,51 +568,86 @@ function TabsMenuItem({ value, children, disabled, style, ref }: TabsMenuItemPro
 /* ---------- Panel ---------- */
 
 export interface TabsPanelProps
-  extends Omit<ComponentProps<typeof BaseTabs.Panel>, 'style'>,
-    BaseProps {}
+  extends Omit<ComponentProps<typeof BaseTabs.Panel>, 'style' | 'children'>,
+    BaseProps {
+  children?: ReactNode;
+}
 
-const panelStyles = stylex.create({
-  base: {
-    gridArea: '1 / 1',
+/** Declarative descriptor — props are read by `Tabs.Panels`. */
+function Panel(_props: TabsPanelProps) {
+  return null;
+}
+
+/* ---------- Panels ---------- */
+
+export interface TabsPanelsProps extends BaseProps {
+  children: ReactNode;
+}
+
+const panelsStyles = stylex.create({
+  root: {
+    position: 'relative',
     minWidth: 0,
-    outline: 'none',
-    display: {
-      default: 'block',
-      ':is([hidden])': 'block',
-    },
-  },
-  content: {
     paddingTop: spacing.s16,
+  },
+  shell: {
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    overflow: 'hidden',
+    padding: 0,
+    borderWidth: 0,
+    opacity: 0,
+    pointerEvents: 'none',
   },
 });
 
-function Panel({
-  style,
-  ref,
-  value,
-  children,
-  keepMounted,
-  'aria-labelledby': ariaLabelledBy,
-  ...props
-}: TabsPanelProps) {
-  const { activeValue, menuLabelId } = useTabsRootContext();
-  const isActive = activeValue === value;
-  const labelledBy = isActive && menuLabelId ? menuLabelId : ariaLabelledBy;
+function isTabsPanel(child: ReactNode): child is ReactElement<TabsPanelProps> {
+  return isValidElement(child) && child.type === Panel;
+}
+
+function Panels({ style, children }: TabsPanelsProps) {
+  const { activeValue } = useTabsRootContext();
+  const menuChrome = useContext(MenuChromeContext);
+
+  const items = Children.toArray(children).filter(isTabsPanel);
+  const active = items.find(item => item.props.value === activeValue);
 
   return (
-    <BaseTabs.Panel
-      data-slot='tabs-panel'
-      ref={ref}
-      value={value}
-      keepMounted={keepMounted ?? true}
-      aria-labelledby={labelledBy}
-      {...stylex.props(panelStyles.base, ...styleArray(style))}
-      {...props}
-    >
-      <AnimatePresence mode='wait' initial={false}>
-        {isActive && (
-          <motion.div
+    <div data-slot='tabs-panels' {...stylex.props(panelsStyles.root, ...styleArray(style))}>
+      {items.map(item => {
+        const {
+          value,
+          children: _content,
+          keepMounted,
+          style: panelStyle,
+          ref,
+          'aria-labelledby': ariaLabelledBy,
+          ...panelProps
+        } = item.props;
+
+        const labelledBy =
+          activeValue === value && menuChrome?.values.has(value)
+            ? menuChrome.triggerId
+            : ariaLabelledBy;
+
+        return (
+          <BaseTabs.Panel
             key={String(value)}
+            data-slot='tabs-panel'
+            ref={ref}
+            value={value}
+            keepMounted={keepMounted ?? true}
+            aria-labelledby={labelledBy}
+            {...stylex.props(panelsStyles.shell, ...styleArray(panelStyle))}
+            {...panelProps}
+          />
+        );
+      })}
+      <AnimatePresence mode='popLayout' initial={false}>
+        {active != null && (
+          <motion.div
+            key={String(active.props.value)}
             layout='position'
             initial={{ opacity: 0, filter: 'blur(5px)' }}
             animate={{ opacity: 1, filter: 'blur(0px)' }}
@@ -647,13 +656,12 @@ function Panel({
               filter: 'blur(5px)',
               transition: { duration: 0.15 },
             }}
-            {...stylex.props(panelStyles.content)}
           >
-            {children}
+            {active.props.children}
           </motion.div>
         )}
       </AnimatePresence>
-    </BaseTabs.Panel>
+    </div>
   );
 }
 
@@ -665,5 +673,6 @@ export const Tabs = {
   Tab,
   Menu: TabsMenu,
   MenuItem: TabsMenuItem,
+  Panels,
   Panel,
 };

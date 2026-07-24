@@ -23,41 +23,43 @@ export default function TabsAlphaMenu() {
           <Tabs.MenuItem value='integrations'>Integrations</Tabs.MenuItem>
         </Tabs.Menu>
       </Tabs.List>
-      <Tabs.Panel value='account'>
-        <Text size='bodySm' color='secondary'>
-          Manage your account details and profile information.
-        </Text>
-      </Tabs.Panel>
-      <Tabs.Panel value='settings'>
-        <Text size='bodySm' color='secondary'>
-          Configure your notification preferences and privacy settings.
-        </Text>
-      </Tabs.Panel>
-      <Tabs.Panel value='billing'>
-        <Text size='bodySm' color='secondary'>
-          View your billing history and update payment methods.
-        </Text>
-      </Tabs.Panel>
-      <Tabs.Panel value='team'>
-        <Text size='bodySm' color='secondary'>
-          Invite teammates and manage roles.
-        </Text>
-      </Tabs.Panel>
-      <Tabs.Panel value='security'>
-        <Text size='bodySm' color='secondary'>
-          Passkeys, sessions, and two-factor authentication.
-        </Text>
-      </Tabs.Panel>
-      <Tabs.Panel value='notifications'>
-        <Text size='bodySm' color='secondary'>
-          Email and push notification preferences.
-        </Text>
-      </Tabs.Panel>
-      <Tabs.Panel value='integrations'>
-        <Text size='bodySm' color='secondary'>
-          Connected apps and API tokens.
-        </Text>
-      </Tabs.Panel>
+      <Tabs.Panels>
+        <Tabs.Panel value='account'>
+          <Text size='bodySm' color='secondary'>
+            Manage your account details and profile information.
+          </Text>
+        </Tabs.Panel>
+        <Tabs.Panel value='settings'>
+          <Text size='bodySm' color='secondary'>
+            Configure your notification preferences and privacy settings.
+          </Text>
+        </Tabs.Panel>
+        <Tabs.Panel value='billing'>
+          <Text size='bodySm' color='secondary'>
+            View your billing history and update payment methods.
+          </Text>
+        </Tabs.Panel>
+        <Tabs.Panel value='team'>
+          <Text size='bodySm' color='secondary'>
+            Invite teammates and manage roles.
+          </Text>
+        </Tabs.Panel>
+        <Tabs.Panel value='security'>
+          <Text size='bodySm' color='secondary'>
+            Passkeys, sessions, and two-factor authentication.
+          </Text>
+        </Tabs.Panel>
+        <Tabs.Panel value='notifications'>
+          <Text size='bodySm' color='secondary'>
+            Email and push notification preferences.
+          </Text>
+        </Tabs.Panel>
+        <Tabs.Panel value='integrations'>
+          <Text size='bodySm' color='secondary'>
+            Connected apps and API tokens.
+          </Text>
+        </Tabs.Panel>
+      </Tabs.Panels>
     </Tabs.Root>
   );
 }

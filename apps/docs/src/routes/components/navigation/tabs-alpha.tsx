@@ -42,7 +42,7 @@ function PageComponent() {
   return (
     <DocsPage
       title='Tabs (alpha)'
-      description='Unstable rewrite with Motion layoutId indicators. Deep-import from @base/ui/alpha/Tabs.'
+      description='Unstable rewrite with Motion layoutId indicators. Deep-import from @base/ui/alpha/Tabs. Use Tabs.Panels to wrap panel content.'
     >
       <ComponentExample
         title='Underline'
