@@ -1,132 +1,42 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import * as stylex from '@stylexjs/stylex';
-import { IconCheck, IconDots } from '@tabler/icons-react';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import {
   Children,
   type ComponentProps,
-  createContext,
   isValidElement,
   type ReactElement,
   type ReactNode,
-  type RefObject,
   useCallback,
   useContext,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
-import { borders } from '../../../tokens/borders.stylex';
-import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
-import { Icon } from '../../display/Icon';
 import { buttonStyles } from '../../input/Button';
-import { Menu } from '../../overlays/Menu';
-import { Tooltip } from '../../overlays/Tooltip';
+import {
+  type MenuTriggerLabel,
+  MenuTriggerLabelContext,
+  TabsListContext,
+  type TabsListContextValue,
+  TabsRootContext,
+  type TabsRootContextValue,
+  type TabsSize,
+  type TabsVariant,
+  type TabValue,
+  useTabsListContext,
+  useTabsRootContext,
+} from './context';
+import { ActiveIndicator } from './indicator';
+import { TabsMenu, TabsMenuItem, type TabsMenuItemProps, type TabsMenuProps } from './menu';
 
-type TabsSize = 'xs' | 'sm' | 'md' | 'lg';
-type TabsVariant = 'underline' | 'button';
-type TabValue = ComponentProps<typeof BaseTabs.Tab>['value'];
-
-interface MenuChrome {
-  triggerId: string;
-  values: ReadonlySet<TabValue>;
-}
-
-const INDICATOR_TRANSITION = { type: 'spring', bounce: 0.15, duration: 0.4 } as const;
-
-/* ---------- Contexts ---------- */
-
-interface TabsRootContextValue {
-  activeValue: TabValue;
-  indicatorLayoutId: string;
-  layoutGroupId: string;
-  fill: boolean;
-  setActive: (value: TabValue) => void;
-  setMenuChrome: (chrome: MenuChrome | null) => void;
-}
-
-interface TabsListContextValue {
-  variant: TabsVariant;
-  size: TabsSize;
-  fill: boolean;
-}
-
-const TabsRootContext = createContext<TabsRootContextValue | null>(null);
-const TabsListContext = createContext<TabsListContextValue | null>(null);
-const MenuChromeContext = createContext<MenuChrome | null>(null);
-
-function useTabsRootContext() {
-  const ctx = useContext(TabsRootContext);
-  if (!ctx) {
-    throw new Error('Tabs compound parts must be used within Tabs.Root');
-  }
-  return ctx;
-}
-
-function useTabsListContext() {
-  const ctx = useContext(TabsListContext);
-  if (!ctx) {
-    throw new Error('Tabs.Tab must be used within Tabs.List');
-  }
-  return ctx;
-}
-
-/* ---------- Indicator ---------- */
-
-const indicatorStyles = stylex.create({
-  base: {
-    position: 'absolute',
-    pointerEvents: 'none',
-    zIndex: 0,
-  },
-  underline: {
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: borders.focus,
-    backgroundColor: colors.foregroundPrimary,
-  },
-  button: {
-    inset: 0,
-    backgroundColor: colors.buttonPrimaryBg,
-  },
-  radiusXs: { borderRadius: radii.r8 },
-  radiusSm: { borderRadius: radii.r8 },
-  radiusMd: { borderRadius: radii.r10 },
-  radiusLg: { borderRadius: radii.r12 },
-});
-
-const indicatorRadiusStyles = {
-  xs: indicatorStyles.radiusXs,
-  sm: indicatorStyles.radiusSm,
-  md: indicatorStyles.radiusMd,
-  lg: indicatorStyles.radiusLg,
-} as const;
-
-function ActiveIndicator({ variant, size }: { variant: TabsVariant; size: TabsSize }) {
-  const { indicatorLayoutId } = useTabsRootContext();
-
-  return (
-    <motion.span
-      aria-hidden
-      data-slot='tabs-indicator'
-      layoutId={indicatorLayoutId}
-      transition={INDICATOR_TRANSITION}
-      {...stylex.props(
-        indicatorStyles.base,
-        variant === 'underline' ? indicatorStyles.underline : indicatorStyles.button,
-        variant === 'button' && indicatorRadiusStyles[size],
-      )}
-    />
-  );
-}
+export type { TabsMenuItemProps, TabsMenuProps };
 
 /* ---------- Root ---------- */
 
@@ -167,7 +77,8 @@ function Root({
   const [uncontrolledValue, setUncontrolledValue] = useState<TabValue>(() =>
     defaultValue === undefined ? 0 : defaultValue,
   );
-  const [menuChrome, setMenuChrome] = useState<MenuChrome | null>(null);
+  // Menu publishes trigger id + menu values; Panels read for aria-labelledby.
+  const [menuTriggerLabel, setMenuTriggerLabel] = useState<MenuTriggerLabel | null>(null);
   const activeValue = controlled ? value : uncontrolledValue;
 
   const setActive = useCallback(
@@ -187,14 +98,14 @@ function Root({
       indicatorLayoutId: `${layoutGroupId}-indicator`,
       fill,
       setActive,
-      setMenuChrome,
+      setMenuTriggerLabel,
     }),
     [activeValue, layoutGroupId, fill, setActive],
   );
 
   return (
     <TabsRootContext.Provider value={rootContext}>
-      <MenuChromeContext.Provider value={menuChrome}>
+      <MenuTriggerLabelContext.Provider value={menuTriggerLabel}>
         <BaseTabs.Root
           data-slot='tabs'
           ref={ref}
@@ -210,7 +121,7 @@ function Root({
         >
           {children}
         </BaseTabs.Root>
-      </MenuChromeContext.Provider>
+      </MenuTriggerLabelContext.Provider>
     </TabsRootContext.Provider>
   );
 }
@@ -397,213 +308,6 @@ function Tab({ style, ref, children, value, disabled, ...props }: TabsTabProps) 
   );
 }
 
-/* ---------- Menu ---------- */
-
-export interface TabsMenuProps extends BaseProps {
-  children: ReactNode;
-  label?: string;
-  ref?: RefObject<HTMLButtonElement | null>;
-}
-
-const menuStyles = stylex.create({
-  trigger: {
-    position: 'relative',
-    flexGrow: 0,
-    flexShrink: 0,
-    flexBasis: 'auto',
-    width: 'fit-content',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 0,
-    backgroundColor: 'transparent',
-    cursor: 'pointer',
-    outline: 'none',
-    color: colors.foregroundSecondary,
-    transition: 'color 0.15s',
-    ':hover': {
-      color: colors.foregroundPrimary,
-      backgroundColor: 'transparent',
-    },
-  },
-  triggerActiveUnderline: {
-    color: colors.foregroundPrimary,
-  },
-  triggerActiveButton: {
-    color: colors.buttonPrimaryFg,
-    ':hover': {
-      color: colors.buttonPrimaryFg,
-      backgroundColor: 'transparent',
-    },
-  },
-  triggerContent: {
-    position: 'relative',
-    zIndex: 1,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tooltipTrigger: {
-    display: 'inline-flex',
-    flexShrink: 0,
-    width: 'fit-content',
-  },
-  check: {
-    marginInlineStart: 'auto',
-    color: colors.foregroundSecondary,
-  },
-  hiddenTab: {
-    position: 'absolute',
-    width: 0,
-    height: 0,
-    overflow: 'hidden',
-    padding: 0,
-    borderWidth: 0,
-    opacity: 0,
-    pointerEvents: 'none',
-  },
-});
-
-function getNodeText(node: ReactNode): string {
-  if (typeof node === 'string' || typeof node === 'number') {
-    return String(node);
-  }
-  if (Array.isArray(node)) {
-    return node.map(getNodeText).join('');
-  }
-  if (isValidElement<{ children?: ReactNode }>(node) && node.props.children != null) {
-    return getNodeText(node.props.children);
-  }
-  return '';
-}
-
-function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
-  const { activeValue, setActive, setMenuChrome } = useTabsRootContext();
-  const { variant, size } = useTabsListContext();
-  const triggerId = useId();
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const menuItems = useMemo(() => {
-    const items: { value: TabValue; title: string; disabled?: boolean }[] = [];
-    Children.forEach(children, child => {
-      if (!isValidElement(child) || child.type !== TabsMenuItem) {
-        return;
-      }
-      const item = child as ReactElement<TabsMenuItemProps>;
-      items.push({
-        value: item.props.value,
-        title: getNodeText(item.props.children).trim(),
-        disabled: item.props.disabled,
-      });
-    });
-    return items;
-  }, [children]);
-
-  const menuValues = useMemo(() => new Set(menuItems.map(item => item.value)), [menuItems]);
-  const activeInMenu = menuValues.has(activeValue);
-  const activeTitle = menuItems.find(item => item.value === activeValue)?.title;
-  const fallbackLabel = label ?? 'More tabs';
-  const triggerLabel =
-    activeInMenu && activeTitle != null && activeTitle !== '' ? activeTitle : fallbackLabel;
-
-  useLayoutEffect(() => {
-    setMenuChrome({ triggerId, values: menuValues });
-    return () => setMenuChrome(null);
-  }, [menuValues, setMenuChrome, triggerId]);
-
-  const hiddenTabs = menuItems.map(item => (
-    <BaseTabs.Tab
-      key={String(item.value)}
-      value={item.value}
-      disabled={item.disabled}
-      tabIndex={-1}
-      aria-hidden
-      {...stylex.props(menuStyles.hiddenTab)}
-    />
-  ));
-
-  return (
-    <>
-      {hiddenTabs}
-      <Tooltip.Provider>
-        <Menu.Root onOpenChange={setMenuOpen}>
-          <Tooltip.Root disabled={menuOpen}>
-            <Tooltip.Trigger render={<span {...stylex.props(menuStyles.tooltipTrigger)} />}>
-              <Menu.Trigger
-                data-slot='tabs-menu'
-                data-active={activeInMenu ? '' : undefined}
-                id={triggerId}
-                aria-label={triggerLabel}
-                ref={ref}
-                render={
-                  <button
-                    type='button'
-                    {...stylex.props(
-                      menuStyles.trigger,
-                      buttonStyles[size],
-                      activeInMenu && variant === 'underline' && menuStyles.triggerActiveUnderline,
-                      activeInMenu && variant === 'button' && menuStyles.triggerActiveButton,
-                      ...styleArray(style),
-                    )}
-                  />
-                }
-              >
-                <span {...stylex.props(menuStyles.triggerContent)}>
-                  <Icon icon={IconDots} />
-                </span>
-                {activeInMenu && <ActiveIndicator variant={variant} size={size} />}
-              </Menu.Trigger>
-            </Tooltip.Trigger>
-            <Tooltip.Portal>
-              <Tooltip.Positioner side='top' sideOffset={4}>
-                <Tooltip.Popup>
-                  {triggerLabel}
-                  <Tooltip.Arrow />
-                </Tooltip.Popup>
-              </Tooltip.Positioner>
-            </Tooltip.Portal>
-          </Tooltip.Root>
-          <Menu.Portal>
-            <Menu.Positioner align='end' sideOffset={4}>
-              <Menu.Popup>
-                <Menu.RadioGroup value={activeValue} onValueChange={setActive}>
-                  {children}
-                </Menu.RadioGroup>
-              </Menu.Popup>
-            </Menu.Positioner>
-          </Menu.Portal>
-        </Menu.Root>
-      </Tooltip.Provider>
-    </>
-  );
-}
-
-/* ---------- MenuItem ---------- */
-
-export interface TabsMenuItemProps extends BaseProps {
-  value: TabValue;
-  children: ReactNode;
-  disabled?: boolean;
-  ref?: RefObject<HTMLElement | null>;
-}
-
-function TabsMenuItem({ value, children, disabled, style, ref }: TabsMenuItemProps) {
-  return (
-    <Menu.RadioItem
-      data-slot='tabs-menu-item'
-      value={value}
-      disabled={disabled}
-      ref={ref}
-      {...stylex.props(...styleArray(style))}
-    >
-      {children}
-      <Menu.RadioItemIndicator {...stylex.props(menuStyles.check)}>
-        <Icon icon={IconCheck} size={14} />
-      </Menu.RadioItemIndicator>
-    </Menu.RadioItem>
-  );
-}
-
 /* ---------- Panel ---------- */
 
 export interface TabsPanelProps
@@ -647,7 +351,7 @@ function isTabsPanel(child: ReactNode): child is ReactElement<TabsPanelProps> {
 
 function Panels({ style, children }: TabsPanelsProps) {
   const { activeValue } = useTabsRootContext();
-  const menuChrome = useContext(MenuChromeContext);
+  const menuTriggerLabel = useContext(MenuTriggerLabelContext);
 
   const items = Children.toArray(children).filter(isTabsPanel);
   const active = items.find(item => item.props.value === activeValue);
@@ -665,9 +369,10 @@ function Panels({ style, children }: TabsPanelsProps) {
           ...panelProps
         } = item.props;
 
+        // When the active value lives in the menu, label the panel from the menu trigger.
         const labelledBy =
-          activeValue === value && menuChrome?.values.has(value)
-            ? menuChrome.triggerId
+          activeValue === value && menuTriggerLabel?.values.has(value)
+            ? menuTriggerLabel.triggerId
             : ariaLabelledBy;
 
         return (
