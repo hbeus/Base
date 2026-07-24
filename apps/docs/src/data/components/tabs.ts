@@ -30,6 +30,16 @@ export const tabsListProps: PropDef[] = [
   },
 ];
 
+export const tabsMenuProps: PropDef[] = [
+  {
+    name: 'label',
+    type: 'string',
+    default: "'More tabs'",
+    description:
+      'Fallback accessible name and tooltip when no menu item is active. When a menu item is selected, both use that item’s title instead.',
+  },
+];
+
 export const tabsMenuItemProps: PropDef[] = [
   {
     name: 'value',
@@ -47,6 +57,6 @@ export const tabsMenuItemProps: PropDef[] = [
     name: 'children',
     type: 'ReactNode',
     default: '—',
-    description: 'Label text for the menu item.',
+    description: 'Plain-text label for the menu item (also used for the trigger tooltip when active).',
   },
 ];

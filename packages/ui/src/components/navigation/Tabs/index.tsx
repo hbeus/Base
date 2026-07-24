@@ -28,6 +28,7 @@ import { styleArray } from '../../../utils/styleArray';
 import { Icon } from '../../display/Icon';
 import { buttonStyles } from '../../input/Button';
 import { Menu } from '../../overlays/Menu';
+import { Tooltip } from '../../overlays/Tooltip';
 
 type TabsSize = 'xs' | 'sm' | 'md' | 'lg';
 type TabsVariant = 'underline' | 'button';
@@ -442,6 +443,11 @@ const menuStyles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tooltipTrigger: {
+    display: 'inline-flex',
+    flexShrink: 0,
+    width: 'fit-content',
+  },
   check: {
     marginInlineStart: 'auto',
     color: colors.foregroundSecondary,
@@ -458,83 +464,116 @@ const menuStyles = stylex.create({
   },
 });
 
+function getNodeText(node: ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(getNodeText).join('');
+  }
+  if (isValidElement<{ children?: ReactNode }>(node) && node.props.children != null) {
+    return getNodeText(node.props.children);
+  }
+  return '';
+}
+
 function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
   const { activeValue, setActive, setMenuChrome } = useTabsRootContext();
   const { variant, size } = useTabsListContext();
   const triggerId = useId();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const menuValues = useMemo(() => {
-    const values = new Set<TabValue>();
+  const menuItems = useMemo(() => {
+    const items: { value: TabValue; title: string; disabled?: boolean }[] = [];
     Children.forEach(children, child => {
-      if (isValidElement(child) && child.type === TabsMenuItem) {
-        values.add((child as ReactElement<TabsMenuItemProps>).props.value);
+      if (!isValidElement(child) || child.type !== TabsMenuItem) {
+        return;
       }
+      const item = child as ReactElement<TabsMenuItemProps>;
+      items.push({
+        value: item.props.value,
+        title: getNodeText(item.props.children).trim(),
+        disabled: item.props.disabled,
+      });
     });
-    return values;
+    return items;
   }, [children]);
 
+  const menuValues = useMemo(() => new Set(menuItems.map(item => item.value)), [menuItems]);
   const activeInMenu = menuValues.has(activeValue);
+  const activeTitle = menuItems.find(item => item.value === activeValue)?.title;
+  const fallbackLabel = label ?? 'More tabs';
+  const triggerLabel =
+    activeInMenu && activeTitle != null && activeTitle !== '' ? activeTitle : fallbackLabel;
 
   useLayoutEffect(() => {
     setMenuChrome({ triggerId, values: menuValues });
     return () => setMenuChrome(null);
   }, [menuValues, setMenuChrome, triggerId]);
 
-  const hiddenTabs = Children.map(children, child => {
-    if (!isValidElement(child) || child.type !== TabsMenuItem) {
-      return null;
-    }
-    const item = child as ReactElement<TabsMenuItemProps>;
-    return (
-      <BaseTabs.Tab
-        key={String(item.props.value)}
-        value={item.props.value}
-        disabled={item.props.disabled}
-        tabIndex={-1}
-        aria-hidden
-        {...stylex.props(menuStyles.hiddenTab)}
-      />
-    );
-  });
+  const hiddenTabs = menuItems.map(item => (
+    <BaseTabs.Tab
+      key={String(item.value)}
+      value={item.value}
+      disabled={item.disabled}
+      tabIndex={-1}
+      aria-hidden
+      {...stylex.props(menuStyles.hiddenTab)}
+    />
+  ));
 
   return (
     <>
       {hiddenTabs}
-      <Menu.Root>
-        <Menu.Trigger
-          data-slot='tabs-menu'
-          data-active={activeInMenu ? '' : undefined}
-          id={triggerId}
-          aria-label={label ?? 'More tabs'}
-          ref={ref}
-          render={
-            <button
-              type='button'
-              {...stylex.props(
-                menuStyles.trigger,
-                buttonStyles[size],
-                activeInMenu && variant === 'underline' && menuStyles.triggerActiveUnderline,
-                activeInMenu && variant === 'button' && menuStyles.triggerActiveButton,
-                ...styleArray(style),
-              )}
-            />
-          }
-        >
-          <span {...stylex.props(menuStyles.triggerContent)}>
-            <Icon icon={IconDots} />
-          </span>
-          {activeInMenu && <ActiveIndicator variant={variant} size={size} />}
-        </Menu.Trigger>
-        <Menu.Portal>
-          <Menu.Positioner align='end' sideOffset={4}>
-            <Menu.Popup>
-              <Menu.RadioGroup value={activeValue} onValueChange={setActive}>
-                {children}
-              </Menu.RadioGroup>
-            </Menu.Popup>
-          </Menu.Positioner>
-        </Menu.Portal>
-      </Menu.Root>
+      <Tooltip.Provider>
+        <Menu.Root onOpenChange={setMenuOpen}>
+          <Tooltip.Root disabled={menuOpen}>
+            <Tooltip.Trigger render={<span {...stylex.props(menuStyles.tooltipTrigger)} />}>
+              <Menu.Trigger
+                data-slot='tabs-menu'
+                data-active={activeInMenu ? '' : undefined}
+                id={triggerId}
+                aria-label={triggerLabel}
+                ref={ref}
+                render={
+                  <button
+                    type='button'
+                    {...stylex.props(
+                      menuStyles.trigger,
+                      buttonStyles[size],
+                      activeInMenu && variant === 'underline' && menuStyles.triggerActiveUnderline,
+                      activeInMenu && variant === 'button' && menuStyles.triggerActiveButton,
+                      ...styleArray(style),
+                    )}
+                  />
+                }
+              >
+                <span {...stylex.props(menuStyles.triggerContent)}>
+                  <Icon icon={IconDots} />
+                </span>
+                {activeInMenu && <ActiveIndicator variant={variant} size={size} />}
+              </Menu.Trigger>
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+              <Tooltip.Positioner side='top' sideOffset={4}>
+                <Tooltip.Popup>
+                  {triggerLabel}
+                  <Tooltip.Arrow />
+                </Tooltip.Popup>
+              </Tooltip.Positioner>
+            </Tooltip.Portal>
+          </Tooltip.Root>
+          <Menu.Portal>
+            <Menu.Positioner align='end' sideOffset={4}>
+              <Menu.Popup>
+                <Menu.RadioGroup value={activeValue} onValueChange={setActive}>
+                  {children}
+                </Menu.RadioGroup>
+              </Menu.Popup>
+            </Menu.Positioner>
+          </Menu.Portal>
+        </Menu.Root>
+      </Tooltip.Provider>
     </>
   );
 }

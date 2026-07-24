@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
-import { tabsListProps, tabsMenuItemProps, tabsRootProps } from '~/data/components/tabs';
+import { tabsListProps, tabsMenuItemProps, tabsMenuProps, tabsRootProps } from '~/data/components/tabs';
 import TabsButton from '~/examples/tabs/button';
 import buttonRaw from '~/examples/tabs/button.tsx?raw';
 import TabsFill from '~/examples/tabs/fill';
@@ -81,6 +81,7 @@ function PageComponent() {
 
       <PropsTable props={tabsRootProps} title='Tabs.Root Props' />
       <PropsTable props={tabsListProps} title='Tabs.List Props' />
+      <PropsTable props={tabsMenuProps} title='Tabs.Menu Props' />
       <PropsTable props={tabsMenuItemProps} title='Tabs.MenuItem Props' />
     </DocsPage>
   );
