@@ -15,6 +15,7 @@ export interface PropDef {
 
 interface PropsTableProps {
   props: PropDef[];
+  title?: string;
 }
 
 const styles = stylex.create({
@@ -63,7 +64,7 @@ const styles = stylex.create({
   },
 });
 
-export function PropsTable({ props }: PropsTableProps) {
+export function PropsTable({ props, title = 'Props' }: PropsTableProps) {
   return (
     <section>
       <Text
@@ -73,7 +74,7 @@ export function PropsTable({ props }: PropsTableProps) {
         color='secondary'
         style={headerStyles.title}
       >
-        Props
+        {title}
       </Text>
       <div {...stylex.props(styles.wrapper)}>
         <table {...stylex.props(styles.table)}>
