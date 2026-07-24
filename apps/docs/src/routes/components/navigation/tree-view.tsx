@@ -1,48 +1,47 @@
-import { Text, TreeView } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { treeViewGroupProps, treeViewItemProps, treeViewRootProps } from '~/data/components/tree-view';
+import TreeViewHero from '~/examples/tree-view/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/tree-view/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/navigation/tree-view')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Tree View
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Collapsible tree navigation with nested groups and items.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Default
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <TreeView.Root activeHref='/components'>
-            <TreeView.Group label='Getting Started' defaultOpen>
-              <TreeView.Item href='/introduction'>Introduction</TreeView.Item>
-              <TreeView.Item href='/installation'>Installation</TreeView.Item>
-            </TreeView.Group>
-            <TreeView.Group label='Components' defaultOpen>
-              <TreeView.Item href='/components'>Overview</TreeView.Item>
-              <TreeView.Group label='Input'>
-                <TreeView.Item href='/components/button'>Button</TreeView.Item>
-                <TreeView.Item href='/components/input'>Input</TreeView.Item>
-                <TreeView.Item href='/components/select'>Select</TreeView.Item>
-              </TreeView.Group>
-              <TreeView.Group label='Layout'>
-                <TreeView.Item href='/components/card'>Card</TreeView.Item>
-                <TreeView.Item href='/components/flex'>Flex</TreeView.Item>
-              </TreeView.Group>
-            </TreeView.Group>
-          </TreeView.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Tree View'
+      description='Collapsible tree navigation with nested groups and items.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <TreeViewHero />
+      </ComponentExample>
+
+      <PropsTable props={treeViewRootProps} title='TreeView.Root Props' />
+      <PropsTable props={treeViewGroupProps} title='TreeView.Group Props' />
+      <PropsTable props={treeViewItemProps} title='TreeView.Item Props' />
+    </DocsPage>
   );
 }
