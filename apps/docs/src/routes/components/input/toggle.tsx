@@ -1,66 +1,55 @@
-import { Flex, Icon, Text, Toggle } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
-import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { toggleProps } from '~/data/components/toggle';
+import ToggleHero from '~/examples/toggle/hero';
+import ToggleSlots from '~/examples/toggle/slots';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/toggle/hero.tsx?raw';
+import slotsRaw from '~/examples/toggle/slots.tsx?raw';
 
 export const Route = createFileRoute('/components/input/toggle')({
+  loader: async () => {
+    const sources = { heroRaw, slotsRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
-  const [bold, setBold] = useState(false);
-  const [italic, setItalic] = useState(false);
-  const [underline, setUnderline] = useState(false);
+  const highlighted = Route.useLoaderData();
 
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Toggle
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Pressable two-state toggle button. Use leading and trailing slots for
-          icons beside the label.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Toggle buttons
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <Toggle pressed={bold} onPressedChange={setBold}>
-            <IconBold size={16} />
-          </Toggle>
-          <Toggle pressed={italic} onPressedChange={setItalic}>
-            <IconItalic size={16} />
-          </Toggle>
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Leading and trailing slots
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <Flex gap='s8' wrap>
-            <Toggle
-              pressed={bold}
-              onPressedChange={setBold}
-              leading={<Icon icon={IconBold} />}
-            >
-              Bold
-            </Toggle>
-            <Toggle
-              pressed={underline}
-              onPressedChange={setUnderline}
-              trailing={<Icon icon={IconUnderline} />}
-            >
-              Underline
-            </Toggle>
-          </Flex>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Toggle'
+      description='Pressable two-state toggle button. Use leading and trailing slots for icons beside the label.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <ToggleHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Leading and Trailing Slots'
+        code={highlighted.slotsRaw}
+        rawCode={slotsRaw}
+      >
+        <ToggleSlots />
+      </ComponentExample>
+
+      <PropsTable props={toggleProps} />
+    </DocsPage>
   );
 }

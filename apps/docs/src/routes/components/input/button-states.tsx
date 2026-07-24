@@ -1,89 +1,75 @@
-import { ButtonState, Flex, Icon, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
-import { IconCheck, IconChevronRight, IconCirclePlus } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { buttonStateProps } from '~/data/components/button-states';
+import ButtonStatesHero from '~/examples/button-states/hero';
+import ButtonStatesShape from '~/examples/button-states/shape';
+import ButtonStatesSizes from '~/examples/button-states/sizes';
+import ButtonStatesSlots from '~/examples/button-states/slots';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/button-states/hero.tsx?raw';
+import shapeRaw from '~/examples/button-states/shape.tsx?raw';
+import sizesRaw from '~/examples/button-states/sizes.tsx?raw';
+import slotsRaw from '~/examples/button-states/slots.tsx?raw';
 
 export const Route = createFileRoute('/components/input/button-states')({
+  loader: async () => {
+    const sources = { heroRaw, sizesRaw, shapeRaw, slotsRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Button States
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Wraps Base UI ButtonState with color variants.
-        </Text>
-      </header>
-      <Flex direction='column' gap='s32'>
-        <Flex as='section' direction='column' gap='s8'>
-          <Text as='h2' size='label' weight='medium' color='secondary'>
-            States
-          </Text>
-          <Flex direction='column' gap='s8' wrap>
-            <ButtonState variant='positive'>Positive</ButtonState>
-            <ButtonState variant='negative'>Negative</ButtonState>
-            <ButtonState variant='semiNegative'>Semi Negative</ButtonState>
-            <ButtonState variant='semiPositive'>Semi Positive</ButtonState>
-            <ButtonState variant='neutral'>Neutral</ButtonState>
-            <ButtonState variant='highlight'>Highlight</ButtonState>
-          </Flex>
-        </Flex>
-        <Flex as='section' direction='column' gap='s8'>
-          <Text as='h2' size='label' weight='medium' color='secondary'>
-            Sizes
-          </Text>
-          <Flex gap='s8' wrap>
-            <ButtonState variant='positive' size='xs'>
-              Extra Small
-            </ButtonState>
-            <ButtonState variant='positive' size='sm'>
-              Small
-            </ButtonState>
-            <ButtonState variant='positive' size='md'>
-              Medium
-            </ButtonState>
-            <ButtonState variant='positive' size='lg'>
-              Large
-            </ButtonState>
-          </Flex>
-        </Flex>
-        <Flex as='section' direction='column' gap='s8'>
-          <Text as='h2' size='label' weight='medium' color='secondary'>
-            Shape
-          </Text>
-          <Flex gap='s8' wrap>
-            <ButtonState variant='positive'>Square</ButtonState>
-            <ButtonState variant='positive' rounded>
-              Rounded
-            </ButtonState>
-          </Flex>
-        </Flex>
-        <Flex as='section' direction='column' gap='s8'>
-          <Text as='h2' size='label' weight='medium' color='secondary'>
-            Leading and trailing slots
-          </Text>
-          <Flex gap='s8' wrap>
-            <ButtonState variant='positive' leading={<Icon icon={IconCheck} />}>
-              Leading slot icon
-            </ButtonState>
-            <ButtonState variant='positive' trailing={<Icon icon={IconChevronRight} />}>
-              Trailing slot icon
-            </ButtonState>
-            <ButtonState
-              variant='positive'
-              leading={<Icon icon={IconCirclePlus} />}
-              trailing={<Icon icon={IconChevronRight} />}
-            >
-              Leading and trailing slot icons
-            </ButtonState>
-          </Flex>
-        </Flex>
-      </Flex>
-    </>
+    <DocsPage
+      title='Button States'
+      description='Wraps Base UI ButtonState with color variants.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <ButtonStatesHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Sizes'
+        code={highlighted.sizesRaw}
+        rawCode={sizesRaw}
+      >
+        <ButtonStatesSizes />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Shape'
+        code={highlighted.shapeRaw}
+        rawCode={shapeRaw}
+      >
+        <ButtonStatesShape />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Leading and Trailing Slots'
+        code={highlighted.slotsRaw}
+        rawCode={slotsRaw}
+      >
+        <ButtonStatesSlots />
+      </ComponentExample>
+
+      <PropsTable props={buttonStateProps} />
+    </DocsPage>
   );
 }

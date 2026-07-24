@@ -1,42 +1,55 @@
-import { Input, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { inputProps } from '~/data/components/input';
+import InputHero from '~/examples/input/hero';
+import InputStates from '~/examples/input/states';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/input/hero.tsx?raw';
+import statesRaw from '~/examples/input/states.tsx?raw';
 
 export const Route = createFileRoute('/components/input/input')({
+  loader: async () => {
+    const sources = { heroRaw, statesRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Input
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Wraps Base UI Input with size variants.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Sizes
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Input size='sm' placeholder='Small input' />
-          <Input size='md' placeholder='Medium input' />
-          <Input size='lg' placeholder='Large input' />
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          States
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Input placeholder='Default' />
-          <Input disabled placeholder='Disabled' />
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Input'
+      description='Wraps Base UI Input with size variants.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <InputHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='States'
+        code={highlighted.statesRaw}
+        rawCode={statesRaw}
+      >
+        <InputStates />
+      </ComponentExample>
+
+      <PropsTable props={inputProps} />
+    </DocsPage>
   );
 }

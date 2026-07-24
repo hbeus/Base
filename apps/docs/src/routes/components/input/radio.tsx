@@ -1,50 +1,45 @@
-import { Radio, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { radioItemProps } from '~/data/components/radio';
+import RadioHero from '~/examples/radio/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/radio/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/input/radio')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Radio
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Radio group with spring-animated indicator.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Radio Group
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Radio.Group defaultValue='comfortable'>
-            <div {...stylex.props(docStyles.labelRow)}>
-              <Radio.Item value='compact'>
-                <Radio.Indicator />
-              </Radio.Item>
-              <Text size='bodySm'>Compact</Text>
-            </div>
-            <div {...stylex.props(docStyles.labelRow)}>
-              <Radio.Item value='comfortable'>
-                <Radio.Indicator />
-              </Radio.Item>
-              <Text size='bodySm'>Comfortable</Text>
-            </div>
-            <div {...stylex.props(docStyles.labelRow)}>
-              <Radio.Item value='spacious'>
-                <Radio.Indicator />
-              </Radio.Item>
-              <Text size='bodySm'>Spacious</Text>
-            </div>
-          </Radio.Group>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Radio'
+      description='Radio group with spring-animated indicator.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <RadioHero />
+      </ComponentExample>
+
+      <PropsTable props={radioItemProps} title='Radio.Item Props' />
+    </DocsPage>
   );
 }

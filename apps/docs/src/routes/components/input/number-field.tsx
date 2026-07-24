@@ -1,53 +1,45 @@
-import { NumberField, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
-import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { numberFieldInputProps } from '~/data/components/number-field';
+import NumberFieldHero from '~/examples/number-field/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/number-field/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/input/number-field')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Number Field
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Numeric input with increment and decrement buttons.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          With increment / decrement
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <NumberField.Root defaultValue={5}>
-            <NumberField.Group>
-              <NumberField.Decrement>
-                <IconMinus size={14} />
-              </NumberField.Decrement>
-              <NumberField.Input />
-              <NumberField.Increment>
-                <IconPlus size={14} />
-              </NumberField.Increment>
-            </NumberField.Group>
-          </NumberField.Root>
-          <NumberField.Root defaultValue={0} min={0} max={100}>
-            <NumberField.Group>
-              <NumberField.Decrement>
-                <IconMinus size={14} />
-              </NumberField.Decrement>
-              <NumberField.Input size='sm' />
-              <NumberField.Increment>
-                <IconPlus size={14} />
-              </NumberField.Increment>
-            </NumberField.Group>
-          </NumberField.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Number Field'
+      description='Numeric input with increment and decrement buttons.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <NumberFieldHero />
+      </ComponentExample>
+
+      <PropsTable props={numberFieldInputProps} title='NumberField.Input Props' />
+    </DocsPage>
   );
 }

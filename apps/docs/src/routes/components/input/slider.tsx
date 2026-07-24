@@ -1,62 +1,55 @@
-import { Flex, Slider, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { sliderRootProps } from '~/data/components/slider';
+import SliderHero from '~/examples/slider/hero';
+import SliderRange from '~/examples/slider/range';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/slider/hero.tsx?raw';
+import rangeRaw from '~/examples/slider/range.tsx?raw';
 
 export const Route = createFileRoute('/components/input/slider')({
+  loader: async () => {
+    const sources = { heroRaw, rangeRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Slider
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Range slider with label, value output, and range mode.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Default
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Slider.Root defaultValue={50}>
-            <Flex direction='row' justify='between'>
-              <Slider.Label>Volume</Slider.Label>
-              <Slider.Value />
-            </Flex>
-            <Slider.Control>
-              <Slider.Track>
-                <Slider.Indicator />
-                <Slider.Thumb />
-              </Slider.Track>
-            </Slider.Control>
-          </Slider.Root>
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Range
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Slider.Root defaultValue={[25, 75]}>
-            <Flex direction='row' justify='between'>
-              <Slider.Label>Price range</Slider.Label>
-              <Slider.Value />
-            </Flex>
-            <Slider.Control>
-              <Slider.Track>
-                <Slider.Indicator />
-                <Slider.Thumb />
-                <Slider.Thumb />
-              </Slider.Track>
-            </Slider.Control>
-          </Slider.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Slider'
+      description='Range slider with label, value output, and range mode.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <SliderHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Range'
+        code={highlighted.rangeRaw}
+        rawCode={rangeRaw}
+      >
+        <SliderRange />
+      </ComponentExample>
+
+      <PropsTable props={sliderRootProps} title='Slider.Root Props' />
+    </DocsPage>
   );
 }

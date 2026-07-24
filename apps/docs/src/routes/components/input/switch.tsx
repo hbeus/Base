@@ -1,53 +1,55 @@
-import { Switch, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { switchProps } from '~/data/components/switch';
+import SwitchControlled from '~/examples/switch/controlled';
+import SwitchHero from '~/examples/switch/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import controlledRaw from '~/examples/switch/controlled.tsx?raw';
+import heroRaw from '~/examples/switch/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/input/switch')({
+  loader: async () => {
+    const sources = { heroRaw, controlledRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
-  const [checked, setChecked] = useState(false);
-  const [notifications, setNotifications] = useState(true);
+  const highlighted = Route.useLoaderData();
 
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Switch
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Toggle switch with spring-animated thumb.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Sizes
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <div {...stylex.props(docStyles.toggleRow)}>
-            <Text size='bodySm'>Small</Text>
-            <Switch size='sm' checked={checked} onCheckedChange={setChecked} />
-          </div>
-          <div {...stylex.props(docStyles.toggleRow)}>
-            <Text size='bodySm'>Medium</Text>
-            <Switch size='md' checked={checked} onCheckedChange={setChecked} />
-          </div>
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Example
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <div {...stylex.props(docStyles.toggleRow)}>
-            <Text size='bodySm'>Enable notifications</Text>
-            <Switch checked={notifications} onCheckedChange={setNotifications} />
-          </div>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Switch'
+      description='Toggle switch with spring-animated thumb.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <SwitchHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Controlled'
+        code={highlighted.controlledRaw}
+        rawCode={controlledRaw}
+      >
+        <SwitchControlled />
+      </ComponentExample>
+
+      <PropsTable props={switchProps} />
+    </DocsPage>
   );
 }

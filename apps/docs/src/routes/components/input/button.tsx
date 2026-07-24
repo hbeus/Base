@@ -1,7 +1,6 @@
-import { Flex, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
 import { buttonProps } from '~/data/components/button';
 import ButtonDisabled from '~/examples/button/disabled';
@@ -12,7 +11,6 @@ import ButtonSizes from '~/examples/button/sizes';
 import ButtonVariants from '~/examples/button/variants';
 import ButtonWithIcon from '~/examples/button/with-icon';
 import { highlightCode } from '~/lib/highlight';
-import { docStyles } from '~/styles/docs';
 
 import disabledRaw from '~/examples/button/disabled.tsx?raw';
 import fullWidthRaw from '~/examples/button/full-width.tsx?raw';
@@ -40,18 +38,10 @@ function PageComponent() {
   const highlighted = Route.useLoaderData();
 
   return (
-    <Flex direction='column' gap='s24'>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Button
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Wraps Base UI Button with variant and size styling, plus a subtle
-          scale-down tap animation via motion.dev. Use leading and trailing
-          slots for icons beside the label.
-        </Text>
-      </header>
-
+    <DocsPage
+      title='Button'
+      description='Wraps Base UI Button with variant and size styling, plus a subtle scale-down tap animation via motion.dev. Use leading and trailing slots for icons beside the label.'
+    >
       <ComponentExample
         title='Usage'
         code={highlighted.heroRaw}
@@ -110,6 +100,6 @@ function PageComponent() {
       </ComponentExample>
 
       <PropsTable props={buttonProps} />
-    </Flex>
+    </DocsPage>
   );
 }

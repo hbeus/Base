@@ -1,69 +1,55 @@
-import { Checkbox, CheckboxGroup, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { checkboxRootProps } from '~/data/components/checkbox';
+import CheckboxGroupExample from '~/examples/checkbox/group';
+import CheckboxHero from '~/examples/checkbox/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import groupRaw from '~/examples/checkbox/group.tsx?raw';
+import heroRaw from '~/examples/checkbox/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/input/checkbox')({
+  loader: async () => {
+    const sources = { heroRaw, groupRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Checkbox
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Checkbox with spring-animated indicator and group support.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Sizes
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <div {...stylex.props(docStyles.labelRow)}>
-            <Checkbox.Root size='sm'>
-              <Checkbox.Indicator />
-            </Checkbox.Root>
-            <Text size='bodySm'>Small checkbox</Text>
-          </div>
-          <div {...stylex.props(docStyles.labelRow)}>
-            <Checkbox.Root size='md'>
-              <Checkbox.Indicator />
-            </Checkbox.Root>
-            <Text size='bodySm'>Medium checkbox</Text>
-          </div>
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Group
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <CheckboxGroup>
-            <div {...stylex.props(docStyles.labelRow)}>
-              <Checkbox.Root name='prefs' value='terms'>
-                <Checkbox.Indicator />
-              </Checkbox.Root>
-              <Text size='bodySm'>Accept terms</Text>
-            </div>
-            <div {...stylex.props(docStyles.labelRow)}>
-              <Checkbox.Root name='prefs' value='newsletter'>
-                <Checkbox.Indicator />
-              </Checkbox.Root>
-              <Text size='bodySm'>Subscribe to newsletter</Text>
-            </div>
-            <div {...stylex.props(docStyles.labelRow)}>
-              <Checkbox.Root name='prefs' value='updates'>
-                <Checkbox.Indicator />
-              </Checkbox.Root>
-              <Text size='bodySm'>Receive updates</Text>
-            </div>
-          </CheckboxGroup>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Checkbox'
+      description='Checkbox with spring-animated indicator and group support.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <CheckboxHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Group'
+        code={highlighted.groupRaw}
+        rawCode={groupRaw}
+      >
+        <CheckboxGroupExample />
+      </ComponentExample>
+
+      <PropsTable props={checkboxRootProps} title='Checkbox.Root Props' />
+    </DocsPage>
   );
 }
