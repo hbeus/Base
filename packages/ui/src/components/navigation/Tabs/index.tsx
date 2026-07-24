@@ -10,7 +10,6 @@ import {
   type RefObject,
   useCallback,
   useContext,
-  useEffect,
   useId,
   useLayoutEffect,
   useMemo,
@@ -31,6 +30,7 @@ import { styleArray } from '../../../utils/styleArray';
 import { Icon } from '../../display/Icon';
 import { buttonStyles } from '../../input/Button';
 import { Menu } from '../../overlays/Menu';
+import { measureVisibleTabs } from './overflow';
 
 type TabsSize = 'xs' | 'sm' | 'md' | 'lg';
 type TabsVariant = 'underline' | 'button';
@@ -53,7 +53,11 @@ interface TabsRootContextValue {
   layoutId: string;
   indicatorRectRef: RefObject<IndicatorPoint | null>;
   activeValue: TabValue;
-  selectValue: (value: TabValue) => void;
+  overflowLabelId: string | undefined;
+  selectValue: (value: TabValue, event?: Event) => void;
+  registerLogicalTab: (id: string, tab: Pick<TabRegistration, 'value' | 'disabled'>) => void;
+  unregisterLogicalTab: (id: string) => void;
+  setOverflowLabelId: (id: string | undefined) => void;
 }
 
 interface TabsListContextValue {
@@ -67,7 +71,6 @@ interface TabsListContextValue {
   updateTabWidth: (id: string, width: number) => void;
   unregisterTab: (id: string) => void;
   isTabVisible: (id: string) => boolean;
-  gapPx: number;
 }
 
 const TabsRootContext = createContext<TabsRootContextValue | null>(null);
@@ -104,36 +107,80 @@ function labelFromChildren(children: ReactNode): string {
   return 'Tab';
 }
 
-const GAP_PX: Record<TabsVariant, number> = {
-  underline: 16, // spacing.s4
-  button: 8, // spacing.s2
-};
+type TabsChangeDetails = Parameters<
+  NonNullable<ComponentProps<typeof BaseTabs.Root>['onValueChange']>
+>[1];
 
-function fitVisibleCount(
-  containerWidth: number,
-  widths: number[],
-  moreWidth: number,
-  gap: number,
-): number {
-  const count = widths.length;
-  if (count === 0) return 0;
+interface LogicalTab {
+  id: string;
+  value: TabValue;
+  disabled?: boolean;
+}
 
-  const allWidth = widths.reduce((sum, w) => sum + w, 0) + gap * Math.max(0, count - 1);
-  if (allWidth <= containerWidth + 0.5) return count;
+type LogicalSelectionResolution =
+  | { type: 'none' }
+  | { type: 'notify-initial' }
+  | {
+      type: 'fallback';
+      nextValue: TabValue;
+      reason: 'initial' | 'disabled' | 'missing';
+    };
 
-  let best = 0;
-  let sum = 0;
-  for (let i = 0; i < count; i++) {
-    sum += widths[i] ?? 0;
-    const between = gap * i;
-    const beforeMore = gap;
-    if (sum + between + beforeMore + moreWidth <= containerWidth + 0.5) {
-      best = i + 1;
-    } else {
-      break;
-    }
+function createChangeDetails(
+  reason: TabsChangeDetails['reason'],
+  event?: Event,
+  cancelable = true,
+): TabsChangeDetails {
+  let canceled = false;
+  let propagationAllowed = false;
+  const sourceEvent = event ?? new Event('tabs-value-change');
+
+  return {
+    reason,
+    event: sourceEvent,
+    trigger: sourceEvent.target instanceof Element ? sourceEvent.target : undefined,
+    activationDirection: 'none',
+    get isCanceled() {
+      return canceled;
+    },
+    get isPropagationAllowed() {
+      return propagationAllowed;
+    },
+    cancel() {
+      if (cancelable) {
+        canceled = true;
+      }
+    },
+    allowPropagation() {
+      propagationAllowed = true;
+    },
+  } as TabsChangeDetails;
+}
+
+function resolveLogicalSelection(
+  activeValue: TabValue,
+  tabs: LogicalTab[],
+  hasExplicitDefaultValue: boolean,
+  isInitialResolution: boolean,
+): LogicalSelectionResolution {
+  const selected = tabs.find(tab => tab.value === activeValue);
+  const selectionIsValid = Boolean(selected && !selected.disabled);
+
+  if (isInitialResolution && !hasExplicitDefaultValue && selectionIsValid) {
+    return { type: 'notify-initial' };
   }
-  return best;
+  if (activeValue === null || selectionIsValid) {
+    return { type: 'none' };
+  }
+
+  const firstEnabled = tabs.find(tab => !tab.disabled);
+  const reason = selected?.disabled ? 'disabled' : hasExplicitDefaultValue ? 'missing' : 'initial';
+
+  return {
+    type: 'fallback',
+    nextValue: firstEnabled?.value ?? null,
+    reason,
+  };
 }
 
 /* ---------- Root ---------- */
@@ -154,7 +201,7 @@ function Root({
   ref,
   children,
   value,
-  defaultValue = 0,
+  defaultValue,
   onValueChange,
   ...props
 }: TabsRootProps) {
@@ -163,39 +210,99 @@ function Root({
   const indicatorRectRef = useRef<IndicatorPoint | null>(null);
   const onValueChangeRef = useRef(onValueChange);
   onValueChangeRef.current = onValueChange;
+  const controlledRef = useRef(value !== undefined);
+  controlledRef.current = value !== undefined;
+  const hasExplicitDefaultValueRef = useRef(defaultValue !== undefined);
+  const initialSelectionResolvedRef = useRef(false);
 
-  const [activeValue, setActiveValue] = useState<TabValue>(() => value ?? defaultValue);
+  const [uncontrolledValue, setUncontrolledValue] = useState<TabValue>(() =>
+    defaultValue === undefined ? 0 : defaultValue,
+  );
+  const [logicalTabs, setLogicalTabs] = useState<LogicalTab[]>([]);
+  const [overflowLabelId, setOverflowLabelId] = useState<string>();
+  const activeValue = value !== undefined ? value : uncontrolledValue;
 
-  useEffect(() => {
-    if (value !== undefined) {
-      setActiveValue(value);
+  const commitValue = useCallback((next: TabValue, details: TabsChangeDetails) => {
+    onValueChangeRef.current?.(next, details);
+    if (!details.isCanceled && !controlledRef.current) {
+      setUncontrolledValue(next);
     }
-  }, [value]);
-
-  const selectValue = useCallback((next: TabValue) => {
-    setActiveValue(next);
-    onValueChangeRef.current?.(next, {
-      reason: 'none',
-      cancel() {},
-      allowPropagation() {},
-      isCanceled: false,
-      isPropagationAllowed: true,
-      event: undefined,
-      trigger: undefined,
-      activationDirection: 'none',
-    } as unknown as Parameters<NonNullable<typeof onValueChange>>[1]);
   }, []);
 
+  const selectValue = useCallback(
+    (next: TabValue, event?: Event) => {
+      commitValue(next, createChangeDetails('none', event));
+    },
+    [commitValue],
+  );
+
+  const registerLogicalTab = useCallback(
+    (id: string, tab: Pick<TabRegistration, 'value' | 'disabled'>) => {
+      setLogicalTabs(previous => {
+        const index = previous.findIndex(item => item.id === id);
+        const next = { id, ...tab };
+        if (index === -1) {
+          return [...previous, next];
+        }
+        const current = previous[index];
+        if (current?.value === tab.value && current.disabled === tab.disabled) {
+          return previous;
+        }
+        return previous.map(item => (item.id === id ? next : item));
+      });
+    },
+    [],
+  );
+
+  const unregisterLogicalTab = useCallback((id: string) => {
+    setLogicalTabs(previous => previous.filter(tab => tab.id !== id));
+  }, []);
+
+  useLayoutEffect(() => {
+    if (controlledRef.current || logicalTabs.length === 0) {
+      return;
+    }
+
+    const isInitialResolution = !initialSelectionResolvedRef.current;
+    initialSelectionResolvedRef.current = true;
+    const resolution = resolveLogicalSelection(
+      activeValue,
+      logicalTabs,
+      hasExplicitDefaultValueRef.current,
+      isInitialResolution,
+    );
+
+    if (resolution.type === 'notify-initial') {
+      onValueChangeRef.current?.(activeValue, createChangeDetails('initial', undefined, false));
+    }
+    if (resolution.type === 'fallback') {
+      commitValue(resolution.nextValue, createChangeDetails(resolution.reason, undefined, false));
+    }
+  }, [activeValue, commitValue, logicalTabs]);
+
+  const rootContext = useMemo<TabsRootContextValue>(
+    () => ({
+      layoutId,
+      indicatorRectRef,
+      activeValue,
+      overflowLabelId,
+      selectValue,
+      registerLogicalTab,
+      unregisterLogicalTab,
+      setOverflowLabelId,
+    }),
+    [layoutId, activeValue, overflowLabelId, selectValue, registerLogicalTab, unregisterLogicalTab],
+  );
+
   return (
-    <TabsRootContext.Provider value={{ layoutId, indicatorRectRef, activeValue, selectValue }}>
+    <TabsRootContext.Provider value={rootContext}>
       <LayoutGroup id={layoutId}>
         <BaseTabs.Root
           data-slot='tabs'
           ref={ref}
           value={activeValue}
           onValueChange={(next, details) => {
-            setActiveValue(next);
-            onValueChange?.(next, details);
+            commitValue(next, details);
           }}
           {...stylex.props(rootStyles.base, ...styleArray(style))}
           {...props}
@@ -232,9 +339,11 @@ const listStyles = stylex.create({
     width: 'fit-content',
     maxWidth: '100%',
     minWidth: 0,
-    // Clip tabs that don't fit until the first fit pass culls them into More —
-    // avoids both overflow-item flash and a visibility:hidden whole-list flash.
+    // Keep resize transitions clipped after the initial atomic fit.
     overflow: 'hidden',
+  },
+  pending: {
+    visibility: 'hidden',
   },
   fill: {
     width: '100%',
@@ -258,6 +367,27 @@ const listStyles = stylex.create({
   radiusSm: { borderRadius: radii.r8 },
   radiusMd: { borderRadius: radii.r10 },
   radiusLg: { borderRadius: radii.r12 },
+});
+
+const tabListStyles = stylex.create({
+  base: {
+    display: 'flex',
+    alignItems: 'center',
+    width: 'fit-content',
+    minWidth: 0,
+    overflow: 'hidden',
+    flexShrink: 1,
+  },
+  fill: {
+    width: '100%',
+    flex: 1,
+  },
+  underline: {
+    gap: spacing.s4,
+  },
+  button: {
+    gap: spacing.s2,
+  },
 });
 
 const listRadiusStyles = {
@@ -320,7 +450,8 @@ function MoreOverflow({
   size: TabsSize;
   variant: TabsVariant;
 }) {
-  const { activeValue, selectValue, indicatorRectRef } = useTabsRootContext();
+  const { activeValue, selectValue, indicatorRectRef, setOverflowLabelId } = useTabsRootContext();
+  const triggerId = useId();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const activeItem = items.find(item => item.value === activeValue);
   const activeInOverflow = Boolean(activeItem);
@@ -345,12 +476,18 @@ function MoreOverflow({
     indicatorRectRef.current = { left: rect.left, top: rect.top };
   }, [activeInOverflow, indicatorRectRef]);
 
+  useLayoutEffect(() => {
+    setOverflowLabelId(activeInOverflow ? triggerId : undefined);
+    return () => setOverflowLabelId(undefined);
+  }, [activeInOverflow, setOverflowLabelId, triggerId]);
+
   const ariaLabel = activeItem ? `More tabs, ${activeItem.label} selected` : 'More tabs';
 
   return (
     <Menu.Root>
       <Menu.Trigger
         data-slot='tabs-more'
+        id={triggerId}
         aria-label={ariaLabel}
         ref={triggerRef}
         render={
@@ -376,8 +513,8 @@ function MoreOverflow({
           <Menu.Popup>
             <Menu.RadioGroup
               value={activeValue}
-              onValueChange={next => {
-                selectValue(next);
+              onValueChange={(next, details) => {
+                selectValue(next, details.event);
               }}
             >
               {items.map(item => (
@@ -409,14 +546,16 @@ function List({
   ...props
 }: TabsListProps) {
   const withBackground = variant === 'button' && Boolean(background);
-  const gapPx = GAP_PX[variant];
   const listRef = useRef<HTMLDivElement | null>(null);
+  const overflowRef = useRef<HTMLDivElement | null>(null);
   const moreMeasureRef = useRef<HTMLButtonElement | null>(null);
-  const orderRef = useRef<string[]>([]);
+  const tabWidthsRef = useRef(new Map<string, number>());
   const [tabs, setTabs] = useState<TabRegistration[]>([]);
+  const [orderIds, setOrderIds] = useState<string[]>([]);
   const [visibleCount, setVisibleCount] = useState<number | null>(null);
 
   const registerTab = useCallback((tab: Omit<TabRegistration, 'width'> & { width?: number }) => {
+    setVisibleCount(null);
     setTabs(prev => {
       const existing = prev.find(t => t.id === tab.id);
       const next: TabRegistration = {
@@ -424,92 +563,105 @@ function List({
         width: tab.width ?? existing?.width ?? 0,
       };
       if (existing) {
-        return prev.map(t => (t.id === tab.id ? { ...next, width: tab.width ?? t.width } : t));
-      }
-      if (!orderRef.current.includes(tab.id)) {
-        orderRef.current.push(tab.id);
+        const updated = { ...next, width: tab.width ?? existing.width };
+        if (
+          existing.value === updated.value &&
+          existing.label === updated.label &&
+          existing.labelNode === updated.labelNode &&
+          existing.leading === updated.leading &&
+          existing.trailing === updated.trailing &&
+          existing.disabled === updated.disabled &&
+          existing.width === updated.width
+        ) {
+          return prev;
+        }
+        return prev.map(t => (t.id === tab.id ? updated : t));
       }
       return [...prev, next];
     });
   }, []);
 
   const updateTabWidth = useCallback((id: string, width: number) => {
-    setTabs(prev =>
-      prev.map(t => (t.id === id && Math.abs(t.width - width) > 0.5 ? { ...t, width } : t)),
-    );
+    const previousWidth = tabWidthsRef.current.get(id);
+    if (previousWidth !== undefined && Math.abs(previousWidth - width) <= 0.5) return;
+
+    tabWidthsRef.current.set(id, width);
+    setVisibleCount(null);
+    setTabs(prev => prev.map(tab => (tab.id === id ? { ...tab, width } : tab)));
   }, []);
 
   const unregisterTab = useCallback((id: string) => {
-    orderRef.current = orderRef.current.filter(x => x !== id);
+    tabWidthsRef.current.delete(id);
+    setVisibleCount(null);
     setTabs(prev => prev.filter(t => t.id !== id));
+    setOrderIds(prev => prev.filter(tabId => tabId !== id));
   }, []);
 
   const orderedTabs = useMemo(() => {
     const byId = new Map(tabs.map(t => [t.id, t]));
-    return orderRef.current.map(id => byId.get(id)).filter(Boolean) as TabRegistration[];
-  }, [tabs]);
+    return orderIds.map(id => byId.get(id)).filter(Boolean) as TabRegistration[];
+  }, [orderIds, tabs]);
+
+  useLayoutEffect(() => {
+    const listElement = listRef.current;
+    if (!listElement) return;
+
+    const nextOrder = Array.from(
+      listElement.querySelectorAll<HTMLElement>('[data-tabs-measure-id]'),
+    )
+      .map(element => element.dataset.tabsMeasureId)
+      .filter((id): id is string => Boolean(id));
+
+    const orderUnchanged =
+      orderIds.length === nextOrder.length &&
+      orderIds.every((id, index) => id === nextOrder[index]);
+    if (orderUnchanged) return;
+
+    setVisibleCount(null);
+    setOrderIds(nextOrder);
+  });
 
   const isTabVisible = useCallback(
     (id: string) => {
-      // Until the first fit pass, keep all tabs mounted; overflow:hidden clips the rest.
       if (visibleCount === null) return true;
-      const index = orderRef.current.indexOf(id);
+      const index = orderIds.indexOf(id);
       return index > -1 && index < visibleCount;
     },
-    [visibleCount],
+    [orderIds, visibleCount],
   );
 
   const recompute = useCallback(() => {
-    const listEl = listRef.current;
-    if (!listEl) return;
+    const overflowElement = overflowRef.current;
+    const listElement = listRef.current;
+    if (!overflowElement || !listElement) return;
 
-    if (orderedTabs.length === 0) {
-      setVisibleCount(0);
-      return;
-    }
+    const next = measureVisibleTabs({
+      overflowElement,
+      listElement,
+      moreElement: moreMeasureRef.current,
+      tabWidths: orderedTabs.map(tab => tab.width),
+      registeredTabCount: tabs.length,
+      fill,
+    });
+    if (next === null) return;
 
-    const widths = orderedTabs.map(t => t.width);
-    if (widths.some(w => w <= 0)) {
-      // Wait until measure probes have reported real widths.
-      return;
-    }
-
-    const computed = getComputedStyle(listEl);
-    const listPadding =
-      (Number.parseFloat(computed.paddingLeft) || 0) +
-      (Number.parseFloat(computed.paddingRight) || 0);
-
-    // Fill lists are width 100%, so clientWidth is the constraint.
-    // Intrinsic lists are fit-content — measuring them compares content to itself
-    // and falsely overflows. Use the parent content box as available room instead.
-    let containerWidth: number;
-    if (fill) {
-      containerWidth = listEl.clientWidth - listPadding;
-    } else {
-      const constraintEl = listEl.parentElement ?? listEl;
-      const parentStyles = getComputedStyle(constraintEl);
-      const parentPadding =
-        (Number.parseFloat(parentStyles.paddingLeft) || 0) +
-        (Number.parseFloat(parentStyles.paddingRight) || 0);
-      containerWidth = constraintEl.clientWidth - parentPadding - listPadding;
-    }
-
-    if (containerWidth <= 0) return;
-
-    const moreWidth = moreMeasureRef.current?.offsetWidth ?? 36;
-    const next = fitVisibleCount(containerWidth, widths, moreWidth, gapPx);
     setVisibleCount(prev => (prev === next ? prev : next));
-  }, [fill, gapPx, orderedTabs]);
+  }, [fill, orderedTabs, tabs]);
 
   useLayoutEffect(() => {
+    const overflowElement = overflowRef.current;
     const listEl = listRef.current;
-    if (!listEl) return;
+    if (!overflowElement || !listEl) return;
 
-    const constraintEl = listEl.parentElement ?? listEl;
+    const constraintEl = overflowElement.parentElement ?? overflowElement;
     recompute();
     const ro = new ResizeObserver(() => recompute());
+    ro.observe(overflowElement);
     ro.observe(listEl);
-    if (constraintEl !== listEl) {
+    if (moreMeasureRef.current) {
+      ro.observe(moreMeasureRef.current);
+    }
+    if (constraintEl !== overflowElement) {
       ro.observe(constraintEl);
     }
     return () => {
@@ -532,7 +684,6 @@ function List({
       updateTabWidth,
       unregisterTab,
       isTabVisible,
-      gapPx,
     }),
     [
       variant,
@@ -544,29 +695,41 @@ function List({
       updateTabWidth,
       unregisterTab,
       isTabVisible,
-      gapPx,
     ],
   );
 
   return (
     <TabsListContext.Provider value={listContext}>
-      <BaseTabs.List
-        data-slot='tabs-list'
+      <div
+        data-slot='tabs-overflow'
+        data-overflow-state={overflowReady ? 'ready' : 'pending'}
         data-variant={variant}
         data-size={sizeProp}
-        ref={mergeRefs(listRef, ref)}
+        ref={overflowRef}
         {...stylex.props(
           listStyles.base,
+          !overflowReady && listStyles.pending,
           fill && listStyles.fill,
           variant === 'underline' ? listStyles.underline : listStyles.button,
           withBackground && listStyles.background,
           withBackground && listRadiusStyles[sizeProp],
           ...styleArray(style),
         )}
-        {...props}
       >
-        {children}
-        {/* Hidden probe to measure More trigger width without affecting layout. */}
+        <BaseTabs.List
+          data-slot='tabs-list'
+          data-variant={variant}
+          data-size={sizeProp}
+          ref={mergeRefs(listRef, ref)}
+          {...stylex.props(
+            tabListStyles.base,
+            fill && tabListStyles.fill,
+            variant === 'underline' ? tabListStyles.underline : tabListStyles.button,
+          )}
+          {...props}
+        >
+          {children}
+        </BaseTabs.List>
         <button
           type='button'
           aria-hidden
@@ -584,7 +747,7 @@ function List({
         {overflowItems.length > 0 && (
           <MoreOverflow items={overflowItems} size={sizeProp} variant={variant} />
         )}
-      </BaseTabs.List>
+      </div>
     </TabsListContext.Provider>
   );
 }
@@ -593,6 +756,7 @@ function List({
 export interface TabsTabProps
   extends Omit<ComponentProps<typeof BaseTabs.Tab>, 'style'>,
     BaseProps {
+  label?: string;
   leading?: React.ReactNode;
   trailing?: React.ReactNode;
 }
@@ -746,8 +910,78 @@ function TabIndicator({ duration }: { duration: number }) {
   );
 }
 
-function Tab({ style, ref, children, leading, trailing, value, disabled, ...props }: TabsTabProps) {
-  const { activeValue, indicatorRectRef } = useTabsRootContext();
+function tabVariantStyles(variant: TabsVariant, sizeProp: TabsSize, active: boolean) {
+  if (variant === 'underline') {
+    return [
+      tabStyles.underline,
+      underlineSizeStyles[sizeProp],
+      active && tabStyles.underlineActive,
+    ];
+  }
+
+  return [
+    buttonStyles.base,
+    buttonStyles[sizeProp],
+    active ? tabStyles.buttonActive : tabStyles.buttonInactive,
+  ];
+}
+
+function tabMeasureStyles(variant: TabsVariant, sizeProp: TabsSize) {
+  if (variant === 'underline') {
+    return [tabStyles.underline, underlineSizeStyles[sizeProp]];
+  }
+
+  return [buttonStyles.base, buttonStyles[sizeProp]];
+}
+
+function useTabIndicatorDuration({
+  active,
+  visible,
+  tabRef,
+  indicatorRectRef,
+}: {
+  active: boolean;
+  visible: boolean;
+  tabRef: RefObject<HTMLElement | null>;
+  indicatorRectRef: RefObject<IndicatorPoint | null>;
+}) {
+  const wasActiveRef = useRef(active);
+  const durationRef = useRef(0);
+
+  if (active && !wasActiveRef.current && tabRef.current) {
+    const rect = tabRef.current.getBoundingClientRect();
+    const previous = indicatorRectRef.current;
+    durationRef.current = previous
+      ? tabIndicatorDuration(Math.hypot(rect.left - previous.left, rect.top - previous.top))
+      : 0;
+  }
+  if (!active) {
+    durationRef.current = 0;
+  }
+  wasActiveRef.current = active;
+
+  useLayoutEffect(() => {
+    if (!active || !visible || !tabRef.current) return;
+    const rect = tabRef.current.getBoundingClientRect();
+    indicatorRectRef.current = { left: rect.left, top: rect.top };
+  }, [active, visible, indicatorRectRef, tabRef]);
+
+  return durationRef.current;
+}
+
+function Tab({
+  style,
+  ref,
+  children,
+  label: labelProp,
+  leading,
+  trailing,
+  value,
+  disabled,
+  ...props
+}: TabsTabProps) {
+  const { activeValue, indicatorRectRef, registerLogicalTab, unregisterLogicalTab } =
+    useTabsRootContext();
   const {
     variant,
     size: sizeProp,
@@ -762,11 +996,21 @@ function Tab({ style, ref, children, leading, trailing, value, disabled, ...prop
   const tabRef = useRef<HTMLElement | null>(null);
   const measureRef = useRef<HTMLSpanElement | null>(null);
   const visible = isTabVisible(id);
-  // Stretch only after fit — pre-measure fill would squash every tab into the list.
   const active = activeValue === value;
-  const wasActiveRef = useRef(active);
-  const durationRef = useRef(0);
-  const label = labelFromChildren(children);
+  const label = labelProp ?? labelFromChildren(children);
+  const indicatorDuration = useTabIndicatorDuration({
+    active,
+    visible,
+    tabRef,
+    indicatorRectRef,
+  });
+
+  useLayoutEffect(() => {
+    return () => {
+      unregisterTab(id);
+      unregisterLogicalTab(id);
+    };
+  }, [id, unregisterLogicalTab, unregisterTab]);
 
   useLayoutEffect(() => {
     registerTab({
@@ -778,44 +1022,31 @@ function Tab({ style, ref, children, leading, trailing, value, disabled, ...prop
       trailing,
       disabled,
     });
-    return () => unregisterTab(id);
-  }, [id, value, label, children, leading, trailing, disabled, registerTab, unregisterTab]);
+    registerLogicalTab(id, { value, disabled });
+  }, [id, value, label, children, leading, trailing, disabled, registerLogicalTab, registerTab]);
 
   useLayoutEffect(() => {
-    if (!measureRef.current) return;
-    updateTabWidth(id, measureRef.current.getBoundingClientRect().width);
-  }, [id, updateTabWidth, children, leading, trailing, sizeProp, variant]);
+    const measureElement = measureRef.current;
+    if (!measureElement) return;
 
-  if (active && !wasActiveRef.current && tabRef.current) {
-    const rect = tabRef.current.getBoundingClientRect();
-    const prev = indicatorRectRef.current;
-    durationRef.current = prev
-      ? tabIndicatorDuration(Math.hypot(rect.left - prev.left, rect.top - prev.top))
-      : 0;
-  }
-  if (!active) {
-    durationRef.current = 0;
-  }
-  wasActiveRef.current = active;
-
-  useLayoutEffect(() => {
-    if (!active || !visible || !tabRef.current) return;
-    const rect = tabRef.current.getBoundingClientRect();
-    indicatorRectRef.current = { left: rect.left, top: rect.top };
-  }, [active, visible, indicatorRectRef]);
+    const measure = () => updateTabWidth(id, measureElement.getBoundingClientRect().width);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(measureElement);
+    return () => observer.disconnect();
+  }, [id, updateTabWidth]);
 
   return (
     <>
       <span
         ref={measureRef}
         aria-hidden
+        data-tabs-measure-id={id}
         {...stylex.props(
           tabStyles.base,
+          ...tabMeasureStyles(variant, sizeProp),
+          ...styleArray(style),
           tabStyles.measure,
-          variant === 'underline' && tabStyles.underline,
-          variant === 'underline' && underlineSizeStyles[sizeProp],
-          variant === 'button' && buttonStyles.base,
-          variant === 'button' && buttonStyles[sizeProp],
         )}
       >
         {leading && leading}
@@ -830,18 +1061,13 @@ function Tab({ style, ref, children, leading, trailing, value, disabled, ...prop
           disabled={disabled}
           {...stylex.props(
             tabStyles.base,
-            variant === 'underline' && tabStyles.underline,
-            variant === 'underline' && underlineSizeStyles[sizeProp],
-            variant === 'underline' && active && tabStyles.underlineActive,
-            variant === 'button' && buttonStyles.base,
-            variant === 'button' && buttonStyles[sizeProp],
-            variant === 'button' && (active ? tabStyles.buttonActive : tabStyles.buttonInactive),
+            ...tabVariantStyles(variant, sizeProp, active),
             fill && overflowReady && tabStyles.fill,
             ...styleArray(style),
           )}
           {...props}
         >
-          {active && <TabIndicator duration={durationRef.current} />}
+          {active && <TabIndicator duration={indicatorDuration} />}
           <span {...stylex.props(tabStyles.content)}>
             {leading && leading}
             <span {...stylex.props(tabStyles.children)}>{children}</span>
@@ -865,11 +1091,17 @@ const panelStyles = stylex.create({
   },
 });
 
-function Panel({ style, ref, ...props }: TabsPanelProps) {
+function Panel({ style, ref, value, 'aria-labelledby': ariaLabelledBy, ...props }: TabsPanelProps) {
+  const { activeValue, overflowLabelId } = useTabsRootContext();
+  const activeOverflowLabel =
+    activeValue === value && overflowLabelId ? overflowLabelId : ariaLabelledBy;
+
   return (
     <BaseTabs.Panel
       data-slot='tabs-panel'
       ref={ref}
+      value={value}
+      aria-labelledby={activeOverflowLabel}
       {...stylex.props(panelStyles.base, ...styleArray(style))}
       {...props}
     />
