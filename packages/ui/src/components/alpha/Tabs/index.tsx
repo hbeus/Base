@@ -53,14 +53,8 @@ interface TabsListContextValue {
   fill: boolean;
 }
 
-interface TabsMenuContextValue {
-  registerValue: (value: TabValue) => void;
-  unregisterValue: (value: TabValue) => void;
-}
-
 const TabsRootContext = createContext<TabsRootContextValue | null>(null);
 const TabsListContext = createContext<TabsListContextValue | null>(null);
-const TabsMenuContext = createContext<TabsMenuContextValue | null>(null);
 
 function useTabsRootContext() {
   const ctx = useContext(TabsRootContext);
@@ -133,7 +127,6 @@ function ActiveIndicator({ variant, size }: { variant: TabsVariant; size: TabsSi
 export interface TabsRootProps
   extends Omit<ComponentProps<typeof BaseTabs.Root>, 'style'>,
     BaseProps {
-  /** Stretch the root and equal-width tab items to fill the parent. */
   fill?: boolean;
 }
 
@@ -147,7 +140,6 @@ const rootStyles = stylex.create({
     width: '100%',
     alignSelf: 'stretch',
   },
-  // Stack panels in one cell so enter/exit never sum heights.
   panelStack: {
     display: 'grid',
     minWidth: 0,
@@ -225,7 +217,6 @@ function Root({
         ref={ref}
         value={activeValue}
         onValueChange={(next, details) => {
-          // Menu-only values have no visible Tab; ignore Base UI's missing-tab fallback.
           if (details.reason === 'missing') {
             return;
           }
@@ -285,7 +276,6 @@ function List({
 
   return (
     <TabsListContext.Provider value={listContext}>
-      {/* Scope shared layout to the tab list only — panel height must not disturb layoutId. */}
       <LayoutGroup id={layoutGroupId}>
         <BaseTabs.List
           data-slot='tabs-list'
@@ -438,7 +428,6 @@ export interface TabsMenuProps extends BaseProps {
 const menuStyles = stylex.create({
   trigger: {
     position: 'relative',
-    // Never grow under fill — stay intrinsic width.
     flexGrow: 0,
     flexShrink: 0,
     flexBasis: 'auto',
@@ -478,7 +467,6 @@ const menuStyles = stylex.create({
     marginInlineStart: 'auto',
     color: colors.foregroundSecondary,
   },
-  // Keep Base UI aware of menu-only values without showing extra tabs.
   hiddenTab: {
     position: 'absolute',
     width: 0,
@@ -495,30 +483,23 @@ function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
   const { activeValue, selectValue, setMenuLabelId } = useTabsRootContext();
   const { variant, size } = useTabsListContext();
   const triggerId = useId();
-  const valuesRef = useRef(new Set<TabValue>());
-  const [, rerender] = useState(0);
 
-  const activeInMenu = valuesRef.current.has(activeValue);
+  const menuValues = useMemo(() => {
+    const values = new Set<TabValue>();
+    Children.forEach(children, child => {
+      if (isValidElement(child) && child.type === TabsMenuItem) {
+        values.add((child as ReactElement<TabsMenuItemProps>).props.value);
+      }
+    });
+    return values;
+  }, [children]);
+
+  const activeInMenu = menuValues.has(activeValue);
 
   useLayoutEffect(() => {
     setMenuLabelId(activeInMenu ? triggerId : undefined);
     return () => setMenuLabelId(undefined);
   }, [activeInMenu, setMenuLabelId, triggerId]);
-
-  const registerValue = useCallback((menuValue: TabValue) => {
-    valuesRef.current.add(menuValue);
-    rerender(n => n + 1);
-  }, []);
-
-  const unregisterValue = useCallback((menuValue: TabValue) => {
-    valuesRef.current.delete(menuValue);
-    rerender(n => n + 1);
-  }, []);
-
-  const menuContext = useMemo<TabsMenuContextValue>(
-    () => ({ registerValue, unregisterValue }),
-    [registerValue, unregisterValue],
-  );
 
   const hiddenTabs = Children.map(children, child => {
     if (!isValidElement(child) || child.type !== TabsMenuItem) {
@@ -538,7 +519,7 @@ function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
   });
 
   return (
-    <TabsMenuContext.Provider value={menuContext}>
+    <>
       {hiddenTabs}
       <Menu.Root>
         <Menu.Trigger
@@ -580,7 +561,7 @@ function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
           </Menu.Positioner>
         </Menu.Portal>
       </Menu.Root>
-    </TabsMenuContext.Provider>
+    </>
   );
 }
 
@@ -594,13 +575,6 @@ export interface TabsMenuItemProps extends BaseProps {
 }
 
 function TabsMenuItem({ value, children, disabled, style, ref }: TabsMenuItemProps) {
-  const menuCtx = useContext(TabsMenuContext);
-
-  useLayoutEffect(() => {
-    menuCtx?.registerValue(value);
-    return () => menuCtx?.unregisterValue(value);
-  }, [value, menuCtx]);
-
   return (
     <Menu.RadioItem
       data-slot='tabs-menu-item'
@@ -628,7 +602,6 @@ const panelStyles = stylex.create({
     gridArea: '1 / 1',
     minWidth: 0,
     outline: 'none',
-    // Keep laid out while AnimatePresence plays exit (Base UI sets native `hidden`).
     display: {
       default: 'block',
       ':is([hidden])': 'block',
