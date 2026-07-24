@@ -31,7 +31,7 @@ packages/ui/src/
     layout/       Card
     typography/   Text
     overlays/     Dialog
-    alpha/        Unstable components (deep-import only)
+    navigation/   Tabs, TreeView, Toolbar, Sidebar, …
   tokens/         Design tokens (spacing, size, colors, radii, typography)
   providers/      ComponentConfigProvider (app-wide component defaults)
   types/          Shared polymorphic type utilities

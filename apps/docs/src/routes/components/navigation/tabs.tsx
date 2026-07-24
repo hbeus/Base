@@ -2,34 +2,30 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
-import { tabsListProps, tabsTabProps } from '~/data/components/tabs';
-import TabsButtonBackground from '~/examples/tabs/button-background';
-import TabsButtonVariant from '~/examples/tabs/button-variant';
+import { tabsListProps, tabsMenuItemProps, tabsRootProps } from '~/data/components/tabs';
+import TabsButton from '~/examples/tabs/button';
+import buttonRaw from '~/examples/tabs/button.tsx?raw';
 import TabsFill from '~/examples/tabs/fill';
-import TabsHero from '~/examples/tabs/hero';
-import TabsLeadingSlots from '~/examples/tabs/leading-slots';
-import TabsOverflow from '~/examples/tabs/overflow';
-import TabsOverflowFill from '~/examples/tabs/overflow-fill';
-import { highlightCode } from '~/lib/highlight';
-
-import buttonBackgroundRaw from '~/examples/tabs/button-background.tsx?raw';
-import buttonVariantRaw from '~/examples/tabs/button-variant.tsx?raw';
 import fillRaw from '~/examples/tabs/fill.tsx?raw';
-import heroRaw from '~/examples/tabs/hero.tsx?raw';
-import leadingSlotsRaw from '~/examples/tabs/leading-slots.tsx?raw';
-import overflowRaw from '~/examples/tabs/overflow.tsx?raw';
-import overflowFillRaw from '~/examples/tabs/overflow-fill.tsx?raw';
+import TabsFillButton from '~/examples/tabs/fill-button';
+import fillButtonRaw from '~/examples/tabs/fill-button.tsx?raw';
+import TabsMenu from '~/examples/tabs/menu';
+import menuRaw from '~/examples/tabs/menu.tsx?raw';
+import TabsMenuFill from '~/examples/tabs/menu-fill';
+import menuFillRaw from '~/examples/tabs/menu-fill.tsx?raw';
+import TabsUnderline from '~/examples/tabs/underline';
+import underlineRaw from '~/examples/tabs/underline.tsx?raw';
+import { highlightCode } from '~/lib/highlight';
 
 export const Route = createFileRoute('/components/navigation/tabs')({
   loader: async () => {
     const sources = {
-      heroRaw,
-      leadingSlotsRaw,
-      buttonVariantRaw,
-      buttonBackgroundRaw,
+      underlineRaw,
+      buttonRaw,
       fillRaw,
-      overflowRaw,
-      overflowFillRaw,
+      fillButtonRaw,
+      menuRaw,
+      menuFillRaw,
     };
     const entries = await Promise.all(
       Object.entries(sources).map(async ([key, code]) => {
@@ -48,67 +44,44 @@ function PageComponent() {
   return (
     <DocsPage
       title='Tabs'
-      description='Tabbed content with a motion-shared active indicator. Supports underline and button variants with leading and trailing icon slots.'
+      description='Tabbed content with a Motion layoutId indicator. Wrap panels in Tabs.Panels. Use Tabs.Menu for overflow items.'
     >
       <ComponentExample
-        title='Default'
-        code={highlighted.heroRaw}
-        rawCode={heroRaw}
+        title='Underline'
+        code={highlighted.underlineRaw}
+        rawCode={underlineRaw}
         defaultExpanded
       >
-        <TabsHero />
+        <TabsUnderline />
       </ComponentExample>
 
-      <ComponentExample
-        title='Leading slots'
-        code={highlighted.leadingSlotsRaw}
-        rawCode={leadingSlotsRaw}
-      >
-        <TabsLeadingSlots />
+      <ComponentExample title='Button' code={highlighted.buttonRaw} rawCode={buttonRaw}>
+        <TabsButton />
       </ComponentExample>
 
-      <ComponentExample
-        title='Button variant'
-        code={highlighted.buttonVariantRaw}
-        rawCode={buttonVariantRaw}
-      >
-        <TabsButtonVariant />
-      </ComponentExample>
-
-      <ComponentExample
-        title='Button with background'
-        code={highlighted.buttonBackgroundRaw}
-        rawCode={buttonBackgroundRaw}
-      >
-        <TabsButtonBackground />
-      </ComponentExample>
-
-      <ComponentExample
-        title='Fill'
-        code={highlighted.fillRaw}
-        rawCode={fillRaw}
-      >
+      <ComponentExample title='Fill' code={highlighted.fillRaw} rawCode={fillRaw}>
         <TabsFill />
       </ComponentExample>
 
       <ComponentExample
-        title='Overflow'
-        code={highlighted.overflowRaw}
-        rawCode={overflowRaw}
+        title='Fill button'
+        code={highlighted.fillButtonRaw}
+        rawCode={fillButtonRaw}
       >
-        <TabsOverflow />
+        <TabsFillButton />
       </ComponentExample>
 
-      <ComponentExample
-        title='Overflow with fill'
-        code={highlighted.overflowFillRaw}
-        rawCode={overflowFillRaw}
-      >
-        <TabsOverflowFill />
+      <ComponentExample title='Menu' code={highlighted.menuRaw} rawCode={menuRaw}>
+        <TabsMenu />
       </ComponentExample>
 
+      <ComponentExample title='Menu with fill' code={highlighted.menuFillRaw} rawCode={menuFillRaw}>
+        <TabsMenuFill />
+      </ComponentExample>
+
+      <PropsTable props={tabsRootProps} title='Tabs.Root Props' />
       <PropsTable props={tabsListProps} title='Tabs.List Props' />
-      <PropsTable props={tabsTabProps} title='Tabs.Tab Props' />
+      <PropsTable props={tabsMenuItemProps} title='Tabs.MenuItem Props' />
     </DocsPage>
   );
 }

@@ -1,10 +1,17 @@
-import { Text } from '@base/ui';
-import { Tabs } from '@base/ui/alpha/Tabs';
+import { Text, Tabs } from '@base/ui';
+import * as stylex from '@stylexjs/stylex';
 
-export default function TabsAlphaMenuFill() {
+const styles = stylex.create({
+  root: {
+    width: '100%',
+    maxWidth: '20rem',
+  },
+});
+
+export default function TabsMenu() {
   return (
-    <Tabs.Root defaultValue='account' fill>
-      <Tabs.List variant='button'>
+    <Tabs.Root defaultValue='account' style={styles.root}>
+      <Tabs.List variant='underline'>
         <Tabs.Tab value='account'>Account</Tabs.Tab>
         <Tabs.Tab value='settings'>Settings</Tabs.Tab>
         <Tabs.Tab value='billing'>Billing</Tabs.Tab>

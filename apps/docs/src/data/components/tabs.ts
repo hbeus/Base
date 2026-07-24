@@ -1,5 +1,20 @@
 import type { PropDef } from '~/components/PropsTable';
 
+export const tabsRootProps: PropDef[] = [
+  {
+    name: 'fill',
+    type: 'boolean',
+    default: 'false',
+    description: 'Stretch the root and equal-width tab items to fill the parent.',
+  },
+  {
+    name: 'onValueChange',
+    type: '(value: TabValue) => void',
+    default: 'undefined',
+    description: 'Called when the active tab value changes.',
+  },
+];
+
 export const tabsListProps: PropDef[] = [
   {
     name: 'variant',
@@ -13,37 +28,25 @@ export const tabsListProps: PropDef[] = [
     default: "'md'",
     description: 'Height and font size of all tabs.',
   },
-  {
-    name: 'fill',
-    type: 'boolean',
-    default: 'false',
-    description: 'Whether tabs stretch to fill the list width.',
-  },
-  {
-    name: 'background',
-    type: 'boolean',
-    default: 'false',
-    description: 'Show a background container. Only available with the button variant.',
-  },
 ];
 
-export const tabsTabProps: PropDef[] = [
+export const tabsMenuItemProps: PropDef[] = [
   {
-    name: 'label',
-    type: 'string',
-    default: 'Text extracted from children',
-    description: 'Accessible text used when the tab moves into the overflow menu.',
+    name: 'value',
+    type: 'TabValue',
+    default: '—',
+    description: 'The tab value this item activates when selected.',
   },
   {
-    name: 'leading',
-    type: 'ReactNode',
-    default: 'undefined',
-    description: 'Content rendered before the label.',
+    name: 'disabled',
+    type: 'boolean',
+    default: 'false',
+    description: 'Whether the item is disabled.',
   },
   {
-    name: 'trailing',
+    name: 'children',
     type: 'ReactNode',
-    default: 'undefined',
-    description: 'Content rendered after the label.',
+    default: '—',
+    description: 'Label text for the menu item.',
   },
 ];

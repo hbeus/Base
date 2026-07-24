@@ -1,5 +1,4 @@
-import { Text } from '@base/ui';
-import { Tabs } from '@base/ui/alpha/Tabs';
+import { Text, Tabs } from '@base/ui';
 import * as stylex from '@stylexjs/stylex';
 
 const styles = stylex.create({
@@ -8,10 +7,10 @@ const styles = stylex.create({
   },
 });
 
-export default function TabsAlphaUnderline() {
+export default function TabsButton() {
   return (
     <Tabs.Root defaultValue='account' style={styles.root}>
-      <Tabs.List variant='underline'>
+      <Tabs.List variant='button'>
         <Tabs.Tab value='account'>Account</Tabs.Tab>
         <Tabs.Tab value='settings'>Settings</Tabs.Tab>
         <Tabs.Tab value='billing'>Billing</Tabs.Tab>

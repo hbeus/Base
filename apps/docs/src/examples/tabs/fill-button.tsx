@@ -1,7 +1,6 @@
-import { Text } from '@base/ui';
-import { Tabs } from '@base/ui/alpha/Tabs';
+import { Text, Tabs } from '@base/ui';
 
-export default function TabsAlphaFillButton() {
+export default function TabsFillButton() {
   return (
     <Tabs.Root defaultValue='account' fill>
       <Tabs.List variant='button'>

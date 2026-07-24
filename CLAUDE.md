@@ -13,7 +13,7 @@ Component library: `@base/ui` (Base UI + StyleX + motion). Shared providers: `@b
 
 ## Design rules
 
-- **Component hierarchy**: atoms (`packages/ui/`) → molecules (`components/`) → features (`features/{domain}/`). If you'd copy it to another project, it's a molecule. If it's domain-specific, it's a feature. Atoms are organized by domain: `input/` (Button, Input, Toggle, Pressable), `layout/` (Card), `typography/` (Text), `overlays/` (Dialog), `alpha/` (unstable).
+- **Component hierarchy**: atoms (`packages/ui/`) → molecules (`components/`) → features (`features/{domain}/`). If you'd copy it to another project, it's a molecule. If it's domain-specific, it's a feature. Atoms are organized by domain: `input/` (Button, Input, Toggle, Pressable), `layout/` (Card), `typography/` (Text), `overlays/` (Dialog), `navigation/` (Tabs, TreeView, …).
 - **Compound component pattern**: all UI atoms use `Component.Root > Component.Trigger > Component.Content` etc. Follow existing components in `packages/ui/`.
 - **StyleX only**: `stylex.create()` for all styles. Always use design tokens from `@base/ui/tokens/*` — never hardcode colors, sizes, or typography. Variants via `stylex.props(styles.base, styles[variant])`, no CVA.
 - **React Query**: co-locate key factories in `features/{domain}/queries.ts`. Use `queryOptions()`. Server data via `createServerFn`.

@@ -9,7 +9,7 @@ src/
     layout/       Card
     typography/   Text
     overlays/     Dialog
-    alpha/        Unstable — deep-import only, not in barrel
+    navigation/   Tabs, TreeView, Toolbar, Sidebar, …
   tokens/         spacing, size, elementSize, colors, radii, typography
   types/          polymorphic.ts (read before creating polymorphic components)
   utils/          styleArray, mergeRefs

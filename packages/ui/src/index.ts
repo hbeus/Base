@@ -169,7 +169,10 @@ export {
 export {
   Tabs,
   type TabsListProps,
+  type TabsMenuItemProps,
+  type TabsMenuProps,
   type TabsPanelProps,
+  type TabsPanelsProps,
   type TabsRootProps,
   type TabsTabProps,
 } from './components/navigation/Tabs';
