@@ -30,7 +30,6 @@ export interface TabsMenuProps extends BaseProps {
 
 export interface TabsMenuItemProps extends BaseProps {
   value: TabValue;
-  /** Plain text used for the trigger tooltip and aria-label when this item is active. */
   children: ReactNode;
   disabled?: boolean;
   ref?: RefObject<HTMLElement | null>;
@@ -80,8 +79,6 @@ const menuStyles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // Span host: nested Tooltip.Trigger → Menu.Trigger render composition does not
-  // forward hover handlers onto the button through our Menu.Trigger wrapper.
   tooltipTrigger: {
     display: 'inline-flex',
     flexShrink: 0,
@@ -103,7 +100,6 @@ const menuStyles = stylex.create({
   },
 });
 
-/** Plain string/number children only (no element recursion). */
 function getPlainText(node: ReactNode): string {
   if (typeof node === 'string' || typeof node === 'number') {
     return String(node);
@@ -171,8 +167,6 @@ function MenuTrigger({
 }) {
   const { variant, size } = useTabsListContext();
 
-  // Keep span host: Tooltip.Trigger + Menu.Trigger render-function merge onto one
-  // <button> drops hover/click handlers through our Menu.Trigger wrapper.
   return (
     <Tooltip.Trigger render={<span {...stylex.props(menuStyles.tooltipTrigger)} />}>
       <Menu.Trigger
@@ -225,7 +219,6 @@ export function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { items, values, activeInMenu, triggerLabel } = useMenuItems(children, label);
 
-  // Publish trigger id + menu values for Panels aria-labelledby when a menu value is active.
   useLayoutEffect(() => {
     setMenuTriggerLabel({ triggerId, values });
     return () => setMenuTriggerLabel(null);

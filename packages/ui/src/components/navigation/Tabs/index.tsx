@@ -77,7 +77,6 @@ function Root({
   const [uncontrolledValue, setUncontrolledValue] = useState<TabValue>(() =>
     defaultValue === undefined ? 0 : defaultValue,
   );
-  // Menu publishes trigger id + menu values; Panels read for aria-labelledby.
   const [menuTriggerLabel, setMenuTriggerLabel] = useState<MenuTriggerLabel | null>(null);
   const activeValue = controlled ? value : uncontrolledValue;
 
@@ -316,7 +315,6 @@ export interface TabsPanelProps
   children?: ReactNode;
 }
 
-/** Declarative descriptor — props are read by `Tabs.Panels`. */
 function Panel(_props: TabsPanelProps) {
   return null;
 }
@@ -369,7 +367,6 @@ function Panels({ style, children }: TabsPanelsProps) {
           ...panelProps
         } = item.props;
 
-        // When the active value lives in the menu, label the panel from the menu trigger.
         const labelledBy =
           activeValue === value && menuTriggerLabel?.values.has(value)
             ? menuTriggerLabel.triggerId

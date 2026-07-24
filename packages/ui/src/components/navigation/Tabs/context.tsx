@@ -4,10 +4,6 @@ export type TabsSize = 'xs' | 'sm' | 'md' | 'lg';
 export type TabsVariant = 'underline' | 'button';
 export type TabValue = ComponentProps<typeof import('@base-ui/react/tabs').Tabs['Tab']>['value'];
 
-/**
- * Menu → Root → Panels a11y bridge: Menu publishes its trigger id and menu item
- * values; Panels set aria-labelledby to that trigger when the active value is in the set.
- */
 export interface MenuTriggerLabel {
   triggerId: string;
   values: ReadonlySet<TabValue>;
