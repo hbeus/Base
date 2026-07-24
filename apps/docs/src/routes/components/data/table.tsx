@@ -1,8 +1,6 @@
-import { Flex, Text } from '@base/ui';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
 import { columnMetaProps, tableRootProps } from '~/data/components/table';
 import TableCellTypes from '~/examples/table/cell-types';
@@ -12,7 +10,6 @@ import TablePagination from '~/examples/table/pagination';
 import TableSelection from '~/examples/table/selection';
 import TableSorting from '~/examples/table/sorting';
 import { highlightCode } from '~/lib/highlight';
-import { docStyles } from '~/styles/docs';
 
 import cellTypesRaw from '~/examples/table/cell-types.tsx?raw';
 import emptyStateRaw from '~/examples/table/empty-state.tsx?raw';
@@ -46,19 +43,10 @@ function PageComponent() {
   const highlighted = Route.useLoaderData();
 
   return (
-    <Flex direction='column' gap='s24'>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Table
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Data table built on TanStack Table with CSS Grid sizing. Columns use
-          fr-unit proportional widths with per-column minimum widths. Includes
-          sorting, pagination, row selection, column resizing, and a set of
-          presentational cell atoms for common data types.
-        </Text>
-      </header>
-
+    <DocsPage
+      title='Table'
+      description='Data table built on TanStack Table with CSS Grid sizing. Columns use fr-unit proportional widths with per-column minimum widths. Includes sorting, pagination, row selection, column resizing, and a set of presentational cell atoms for common data types.'
+    >
       <ComponentExample
         title='Usage'
         code={highlighted.heroRaw}
@@ -109,33 +97,7 @@ function PageComponent() {
       </ComponentExample>
 
       <PropsTable props={tableRootProps} />
-
-      <section>
-        <Text
-          as='h2'
-          size='label'
-          weight='medium'
-          color='secondary'
-          style={metaHeaderStyle.title}
-        >
-          Column Meta
-        </Text>
-        <Text as='p' size='bodySm' color='secondary' style={metaHeaderStyle.description}>
-          Set via the meta field on column definitions to control grid sizing.
-        </Text>
-      </section>
-
-      <PropsTable props={columnMetaProps} />
-    </Flex>
+      <PropsTable props={columnMetaProps} title='Column Meta' />
+    </DocsPage>
   );
 }
-
-const metaHeaderStyle = stylex.create({
-  title: {
-    paddingInline: spacing.s8,
-  },
-  description: {
-    paddingInline: spacing.s8,
-    marginBottom: spacing.s8,
-  },
-});
