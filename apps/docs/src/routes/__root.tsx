@@ -329,6 +329,9 @@ function DocsSidebar() {
           <TreeView.Item href='/components/navigation/tabs' onClick={handleClick}>
             Tabs
           </TreeView.Item>
+          <TreeView.Item href='/components/navigation/tabs-alpha' onClick={handleClick}>
+            Tabs (alpha)
+          </TreeView.Item>
           <TreeView.Item href='/components/navigation/toolbar' onClick={handleClick}>
             Toolbar
           </TreeView.Item>
