@@ -1,64 +1,65 @@
-import { Card, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { cardProps } from '~/data/components/card';
+import CardDirection from '~/examples/card/direction';
+import CardHero from '~/examples/card/hero';
+import CardPadding from '~/examples/card/padding';
+import { highlightCode } from '~/lib/highlight';
+
+import directionRaw from '~/examples/card/direction.tsx?raw';
+import heroRaw from '~/examples/card/hero.tsx?raw';
+import paddingRaw from '~/examples/card/padding.tsx?raw';
 
 export const Route = createFileRoute('/components/layout/card')({
+  loader: async () => {
+    const sources = { heroRaw, paddingRaw, directionRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Card
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Container with variant, padding, direction, and gap props.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Variants
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Card variant='filled'>
-            <Text size='bodySm'>Filled variant (default)</Text>
-          </Card>
-          <Card variant='outline'>
-            <Text size='bodySm'>Outline variant</Text>
-          </Card>
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Padding
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Card padding='sm'>
-            <Text size='bodySm'>Small padding</Text>
-          </Card>
-          <Card padding='md'>
-            <Text size='bodySm'>Medium padding (default)</Text>
-          </Card>
-          <Card padding='lg'>
-            <Text size='bodySm'>Large padding</Text>
-          </Card>
-        </div>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Direction
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Card direction='row' gap='s8'>
-            <Text size='bodySm'>Row item 1</Text>
-            <Text size='bodySm'>Row item 2</Text>
-            <Text size='bodySm'>Row item 3</Text>
-          </Card>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Card'
+      description='Container with variant, padding, direction, and gap props.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <CardHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Padding'
+        code={highlighted.paddingRaw}
+        rawCode={paddingRaw}
+      >
+        <CardPadding />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Direction'
+        code={highlighted.directionRaw}
+        rawCode={directionRaw}
+      >
+        <CardDirection />
+      </ComponentExample>
+
+      <PropsTable props={cardProps} />
+    </DocsPage>
   );
 }

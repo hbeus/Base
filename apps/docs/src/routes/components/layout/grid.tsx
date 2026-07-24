@@ -1,83 +1,55 @@
-import { Card, Grid, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { gridProps } from '~/data/components/grid';
+import GridGapSizes from '~/examples/grid/gap-sizes';
+import GridHero from '~/examples/grid/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import gapSizesRaw from '~/examples/grid/gap-sizes.tsx?raw';
+import heroRaw from '~/examples/grid/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/layout/grid')({
+  loader: async () => {
+    const sources = { heroRaw, gapSizesRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Grid
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          CSS grid layout primitive with columns, rows, and gap props.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Columns
-        </Text>
-        <Grid columns={3} gap='s8'>
-          <Card padding='sm'>
-            <Text size='bodySm'>Col 1</Text>
-          </Card>
-          <Card padding='sm'>
-            <Text size='bodySm'>Col 2</Text>
-          </Card>
-          <Card padding='sm'>
-            <Text size='bodySm'>Col 3</Text>
-          </Card>
-          <Card padding='sm'>
-            <Text size='bodySm'>Col 4</Text>
-          </Card>
-          <Card padding='sm'>
-            <Text size='bodySm'>Col 5</Text>
-          </Card>
-          <Card padding='sm'>
-            <Text size='bodySm'>Col 6</Text>
-          </Card>
-        </Grid>
-      </section>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Gap sizes
-        </Text>
-        <div {...stylex.props(docStyles.previewColumn)}>
-          <Grid columns={4} gap='s4'>
-            <Card padding='sm'>
-              <Text size='bodySm'>s4</Text>
-            </Card>
-            <Card padding='sm'>
-              <Text size='bodySm'>s4</Text>
-            </Card>
-            <Card padding='sm'>
-              <Text size='bodySm'>s4</Text>
-            </Card>
-            <Card padding='sm'>
-              <Text size='bodySm'>s4</Text>
-            </Card>
-          </Grid>
-          <Grid columns={4} gap='s16'>
-            <Card padding='sm'>
-              <Text size='bodySm'>s16</Text>
-            </Card>
-            <Card padding='sm'>
-              <Text size='bodySm'>s16</Text>
-            </Card>
-            <Card padding='sm'>
-              <Text size='bodySm'>s16</Text>
-            </Card>
-            <Card padding='sm'>
-              <Text size='bodySm'>s16</Text>
-            </Card>
-          </Grid>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Grid'
+      description='CSS grid layout primitive with columns, rows, and gap props.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <GridHero />
+      </ComponentExample>
+
+      <ComponentExample
+        title='Gap Sizes'
+        code={highlighted.gapSizesRaw}
+        rawCode={gapSizesRaw}
+      >
+        <GridGapSizes />
+      </ComponentExample>
+
+      <PropsTable props={gridProps} />
+    </DocsPage>
   );
 }

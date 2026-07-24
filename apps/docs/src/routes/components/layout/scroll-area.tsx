@@ -1,59 +1,41 @@
-import { ScrollArea, Text } from '@base/ui';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import ScrollAreaHero from '~/examples/scroll-area/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/scroll-area/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/layout/scroll-area')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
-const localStyles = stylex.create({
-  scrollRoot: {
-    height: 200,
-  },
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.s8,
-    padding: spacing.s8,
-  },
-});
-
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Scroll Area
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Custom scrollbar overlay with viewport, scrollbar, and thumb subcomponents.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Vertical scroll
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <ScrollArea.Root style={localStyles.scrollRoot}>
-            <ScrollArea.Viewport>
-              <ScrollArea.Content>
-                <div {...stylex.props(localStyles.content)}>
-                  {Array.from({ length: 20 }, (_, i) => (
-                    <Text key={i} size='bodySm' color='secondary'>
-                      Scrollable item {i + 1}
-                    </Text>
-                  ))}
-                </div>
-              </ScrollArea.Content>
-            </ScrollArea.Viewport>
-            <ScrollArea.Scrollbar>
-              <ScrollArea.Thumb />
-            </ScrollArea.Scrollbar>
-          </ScrollArea.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Scroll Area'
+      description='Custom scrollbar overlay with viewport, scrollbar, and thumb subcomponents.'
+    >
+      <ComponentExample
+        title='Vertical scroll'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <ScrollAreaHero />
+      </ComponentExample>
+    </DocsPage>
   );
 }
