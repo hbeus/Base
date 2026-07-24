@@ -28,6 +28,13 @@ export const tabsListProps: PropDef[] = [
     default: "'md'",
     description: 'Height and font size of all tabs.',
   },
+  {
+    name: 'aria-label',
+    type: 'string',
+    default: '—',
+    description:
+      'Accessible name for the tab list. Recommended when the page has multiple tab lists.',
+  },
 ];
 
 export const tabsMenuProps: PropDef[] = [
@@ -57,6 +64,7 @@ export const tabsMenuItemProps: PropDef[] = [
     name: 'children',
     type: 'ReactNode',
     default: '—',
-    description: 'Plain-text label for the menu item (also used for the trigger tooltip when active).',
+    description:
+      'Plain-text label for the menu item (also used for the trigger tooltip when active).',
   },
 ];

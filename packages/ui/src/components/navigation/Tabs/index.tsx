@@ -1,6 +1,6 @@
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import * as stylex from '@stylexjs/stylex';
-import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
+import { LayoutGroup, motion, useReducedMotion } from 'motion/react';
 import {
   Children,
   type ComponentProps,
@@ -14,6 +14,8 @@ import {
   useRef,
   useState,
 } from 'react';
+import { borders } from '../../../tokens/borders.stylex';
+import { size as sizeToken } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
@@ -208,6 +210,12 @@ const tabStyles = stylex.create({
     userSelect: 'none',
     whiteSpace: 'nowrap',
     transition: 'color 0.15s',
+    ':focus-visible': {
+      outlineWidth: borders.focus,
+      outlineStyle: 'solid',
+      outlineColor: colors.focusOutline,
+      outlineOffset: sizeToken.s2,
+    },
     ':disabled': {
       opacity: 0.5,
       pointerEvents: 'none',
@@ -331,77 +339,86 @@ const panelsStyles = stylex.create({
     minWidth: 0,
     paddingTop: spacing.s16,
   },
-  shell: {
-    position: 'absolute',
-    width: 0,
-    height: 0,
-    overflow: 'hidden',
-    padding: 0,
-    borderWidth: 0,
-    opacity: 0,
-    pointerEvents: 'none',
-  },
 });
 
 function isTabsPanel(child: ReactNode): child is ReactElement<TabsPanelProps> {
   return isValidElement(child) && child.type === Panel;
 }
 
+function PanelView({
+  item,
+  activeValue,
+  menuTriggerId,
+  reduceMotion,
+}: {
+  item: ReactElement<TabsPanelProps>;
+  activeValue: TabValue;
+  menuTriggerId: string | undefined;
+  reduceMotion: boolean | null;
+}) {
+  const {
+    value,
+    children: content,
+    keepMounted,
+    style: panelStyle,
+    ref,
+    'aria-labelledby': ariaLabelledBy,
+    ...panelProps
+  } = item.props;
+
+  const isActive = activeValue === value;
+  const labelledBy = menuTriggerId ?? ariaLabelledBy;
+
+  return (
+    <BaseTabs.Panel
+      data-slot='tabs-panel'
+      ref={ref}
+      value={value}
+      keepMounted={keepMounted ?? true}
+      {...stylex.props(...styleArray(panelStyle))}
+      {...panelProps}
+      {...(labelledBy != null ? { 'aria-labelledby': labelledBy } : {})}
+    >
+      {isActive ? (
+        <motion.div
+          layout={reduceMotion ? undefined : 'position'}
+          initial={reduceMotion ? false : { opacity: 0, filter: 'blur(5px)' }}
+          animate={{ opacity: 1, filter: 'blur(0px)' }}
+          transition={reduceMotion ? { duration: 0 } : undefined}
+        >
+          {content}
+        </motion.div>
+      ) : (
+        content
+      )}
+    </BaseTabs.Panel>
+  );
+}
+
 function Panels({ style, children }: TabsPanelsProps) {
   const { activeValue } = useTabsRootContext();
   const menuTriggerLabel = useContext(MenuTriggerLabelContext);
-
+  const reduceMotion = useReducedMotion();
   const items = Children.toArray(children).filter(isTabsPanel);
-  const active = items.find(item => item.props.value === activeValue);
 
   return (
     <div data-slot='tabs-panels' {...stylex.props(panelsStyles.root, ...styleArray(style))}>
       {items.map(item => {
-        const {
-          value,
-          children: _content,
-          keepMounted,
-          style: panelStyle,
-          ref,
-          'aria-labelledby': ariaLabelledBy,
-          ...panelProps
-        } = item.props;
-
-        const labelledBy =
-          activeValue === value && menuTriggerLabel?.values.has(value)
+        const menuTriggerId =
+          activeValue === item.props.value && menuTriggerLabel?.values.has(item.props.value)
             ? menuTriggerLabel.triggerId
-            : ariaLabelledBy;
+            : undefined;
 
         return (
-          <BaseTabs.Panel
-            key={String(value)}
-            data-slot='tabs-panel'
-            ref={ref}
-            value={value}
-            keepMounted={keepMounted ?? true}
-            aria-labelledby={labelledBy}
-            {...stylex.props(panelsStyles.shell, ...styleArray(panelStyle))}
-            {...panelProps}
+          <PanelView
+            key={String(item.props.value)}
+            item={item}
+            activeValue={activeValue}
+            menuTriggerId={menuTriggerId}
+            reduceMotion={reduceMotion}
           />
         );
       })}
-      <AnimatePresence mode='popLayout' initial={false}>
-        {active != null && (
-          <motion.div
-            key={String(active.props.value)}
-            layout='position'
-            initial={{ opacity: 0, filter: 'blur(5px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            exit={{
-              opacity: 0,
-              filter: 'blur(5px)',
-              transition: { duration: 0.15 },
-            }}
-          >
-            {active.props.children}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

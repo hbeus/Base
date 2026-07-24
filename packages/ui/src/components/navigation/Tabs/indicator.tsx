@@ -1,11 +1,12 @@
 import * as stylex from '@stylexjs/stylex';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { type TabsSize, type TabsVariant, useTabsRootContext } from './context';
 
 const INDICATOR_TRANSITION = { type: 'spring', bounce: 0.15, duration: 0.4 } as const;
+const INDICATOR_REDUCED_MOTION = { duration: 0 } as const;
 
 const indicatorStyles = stylex.create({
   base: {
@@ -39,13 +40,14 @@ const indicatorRadiusStyles = {
 
 export function ActiveIndicator({ variant, size }: { variant: TabsVariant; size: TabsSize }) {
   const { indicatorLayoutId } = useTabsRootContext();
+  const reduceMotion = useReducedMotion();
 
   return (
     <motion.span
       aria-hidden
       data-slot='tabs-indicator'
-      layoutId={indicatorLayoutId}
-      transition={INDICATOR_TRANSITION}
+      layoutId={reduceMotion ? undefined : indicatorLayoutId}
+      transition={reduceMotion ? INDICATOR_REDUCED_MOTION : INDICATOR_TRANSITION}
       {...stylex.props(
         indicatorStyles.base,
         variant === 'underline' ? indicatorStyles.underline : indicatorStyles.button,

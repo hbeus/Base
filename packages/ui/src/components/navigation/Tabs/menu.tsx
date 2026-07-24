@@ -12,6 +12,8 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { borders } from '../../../tokens/borders.stylex';
+import { size as sizeToken } from '../../../tokens/size.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
@@ -57,6 +59,12 @@ const menuStyles = stylex.create({
     outline: 'none',
     color: colors.foregroundSecondary,
     transition: 'color 0.15s',
+    ':focus-visible': {
+      outlineWidth: borders.focus,
+      outlineStyle: 'solid',
+      outlineColor: colors.focusOutline,
+      outlineOffset: sizeToken.s2,
+    },
     ':hover': {
       color: colors.foregroundPrimary,
       backgroundColor: 'transparent',
@@ -96,6 +104,7 @@ const menuStyles = stylex.create({
     padding: 0,
     borderWidth: 0,
     opacity: 0,
+    visibility: 'hidden',
     pointerEvents: 'none',
   },
 });
@@ -147,6 +156,7 @@ function MenuHiddenTabs({ items }: { items: MenuItemData[] }) {
       disabled={item.disabled}
       tabIndex={-1}
       aria-hidden
+      inert
       {...stylex.props(menuStyles.hiddenTab)}
     />
   ));
@@ -174,6 +184,7 @@ function MenuTrigger({
         data-active={activeInMenu ? '' : undefined}
         id={triggerId}
         aria-label={triggerLabel}
+        aria-current={activeInMenu ? 'true' : undefined}
         ref={ref}
         render={
           <button
@@ -189,7 +200,7 @@ function MenuTrigger({
         }
       >
         <span {...stylex.props(menuStyles.triggerContent)}>
-          <Icon icon={IconDots} />
+          <Icon icon={IconDots} aria-hidden />
         </span>
         {activeInMenu && <ActiveIndicator variant={variant} size={size} />}
       </Menu.Trigger>
@@ -264,7 +275,7 @@ export function TabsMenuItem({ value, children, disabled, style, ref }: TabsMenu
     >
       {children}
       <Menu.RadioItemIndicator {...stylex.props(menuStyles.check)}>
-        <Icon icon={IconCheck} size={14} />
+        <Icon icon={IconCheck} size={14} aria-hidden />
       </Menu.RadioItemIndicator>
     </Menu.RadioItem>
   );
