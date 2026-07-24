@@ -11,7 +11,7 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
-export interface NavigationMenuRootProps
+export interface MenuRootProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.Root>, 'style'>,
     BaseProps {}
 
@@ -21,10 +21,10 @@ const rootStyles = stylex.create({
   },
 });
 
-function Root({ style, ref, ...props }: NavigationMenuRootProps) {
+function Root({ style, ref, ...props }: MenuRootProps) {
   return (
     <BaseNavigationMenu.Root
-      data-slot="navigation-menu"
+      data-slot='menu'
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -33,7 +33,7 @@ function Root({ style, ref, ...props }: NavigationMenuRootProps) {
 }
 
 /* ---------- List ---------- */
-export interface NavigationMenuListProps
+export interface MenuListProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.List>, 'style'>,
     BaseProps {}
 
@@ -48,10 +48,10 @@ const listStyles = stylex.create({
   },
 });
 
-function List({ style, ref, ...props }: NavigationMenuListProps) {
+function List({ style, ref, ...props }: MenuListProps) {
   return (
     <BaseNavigationMenu.List
-      data-slot="navigation-menu-list"
+      data-slot='menu-list'
       ref={ref}
       {...stylex.props(listStyles.base, ...styleArray(style))}
       {...props}
@@ -61,11 +61,11 @@ function List({ style, ref, ...props }: NavigationMenuListProps) {
 
 /* ---------- Item ---------- */
 function Item(props: ComponentProps<typeof BaseNavigationMenu.Item>) {
-  return <BaseNavigationMenu.Item data-slot="navigation-menu-item" {...props} />;
+  return <BaseNavigationMenu.Item data-slot='menu-item' {...props} />;
 }
 
 /* ---------- Trigger ---------- */
-export interface NavigationMenuTriggerProps
+export interface MenuTriggerProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.Trigger>, 'style'>,
     BaseProps {}
 
@@ -92,10 +92,10 @@ const triggerStyles = stylex.create({
   },
 });
 
-function Trigger({ style, ref, ...props }: NavigationMenuTriggerProps) {
+function Trigger({ style, ref, ...props }: MenuTriggerProps) {
   return (
     <BaseNavigationMenu.Trigger
-      data-slot="navigation-menu-trigger"
+      data-slot='menu-trigger'
       ref={ref}
       {...stylex.props(triggerStyles.base, ...styleArray(style))}
       {...props}
@@ -104,14 +104,14 @@ function Trigger({ style, ref, ...props }: NavigationMenuTriggerProps) {
 }
 
 /* ---------- Link ---------- */
-export interface NavigationMenuLinkProps
+export interface MenuLinkProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.Link>, 'style'>,
     BaseProps {}
 
-function Link({ style, ref, ...props }: NavigationMenuLinkProps) {
+function Link({ style, ref, ...props }: MenuLinkProps) {
   return (
     <BaseNavigationMenu.Link
-      data-slot="navigation-menu-link"
+      data-slot='menu-link'
       ref={ref}
       {...stylex.props(triggerStyles.base, ...styleArray(style))}
       {...props}
@@ -126,11 +126,11 @@ function Portal(props: ComponentProps<typeof BaseNavigationMenu.Portal>) {
 
 /* ---------- Positioner ---------- */
 function Positioner(props: ComponentProps<typeof BaseNavigationMenu.Positioner>) {
-  return <BaseNavigationMenu.Positioner data-slot="navigation-menu-positioner" {...props} />;
+  return <BaseNavigationMenu.Positioner data-slot='menu-positioner' {...props} />;
 }
 
 /* ---------- Popup ---------- */
-export interface NavigationMenuPopupProps
+export interface MenuPopupProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.Popup>, 'style'>,
     BaseProps {}
 
@@ -147,10 +147,10 @@ const popupStyles = stylex.create({
   },
 });
 
-function Popup({ style, ref, ...props }: NavigationMenuPopupProps) {
+function Popup({ style, ref, ...props }: MenuPopupProps) {
   return (
     <BaseNavigationMenu.Popup
-      data-slot="navigation-menu-popup"
+      data-slot='menu-popup'
       ref={ref}
       render={
         <motion.div
@@ -167,26 +167,26 @@ function Popup({ style, ref, ...props }: NavigationMenuPopupProps) {
 }
 
 /* ---------- Content ---------- */
-export interface NavigationMenuContentProps
+export interface MenuContentProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.Content>, 'style'>,
     BaseProps {}
 
-function Content({ style, ref, ...props }: NavigationMenuContentProps) {
-  return <BaseNavigationMenu.Content data-slot="navigation-menu-content" ref={ref} {...props} />;
+function Content({ style, ref, ...props }: MenuContentProps) {
+  return <BaseNavigationMenu.Content data-slot='menu-content' ref={ref} {...props} />;
 }
 
 /* ---------- Viewport ---------- */
 function Viewport(props: ComponentProps<typeof BaseNavigationMenu.Viewport>) {
-  return <BaseNavigationMenu.Viewport data-slot="navigation-menu-viewport" {...props} />;
+  return <BaseNavigationMenu.Viewport data-slot='menu-viewport' {...props} />;
 }
 
 /* ---------- Icon ---------- */
 function Icon(props: ComponentProps<typeof BaseNavigationMenu.Icon>) {
-  return <BaseNavigationMenu.Icon data-slot="navigation-menu-icon" {...props} />;
+  return <BaseNavigationMenu.Icon data-slot='menu-icon' {...props} />;
 }
 
 /* ---------- Arrow ---------- */
-export interface NavigationMenuArrowProps
+export interface MenuArrowProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.Arrow>, 'style'>,
     BaseProps {}
 
@@ -198,10 +198,10 @@ const arrowStyles = stylex.create({
   },
 });
 
-function Arrow({ style, ref, ...props }: NavigationMenuArrowProps) {
+function Arrow({ style, ref, ...props }: MenuArrowProps) {
   return (
     <BaseNavigationMenu.Arrow
-      data-slot="navigation-menu-arrow"
+      data-slot='menu-arrow'
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -210,7 +210,7 @@ function Arrow({ style, ref, ...props }: NavigationMenuArrowProps) {
 }
 
 /* ---------- Backdrop ---------- */
-export interface NavigationMenuBackdropProps
+export interface MenuBackdropProps
   extends Omit<ComponentProps<typeof BaseNavigationMenu.Backdrop>, 'style'>,
     BaseProps {}
 
@@ -223,10 +223,10 @@ const backdropStyles = stylex.create({
   },
 });
 
-function Backdrop({ style, ref, ...props }: NavigationMenuBackdropProps) {
+function Backdrop({ style, ref, ...props }: MenuBackdropProps) {
   return (
     <BaseNavigationMenu.Backdrop
-      data-slot="navigation-menu-backdrop"
+      data-slot='menu-backdrop'
       ref={ref}
       render={
         <motion.div
@@ -243,7 +243,7 @@ function Backdrop({ style, ref, ...props }: NavigationMenuBackdropProps) {
 }
 
 /* ---------- Export ---------- */
-export const NavigationMenu = {
+export const Menu = {
   Root,
   List,
   Item,

@@ -20,7 +20,7 @@ function Root(props: ComponentProps<typeof BaseMenu.Root>) {
 
 /* ---------- Trigger ---------- */
 function Trigger({ ref, ...props }: ComponentProps<typeof BaseMenu.Trigger>) {
-  return <BaseMenu.Trigger data-slot='menu-trigger' ref={ref} {...props} />;
+  return <BaseMenu.Trigger data-slot='dropdown-trigger' ref={ref} {...props} />;
 }
 
 /* ---------- Portal ---------- */
@@ -29,7 +29,7 @@ function Portal(props: ComponentProps<typeof BaseMenu.Portal>) {
 }
 
 /* ---------- Positioner ---------- */
-export interface MenuPositionerProps
+export interface DropdownPositionerProps
   extends Omit<ComponentProps<typeof BaseMenu.Positioner>, 'style'>,
     BaseProps {}
 
@@ -39,10 +39,10 @@ const positionerStyles = stylex.create({
   },
 });
 
-function Positioner({ style, ref, ...props }: MenuPositionerProps) {
+function Positioner({ style, ref, ...props }: DropdownPositionerProps) {
   return (
     <BaseMenu.Positioner
-      data-slot='menu-positioner'
+      data-slot='dropdown-positioner'
       ref={ref}
       {...stylex.props(positionerStyles.base, ...styleArray(style))}
       {...props}
@@ -51,7 +51,7 @@ function Positioner({ style, ref, ...props }: MenuPositionerProps) {
 }
 
 /* ---------- Popup ---------- */
-export interface MenuPopupProps
+export interface DropdownPopupProps
   extends Omit<ComponentProps<typeof BaseMenu.Popup>, 'style'>,
     BaseProps {}
 
@@ -68,7 +68,7 @@ const popupStyles = stylex.create({
   },
 });
 
-function Popup({ style, ref, ...props }: MenuPopupProps) {
+function Popup({ style, ref, ...props }: DropdownPopupProps) {
   return (
     <SurfaceLevel level={300}>
       <PopupSurface style={style} ref={ref} {...props} />
@@ -76,12 +76,12 @@ function Popup({ style, ref, ...props }: MenuPopupProps) {
   );
 }
 
-function PopupSurface({ style, ref, ...props }: MenuPopupProps) {
+function PopupSurface({ style, ref, ...props }: DropdownPopupProps) {
   const surface = useSurface();
 
   return (
     <BaseMenu.Popup
-      data-slot='menu-popup'
+      data-slot='dropdown-popup'
       ref={ref}
       render={
         <motion.div
@@ -98,7 +98,7 @@ function PopupSurface({ style, ref, ...props }: MenuPopupProps) {
 }
 
 /* ---------- Item ---------- */
-export interface MenuItemProps
+export interface DropdownItemProps
   extends Omit<ComponentProps<typeof BaseMenu.Item>, 'style'>,
     BaseProps {}
 
@@ -126,10 +126,10 @@ const itemStyles = stylex.create({
   },
 });
 
-function Item({ style, ref, ...props }: MenuItemProps) {
+function Item({ style, ref, ...props }: DropdownItemProps) {
   return (
     <BaseMenu.Item
-      data-slot='menu-item'
+      data-slot='dropdown-item'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -138,14 +138,14 @@ function Item({ style, ref, ...props }: MenuItemProps) {
 }
 
 /* ---------- LinkItem ---------- */
-export interface MenuLinkItemProps
+export interface DropdownLinkItemProps
   extends Omit<ComponentProps<typeof BaseMenu.LinkItem>, 'style'>,
     BaseProps {}
 
-function LinkItem({ style, ref, ...props }: MenuLinkItemProps) {
+function LinkItem({ style, ref, ...props }: DropdownLinkItemProps) {
   return (
     <BaseMenu.LinkItem
-      data-slot='menu-link-item'
+      data-slot='dropdown-link-item'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -154,14 +154,14 @@ function LinkItem({ style, ref, ...props }: MenuLinkItemProps) {
 }
 
 /* ---------- CheckboxItem ---------- */
-export interface MenuCheckboxItemProps
+export interface DropdownCheckboxItemProps
   extends Omit<ComponentProps<typeof BaseMenu.CheckboxItem>, 'style'>,
     BaseProps {}
 
-function CheckboxItem({ style, ref, ...props }: MenuCheckboxItemProps) {
+function CheckboxItem({ style, ref, ...props }: DropdownCheckboxItemProps) {
   return (
     <BaseMenu.CheckboxItem
-      data-slot='menu-checkbox-item'
+      data-slot='dropdown-checkbox-item'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -171,23 +171,25 @@ function CheckboxItem({ style, ref, ...props }: MenuCheckboxItemProps) {
 
 /* ---------- CheckboxItemIndicator ---------- */
 function CheckboxItemIndicator(props: ComponentProps<typeof BaseMenu.CheckboxItemIndicator>) {
-  return <BaseMenu.CheckboxItemIndicator data-slot='menu-checkbox-item-indicator' {...props} />;
+  return (
+    <BaseMenu.CheckboxItemIndicator data-slot='dropdown-checkbox-item-indicator' {...props} />
+  );
 }
 
 /* ---------- RadioGroup ---------- */
 function RadioGroup(props: ComponentProps<typeof BaseMenu.RadioGroup>) {
-  return <BaseMenu.RadioGroup data-slot='menu-radio-group' {...props} />;
+  return <BaseMenu.RadioGroup data-slot='dropdown-radio-group' {...props} />;
 }
 
 /* ---------- RadioItem ---------- */
-export interface MenuRadioItemProps
+export interface DropdownRadioItemProps
   extends Omit<ComponentProps<typeof BaseMenu.RadioItem>, 'style'>,
     BaseProps {}
 
-function RadioItem({ style, ref, ...props }: MenuRadioItemProps) {
+function RadioItem({ style, ref, ...props }: DropdownRadioItemProps) {
   return (
     <BaseMenu.RadioItem
-      data-slot='menu-radio-item'
+      data-slot='dropdown-radio-item'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -197,16 +199,16 @@ function RadioItem({ style, ref, ...props }: MenuRadioItemProps) {
 
 /* ---------- RadioItemIndicator ---------- */
 function RadioItemIndicator(props: ComponentProps<typeof BaseMenu.RadioItemIndicator>) {
-  return <BaseMenu.RadioItemIndicator data-slot='menu-radio-item-indicator' {...props} />;
+  return <BaseMenu.RadioItemIndicator data-slot='dropdown-radio-item-indicator' {...props} />;
 }
 
 /* ---------- Group ---------- */
 function Group(props: ComponentProps<typeof BaseMenu.Group>) {
-  return <BaseMenu.Group data-slot='menu-group' {...props} />;
+  return <BaseMenu.Group data-slot='dropdown-group' {...props} />;
 }
 
 /* ---------- GroupLabel ---------- */
-export interface MenuGroupLabelProps
+export interface DropdownGroupLabelProps
   extends Omit<ComponentProps<typeof BaseMenu.GroupLabel>, 'style'>,
     BaseProps {}
 
@@ -220,10 +222,10 @@ const groupLabelStyles = stylex.create({
   },
 });
 
-function GroupLabel({ style, ref, ...props }: MenuGroupLabelProps) {
+function GroupLabel({ style, ref, ...props }: DropdownGroupLabelProps) {
   return (
     <BaseMenu.GroupLabel
-      data-slot='menu-group-label'
+      data-slot='dropdown-group-label'
       ref={ref}
       {...stylex.props(groupLabelStyles.base, ...styleArray(style))}
       {...props}
@@ -232,7 +234,7 @@ function GroupLabel({ style, ref, ...props }: MenuGroupLabelProps) {
 }
 
 /* ---------- Separator ---------- */
-export interface MenuSeparatorProps
+export interface DropdownSeparatorProps
   extends Omit<ComponentProps<typeof BaseMenu.Separator>, 'style'>,
     BaseProps {}
 
@@ -244,10 +246,10 @@ const separatorStyles = stylex.create({
   },
 });
 
-function MenuSeparator({ style, ref, ...props }: MenuSeparatorProps) {
+function DropdownSeparator({ style, ref, ...props }: DropdownSeparatorProps) {
   return (
     <BaseMenu.Separator
-      data-slot='menu-separator'
+      data-slot='dropdown-separator'
       ref={ref}
       {...stylex.props(separatorStyles.base, ...styleArray(style))}
       {...props}
@@ -256,7 +258,7 @@ function MenuSeparator({ style, ref, ...props }: MenuSeparatorProps) {
 }
 
 /* ---------- Arrow ---------- */
-export interface MenuArrowProps
+export interface DropdownArrowProps
   extends Omit<ComponentProps<typeof BaseMenu.Arrow>, 'style'>,
     BaseProps {}
 
@@ -268,10 +270,10 @@ const arrowStyles = stylex.create({
   },
 });
 
-function Arrow({ style, ref, ...props }: MenuArrowProps) {
+function Arrow({ style, ref, ...props }: DropdownArrowProps) {
   return (
     <BaseMenu.Arrow
-      data-slot='menu-arrow'
+      data-slot='dropdown-arrow'
       ref={ref}
       {...stylex.props(arrowStyles.base, ...styleArray(style))}
       {...props}
@@ -285,14 +287,14 @@ function SubmenuRoot(props: ComponentProps<typeof BaseMenu.SubmenuRoot>) {
 }
 
 /* ---------- SubmenuTrigger ---------- */
-export interface MenuSubmenuTriggerProps
+export interface DropdownSubmenuTriggerProps
   extends Omit<ComponentProps<typeof BaseMenu.SubmenuTrigger>, 'style'>,
     BaseProps {}
 
-function SubmenuTrigger({ style, ref, ...props }: MenuSubmenuTriggerProps) {
+function SubmenuTrigger({ style, ref, ...props }: DropdownSubmenuTriggerProps) {
   return (
     <BaseMenu.SubmenuTrigger
-      data-slot='menu-submenu-trigger'
+      data-slot='dropdown-submenu-trigger'
       ref={ref}
       {...stylex.props(itemStyles.base, ...styleArray(style))}
       {...props}
@@ -301,7 +303,7 @@ function SubmenuTrigger({ style, ref, ...props }: MenuSubmenuTriggerProps) {
 }
 
 /* ---------- Export ---------- */
-export const Menu = {
+export const Dropdown = {
   Root,
   Trigger,
   Portal,
@@ -316,7 +318,7 @@ export const Menu = {
   RadioItemIndicator,
   Group,
   GroupLabel,
-  Separator: MenuSeparator,
+  Separator: DropdownSeparator,
   Arrow,
   SubmenuRoot,
   SubmenuTrigger,

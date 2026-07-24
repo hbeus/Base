@@ -2,13 +2,13 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
-import { menuProps } from '~/data/components/menu';
+import { menuRootProps } from '~/data/components/menu';
 import MenuHero from '~/examples/menu/hero';
 import { highlightCode } from '~/lib/highlight';
 
 import heroRaw from '~/examples/menu/hero.tsx?raw';
 
-export const Route = createFileRoute('/components/overlays/menu')({
+export const Route = createFileRoute('/components/navigation/menu')({
   loader: async () => {
     const sources = { heroRaw };
     const entries = await Promise.all(
@@ -28,7 +28,7 @@ function PageComponent() {
   return (
     <DocsPage
       title='Menu'
-      description='Dropdown menu with items, icons, and separators.'
+      description='Site header navigation with dropdown panels for grouped links.'
     >
       <ComponentExample
         title='Usage'
@@ -39,7 +39,7 @@ function PageComponent() {
         <MenuHero />
       </ComponentExample>
 
-      <PropsTable props={menuProps} />
+      <PropsTable props={menuRootProps} title='Menu.Root Props' />
     </DocsPage>
   );
 }

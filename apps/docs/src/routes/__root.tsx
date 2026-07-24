@@ -323,6 +323,9 @@ function DocsSidebar() {
           </TreeView.Item>
         </TreeView.Group>
         <TreeView.Group label='Navigation'>
+          <TreeView.Item href='/components/navigation/menu' onClick={handleClick}>
+            Menu
+          </TreeView.Item>
           <TreeView.Item href='/components/navigation/sidebar' onClick={handleClick}>
             Sidebar
           </TreeView.Item>
@@ -346,8 +349,8 @@ function DocsSidebar() {
           <TreeView.Item href='/components/overlays/drawer' onClick={handleClick}>
             Drawer
           </TreeView.Item>
-          <TreeView.Item href='/components/overlays/menu' onClick={handleClick}>
-            Menu
+          <TreeView.Item href='/components/overlays/dropdown' onClick={handleClick}>
+            Dropdown
           </TreeView.Item>
           <TreeView.Item href='/components/overlays/popover' onClick={handleClick}>
             Popover

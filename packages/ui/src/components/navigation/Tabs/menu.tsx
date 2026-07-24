@@ -19,7 +19,7 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 import { Icon } from '../../display/Icon';
 import { buttonStyles } from '../../input/Button';
-import { Menu } from '../../overlays/Menu';
+import { Dropdown } from '../../overlays/Dropdown';
 import { Tooltip } from '../../overlays/Tooltip';
 import { type TabValue, useTabsListContext, useTabsRootContext } from './context';
 import { ActiveIndicator } from './indicator';
@@ -179,7 +179,7 @@ function MenuTrigger({
 
   return (
     <Tooltip.Trigger render={<span {...stylex.props(menuStyles.tooltipTrigger)} />}>
-      <Menu.Trigger
+      <Dropdown.Trigger
         data-slot='tabs-menu'
         data-active={activeInMenu ? '' : undefined}
         id={triggerId}
@@ -203,7 +203,7 @@ function MenuTrigger({
           <Icon icon={IconDots} aria-hidden />
         </span>
         {activeInMenu && <ActiveIndicator variant={variant} size={size} />}
-      </Menu.Trigger>
+      </Dropdown.Trigger>
     </Tooltip.Trigger>
   );
 }
@@ -212,15 +212,15 @@ function MenuPopup({ children }: { children: ReactNode }) {
   const { activeValue, setActive } = useTabsRootContext();
 
   return (
-    <Menu.Portal>
-      <Menu.Positioner align='end' sideOffset={4}>
-        <Menu.Popup>
-          <Menu.RadioGroup value={activeValue} onValueChange={setActive}>
+    <Dropdown.Portal>
+      <Dropdown.Positioner align='end' sideOffset={4}>
+        <Dropdown.Popup>
+          <Dropdown.RadioGroup value={activeValue} onValueChange={setActive}>
             {children}
-          </Menu.RadioGroup>
-        </Menu.Popup>
-      </Menu.Positioner>
-    </Menu.Portal>
+          </Dropdown.RadioGroup>
+        </Dropdown.Popup>
+      </Dropdown.Positioner>
+    </Dropdown.Portal>
   );
 }
 
@@ -239,7 +239,7 @@ export function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
     <>
       <MenuHiddenTabs items={items} />
       <Tooltip.Provider>
-        <Menu.Root onOpenChange={setMenuOpen}>
+        <Dropdown.Root onOpenChange={setMenuOpen}>
           <Tooltip.Root disabled={menuOpen}>
             <MenuTrigger
               activeInMenu={activeInMenu}
@@ -258,7 +258,7 @@ export function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
             </Tooltip.Portal>
           </Tooltip.Root>
           <MenuPopup>{children}</MenuPopup>
-        </Menu.Root>
+        </Dropdown.Root>
       </Tooltip.Provider>
     </>
   );
@@ -266,7 +266,7 @@ export function TabsMenu({ children, label, style, ref }: TabsMenuProps) {
 
 export function TabsMenuItem({ value, children, disabled, style, ref }: TabsMenuItemProps) {
   return (
-    <Menu.RadioItem
+    <Dropdown.RadioItem
       data-slot='tabs-menu-item'
       value={value}
       disabled={disabled}
@@ -274,9 +274,9 @@ export function TabsMenuItem({ value, children, disabled, style, ref }: TabsMenu
       {...stylex.props(...styleArray(style))}
     >
       {children}
-      <Menu.RadioItemIndicator {...stylex.props(menuStyles.check)}>
+      <Dropdown.RadioItemIndicator {...stylex.props(menuStyles.check)}>
         <Icon icon={IconCheck} size={14} aria-hidden />
-      </Menu.RadioItemIndicator>
-    </Menu.RadioItem>
+      </Dropdown.RadioItemIndicator>
+    </Dropdown.RadioItem>
   );
 }

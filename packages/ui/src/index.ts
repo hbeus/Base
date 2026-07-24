@@ -151,16 +151,16 @@ export {
 // navigation
 export { Menubar, type MenubarProps } from './components/navigation/Menubar';
 export {
-  NavigationMenu,
-  type NavigationMenuArrowProps,
-  type NavigationMenuBackdropProps,
-  type NavigationMenuContentProps,
-  type NavigationMenuLinkProps,
-  type NavigationMenuListProps,
-  type NavigationMenuPopupProps,
-  type NavigationMenuRootProps,
-  type NavigationMenuTriggerProps,
-} from './components/navigation/NavigationMenu';
+  Menu,
+  type MenuArrowProps,
+  type MenuBackdropProps,
+  type MenuContentProps,
+  type MenuLinkProps,
+  type MenuListProps,
+  type MenuPopupProps,
+  type MenuRootProps,
+  type MenuTriggerProps,
+} from './components/navigation/Menu';
 export {
   Sidebar,
   type SidebarAnchorProps,
@@ -222,18 +222,18 @@ export {
   type DrawerTitleProps,
 } from './components/overlays/Drawer';
 export {
-  Menu,
-  type MenuArrowProps,
-  type MenuCheckboxItemProps,
-  type MenuGroupLabelProps,
-  type MenuItemProps,
-  type MenuLinkItemProps,
-  type MenuPopupProps,
-  type MenuPositionerProps,
-  type MenuRadioItemProps,
-  type MenuSeparatorProps,
-  type MenuSubmenuTriggerProps,
-} from './components/overlays/Menu';
+  Dropdown,
+  type DropdownArrowProps,
+  type DropdownCheckboxItemProps,
+  type DropdownGroupLabelProps,
+  type DropdownItemProps,
+  type DropdownLinkItemProps,
+  type DropdownPopupProps,
+  type DropdownPositionerProps,
+  type DropdownRadioItemProps,
+  type DropdownSeparatorProps,
+  type DropdownSubmenuTriggerProps,
+} from './components/overlays/Dropdown';
 export {
   Popover,
   type PopoverArrowProps,
