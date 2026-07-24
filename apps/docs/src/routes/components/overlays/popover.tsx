@@ -1,44 +1,45 @@
-import { Button, Popover, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { popoverProps } from '~/data/components/popover';
+import PopoverHero from '~/examples/popover/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/popover/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/overlays/popover')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Popover
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Positioned popup with arrow, title, and description.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Default
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <Popover.Root>
-            <Popover.Trigger render={<Button variant='primary' />}>Open popover</Popover.Trigger>
-            <Popover.Portal>
-              <Popover.Positioner>
-                <Popover.Popup>
-                  <Popover.Arrow />
-                  <Popover.Title>Popover title</Popover.Title>
-                  <Popover.Description>
-                    This is a popover with an arrow pointing to its trigger element.
-                  </Popover.Description>
-                </Popover.Popup>
-              </Popover.Positioner>
-            </Popover.Portal>
-          </Popover.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Popover'
+      description='Positioned popup with arrow, title, and description.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <PopoverHero />
+      </ComponentExample>
+
+      <PropsTable props={popoverProps} />
+    </DocsPage>
   );
 }

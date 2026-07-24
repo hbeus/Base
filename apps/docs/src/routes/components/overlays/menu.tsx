@@ -1,53 +1,45 @@
-import { Button, Menu, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
-import { IconCopy, IconShare, IconTrash } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { menuProps } from '~/data/components/menu';
+import MenuHero from '~/examples/menu/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/menu/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/overlays/menu')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
+  const highlighted = Route.useLoaderData();
+
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Menu
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Dropdown menu with items, icons, and separators.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Dropdown menu
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <Menu.Root>
-            <Menu.Trigger render={<Button variant='primary' />}>Actions</Menu.Trigger>
-            <Menu.Portal>
-              <Menu.Positioner>
-                <Menu.Popup>
-                  <Menu.Item>
-                    <IconCopy size={14} />
-                    Copy
-                  </Menu.Item>
-                  <Menu.Item>
-                    <IconShare size={14} />
-                    Share
-                  </Menu.Item>
-                  <Menu.Separator />
-                  <Menu.Item>
-                    <IconTrash size={14} />
-                    Delete
-                  </Menu.Item>
-                </Menu.Popup>
-              </Menu.Positioner>
-            </Menu.Portal>
-          </Menu.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Menu'
+      description='Dropdown menu with items, icons, and separators.'
+    >
+      <ComponentExample
+        title='Usage'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <MenuHero />
+      </ComponentExample>
+
+      <PropsTable props={menuProps} />
+    </DocsPage>
   );
 }

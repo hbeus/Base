@@ -1,58 +1,45 @@
-import { AlertDialog, Button, Flex, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { AnimatePresence } from 'motion/react';
-import { useState } from 'react';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import { PropsTable } from '~/components/PropsTable';
+import { alertDialogContentProps } from '~/data/components/alert-dialog';
+import AlertDialogHero from '~/examples/alert-dialog/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/alert-dialog/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/overlays/alert-dialog')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
-  const [open, setOpen] = useState(false);
+  const highlighted = Route.useLoaderData();
 
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Alert Dialog
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Confirmation dialog for destructive or irreversible actions.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Destructive confirmation
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <AlertDialog.Root open={open} onOpenChange={setOpen}>
-            <AlertDialog.Trigger render={<Button variant='primary' />}>
-              Delete item
-            </AlertDialog.Trigger>
-            <AnimatePresence>
-              {open && (
-                <AlertDialog.Portal>
-                  <AlertDialog.Backdrop />
-                  <AlertDialog.Content>
-                    <AlertDialog.Title>Are you sure?</AlertDialog.Title>
-                    <AlertDialog.Description>
-                      This action cannot be undone. The item will be permanently deleted.
-                    </AlertDialog.Description>
-                    <Flex direction='row' gap='s8' justify='end'>
-                      <AlertDialog.Close render={<Button variant='ghost' size='sm' />}>
-                        Cancel
-                      </AlertDialog.Close>
-                      <AlertDialog.Close render={<Button size='sm' />}>Delete</AlertDialog.Close>
-                    </Flex>
-                  </AlertDialog.Content>
-                </AlertDialog.Portal>
-              )}
-            </AnimatePresence>
-          </AlertDialog.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Alert Dialog'
+      description='Confirmation dialog for destructive or irreversible actions.'
+    >
+      <ComponentExample
+        title='Destructive confirmation'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <AlertDialogHero />
+      </ComponentExample>
+
+      <PropsTable props={alertDialogContentProps} title='AlertDialog.Content Props' />
+    </DocsPage>
   );
 }

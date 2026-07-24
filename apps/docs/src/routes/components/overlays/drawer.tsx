@@ -1,57 +1,41 @@
-import { Button, Drawer, Flex, Text } from '@base/ui';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { AnimatePresence } from 'motion/react';
-import { useState } from 'react';
-import { docStyles } from '~/styles/docs';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import DrawerHero from '~/examples/drawer/hero';
+import { highlightCode } from '~/lib/highlight';
+
+import heroRaw from '~/examples/drawer/hero.tsx?raw';
 
 export const Route = createFileRoute('/components/overlays/drawer')({
+  loader: async () => {
+    const sources = { heroRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
   component: PageComponent,
 });
 
 function PageComponent() {
-  const [open, setOpen] = useState(false);
+  const highlighted = Route.useLoaderData();
 
   return (
-    <>
-      <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
-          Drawer
-        </Text>
-        <Text as='p' size='bodySm' color='secondary'>
-          Side panel overlay that slides in from the edge.
-        </Text>
-      </header>
-      <section {...stylex.props(docStyles.section)}>
-        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
-          Side panel
-        </Text>
-        <div {...stylex.props(docStyles.preview)}>
-          <Drawer.Root open={open} onOpenChange={setOpen}>
-            <Drawer.Trigger render={<Button variant='primary' />}>Open drawer</Drawer.Trigger>
-            <AnimatePresence>
-              {open && (
-                <Drawer.Portal>
-                  <Drawer.Backdrop />
-                  <Drawer.Popup>
-                    <Drawer.Content>
-                      <Drawer.Title>Drawer title</Drawer.Title>
-                      <Drawer.Description>
-                        This is a side panel drawer. It slides in from the right edge of the screen.
-                      </Drawer.Description>
-                      <Flex direction='row' gap='s8'>
-                        <Drawer.Close render={<Button variant='ghost' size='sm' />}>
-                          Close
-                        </Drawer.Close>
-                      </Flex>
-                    </Drawer.Content>
-                  </Drawer.Popup>
-                </Drawer.Portal>
-              )}
-            </AnimatePresence>
-          </Drawer.Root>
-        </div>
-      </section>
-    </>
+    <DocsPage
+      title='Drawer'
+      description='Side panel overlay that slides in from the edge.'
+    >
+      <ComponentExample
+        title='Side panel'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
+        <DrawerHero />
+      </ComponentExample>
+    </DocsPage>
   );
 }
