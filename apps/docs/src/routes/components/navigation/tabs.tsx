@@ -9,10 +9,65 @@ export const Route = createFileRoute('/components/navigation/tabs')({
 });
 
 const styles = stylex.create({
-  overflowPreview: {
+  tabsMaxWidth: {
+    width: '100%',
     maxWidth: '20rem',
   },
+  tabsFill: {
+    width: '100%',
+  },
 });
+
+const overflowTabs = [
+  {
+    value: 'account',
+    label: 'Account',
+    body: 'Manage your account details and profile information.',
+  },
+  {
+    value: 'settings',
+    label: 'Settings',
+    body: 'Configure your notification preferences and privacy settings.',
+  },
+  {
+    value: 'billing',
+    label: 'Billing',
+    body: 'View your billing history and update payment methods.',
+  },
+  { value: 'team', label: 'Team', body: 'Invite teammates and manage roles.' },
+  {
+    value: 'security',
+    label: 'Security',
+    body: 'Passkeys, sessions, and two-factor authentication.',
+  },
+  {
+    value: 'notifications',
+    label: 'Notifications',
+    body: 'Email and push notification preferences.',
+  },
+  { value: 'integrations', label: 'Integrations', body: 'Connected apps and API tokens.' },
+] as const;
+
+function OverflowExample({ fill = false }: { fill?: boolean }) {
+  return (
+    <Tabs.Root defaultValue='account' style={fill ? styles.tabsFill : styles.tabsMaxWidth}>
+      <Tabs.List variant='button' background fill={fill}>
+        {overflowTabs.map(tab => (
+          <Tabs.Tab key={tab.value} value={tab.value}>
+            {tab.label}
+          </Tabs.Tab>
+        ))}
+      </Tabs.List>
+      {overflowTabs.map(tab => (
+        <Tabs.Panel key={tab.value} value={tab.value}>
+          <Text size='bodySm' color='secondary'>
+            {tab.body}
+          </Text>
+        </Tabs.Panel>
+      ))}
+    </Tabs.Root>
+  );
+}
 
 function PageComponent() {
   return (
@@ -191,53 +246,19 @@ function PageComponent() {
         <Text as='p' size='bodySm' color='secondary' style={docStyles.sectionTitle}>
           When tabs don't fit, trailing items collapse into a More menu automatically.
         </Text>
-        <div {...stylex.props(docStyles.previewColumn, styles.overflowPreview)}>
-          <Tabs.Root defaultValue='account'>
-            <Tabs.List variant='button' background fill>
-              <Tabs.Tab value='account'>Account</Tabs.Tab>
-              <Tabs.Tab value='settings'>Settings</Tabs.Tab>
-              <Tabs.Tab value='billing'>Billing</Tabs.Tab>
-              <Tabs.Tab value='team'>Team</Tabs.Tab>
-              <Tabs.Tab value='security'>Security</Tabs.Tab>
-              <Tabs.Tab value='notifications'>Notifications</Tabs.Tab>
-              <Tabs.Tab value='integrations'>Integrations</Tabs.Tab>
-            </Tabs.List>
-            <Tabs.Panel value='account'>
-              <Text size='bodySm' color='secondary'>
-                Manage your account details and profile information.
-              </Text>
-            </Tabs.Panel>
-            <Tabs.Panel value='settings'>
-              <Text size='bodySm' color='secondary'>
-                Configure your notification preferences and privacy settings.
-              </Text>
-            </Tabs.Panel>
-            <Tabs.Panel value='billing'>
-              <Text size='bodySm' color='secondary'>
-                View your billing history and update payment methods.
-              </Text>
-            </Tabs.Panel>
-            <Tabs.Panel value='team'>
-              <Text size='bodySm' color='secondary'>
-                Invite teammates and manage roles.
-              </Text>
-            </Tabs.Panel>
-            <Tabs.Panel value='security'>
-              <Text size='bodySm' color='secondary'>
-                Passkeys, sessions, and two-factor authentication.
-              </Text>
-            </Tabs.Panel>
-            <Tabs.Panel value='notifications'>
-              <Text size='bodySm' color='secondary'>
-                Email and push notification preferences.
-              </Text>
-            </Tabs.Panel>
-            <Tabs.Panel value='integrations'>
-              <Text size='bodySm' color='secondary'>
-                Connected apps and API tokens.
-              </Text>
-            </Tabs.Panel>
-          </Tabs.Root>
+        <div {...stylex.props(docStyles.previewColumn)}>
+          <OverflowExample />
+        </div>
+      </section>
+      <section {...stylex.props(docStyles.section)}>
+        <Text as='h2' size='label' weight='medium' color='secondary' style={docStyles.sectionTitle}>
+          Overflow with fill
+        </Text>
+        <Text as='p' size='bodySm' color='secondary' style={docStyles.sectionTitle}>
+          Visible tabs stretch to fill the list; overflow still spills into More.
+        </Text>
+        <div {...stylex.props(docStyles.previewColumn)}>
+          <OverflowExample fill />
         </div>
       </section>
     </>

@@ -61,6 +61,8 @@ interface TabsListContextValue {
   size: TabsSize;
   background: boolean;
   fill: boolean;
+  /** False until the first overflow fit pass — avoid fill-flex squashing pre-measure. */
+  overflowReady: boolean;
   registerTab: (tab: Omit<TabRegistration, 'width'> & { width?: number }) => void;
   updateTabWidth: (id: string, width: number) => void;
   unregisterTab: (id: string) => void;
@@ -230,9 +232,13 @@ const listStyles = stylex.create({
     width: 'fit-content',
     maxWidth: '100%',
     minWidth: 0,
+    // Clip tabs that don't fit until the first fit pass culls them into More —
+    // avoids both overflow-item flash and a visibility:hidden whole-list flash.
+    overflow: 'hidden',
   },
   fill: {
     width: '100%',
+    alignSelf: 'stretch',
   },
   underline: {
     gap: spacing.s4,
@@ -366,7 +372,7 @@ function MoreOverflow({
         </span>
       </Menu.Trigger>
       <Menu.Portal>
-        <Menu.Positioner sideOffset={4}>
+        <Menu.Positioner align='end' sideOffset={4}>
           <Menu.Popup>
             <Menu.RadioGroup
               value={activeValue}
@@ -445,6 +451,7 @@ function List({
 
   const isTabVisible = useCallback(
     (id: string) => {
+      // Until the first fit pass, keep all tabs mounted; overflow:hidden clips the rest.
       if (visibleCount === null) return true;
       const index = orderRef.current.indexOf(id);
       return index > -1 && index < visibleCount;
@@ -454,42 +461,65 @@ function List({
 
   const recompute = useCallback(() => {
     const listEl = listRef.current;
-    if (!listEl || orderedTabs.length === 0) return;
+    if (!listEl) return;
 
-    const styles = getComputedStyle(listEl);
-    const padding =
-      (Number.parseFloat(styles.paddingLeft) || 0) + (Number.parseFloat(styles.paddingRight) || 0);
-    const containerWidth = listEl.clientWidth - padding;
-    if (containerWidth <= 0) return;
-
-    const widths = orderedTabs.map(t => Math.max(t.width, 1));
-    if (widths.some(w => w <= 1) && visibleCount === null) {
-      // Wait until tabs have reported real widths.
+    if (orderedTabs.length === 0) {
+      setVisibleCount(0);
       return;
     }
+
+    const widths = orderedTabs.map(t => t.width);
+    if (widths.some(w => w <= 0)) {
+      // Wait until measure probes have reported real widths.
+      return;
+    }
+
+    const computed = getComputedStyle(listEl);
+    const listPadding =
+      (Number.parseFloat(computed.paddingLeft) || 0) +
+      (Number.parseFloat(computed.paddingRight) || 0);
+
+    // Fill lists are width 100%, so clientWidth is the constraint.
+    // Intrinsic lists are fit-content — measuring them compares content to itself
+    // and falsely overflows. Use the parent content box as available room instead.
+    let containerWidth: number;
+    if (fill) {
+      containerWidth = listEl.clientWidth - listPadding;
+    } else {
+      const constraintEl = listEl.parentElement ?? listEl;
+      const parentStyles = getComputedStyle(constraintEl);
+      const parentPadding =
+        (Number.parseFloat(parentStyles.paddingLeft) || 0) +
+        (Number.parseFloat(parentStyles.paddingRight) || 0);
+      containerWidth = constraintEl.clientWidth - parentPadding - listPadding;
+    }
+
+    if (containerWidth <= 0) return;
 
     const moreWidth = moreMeasureRef.current?.offsetWidth ?? 36;
     const next = fitVisibleCount(containerWidth, widths, moreWidth, gapPx);
     setVisibleCount(prev => (prev === next ? prev : next));
-  }, [gapPx, orderedTabs, visibleCount]);
+  }, [fill, gapPx, orderedTabs]);
 
   useLayoutEffect(() => {
     const listEl = listRef.current;
     if (!listEl) return;
 
-    const frame = requestAnimationFrame(() => recompute());
+    const constraintEl = listEl.parentElement ?? listEl;
+    recompute();
     const ro = new ResizeObserver(() => recompute());
     ro.observe(listEl);
+    if (constraintEl !== listEl) {
+      ro.observe(constraintEl);
+    }
     return () => {
-      cancelAnimationFrame(frame);
       ro.disconnect();
     };
   }, [recompute]);
 
+  const overflowReady = visibleCount !== null;
   const overflowItems =
-    visibleCount !== null && visibleCount < orderedTabs.length
-      ? orderedTabs.slice(visibleCount)
-      : [];
+    overflowReady && visibleCount < orderedTabs.length ? orderedTabs.slice(visibleCount) : [];
 
   const listContext = useMemo<TabsListContextValue>(
     () => ({
@@ -497,6 +527,7 @@ function List({
       size: sizeProp,
       background: withBackground,
       fill,
+      overflowReady,
       registerTab,
       updateTabWidth,
       unregisterTab,
@@ -508,6 +539,7 @@ function List({
       sizeProp,
       withBackground,
       fill,
+      overflowReady,
       registerTab,
       updateTabWidth,
       unregisterTab,
@@ -571,6 +603,7 @@ const tabStyles = stylex.create({
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
     gap: spacing.s2,
     fontWeight: 500,
     backgroundColor: 'transparent',
@@ -719,6 +752,7 @@ function Tab({ style, ref, children, leading, trailing, value, disabled, ...prop
     variant,
     size: sizeProp,
     fill,
+    overflowReady,
     registerTab,
     updateTabWidth,
     unregisterTab,
@@ -728,6 +762,7 @@ function Tab({ style, ref, children, leading, trailing, value, disabled, ...prop
   const tabRef = useRef<HTMLElement | null>(null);
   const measureRef = useRef<HTMLSpanElement | null>(null);
   const visible = isTabVisible(id);
+  // Stretch only after fit — pre-measure fill would squash every tab into the list.
   const active = activeValue === value;
   const wasActiveRef = useRef(active);
   const durationRef = useRef(0);
@@ -801,7 +836,7 @@ function Tab({ style, ref, children, leading, trailing, value, disabled, ...prop
             variant === 'button' && buttonStyles.base,
             variant === 'button' && buttonStyles[sizeProp],
             variant === 'button' && (active ? tabStyles.buttonActive : tabStyles.buttonInactive),
-            fill && tabStyles.fill,
+            fill && overflowReady && tabStyles.fill,
             ...styleArray(style),
           )}
           {...props}
