@@ -73,7 +73,7 @@ const scrollbarStyles = stylex.create({
     padding: size.s4,
     opacity: 0,
     pointerEvents: 'none',
-    transition: 'opacity 0.2s',
+    transition: 'opacity 0.15s ease-out',
     ':is([data-hovering], [data-scrolling])': {
       opacity: 1,
       pointerEvents: 'auto',
