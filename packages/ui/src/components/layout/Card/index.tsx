@@ -12,7 +12,7 @@ import { SurfaceLevel } from '../../providers/SurfaceLevel';
 type CardVariant = 'filled' | 'outline';
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 type CardDirection = 'row' | 'column';
-type CardGap = 'none' | 's2' | 's4' | 's8' | 's16' | 's24' | 's32' | 's40';
+type CardGap = 'none' | 's2' | 's4' | 's8' | 's12' | 's16' | 's24' | 's32' | 's40';
 
 interface CardOwnProps {
   variant?: CardVariant;
@@ -45,6 +45,7 @@ const gaps = stylex.create({
   s2: { gap: spacing.s2 },
   s4: { gap: spacing.s4 },
   s8: { gap: spacing.s8 },
+  s12: { gap: spacing.s12 },
   s16: { gap: spacing.s16 },
   s24: { gap: spacing.s24 },
   s32: { gap: spacing.s32 },

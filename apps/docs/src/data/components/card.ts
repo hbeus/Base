@@ -21,7 +21,7 @@ export const cardProps: PropDef[] = [
   },
   {
     name: 'gap',
-    type: "'none' | 's2' | 's4' | 's8' | 's16' | 's24' | 's32' | 's40'",
+    type: "'none' | 's2' | 's4' | 's8' | 's12' | 's16' | 's24' | 's32' | 's40'",
     default: "'s16'",
     description: 'Gap between child elements.',
   },
