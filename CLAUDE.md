@@ -4,12 +4,12 @@
 
 TanStack Start (SSR/Nitro) + TanStack Router (folder-based) + React Query · StyleX · Base UI (`@base-ui/react`) · motion.dev (`motion/react`) · Zustand · Drizzle ORM + PostgreSQL (pgvector) · Tabler Icons (`@tabler/icons-react`) · Biome · Vitest · Node 22, pnpm 11
 
-Component library: `@base/ui` (Base UI + StyleX + motion). Shared providers: `@base/shared` (ThemeProvider, MotionProvider, QueryProvider, theme server fn, global CSS). Optional 3D: `@base/canvas` (R3F + drei + DialKit).
+Component library: `@base/ui` (Base UI + StyleX + motion). Shared providers: `@base/shared` (ThemeProvider, MotionProvider, QueryProvider, theme server fn, global CSS). Optional 3D: `@base/canvas` (R3F + drei + DialKit). GPU backgrounds: `@base/shaders` (OGL + compound `Shader` API; see `docs/adr/0001-shaders-package-route.md`).
 
 ## Apps
 
 - **`apps/web`** (port 3000) — App template/scaffolding with data fetching patterns, route structure, server functions
-- **`apps/docs`** (port 3001) — UI component documentation site for `@base/ui`. File-tree sidebar, individual route per component. Public deployment at `base.beus.dev`
+- **`apps/docs`** (port 3001) — UI docs for `@base/ui`, plus Shaders (`/shaders`) for `@base/shaders`. File-tree sidebar. Public deployment at `base.beus.dev`
 
 ## Design rules
 
