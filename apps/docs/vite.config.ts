@@ -24,6 +24,7 @@ export default defineConfig({
         '~/*': [path.resolve(__dirname, 'src', '*')],
         '@base/ui/*': [path.resolve(__dirname, '..', '..', 'packages', 'ui', 'src', '*')],
         '@base/shared/*': [path.resolve(__dirname, '..', '..', 'packages', 'shared', 'src', '*')],
+        '@base/shaders/*': [path.resolve(__dirname, '..', '..', 'packages', 'shaders', 'src', '*')],
       },
     }),
     tanstackStart({

@@ -365,6 +365,14 @@ function DocsSidebar() {
           </TreeView.Item>
         </TreeView.Group>
       </TreeView.Group>
+      <TreeView.Group label='Shaders'>
+        <TreeView.Item href='/shaders' onClick={handleClick}>
+          Overview
+        </TreeView.Item>
+        <TreeView.Item href='/shaders/aurora' onClick={handleClick}>
+          Aurora
+        </TreeView.Item>
+      </TreeView.Group>
       <TreeView.Group label='Tokens'>
         <TreeView.Item href='/tokens/overview' onClick={handleClick}>
           Overview
