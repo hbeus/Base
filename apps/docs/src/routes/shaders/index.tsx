@@ -1,13 +1,23 @@
 import { Flex, Text } from '@base/ui';
 import { createFileRoute, Link } from '@tanstack/react-router';
+import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { InlineCode } from '~/components/InlineCode';
+import AuroraTokens from '~/examples/shaders/aurora-tokens';
+import { highlightCode } from '~/lib/highlight';
+
+import tokensRaw from '~/examples/shaders/aurora-tokens.tsx?raw';
 
 export const Route = createFileRoute('/shaders/')({
+  loader: async () => {
+    return { tokensRaw: await highlightCode({ data: { code: tokensRaw } }) };
+  },
   component: ShadersOverviewPage,
 });
 
 function ShadersOverviewPage() {
+  const highlighted = Route.useLoaderData();
+
   return (
     <DocsPage
       title='Shaders'
@@ -24,7 +34,7 @@ function ShadersOverviewPage() {
           </Text>
           <pre>
             {`pnpm add @base/shaders --filter <app>
-import { Shader } from '@base/shaders'`}
+import { Shader, resolveColor } from '@base/shaders'`}
           </pre>
         </Flex>
 
@@ -34,7 +44,7 @@ import { Shader } from '@base/shaders'`}
           </Text>
           <Text color='secondary'>
             <InlineCode>Shader.Root</InlineCode> owns the canvas lifecycle. Exactly one named Preset
-            (POC: <InlineCode>Shader.Aurora</InlineCode>) registers as a headless child.
+            registers as a headless child.
           </Text>
           <pre>
             {`<Shader.Root style={{ height: 320 }} fallback={…}>
@@ -51,7 +61,28 @@ import { Shader } from '@base/shaders'`}
             Client-only mount, RAF paused when offscreen or the tab is hidden, DPR capped,{' '}
             <InlineCode>prefers-reduced-motion</InlineCode> freezes after a static frame, and{' '}
             <InlineCode>fallback</InlineCode> stays visible until Reveal (first successful frame).
+            Pointer-aware presets opt in via registration; Root tracks the host in 0–1 bottom-left
+            coords and passes <InlineCode>null</InlineCode> under reduced motion.
           </Text>
+        </Flex>
+
+        <Flex direction='column' gap='s8'>
+          <Text as='h2' size='title'>
+            Colors & tokens
+          </Text>
+          <Text color='secondary'>
+            Preset color props accept hex, CSS colors, and <InlineCode>var(--token)</InlineCode>.
+            Resolution goes through public <InlineCode>resolveColor</InlineCode> (no StyleX /{' '}
+            <InlineCode>@base/ui</InlineCode> dependency). Prefer resolving against the Root host so
+            cascade matches the shader surface.
+          </Text>
+          <ComponentExample
+            title='CSS variables'
+            code={highlighted.tokensRaw}
+            rawCode={tokensRaw}
+          >
+            <AuroraTokens />
+          </ComponentExample>
         </Flex>
 
         <Flex direction='column' gap='s8'>
@@ -59,11 +90,10 @@ import { Shader } from '@base/shaders'`}
             Presets
           </Text>
           <Text color='secondary'>
-            Start with{' '}
-            <Link to='/shaders/aurora'>
-              Aurora
-            </Link>{' '}
-            — DialKit-tuned live preview and props.
+            <Link to='/shaders/aurora'>Aurora</Link>, <Link to='/shaders/warp'>Warp</Link>,{' '}
+            <Link to='/shaders/grain'>Grain</Link>, <Link to='/shaders/hex'>Hex</Link>,{' '}
+            <Link to='/shaders/ripple'>Ripple</Link> (pointer-aware) — each with DialKit playgrounds
+            and props.
           </Text>
         </Flex>
       </Flex>

@@ -5,13 +5,13 @@ export const auroraProps: PropDef[] = [
     name: 'colorA',
     type: 'string',
     default: "'#0b1d36'",
-    description: 'Primary aurora color (CSS hex).',
+    description: 'Primary aurora color (hex, CSS color, or var(--token)).',
   },
   {
     name: 'colorB',
     type: 'string',
     default: "'#3d8bfd'",
-    description: 'Secondary / highlight color (CSS hex).',
+    description: 'Secondary / highlight color (hex, CSS color, or var(--token)).',
   },
   {
     name: 'speed',

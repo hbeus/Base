@@ -24,6 +24,6 @@ export const shaderRootProps: PropDef[] = [
     name: 'children',
     type: 'React.ReactNode',
     default: 'undefined',
-    description: 'Exactly one named Preset (e.g. Shader.Aurora) for the POC.',
+    description: 'Exactly one named Preset (e.g. Shader.Aurora, Shader.Ripple).',
   },
 ];

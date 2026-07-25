@@ -7,14 +7,16 @@ import { auroraProps } from '~/data/shaders/aurora';
 import { shaderRootProps } from '~/data/shaders/root';
 import AuroraFallback from '~/examples/shaders/aurora-fallback';
 import AuroraHero from '~/examples/shaders/aurora-hero';
+import AuroraTokens from '~/examples/shaders/aurora-tokens';
 import { highlightCode } from '~/lib/highlight';
 
 import fallbackRaw from '~/examples/shaders/aurora-fallback.tsx?raw';
 import heroRaw from '~/examples/shaders/aurora-hero.tsx?raw';
+import tokensRaw from '~/examples/shaders/aurora-tokens.tsx?raw';
 
 export const Route = createFileRoute('/shaders/aurora')({
   loader: async () => {
-    const sources = { heroRaw, fallbackRaw };
+    const sources = { heroRaw, fallbackRaw, tokensRaw };
     const entries = await Promise.all(
       Object.entries(sources).map(async ([key, code]) => {
         const html = await highlightCode({ data: { code } });
@@ -40,6 +42,10 @@ function AuroraPage() {
 
       <ComponentExample title='Fallback' code={highlighted.fallbackRaw} rawCode={fallbackRaw}>
         <AuroraFallback />
+      </ComponentExample>
+
+      <ComponentExample title='CSS variables' code={highlighted.tokensRaw} rawCode={tokensRaw}>
+        <AuroraTokens />
       </ComponentExample>
 
       <Text as='h2' size='title'>
