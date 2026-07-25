@@ -360,6 +360,9 @@ function DocsSidebar() {
           <TreeView.Item href='/components/overlays/tooltip' onClick={handleClick}>
             Tooltip
           </TreeView.Item>
+          <TreeView.Item href='/components/overlays/toast' onClick={handleClick}>
+            Toast
+          </TreeView.Item>
         </TreeView.Group>
       </TreeView.Group>
       <TreeView.Group label='Tokens'>
@@ -372,8 +375,13 @@ function DocsSidebar() {
         <TreeView.Item href='/tokens/typography' onClick={handleClick}>
           Typography
         </TreeView.Item>
-        <TreeView.Item href='/tokens/surface' onClick={handleClick}>
+      </TreeView.Group>
+      <TreeView.Group label='Utilities'>
+        <TreeView.Item href='/utilities/surface' onClick={handleClick}>
           Surface
+        </TreeView.Item>
+        <TreeView.Item href='/utilities/scroll-fade' onClick={handleClick}>
+          Scroll Fade
         </TreeView.Item>
       </TreeView.Group>
       <TreeView.Group label='Guides'>

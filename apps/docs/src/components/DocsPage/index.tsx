@@ -11,7 +11,7 @@ interface DocsPageProps {
 
 export function DocsPage({ title, description, children }: DocsPageProps) {
   return (
-    <Flex direction='column' gap='s24'>
+    <Flex direction='column' gap='s40'>
       <header {...stylex.props(docStyles.header)}>
         <Text as='h1' size='display'>
           {title}

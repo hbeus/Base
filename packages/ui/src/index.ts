@@ -248,7 +248,11 @@ export {
 } from './components/overlays/PreviewCard';
 export {
   Toast,
+  type ToastBodyProps,
+  type ToastContentProps,
   type ToastDescriptionProps,
+  type ToastIconProps,
+  type ToastPosition,
   type ToastRootProps,
   type ToastTitleProps,
   type ToastViewportProps,
