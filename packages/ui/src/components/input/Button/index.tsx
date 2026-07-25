@@ -59,7 +59,6 @@ export const buttonStyles = stylex.create({
     backgroundColor: 'transparent',
     color: colors.foregroundSecondary,
     ':hover': {
-      backgroundColor: colors.lighten4,
       color: colors.foregroundPrimary,
     },
   },
@@ -140,6 +139,7 @@ function ButtonSurface({
   ...props
 }: ButtonProps) {
   const isPrimary = variant === 'primary';
+  const usesSurfaceHover = isPrimary || variant === 'ghost';
   const surface = useSurface();
   const level = useSurfaceLevel();
 
@@ -154,7 +154,7 @@ function ButtonSurface({
         buttonStyles.base,
         buttonStyles[variant],
         isPrimary && surface,
-        isPrimary && surfaceHover[level],
+        usesSurfaceHover && surfaceHover[level],
         buttonStyles[size],
         rounded && shapeStyles.rounded,
         fill && fillStyles.fill,

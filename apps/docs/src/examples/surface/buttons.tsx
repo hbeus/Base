@@ -7,10 +7,16 @@ function SurfaceCard({ label, children }: { label: string; children?: ReactNode 
       <Text size='bodySm' weight='medium'>
         {label}
       </Text>
-      <Flex direction='row' gap='s8' wrap>
-        <Button variant='primary'>Primary</Button>
-        <Button variant='accent'>Accent</Button>
-        <Button variant='ghost'>Ghost</Button>
+      <Flex direction='row' gap='s8'>
+        <Button variant='primary' fill>
+          Primary
+        </Button>
+        <Button variant='accent' fill>
+          Accent
+        </Button>
+        <Button variant='ghost' fill>
+          Ghost
+        </Button>
       </Flex>
       {children}
     </Card>
@@ -23,10 +29,16 @@ export default function SurfaceButtons() {
       <Text size='bodySm' weight='medium'>
         Level 0 (page)
       </Text>
-      <Flex direction='row' gap='s8' wrap>
-        <Button variant='primary'>Primary</Button>
-        <Button variant='accent'>Accent</Button>
-        <Button variant='ghost'>Ghost</Button>
+      <Flex direction='row' gap='s8'>
+        <Button variant='primary' fill>
+          Primary
+        </Button>
+        <Button variant='accent' fill>
+          Accent
+        </Button>
+        <Button variant='ghost' fill>
+          Ghost
+        </Button>
       </Flex>
       <SurfaceCard label='Level 100'>
         <SurfaceCard label='Level 200'>
