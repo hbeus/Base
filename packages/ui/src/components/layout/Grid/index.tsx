@@ -25,8 +25,8 @@ export type GridProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = Pol
 >;
 
 const styles = stylex.create({
-  grid: { display: 'grid' },
-  inlineGrid: { display: 'inline-grid' },
+  grid: { display: 'grid', width: '100%' },
+  inlineGrid: { display: 'inline-grid', width: '100%' },
 });
 
 const columns = stylex.create({
@@ -106,7 +106,7 @@ export const Grid = function Grid({
 }: GridProps) {
   return (
     <Component
-      data-slot="grid"
+      data-slot='grid'
       ref={ref}
       {...stylex.props(
         inline ? styles.inlineGrid : styles.grid,

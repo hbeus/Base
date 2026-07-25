@@ -22,7 +22,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, ...props }: ScrollAreaRootProps) {
   return (
     <BaseScrollArea.Root
-      data-slot="scroll-area"
+      data-slot='scroll-area'
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
       {...props}
@@ -47,7 +47,7 @@ const viewportStyles = stylex.create({
 function Viewport({ style, ref, ...props }: ScrollAreaViewportProps) {
   return (
     <BaseScrollArea.Viewport
-      data-slot="scroll-area-viewport"
+      data-slot='scroll-area-viewport'
       ref={ref}
       {...stylex.props(viewportStyles.base, ...styleArray(style))}
       {...props}
@@ -57,7 +57,7 @@ function Viewport({ style, ref, ...props }: ScrollAreaViewportProps) {
 
 /* ---------- Content ---------- */
 function Content(props: ComponentProps<typeof BaseScrollArea.Content>) {
-  return <BaseScrollArea.Content data-slot="scroll-area-content" {...props} />;
+  return <BaseScrollArea.Content data-slot='scroll-area-content' {...props} />;
 }
 
 /* ---------- Scrollbar ---------- */
@@ -70,15 +70,24 @@ const scrollbarStyles = stylex.create({
     display: 'flex',
     touchAction: 'none',
     userSelect: 'none',
-    padding: size.s1,
+    padding: size.s4,
+    opacity: 0,
+    pointerEvents: 'none',
     transition: 'opacity 0.2s',
+    ':is([data-hovering], [data-scrolling])': {
+      opacity: 1,
+      pointerEvents: 'auto',
+    },
+    ':is([data-scrolling])': {
+      transitionDuration: '0s',
+    },
   },
   vertical: {
-    width: size.s8,
+    width: size.s12,
   },
   horizontal: {
     flexDirection: 'column',
-    height: size.s8,
+    height: size.s6,
   },
 });
 
@@ -86,7 +95,7 @@ function Scrollbar({ style, ref, ...props }: ScrollAreaScrollbarProps) {
   const orientation = props.orientation ?? 'vertical';
   return (
     <BaseScrollArea.Scrollbar
-      data-slot="scroll-area-scrollbar"
+      data-slot='scroll-area-scrollbar'
       ref={ref}
       {...stylex.props(scrollbarStyles.base, scrollbarStyles[orientation], ...styleArray(style))}
       {...props}
@@ -114,7 +123,7 @@ const thumbStyles = stylex.create({
 function Thumb({ style, ref, ...props }: ScrollAreaThumbProps) {
   return (
     <BaseScrollArea.Thumb
-      data-slot="scroll-area-thumb"
+      data-slot='scroll-area-thumb'
       ref={ref}
       {...stylex.props(thumbStyles.base, ...styleArray(style))}
       {...props}
@@ -124,7 +133,7 @@ function Thumb({ style, ref, ...props }: ScrollAreaThumbProps) {
 
 /* ---------- Corner ---------- */
 function Corner(props: ComponentProps<typeof BaseScrollArea.Corner>) {
-  return <BaseScrollArea.Corner data-slot="scroll-area-corner" {...props} />;
+  return <BaseScrollArea.Corner data-slot='scroll-area-corner' {...props} />;
 }
 
 /* ---------- Export ---------- */

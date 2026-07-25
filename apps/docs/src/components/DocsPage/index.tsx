@@ -13,10 +13,10 @@ export function DocsPage({ title, description, children }: DocsPageProps) {
   return (
     <Flex direction='column' gap='s24'>
       <header {...stylex.props(docStyles.header)}>
-        <Text as='h1' size='display' weight='semibold'>
+        <Text as='h1' size='display'>
           {title}
         </Text>
-        <Text as='p' size='bodySm' color='secondary'>
+        <Text as='p' color='secondary'>
           {description}
         </Text>
       </header>

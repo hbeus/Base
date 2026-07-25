@@ -1,11 +1,11 @@
-import { Card, Flex, Text } from '@base/ui';
+import { Button, Card, Flex, ScrollArea, Text } from '@base/ui';
 import { borders } from '@base/ui/tokens/borders.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
-import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
-import { IconCheck, IconChevronDown, IconCopy } from '@tabler/icons-react';
+import { IconCheck, IconCopy } from '@tabler/icons-react';
+import { motion } from 'motion/react';
 import { type ReactNode, useCallback, useRef, useState } from 'react';
 
 interface ComponentExampleProps {
@@ -15,6 +15,9 @@ interface ComponentExampleProps {
   rawCode: string;
   defaultExpanded?: boolean;
 }
+
+const CODE_HEIGHT_COLLAPSED = 120;
+const CODE_HEIGHT_EXPANDED = 320;
 
 export function ComponentExample({
   title,
@@ -52,23 +55,32 @@ export function ComponentExample({
 
       <Card variant='outline' gap='none' padding='none' style={styles.container}>
         <div {...stylex.props(styles.preview)}>{children}</div>
-        <Flex direction='row' gap='s16' align='center' justify='between' style={styles.toolbar}>
-          <button
-            type='button'
-            onClick={() => setExpanded(v => !v)}
-            {...stylex.props(styles.toggleButton)}
+
+        <div {...stylex.props(styles.codeBlockContainer)}>
+          <div {...stylex.props(styles.toggleButtonContainer)}>
+            <Button onClick={() => setExpanded(v => !v)} variant='accent' size='xs' rounded>
+              {expanded ? 'Hide code' : 'Show code'}
+            </Button>
+          </div>
+          <motion.div
+            initial={false}
+            animate={{ height: expanded ? CODE_HEIGHT_EXPANDED : CODE_HEIGHT_COLLAPSED }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            {...stylex.props(styles.codeBlock)}
           >
-            <IconChevronDown
-              size={14}
-              {...stylex.props(styles.chevron, expanded && styles.chevronExpanded)}
-            />
-            <span>{expanded ? 'Hide code' : 'Show code'}</span>
-          </button>
-        </Flex>
-        <div
-          {...stylex.props(styles.codeBlock, expanded && styles.codeBlockExpanded)}
-          dangerouslySetInnerHTML={{ __html: code }}
-        />
+            <ScrollArea.Root style={styles.scrollArea}>
+              <ScrollArea.Viewport style={styles.viewport}>
+                <ScrollArea.Content dangerouslySetInnerHTML={{ __html: code }} />
+              </ScrollArea.Viewport>
+              <ScrollArea.Scrollbar>
+                <ScrollArea.Thumb />
+              </ScrollArea.Scrollbar>
+              <ScrollArea.Scrollbar orientation='horizontal'>
+                <ScrollArea.Thumb />
+              </ScrollArea.Scrollbar>
+            </ScrollArea.Root>
+          </motion.div>
+        </div>
       </Card>
     </Flex>
   );
@@ -96,29 +108,12 @@ const styles = stylex.create({
     borderTopColor: colors.border,
     backgroundColor: colors.lighten4,
   },
-  toggleButton: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: spacing.s6,
-    backgroundColor: 'transparent',
-    borderWidth: 0,
-    color: colors.foregroundSecondary,
-    cursor: 'pointer',
-    fontFamily: typography.fontSans,
-    fontSize: typography.captionSize,
-    lineHeight: typography.captionLineHeight,
-    padding: spacing.s4,
-    borderRadius: radii.r4,
-    ':hover': {
-      color: colors.foregroundPrimary,
-    },
-  },
-  chevron: {
-    transition: 'transform 0.15s',
-    transform: 'rotate(0deg)',
-  },
-  chevronExpanded: {
-    transform: 'rotate(180deg)',
+  toggleButtonContainer: {
+    position: 'absolute',
+    bottom: spacing.s16,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1,
   },
   copyButton: {
     display: 'flex',
@@ -134,16 +129,19 @@ const styles = stylex.create({
       color: colors.foregroundPrimary,
     },
   },
+  codeBlockContainer: {
+    position: 'relative',
+  },
   codeBlock: {
-    overflowX: 'auto',
-    overflowY: 'auto',
-    maxHeight: '120px',
     borderTopWidth: borders.default,
     borderTopStyle: 'solid',
     borderTopColor: colors.border,
-    overscrollBehavior: 'none',
   },
-  codeBlockExpanded: {
-    maxHeight: '300px',
+  scrollArea: {
+    height: '100%',
+  },
+  viewport: {
+    overflowX: 'scroll',
+    overscrollBehavior: 'none',
   },
 });

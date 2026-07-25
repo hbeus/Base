@@ -1,19 +1,10 @@
 import { Card, Flex, type SurfaceLevelValue, Text } from '@base/ui';
-import { radii } from '@base/ui/tokens/radii.stylex';
 import * as stylex from '@stylexjs/stylex';
 
 const styles = stylex.create({
   item: {
     width: '100%',
     justifyContent: 'flex-end',
-    firstOfType: {
-      borderTopLeftRadius: radii.r24,
-      borderTopRightRadius: radii.r24,
-    },
-    lastOfType: {
-      borderBottomLeftRadius: radii.r24,
-      borderBottomRightRadius: radii.r24,
-    },
   },
 });
 
