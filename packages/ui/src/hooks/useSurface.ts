@@ -13,7 +13,6 @@ const surfaceBg = stylex.create({
   500: { backgroundColor: colors.surface500 },
 });
 
-/** Hover steps to the next surface; 500 uses hover-only surface600. */
 export const surfaceHover = stylex.create({
   0: { ':hover': { backgroundColor: colors.surface100 } },
   100: { ':hover': { backgroundColor: colors.surface200 } },

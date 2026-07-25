@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
 
-/**
- * Tracks which section is currently active based on scroll position.
- * A section becomes active when its top edge scrolls past 40% of the
- * viewport height. The last section past the threshold wins.
- */
 export function useActiveSection(ids: string[]): string | null {
   const [activeId, setActiveId] = useState<string | null>(null);
 

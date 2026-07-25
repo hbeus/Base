@@ -1,9 +1,7 @@
 import { createColumnHelper } from '@tanstack/react-table';
 
 export interface GridColumnMeta {
-  /** Fractional unit weight for CSS Grid (default: 1) */
   fr?: number;
-  /** Minimum column width in px (default: 100) */
   minWidth?: number;
 }
 

@@ -12,7 +12,7 @@ import {
   type ThemeMode,
 } from './theme-config';
 
-// ——— Helpers ———
+/* ---------- Helpers ---------- */
 
 function n4(v: number): string {
   return Number(v.toFixed(4)).toString();
@@ -31,7 +31,7 @@ function tint(L: number, chroma: number, hue: number | null): string {
   return hue !== null && chroma > 0 ? lch(L, chroma, hue) : lch(L, 0, 0);
 }
 
-// ——— Generator ———
+/* ---------- Generator ---------- */
 
 export function generateTheme(config: ThemeConfig): Schemes {
   return {
@@ -55,7 +55,6 @@ function generateMode(
 
   const nt = (L: number) => tint(L, neutralTint, brandHue);
 
-  // State colors
   const stateColor = (key: StateKey) => {
     const cfg = STATE_CONFIG[key];
     const { lightness, vividness } = cfg[mode];
@@ -63,16 +62,13 @@ function generateMode(
     return vivid(lightness, hue, vividness);
   };
 
-  // Foreground / background
   const fgPrimary = nt(fg.primary[mode].lightness);
   const fgInverse = nt(fg.inverse[mode].lightness);
 
-  // Highlight
   const hl = HIGHLIGHT_CONFIG[mode];
   const highlightHue = achromatic ? STATE_CONFIG.highlight.hue : brandHue;
   const highlightBase = vivid(hl.lightness, highlightHue, hl.vividness);
 
-  // Accent button
   const ab = ACCENT_CONFIG.bg[mode];
   const ah = ACCENT_CONFIG.hover[mode];
   let accentBg: string;
@@ -89,7 +85,6 @@ function generateMode(
     accentHover = vivid(ah.lightness, brandHue, ah.vividness);
   }
 
-  // Primary button (semi-transparent overlay)
   const pb = PRIMARY_BUTTON_CONFIG;
   let primaryBg: string;
   let primaryFg: string;
@@ -107,7 +102,6 @@ function generateMode(
     primaryHover = `${btnColor} / ${pb.opacity[mode].hover}`;
   }
 
-  // Overlays
   const lightenColor = isDark ? (achromatic ? '1 0 0' : tint(1, neutralTint, brandHue)) : '0 0 0';
   const darkenColor = isDark ? '0 0 0' : '1 0 0';
 
@@ -162,7 +156,7 @@ function generateMode(
   };
 }
 
-// ——— StyleX mapping ———
+/* ---------- StyleX mapping ---------- */
 
 export function modeToVars(mode: ThemeMode) {
   const op = OPACITY_CONFIG;

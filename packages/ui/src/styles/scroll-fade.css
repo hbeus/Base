@@ -1,5 +1,3 @@
-/* scroll-fade — scroll-aware edge fades via mask-image + scroll-driven animations */
-
 @property --scroll-fade-t {
   syntax: "<length-percentage>";
   inherits: false;

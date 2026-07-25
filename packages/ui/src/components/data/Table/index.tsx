@@ -34,9 +34,7 @@ import { Checkbox } from '../../input/Checkbox';
 import type { GridColumnMeta } from './helpers';
 import { useGridTemplate } from './useGridTemplate';
 
-/* ========================================================================== */
-/*  Cell atoms                                                                */
-/* ========================================================================== */
+/* ---------- Cell atoms ---------- */
 
 /* ---------- TextCell ---------- */
 
@@ -321,9 +319,7 @@ function DateTimeCell({ value, format, relative = false, locale, style }: DateTi
   );
 }
 
-/* ========================================================================== */
-/*  Internal components                                                       */
-/* ========================================================================== */
+/* ---------- Internal components ---------- */
 
 /* ---------- HeaderCell ---------- */
 
@@ -520,9 +516,7 @@ const containerStyles = stylex.create({
   },
 });
 
-/* ========================================================================== */
-/*  Table.Root                                                                */
-/* ========================================================================== */
+/* ---------- Table.Root ---------- */
 
 export interface TableRootProps<TData> extends BaseProps {
   data: TData[];
@@ -653,7 +647,6 @@ function Root<TData>({
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
     >
-      {/* Header */}
       {headerGroups.map((headerGroup) => (
         <div key={headerGroup.id} data-slot="table-header" {...stylex.props(rowStyles.header)} role="row">
           {headerGroup.headers.map((header) => {
@@ -709,7 +702,6 @@ function Root<TData>({
         </div>
       ))}
 
-      {/* Body */}
       {isEmpty && emptyState ? (
         <div
           data-slot="table-empty"
@@ -745,7 +737,6 @@ function Root<TData>({
         })
       )}
 
-      {/* Pagination */}
       {pagination && !isEmpty ? (
         <div
           data-slot="table-pagination"
@@ -799,9 +790,7 @@ function Root<TData>({
   );
 }
 
-/* ========================================================================== */
-/*  Export                                                                     */
-/* ========================================================================== */
+/* ---------- Export ---------- */
 
 export type { RowSelectionState, SortingState } from '@tanstack/react-table';
 

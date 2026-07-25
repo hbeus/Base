@@ -20,7 +20,6 @@ interface CardOwnProps {
   direction?: CardDirection;
   gap?: CardGap;
   darken?: boolean;
-  /** Absolute surface level for filled cards. Omit to auto-increment from parent. */
   level?: SurfaceLevelValue;
 }
 

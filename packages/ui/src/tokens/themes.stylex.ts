@@ -4,7 +4,7 @@ import * as stylex from '@stylexjs/stylex';
 
 import type { Schemes } from '../utils/theme-config';
 
-// ——— Theme data ———
+/* ---------- Theme data ---------- */
 
 export const THEME = {
   default: {
@@ -309,7 +309,7 @@ export const THEME = {
   },
 } satisfies Record<string, Schemes>;
 
-// ——— Derived types ———
+/* ---------- Derived types ---------- */
 
 export type Palette = keyof typeof THEME;
 export type ColorScheme = keyof Schemes;
@@ -318,7 +318,7 @@ export type ThemeKey = `${Palette}-${ColorScheme}`;
 export const PALETTES = Object.keys(THEME) as Palette[];
 export const COLOR_SCHEMES = Object.keys(THEME[PALETTES[0]]) as ColorScheme[];
 
-// ——— StyleX tokens ———
+/* ---------- StyleX tokens ---------- */
 
 export const colors = stylex.defineVars({
   background: 'oklch(0.12 0 0)',
@@ -638,7 +638,7 @@ export const warmLight = stylex.createTheme(colors, {
   shadowElevatedInner: 'inset 0 0 0 1px oklch(1 0 0 / 0.5)',
 });
 
-// ——— Theme switching ———
+/* ---------- Theme switching ---------- */
 
 export const themeMap: Record<ThemeKey, typeof defaultLight | null> = {
   'default-dark': null,

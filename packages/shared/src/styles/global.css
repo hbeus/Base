@@ -23,8 +23,6 @@
 @layer reset, priority1, priority2, priority3, priority4, priority5;
 
 @layer reset {
-  /* Reset — Tailwind Preflight equivalent for non-Tailwind projects */
-
   *,
   *::before,
   *::after {

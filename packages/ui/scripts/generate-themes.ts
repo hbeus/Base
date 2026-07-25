@@ -4,13 +4,13 @@ import { generateTheme, modeToVars } from '../src/utils/generate-theme';
 import type { ThemeMode } from '../src/utils/theme-config';
 import { CONFIGS } from '../src/utils/theme-config';
 
-// ——— Compute all themes ———
+/* ---------- Compute all themes ---------- */
 
 const themes = Object.fromEntries(
   Object.entries(CONFIGS).map(([name, config]) => [name, generateTheme(config)]),
 ) as Record<string, { dark: ThemeMode; light: ThemeMode }>;
 
-// ——— Serialization helpers ———
+/* ---------- Serialization helpers ---------- */
 
 function q(s: string) {
   return `'${s}'`;
@@ -53,7 +53,7 @@ function themeExportName(palette: string, mode: string) {
   return `${palette}${capitalize(mode)}`;
 }
 
-// ——— Build output ———
+/* ---------- Build output ---------- */
 
 const paletteNames = Object.keys(themes);
 
@@ -107,13 +107,13 @@ import * as stylex from '@stylexjs/stylex';
 
 import type { Schemes } from '../utils/theme-config';
 
-// ——— Theme data ———
+/* ---------- Theme data ---------- */
 
 export const THEME = {
 ${themeDataBlock},
 } satisfies Record<string, Schemes>;
 
-// ——— Derived types ———
+/* ---------- Derived types ---------- */
 
 export type Palette = keyof typeof THEME;
 export type ColorScheme = keyof Schemes;
@@ -122,7 +122,7 @@ export type ThemeKey = \`\${Palette}-\${ColorScheme}\`;
 export const PALETTES = Object.keys(THEME) as Palette[];
 export const COLOR_SCHEMES = Object.keys(THEME[PALETTES[0]]) as ColorScheme[];
 
-// ——— StyleX tokens ———
+/* ---------- StyleX tokens ---------- */
 
 export const colors = stylex.defineVars({
 ${serializeVars(themes[paletteNames[0]].dark, 2)}
@@ -130,7 +130,7 @@ ${serializeVars(themes[paletteNames[0]].dark, 2)}
 
 ${createThemeBlocks}
 
-// ——— Theme switching ———
+/* ---------- Theme switching ---------- */
 
 export const themeMap: Record<ThemeKey, typeof defaultLight | null> = {
 ${themeMapEntries}

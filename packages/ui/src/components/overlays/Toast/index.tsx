@@ -190,7 +190,6 @@ const rootStyles = stylex.create({
     ':is([data-limited])': {
       pointerEvents: 'none',
     },
-    // Swipe dismiss: continue from finger offset fully off-screen
     ':is([data-ending-style][data-swipe-direction="down"])': {
       transform: 'translateY(calc(var(--toast-swipe-movement-y, 0px) + 150%))',
     },
@@ -241,8 +240,6 @@ function Root({ style, ref, swipeDirection, ...props }: ToastRootProps) {
       swipeDirection={swipeDirection ?? defaultSwipeDirection(position)}
       render={(renderProps, state) => {
         const ending = state.transitionStatus === 'ending';
-        // Fade while ending so Base UI waits on getAnimations() for the CSS
-        // swipe fly-off to finish instead of getting stuck mid-translate.
         const animate = state.limited
           ? ({
               opacity: 0,

@@ -1,4 +1,4 @@
-// data
+/* ---------- Data ---------- */
 export {
   type ActionCellProps,
   type BadgeCellProps,
@@ -12,7 +12,7 @@ export {
   type UserCellProps,
 } from './components/data/Table';
 export { createTableHelper, type GridColumnMeta } from './components/data/Table/helpers';
-// display
+/* ---------- Display ---------- */
 export {
   Avatar,
   type AvatarFallbackProps,
@@ -38,7 +38,7 @@ export {
 } from './components/display/Progress';
 export { Separator, type SeparatorProps } from './components/display/Separator';
 
-// input
+/* ---------- Input ---------- */
 export {
   Autocomplete,
   type AutocompleteArrowProps,
@@ -131,7 +131,7 @@ export {
   type ToggleGroupRootProps,
 } from './components/input/ToggleGroup';
 
-// layout
+/* ---------- Layout ---------- */
 export { Accordion, type AccordionItemProps } from './components/layout/Accordion';
 export { Card, type CardProps } from './components/layout/Card';
 export {
@@ -148,7 +148,7 @@ export {
   type ScrollAreaThumbProps,
   type ScrollAreaViewportProps,
 } from './components/layout/ScrollArea';
-// navigation
+/* ---------- Navigation ---------- */
 export { Menubar, type MenubarProps } from './components/navigation/Menubar';
 export {
   Menu,
@@ -190,7 +190,7 @@ export {
   type TreeViewItemProps,
   type TreeViewRootProps,
 } from './components/navigation/TreeView';
-// overlays
+/* ---------- Overlays ---------- */
 export {
   AlertDialog,
   type AlertDialogBackdropProps,
@@ -262,19 +262,19 @@ export {
   type TooltipArrowProps,
   type TooltipPopupProps,
 } from './components/overlays/Tooltip';
-// providers
+/* ---------- Providers ---------- */
 export { SurfaceLevel, type SurfaceLevelProps } from './components/providers/SurfaceLevel';
-// typography
+/* ---------- Typography ---------- */
 export { Text, type TextProps } from './components/typography/Text';
 export type { SurfaceLevel as SurfaceLevelValue } from './contexts/SurfaceContext';
-// hooks
+/* ---------- Hooks ---------- */
 export { useActiveSection } from './hooks/useActiveSection';
 export { surfaceHover, useSurface, useSurfaceLevel } from './hooks/useSurface';
-// types
+/* ---------- Types ---------- */
 export type { BaseProps } from './types/BaseProps';
 export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic';
 
-// utils
+/* ---------- Utils ---------- */
 export { mergeRefs } from './utils/mergeRefs';
 export { scrollFade } from './utils/scrollFade';
 export { styleArray } from './utils/styleArray';

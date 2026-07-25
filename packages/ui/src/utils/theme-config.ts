@@ -1,4 +1,4 @@
-// ——— Types ———
+/* ---------- Types ---------- */
 
 export type ThemeConfig = {
   brandHue: number | null;
@@ -27,7 +27,6 @@ export type ThemeMode = {
     surface300: string;
     surface400: string;
     surface500: string;
-    /** Hover-only step above surface500 — not a SurfaceLevel. */
     surface600: string;
   };
   state: {
@@ -75,7 +74,7 @@ export type ColorEntry = {
   light: ModeValues;
 };
 
-// ——— State colors (relative chroma) ———
+/* ---------- State colors ---------- */
 
 export const STATE_CONFIG: Record<StateKey, StateEntry> = {
   positive: {
@@ -110,14 +109,14 @@ export const STATE_CONFIG: Record<StateKey, StateEntry> = {
   },
 };
 
-// ——— Highlight / focus ring (relative chroma, uses brandHue) ———
+/* ---------- Highlight ---------- */
 
 export const HIGHLIGHT_CONFIG: ColorEntry = {
   dark: { lightness: 0.65, vividness: 0.85 },
   light: { lightness: 0.5, vividness: 0.85 },
 };
 
-// ——— Accent button (relative chroma, uses brandHue) ———
+/* ---------- Accent button ---------- */
 
 export const ACCENT_CONFIG = {
   bg: { dark: { lightness: 0.58, vividness: 0.85 }, light: { lightness: 0.55, vividness: 0.85 } },
@@ -127,7 +126,7 @@ export const ACCENT_CONFIG = {
   achromaticHover: { dark: { lightness: 0.9 }, light: { lightness: 0.26 } },
 } as const;
 
-// ——— Primary button (semi-transparent overlay) ———
+/* ---------- Primary button ---------- */
 
 export const PRIMARY_BUTTON_CONFIG = {
   color: { lightness: 0.5, vividness: 0.4 },
@@ -135,7 +134,7 @@ export const PRIMARY_BUTTON_CONFIG = {
   achromaticOpacity: { bg: 0.08, hover: 0.12 },
 } as const;
 
-// ——— Foreground (uses neutralTint for chroma, not vividness) ———
+/* ---------- Foreground ---------- */
 
 export const FOREGROUND_CONFIG = {
   primary: { dark: { lightness: 0.985 }, light: { lightness: 0.16 } },
@@ -143,7 +142,7 @@ export const FOREGROUND_CONFIG = {
   inverse: { dark: { lightness: 0.12 }, light: { lightness: 0.985 } },
 } satisfies Record<string, { dark: LightnessValue; light: LightnessValue }>;
 
-// ——— Background (uses neutralTint for chroma, not vividness) ———
+/* ---------- Background ---------- */
 
 export const BACKGROUND_CONFIG = {
   base: { dark: { lightness: 0.12 }, light: { lightness: 0.965 } },
@@ -153,11 +152,10 @@ export const BACKGROUND_CONFIG = {
   surface300: { dark: { lightness: 0.3 }, light: { lightness: 0.993 } },
   surface400: { dark: { lightness: 0.33 }, light: { lightness: 0.997 } },
   surface500: { dark: { lightness: 0.35 }, light: { lightness: 0.999 } },
-  /** Hover-only; not part of the SurfaceLevel ladder. */
   surface600: { dark: { lightness: 0.37 }, light: { lightness: 1.0 } },
 } satisfies Record<string, { dark: LightnessValue; light: LightnessValue }>;
 
-// ——— Opacity values ———
+/* ---------- Opacity ---------- */
 
 export const OPACITY_CONFIG = {
   foregroundSecondary: 0.6,
@@ -168,7 +166,7 @@ export const OPACITY_CONFIG = {
   shadowElevated: { ring: 0.04, ambient1: 0.01, key: 0.08, ambient2: 0.02, spread: 0.02 },
 } as const;
 
-// ——— Theme configurations ———
+/* ---------- Theme configurations ---------- */
 
 export const CONFIGS = {
   default: { brandHue: null, neutralTint: 0, stateHarmony: 0 },
