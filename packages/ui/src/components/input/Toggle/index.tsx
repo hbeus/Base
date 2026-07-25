@@ -2,11 +2,13 @@ import { Toggle as BaseToggle } from '@base-ui/react/toggle';
 import * as stylex from '@stylexjs/stylex';
 import type React from 'react';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 export interface ToggleProps
   extends Omit<ComponentProps<typeof BaseToggle>, 'style'>,
@@ -40,7 +42,6 @@ const styles = stylex.create({
     },
   },
   pressed: {
-    backgroundColor: colors.lighten8,
     color: colors.foregroundPrimary,
   },
   children: {
@@ -49,12 +50,28 @@ const styles = stylex.create({
   },
 });
 
-export function Toggle({ style, ref, children, leading, trailing, ...props }: ToggleProps) {
+export function Toggle(props: ToggleProps) {
+  return (
+    <SurfaceLevel>
+      <ToggleSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function ToggleSurface({ style, ref, children, leading, trailing, ...props }: ToggleProps) {
+  const surface = useSurface();
+  const pressed = Boolean(props.pressed);
+
   return (
     <BaseToggle
-      data-slot="toggle"
+      data-slot='toggle'
       ref={ref}
-      {...stylex.props(styles.base, props.pressed && styles.pressed, ...styleArray(style))}
+      {...stylex.props(
+        styles.base,
+        pressed && styles.pressed,
+        pressed && surface,
+        ...styleArray(style),
+      )}
       {...props}
     >
       {leading && leading}

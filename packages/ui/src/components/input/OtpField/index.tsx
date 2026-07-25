@@ -2,6 +2,7 @@ import { OTPField as BaseOTPField } from '@base-ui/react/otp-field';
 import { Separator as BaseSeparator } from '@base-ui/react/separator';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -10,6 +11,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 /* ---------- Root ---------- */
 export interface OtpFieldRootProps
@@ -48,7 +50,6 @@ const inputStyles = stylex.create({
     fontSize: typography.bodySize,
     fontWeight: 500,
     color: colors.foregroundPrimary,
-    backgroundColor: 'transparent',
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
@@ -61,12 +62,22 @@ const inputStyles = stylex.create({
   },
 });
 
-function Input({ style, ref, ...props }: OtpFieldInputProps) {
+function Input(props: OtpFieldInputProps) {
+  return (
+    <SurfaceLevel>
+      <InputSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function InputSurface({ style, ref, ...props }: OtpFieldInputProps) {
+  const surface = useSurface();
+
   return (
     <BaseOTPField.Input
-      data-slot="otp-field-input"
+      data-slot='otp-field-input'
       ref={ref}
-      {...stylex.props(inputStyles.base, ...styleArray(style))}
+      {...stylex.props(inputStyles.base, surface, ...styleArray(style))}
       {...props}
     />
   );

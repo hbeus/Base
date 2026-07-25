@@ -31,4 +31,11 @@ export const cardProps: PropDef[] = [
     default: 'false',
     description: 'Whether to use a darker background shade.',
   },
+  {
+    name: 'level',
+    type: '0 | 100 | 200 | 300 | 400 | 500',
+    default: 'undefined',
+    description:
+      'Absolute surface level for filled cards. Omit to auto-increment (+100) from the parent surface.',
+  },
 ];

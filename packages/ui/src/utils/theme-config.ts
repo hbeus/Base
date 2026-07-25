@@ -27,6 +27,8 @@ export type ThemeMode = {
     surface300: string;
     surface400: string;
     surface500: string;
+    /** Hover-only step above surface500 — not a SurfaceLevel. */
+    surface600: string;
   };
   state: {
     positive: string;
@@ -151,6 +153,8 @@ export const BACKGROUND_CONFIG = {
   surface300: { dark: { lightness: 0.3 }, light: { lightness: 0.993 } },
   surface400: { dark: { lightness: 0.33 }, light: { lightness: 0.997 } },
   surface500: { dark: { lightness: 0.35 }, light: { lightness: 0.999 } },
+  /** Hover-only; not part of the SurfaceLevel ladder. */
+  surface600: { dark: { lightness: 0.37 }, light: { lightness: 1.0 } },
 } satisfies Record<string, { dark: LightnessValue; light: LightnessValue }>;
 
 // ——— Opacity values ———

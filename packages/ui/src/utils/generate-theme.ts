@@ -132,6 +132,7 @@ function generateMode(
       surface300: nt(bg.surface300[mode].lightness),
       surface400: nt(bg.surface400[mode].lightness),
       surface500: nt(bg.surface500[mode].lightness),
+      surface600: nt(bg.surface600[mode].lightness),
     },
     state: {
       positive: stateColor('positive'),
@@ -175,6 +176,7 @@ export function modeToVars(mode: ThemeMode) {
     surface300: `oklch(${mode.background.surface300})`,
     surface400: `oklch(${mode.background.surface400})`,
     surface500: `oklch(${mode.background.surface500})`,
+    surface600: `oklch(${mode.background.surface600})`,
 
     lighten4: `oklch(${mode.background.lighten} / 0.04)`,
     lighten6: `oklch(${mode.background.lighten} / 0.06)`,

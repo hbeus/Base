@@ -29,6 +29,7 @@ export const THEME = {
         surface300: '0.3 0 0',
         surface400: '0.33 0 0',
         surface500: '0.35 0 0',
+        surface600: '0.37 0 0',
       },
       state: {
         positive: '0.675 0.1805 145',
@@ -77,6 +78,7 @@ export const THEME = {
         surface300: '0.993 0 0',
         surface400: '0.997 0 0',
         surface500: '0.999 0 0',
+        surface600: '1 0 0',
       },
       state: {
         positive: '0.58 0.1642 145',
@@ -127,6 +129,7 @@ export const THEME = {
         surface300: '0.3 0.015 275',
         surface400: '0.33 0.015 275',
         surface500: '0.35 0.015 275',
+        surface600: '0.37 0.015 275',
       },
       state: {
         positive: '0.675 0.1214 164.5',
@@ -175,6 +178,7 @@ export const THEME = {
         surface300: '0.993 0.015 275',
         surface400: '0.997 0.015 275',
         surface500: '0.999 0.015 275',
+        surface600: '1 0.015 275',
       },
       state: {
         positive: '0.58 0.1105 164.5',
@@ -225,6 +229,7 @@ export const THEME = {
         surface300: '0.3 0.02 65',
         surface400: '0.33 0.02 65',
         surface500: '0.35 0.02 65',
+        surface600: '0.37 0.02 65',
       },
       state: {
         positive: '0.675 0.1688 135.4',
@@ -273,6 +278,7 @@ export const THEME = {
         surface300: '0.993 0.02 65',
         surface400: '0.997 0.02 65',
         surface500: '0.999 0.02 65',
+        surface600: '1 0.02 65',
       },
       state: {
         positive: '0.58 0.1536 135.4',
@@ -322,6 +328,7 @@ export const colors = stylex.defineVars({
   surface300: 'oklch(0.3 0 0)',
   surface400: 'oklch(0.33 0 0)',
   surface500: 'oklch(0.35 0 0)',
+  surface600: 'oklch(0.37 0 0)',
   lighten4: 'oklch(1 0 0 / 0.04)',
   lighten6: 'oklch(1 0 0 / 0.06)',
   lighten8: 'oklch(1 0 0 / 0.08)',
@@ -362,8 +369,7 @@ export const colors = stylex.defineVars({
   buttonPrimaryBg: 'oklch(1 0 0 / 0.08)',
   buttonPrimaryFg: 'oklch(0.985 0 0)',
   buttonPrimaryHover: 'oklch(1 0 0 / 0.12)',
-  shadowElevated:
-    '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
+  shadowElevated: '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
   shadowElevatedInner: 'inset 0 0 0 1px oklch(1 0 0 / 0.02)',
 });
 
@@ -375,6 +381,7 @@ export const defaultLight = stylex.createTheme(colors, {
   surface300: 'oklch(0.993 0 0)',
   surface400: 'oklch(0.997 0 0)',
   surface500: 'oklch(0.999 0 0)',
+  surface600: 'oklch(1 0 0)',
   lighten4: 'oklch(0 0 0 / 0.04)',
   lighten6: 'oklch(0 0 0 / 0.06)',
   lighten8: 'oklch(0 0 0 / 0.08)',
@@ -415,8 +422,7 @@ export const defaultLight = stylex.createTheme(colors, {
   buttonPrimaryBg: 'oklch(0 0 0 / 0.08)',
   buttonPrimaryFg: 'oklch(0.16 0 0)',
   buttonPrimaryHover: 'oklch(0 0 0 / 0.12)',
-  shadowElevated:
-    '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
+  shadowElevated: '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
   shadowElevatedInner: 'inset 0 0 0 1px oklch(1 0 0 / 0.5)',
 });
 
@@ -428,6 +434,7 @@ export const blueberryDark = stylex.createTheme(colors, {
   surface300: 'oklch(0.3 0.015 275)',
   surface400: 'oklch(0.33 0.015 275)',
   surface500: 'oklch(0.35 0.015 275)',
+  surface600: 'oklch(0.37 0.015 275)',
   lighten4: 'oklch(1 0.015 275 / 0.04)',
   lighten6: 'oklch(1 0.015 275 / 0.06)',
   lighten8: 'oklch(1 0.015 275 / 0.08)',
@@ -468,8 +475,7 @@ export const blueberryDark = stylex.createTheme(colors, {
   buttonPrimaryBg: 'oklch(0.5 0.1135 275 / 0.2)',
   buttonPrimaryFg: 'oklch(0.985 0.015 275)',
   buttonPrimaryHover: 'oklch(0.5 0.1135 275 / 0.28)',
-  shadowElevated:
-    '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
+  shadowElevated: '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
   shadowElevatedInner: 'inset 0 0 0 1px oklch(1 0 0 / 0.02)',
 });
 
@@ -481,6 +487,7 @@ export const blueberryLight = stylex.createTheme(colors, {
   surface300: 'oklch(0.993 0.015 275)',
   surface400: 'oklch(0.997 0.015 275)',
   surface500: 'oklch(0.999 0.015 275)',
+  surface600: 'oklch(1 0.015 275)',
   lighten4: 'oklch(0 0 0 / 0.04)',
   lighten6: 'oklch(0 0 0 / 0.06)',
   lighten8: 'oklch(0 0 0 / 0.08)',
@@ -521,8 +528,7 @@ export const blueberryLight = stylex.createTheme(colors, {
   buttonPrimaryBg: 'oklch(0.5 0.1135 275 / 0.1)',
   buttonPrimaryFg: 'oklch(0.16 0.015 275)',
   buttonPrimaryHover: 'oklch(0.5 0.1135 275 / 0.15)',
-  shadowElevated:
-    '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
+  shadowElevated: '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
   shadowElevatedInner: 'inset 0 0 0 1px oklch(1 0 0 / 0.5)',
 });
 
@@ -534,6 +540,7 @@ export const warmDark = stylex.createTheme(colors, {
   surface300: 'oklch(0.3 0.02 65)',
   surface400: 'oklch(0.33 0.02 65)',
   surface500: 'oklch(0.35 0.02 65)',
+  surface600: 'oklch(0.37 0.02 65)',
   lighten4: 'oklch(1 0.02 65 / 0.04)',
   lighten6: 'oklch(1 0.02 65 / 0.06)',
   lighten8: 'oklch(1 0.02 65 / 0.08)',
@@ -574,8 +581,7 @@ export const warmDark = stylex.createTheme(colors, {
   buttonPrimaryBg: 'oklch(0.5 0.0449 65 / 0.2)',
   buttonPrimaryFg: 'oklch(0.985 0.02 65)',
   buttonPrimaryHover: 'oklch(0.5 0.0449 65 / 0.28)',
-  shadowElevated:
-    '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
+  shadowElevated: '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
   shadowElevatedInner: 'inset 0 0 0 1px oklch(1 0 0 / 0.02)',
 });
 
@@ -587,6 +593,7 @@ export const warmLight = stylex.createTheme(colors, {
   surface300: 'oklch(0.993 0.02 65)',
   surface400: 'oklch(0.997 0.02 65)',
   surface500: 'oklch(0.999 0.02 65)',
+  surface600: 'oklch(1 0.02 65)',
   lighten4: 'oklch(0 0 0 / 0.04)',
   lighten6: 'oklch(0 0 0 / 0.06)',
   lighten8: 'oklch(0 0 0 / 0.08)',
@@ -627,8 +634,7 @@ export const warmLight = stylex.createTheme(colors, {
   buttonPrimaryBg: 'oklch(0.5 0.0449 65 / 0.1)',
   buttonPrimaryFg: 'oklch(0.16 0.02 65)',
   buttonPrimaryHover: 'oklch(0.5 0.0449 65 / 0.15)',
-  shadowElevated:
-    '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
+  shadowElevated: '0 0 0 1px oklch(0 0 0 / 0.04), 0 2px 8px oklch(0 0 0 / 0.01), 0 2px 6px -4px oklch(0 0 0 / 0.08), 0 4px 10px oklch(0 0 0 / 0.02), 0 4px 24px oklch(0 0 0 / 0.02)',
   shadowElevatedInner: 'inset 0 0 0 1px oklch(1 0 0 / 0.5)',
 });
 

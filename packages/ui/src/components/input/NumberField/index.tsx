@@ -1,6 +1,7 @@
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -9,6 +10,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 type NumberFieldSize = 'sm' | 'md' | 'lg';
 
@@ -53,7 +55,6 @@ const inputStyles = stylex.create({
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
-    backgroundColor: 'transparent',
     color: colors.foregroundPrimary,
     outline: 'none',
     transition: 'border-color 0.15s',
@@ -89,13 +90,23 @@ const inputStyles = stylex.create({
   },
 });
 
-function Input({ size = 'md', style, ref, ...props }: NumberFieldInputProps) {
+function Input(props: NumberFieldInputProps) {
+  return (
+    <SurfaceLevel>
+      <InputSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function InputSurface({ size = 'md', style, ref, ...props }: NumberFieldInputProps) {
+  const surface = useSurface();
+
   return (
     <BaseNumberField.Input
-      data-slot="number-field-input"
+      data-slot='number-field-input'
       data-size={size}
       ref={ref}
-      {...stylex.props(inputStyles.base, inputStyles[size], ...styleArray(style))}
+      {...stylex.props(inputStyles.base, inputStyles[size], surface, ...styleArray(style))}
       {...props}
     />
   );

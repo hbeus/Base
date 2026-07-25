@@ -1,12 +1,14 @@
 import { Avatar as BaseAvatar } from '@base-ui/react/avatar';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 type AvatarSize = 'sm' | 'md' | 'lg';
 
@@ -26,7 +28,6 @@ const rootStyles = stylex.create({
     overflow: 'hidden',
     userSelect: 'none',
     flexShrink: 0,
-    backgroundColor: colors.lighten8,
   },
   sm: {
     width: size.s24,
@@ -42,13 +43,23 @@ const rootStyles = stylex.create({
   },
 });
 
-function Root({ size: avatarSize = 'md', style, ref, ...props }: AvatarRootProps) {
+function Root(props: AvatarRootProps) {
+  return (
+    <SurfaceLevel>
+      <RootSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function RootSurface({ size: avatarSize = 'md', style, ref, ...props }: AvatarRootProps) {
+  const surface = useSurface();
+
   return (
     <BaseAvatar.Root
-      data-slot="avatar"
+      data-slot='avatar'
       data-size={avatarSize}
       ref={ref}
-      {...stylex.props(rootStyles.base, rootStyles[avatarSize], ...styleArray(style))}
+      {...stylex.props(rootStyles.base, rootStyles[avatarSize], surface, ...styleArray(style))}
       {...props}
     />
   );
@@ -70,7 +81,7 @@ const imageStyles = stylex.create({
 function Image({ style, ref, ...props }: AvatarImageProps) {
   return (
     <BaseAvatar.Image
-      data-slot="avatar-image"
+      data-slot='avatar-image'
       ref={ref}
       {...stylex.props(imageStyles.base, ...styleArray(style))}
       {...props}
@@ -99,7 +110,7 @@ const fallbackStyles = stylex.create({
 function Fallback({ style, ref, ...props }: AvatarFallbackProps) {
   return (
     <BaseAvatar.Fallback
-      data-slot="avatar-fallback"
+      data-slot='avatar-fallback'
       ref={ref}
       {...stylex.props(fallbackStyles.base, ...styleArray(style))}
       {...props}

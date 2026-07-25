@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentProps } from 'react';
 import { INPUT_SCALE_DOWN } from '../../../constants/motion';
+import { useSurface } from '../../../hooks/useSurface';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
@@ -13,6 +14,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 type ToggleGroupSize = 'sm' | 'md' | 'lg';
 
@@ -37,7 +39,7 @@ const rootStyles = stylex.create({
 function Root({ size = 'md', style, ref, ...props }: ToggleGroupRootProps) {
   return (
     <BaseToggleGroup
-      data-slot="toggle-group"
+      data-slot='toggle-group'
       data-size={size}
       ref={ref}
       {...stylex.props(rootStyles.base, ...styleArray(style))}
@@ -78,7 +80,6 @@ const itemStyles = stylex.create({
     },
   },
   pressed: {
-    backgroundColor: colors.lighten8,
     color: colors.foregroundPrimary,
   },
   sm: {
@@ -107,7 +108,15 @@ const itemStyles = stylex.create({
 
 const MotionToggle = motion.create(BaseToggle as React.ComponentType<Record<string, unknown>>);
 
-function Item({
+function Item(props: ToggleGroupItemProps) {
+  return (
+    <SurfaceLevel>
+      <ItemSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function ItemSurface({
   size = 'md',
   style,
   ref,
@@ -116,16 +125,20 @@ function Item({
   trailing,
   ...props
 }: ToggleGroupItemProps) {
+  const surface = useSurface();
+  const pressed = Boolean(props.pressed);
+
   return (
     <MotionToggle
-      data-slot="toggle-group-item"
+      data-slot='toggle-group-item'
       data-size={size}
       ref={ref}
       whileTap={props.disabled ? undefined : { scale: INPUT_SCALE_DOWN }}
       {...stylex.props(
         itemStyles.base,
         itemStyles[size],
-        props.pressed && itemStyles.pressed,
+        pressed && itemStyles.pressed,
+        pressed && surface,
         ...styleArray(style),
       )}
       {...props}

@@ -5,7 +5,8 @@ export const buttonProps: PropDef[] = [
     name: 'variant',
     type: "'accent' | 'primary' | 'ghost' | 'inherit'",
     default: "'primary'",
-    description: 'The visual style of the button.',
+    description:
+      'Visual style. Primary paints the next surface level via SurfaceLevel.',
   },
   {
     name: 'size',

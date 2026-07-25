@@ -1,6 +1,7 @@
 import { Input as BaseInput } from '@base-ui/react/input';
 import * as stylex from '@stylexjs/stylex';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -9,6 +10,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 type InputSize = 'sm' | 'md' | 'lg';
 
@@ -25,7 +27,6 @@ const styles = stylex.create({
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
-    backgroundColor: 'transparent',
     color: colors.foregroundPrimary,
     outline: 'none',
     transition: 'border-color 0.15s',
@@ -57,13 +58,23 @@ const styles = stylex.create({
   },
 });
 
-export function Input({ size = 'md', style, ref, ...props }: InputProps) {
+export function Input(props: InputProps) {
+  return (
+    <SurfaceLevel>
+      <InputSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function InputSurface({ size = 'md', style, ref, ...props }: InputProps) {
+  const surface = useSurface();
+
   return (
     <BaseInput
-      data-slot="input"
+      data-slot='input'
       data-size={size}
       ref={ref}
-      {...stylex.props(styles.base, styles[size], ...styleArray(style))}
+      {...stylex.props(styles.base, styles[size], surface, ...styleArray(style))}
       {...props}
     />
   );

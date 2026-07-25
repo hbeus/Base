@@ -1,10 +1,13 @@
 import * as stylex from '@stylexjs/stylex';
+import type { SurfaceLevel as SurfaceLevelValue } from '../../../contexts/SurfaceContext';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import type { PolymorphicComponent, PolymorphicProps } from '../../../types/polymorphic';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 type CardVariant = 'filled' | 'outline';
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
@@ -17,6 +20,8 @@ interface CardOwnProps {
   direction?: CardDirection;
   gap?: CardGap;
   darken?: boolean;
+  /** Absolute surface level for filled cards. Omit to auto-increment from parent. */
+  level?: SurfaceLevelValue;
 }
 
 export type CardProps<T extends keyof React.JSX.IntrinsicElements = 'div'> = PolymorphicProps<
@@ -49,7 +54,6 @@ const gaps = stylex.create({
 
 const variants = stylex.create({
   filled: {
-    backgroundColor: colors.lighten4,
     borderWidth: 0,
   },
   outline: {
@@ -72,6 +76,23 @@ const paddings = stylex.create({
 });
 
 export const Card = function Card({
+  variant = 'filled',
+  darken = false,
+  level,
+  ...props
+}: CardProps) {
+  if (variant === 'filled' && !darken) {
+    return (
+      <SurfaceLevel level={level}>
+        <CardSurface variant={variant} darken={darken} {...props} />
+      </SurfaceLevel>
+    );
+  }
+
+  return <CardSurface variant={variant} darken={darken} {...props} />;
+} as PolymorphicComponent<'div', CardOwnProps>;
+
+function CardSurface({
   as: Component = 'div',
   variant = 'filled',
   padding = 'md',
@@ -82,9 +103,12 @@ export const Card = function Card({
   ref,
   ...props
 }: CardProps) {
+  const useSurfaceFill = variant === 'filled' && !darken;
+  const surface = useSurface();
+
   return (
     <Component
-      data-slot="card"
+      data-slot='card'
       data-variant={variant}
       ref={ref}
       {...stylex.props(
@@ -93,10 +117,11 @@ export const Card = function Card({
         gaps[gap],
         variants[variant],
         paddings[padding],
+        useSurfaceFill && surface,
         darken && variants.darken,
         ...styleArray(style),
       )}
       {...props}
     />
   );
-} as PolymorphicComponent<'div', CardOwnProps>;
+}

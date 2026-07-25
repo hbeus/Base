@@ -265,7 +265,7 @@ export { Text, type TextProps } from './components/typography/Text';
 export type { SurfaceLevel as SurfaceLevelValue } from './contexts/SurfaceContext';
 // hooks
 export { useActiveSection } from './hooks/useActiveSection';
-export { useSurface } from './hooks/useSurface';
+export { surfaceHover, useSurface, useSurfaceLevel } from './hooks/useSurface';
 export { borders } from './tokens/borders.stylex';
 // tokens
 export { breakpoints } from './tokens/breakpoints.stylex';

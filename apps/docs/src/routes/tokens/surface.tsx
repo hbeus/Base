@@ -1,230 +1,64 @@
-import { SurfaceLevel, type SurfaceLevelValue, Text, useSurface } from '@base/ui';
-import { radii } from '@base/ui/tokens/radii.stylex';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
-import { colors } from '@base/ui/tokens/themes.stylex';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import type { ReactNode } from 'react';
+import { ComponentExample } from '~/components/ComponentExample';
+import { DocsPage } from '~/components/DocsPage';
+import SurfaceButtons from '~/examples/surface/buttons';
+import SurfaceDialogJump from '~/examples/surface/dialog-jump';
+import SurfaceFields from '~/examples/surface/fields';
+import SurfaceLevels from '~/examples/surface/levels';
+import SurfaceNested from '~/examples/surface/nested';
+import { highlightCode } from '~/lib/highlight';
+
+import buttonsRaw from '~/examples/surface/buttons.tsx?raw';
+import dialogJumpRaw from '~/examples/surface/dialog-jump.tsx?raw';
+import fieldsRaw from '~/examples/surface/fields.tsx?raw';
+import levelsRaw from '~/examples/surface/levels.tsx?raw';
+import nestedRaw from '~/examples/surface/nested.tsx?raw';
 
 export const Route = createFileRoute('/tokens/surface')({
-  component: SurfacePage,
+  loader: async () => {
+    const sources = { levelsRaw, nestedRaw, dialogJumpRaw, buttonsRaw, fieldsRaw };
+    const entries = await Promise.all(
+      Object.entries(sources).map(async ([key, code]) => {
+        const html = await highlightCode({ data: { code } });
+        return [key, html] as const;
+      }),
+    );
+    return Object.fromEntries(entries) as Record<string, string>;
+  },
+  component: PageComponent,
 });
 
-const styles = stylex.create({
-  page: {
-    maxWidth: '960px',
-    marginInline: 'auto',
-    paddingInline: spacing.s24,
-    paddingBlock: spacing.s64,
-  },
-  header: {
-    marginBottom: spacing.s48,
-  },
-  headerTitle: {
-    marginBottom: spacing.s8,
-  },
-  section: {
-    marginBottom: spacing.s64,
-  },
-  sectionTitle: {
-    marginBottom: spacing.s24,
-    paddingBottom: spacing.s12,
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: colors.border,
-  },
-  box: {
-    padding: spacing.s20,
-    borderRadius: radii.r12,
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: colors.border,
-  },
-  nested: {
-    marginTop: spacing.s12,
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-    gap: spacing.s8,
-  },
-  gridItem: {
-    padding: spacing.s16,
-    borderRadius: radii.r12,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.s4,
-    aspectRatio: '1',
-    justifyContent: 'flex-end',
-  },
-  dialogDemo: {
-    padding: spacing.s24,
-    borderRadius: radii.r16,
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: colors.border,
-  },
-  dialogInner: {
-    padding: spacing.s16,
-    borderRadius: radii.r12,
-    marginTop: spacing.s12,
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: colors.border,
-  },
-});
+function PageComponent() {
+  const highlighted = Route.useLoaderData();
 
-function SurfaceBox({ label, children }: { label: string; children?: ReactNode }) {
-  const bg = useSurface();
   return (
-    <div {...stylex.props(bg, styles.box, children != null && styles.nested)}>
-      <Text size='bodySm' weight='medium'>
-        {label}
-      </Text>
-      {children}
-    </div>
-  );
-}
+    <DocsPage
+      title='Surface Levels'
+      description='Six opaque surface levels (0–500) via React context. Wrap with SurfaceLevel to auto-increment (+100) or jump to an absolute level, then paint with useSurface(). Filled controls (Button primary, Card, fields) consume this ladder; hover washes stay on lighten tokens.'
+    >
+      <ComponentExample title='All Levels' code={highlighted.levelsRaw} rawCode={levelsRaw} defaultExpanded>
+        <SurfaceLevels />
+      </ComponentExample>
 
-function SurfaceGridItem({ level }: { level: SurfaceLevelValue }) {
-  return (
-    <SurfaceLevel level={level}>
-      <SurfaceGridItemInner level={level} />
-    </SurfaceLevel>
-  );
-}
+      <ComponentExample title='Nested Auto-Increment' code={highlighted.nestedRaw} rawCode={nestedRaw}>
+        <SurfaceNested />
+      </ComponentExample>
 
-function SurfaceGridItemInner({ level }: { level: SurfaceLevelValue }) {
-  const bg = useSurface();
-  return (
-    <div {...stylex.props(bg, styles.gridItem)}>
-      <Text size='title' weight='bold'>
-        {level}
-      </Text>
-      <Text size='caption'>bgSurface-{level}</Text>
-    </div>
-  );
-}
+      <ComponentExample
+        title='Absolute Jump (Dialog Pattern)'
+        code={highlighted.dialogJumpRaw}
+        rawCode={dialogJumpRaw}
+      >
+        <SurfaceDialogJump />
+      </ComponentExample>
 
-function SurfacePage() {
-  return (
-    <div {...stylex.props(styles.page)}>
-      <div {...stylex.props(styles.header)}>
-        <Text as='h1' size='headline' weight='bold' style={styles.headerTitle}>
-          Surface Levels
-        </Text>
-        <Text size='body' color='secondary'>
-          Proof of concept: 6 opaque surface levels (0-500) via React context.
-        </Text>
-      </div>
+      <ComponentExample title='Buttons on Surfaces' code={highlighted.buttonsRaw} rawCode={buttonsRaw}>
+        <SurfaceButtons />
+      </ComponentExample>
 
-      <div {...stylex.props(styles.section)}>
-        <Text as='h2' size='title' weight='semibold' style={styles.sectionTitle}>
-          All Levels
-        </Text>
-        <div {...stylex.props(styles.grid)}>
-          <SurfaceGridItem level={0} />
-          <SurfaceGridItem level={100} />
-          <SurfaceGridItem level={200} />
-          <SurfaceGridItem level={300} />
-          <SurfaceGridItem level={400} />
-          <SurfaceGridItem level={500} />
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.section)}>
-        <Text as='h2' size='title' weight='semibold' style={styles.sectionTitle}>
-          Nested Auto-Increment
-        </Text>
-        <SurfaceBox label='Level 0 (page)'>
-          <SurfaceLevel>
-            <SurfaceBox label='Level 100 (auto)'>
-              <SurfaceLevel>
-                <SurfaceBox label='Level 200 (auto)'>
-                  <SurfaceLevel>
-                    <SurfaceBox label='Level 300 (auto)'>
-                      <SurfaceLevel>
-                        <SurfaceBox label='Level 400 (auto)'>
-                          <SurfaceLevel>
-                            <SurfaceBox label='Level 500 (auto)' />
-                          </SurfaceLevel>
-                        </SurfaceBox>
-                      </SurfaceLevel>
-                    </SurfaceBox>
-                  </SurfaceLevel>
-                </SurfaceBox>
-              </SurfaceLevel>
-            </SurfaceBox>
-          </SurfaceLevel>
-        </SurfaceBox>
-      </div>
-
-      <div {...stylex.props(styles.section)}>
-        <Text as='h2' size='title' weight='semibold' style={styles.sectionTitle}>
-          Absolute Jump (Dialog Pattern)
-        </Text>
-        <Text size='bodySm' color='secondary' style={styles.nested}>
-          Simulates a dialog that jumps to level 300, with inner surfaces at 400 and 500.
-        </Text>
-        <SurfaceLevel level={300}>
-          <DialogDemo />
-        </SurfaceLevel>
-      </div>
-
-      <div {...stylex.props(styles.section)}>
-        <Text as='h2' size='title' weight='semibold' style={styles.sectionTitle}>
-          Clamping at Max
-        </Text>
-        <Text size='bodySm' color='secondary' style={styles.nested}>
-          Nesting beyond level 500 clamps — no crash, same shade.
-        </Text>
-        <SurfaceLevel level={500}>
-          <SurfaceBox label='Level 500'>
-            <SurfaceLevel>
-              <SurfaceBox label='Level 500 (clamped)'>
-                <SurfaceLevel>
-                  <SurfaceBox label='Level 500 (still clamped)' />
-                </SurfaceLevel>
-              </SurfaceBox>
-            </SurfaceLevel>
-          </SurfaceBox>
-        </SurfaceLevel>
-      </div>
-    </div>
-  );
-}
-
-function DialogDemo() {
-  const bg = useSurface();
-  return (
-    <div {...stylex.props(bg, styles.dialogDemo, styles.nested)}>
-      <Text size='body' weight='medium'>
-        Dialog Surface (Level 300)
-      </Text>
-      <SurfaceLevel>
-        <DialogInnerCard />
-      </SurfaceLevel>
-    </div>
-  );
-}
-
-function DialogInnerCard() {
-  const bg = useSurface();
-  return (
-    <div {...stylex.props(bg, styles.dialogInner)}>
-      <Text size='bodySm'>Inner card (Level 400)</Text>
-      <SurfaceLevel>
-        <DialogDeepCard />
-      </SurfaceLevel>
-    </div>
-  );
-}
-
-function DialogDeepCard() {
-  const bg = useSurface();
-  return (
-    <div {...stylex.props(bg, styles.dialogInner)}>
-      <Text size='bodySm'>Deep card (Level 500)</Text>
-    </div>
+      <ComponentExample title='Fields on Surfaces' code={highlighted.fieldsRaw} rawCode={fieldsRaw}>
+        <SurfaceFields />
+      </ComponentExample>
+    </DocsPage>
   );
 }

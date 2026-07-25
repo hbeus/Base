@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import type React from 'react';
 import type { ComponentProps } from 'react';
 import { INPUT_SCALE_DOWN } from '../../../constants/motion';
+import { surfaceHover, useSurface, useSurfaceLevel } from '../../../hooks/useSurface';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -11,6 +12,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 type ButtonVariant = 'accent' | 'primary' | 'ghost' | 'inherit';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
@@ -51,11 +53,7 @@ export const buttonStyles = stylex.create({
     },
   },
   primary: {
-    backgroundColor: colors.buttonPrimaryBg,
-    color: colors.buttonPrimaryFg,
-    ':hover': {
-      backgroundColor: colors.buttonPrimaryHover,
-    },
+    color: colors.foregroundPrimary,
   },
   ghost: {
     backgroundColor: 'transparent',
@@ -117,7 +115,19 @@ const fillStyles = stylex.create({
 
 const MotionBaseButton = motion.create(BaseButton as React.ComponentType<Record<string, unknown>>);
 
-export function Button({
+export function Button({ variant = 'primary', ...props }: ButtonProps) {
+  if (variant === 'primary') {
+    return (
+      <SurfaceLevel>
+        <ButtonSurface variant='primary' {...props} />
+      </SurfaceLevel>
+    );
+  }
+
+  return <ButtonSurface variant={variant} {...props} />;
+}
+
+function ButtonSurface({
   variant = 'primary',
   size = 'md',
   rounded = false,
@@ -129,6 +139,10 @@ export function Button({
   trailing,
   ...props
 }: ButtonProps) {
+  const isPrimary = variant === 'primary';
+  const surface = useSurface();
+  const level = useSurfaceLevel();
+
   return (
     <MotionBaseButton
       data-slot='button'
@@ -139,6 +153,8 @@ export function Button({
       {...stylex.props(
         buttonStyles.base,
         buttonStyles[variant],
+        isPrimary && surface,
+        isPrimary && surfaceHover[level],
         buttonStyles[size],
         rounded && shapeStyles.rounded,
         fill && fillStyles.fill,

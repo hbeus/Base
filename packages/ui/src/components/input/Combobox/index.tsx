@@ -2,6 +2,7 @@ import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -10,6 +11,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 /* ---------- Root ---------- */
 function Root(props: ComponentProps<typeof BaseCombobox.Root>) {
@@ -93,7 +95,6 @@ const inputGroupStyles = stylex.create({
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r8,
-    backgroundColor: 'transparent',
     transition: 'border-color 0.15s',
     ':focus-within': {
       borderColor: colors.highlight,
@@ -101,12 +102,22 @@ const inputGroupStyles = stylex.create({
   },
 });
 
-function InputGroup({ style, ref, ...props }: ComboboxInputGroupProps) {
+function InputGroup(props: ComboboxInputGroupProps) {
+  return (
+    <SurfaceLevel>
+      <InputGroupSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function InputGroupSurface({ style, ref, ...props }: ComboboxInputGroupProps) {
+  const surface = useSurface();
+
   return (
     <BaseCombobox.InputGroup
-      data-slot="combobox-input-group"
+      data-slot='combobox-input-group'
       ref={ref}
-      {...stylex.props(inputGroupStyles.base, ...styleArray(style))}
+      {...stylex.props(inputGroupStyles.base, surface, ...styleArray(style))}
       {...props}
     />
   );

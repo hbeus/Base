@@ -2,6 +2,7 @@ import { Select as BaseSelect } from '@base-ui/react/select';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -10,6 +11,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 type SelectSize = 'sm' | 'md' | 'lg';
 
@@ -35,7 +37,6 @@ const triggerStyles = stylex.create({
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
-    backgroundColor: 'transparent',
     color: colors.foregroundPrimary,
     cursor: 'pointer',
     outline: 'none',
@@ -68,13 +69,23 @@ const triggerStyles = stylex.create({
   },
 });
 
-function Trigger({ size = 'md', style, ref, ...props }: SelectTriggerProps) {
+function Trigger(props: SelectTriggerProps) {
+  return (
+    <SurfaceLevel>
+      <TriggerSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function TriggerSurface({ size = 'md', style, ref, ...props }: SelectTriggerProps) {
+  const surface = useSurface();
+
   return (
     <BaseSelect.Trigger
-      data-slot="select-trigger"
+      data-slot='select-trigger'
       data-size={size}
       ref={ref}
-      {...stylex.props(triggerStyles.base, triggerStyles[size], ...styleArray(style))}
+      {...stylex.props(triggerStyles.base, triggerStyles[size], surface, ...styleArray(style))}
       {...props}
     />
   );

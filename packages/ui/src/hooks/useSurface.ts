@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import { useContext } from 'react';
 
-import { SurfaceContext } from '../contexts/SurfaceContext';
+import { SurfaceContext, type SurfaceLevel } from '../contexts/SurfaceContext';
 import { colors } from '../tokens/themes.stylex';
 
 const surfaceBg = stylex.create({
@@ -13,7 +13,21 @@ const surfaceBg = stylex.create({
   500: { backgroundColor: colors.surface500 },
 });
 
+/** Hover steps to the next surface; 500 uses hover-only surface600. */
+export const surfaceHover = stylex.create({
+  0: { ':hover': { backgroundColor: colors.surface100 } },
+  100: { ':hover': { backgroundColor: colors.surface200 } },
+  200: { ':hover': { backgroundColor: colors.surface300 } },
+  300: { ':hover': { backgroundColor: colors.surface400 } },
+  400: { ':hover': { backgroundColor: colors.surface500 } },
+  500: { ':hover': { backgroundColor: colors.surface600 } },
+});
+
+export function useSurfaceLevel(): SurfaceLevel {
+  return useContext(SurfaceContext);
+}
+
 export function useSurface() {
-  const level = useContext(SurfaceContext);
+  const level = useSurfaceLevel();
   return surfaceBg[level];
 }

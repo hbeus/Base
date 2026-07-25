@@ -2,6 +2,7 @@ import { Autocomplete as BaseAutocomplete } from '@base-ui/react/autocomplete';
 import * as stylex from '@stylexjs/stylex';
 import { motion } from 'motion/react';
 import type { ComponentProps } from 'react';
+import { useSurface } from '../../../hooks/useSurface';
 import { borders } from '../../../tokens/borders.stylex';
 import { elementSize } from '../../../tokens/elementSize.stylex';
 import { radii } from '../../../tokens/radii.stylex';
@@ -10,6 +11,7 @@ import { colors } from '../../../tokens/themes.stylex';
 import { typography } from '../../../tokens/typography.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
+import { SurfaceLevel } from '../../providers/SurfaceLevel';
 
 /* ---------- Root ---------- */
 function Root(props: ComponentProps<typeof BaseAutocomplete.Root>) {
@@ -75,7 +77,6 @@ const inputGroupStyles = stylex.create({
     borderStyle: 'solid',
     borderColor: colors.border,
     borderRadius: radii.r8,
-    backgroundColor: 'transparent',
     transition: 'border-color 0.15s',
     ':focus-within': {
       borderColor: colors.highlight,
@@ -83,12 +84,22 @@ const inputGroupStyles = stylex.create({
   },
 });
 
-function InputGroup({ style, ref, ...props }: AutocompleteInputGroupProps) {
+function InputGroup(props: AutocompleteInputGroupProps) {
+  return (
+    <SurfaceLevel>
+      <InputGroupSurface {...props} />
+    </SurfaceLevel>
+  );
+}
+
+function InputGroupSurface({ style, ref, ...props }: AutocompleteInputGroupProps) {
+  const surface = useSurface();
+
   return (
     <BaseAutocomplete.InputGroup
-      data-slot="autocomplete-input-group"
+      data-slot='autocomplete-input-group'
       ref={ref}
-      {...stylex.props(inputGroupStyles.base, ...styleArray(style))}
+      {...stylex.props(inputGroupStyles.base, surface, ...styleArray(style))}
       {...props}
     />
   );
