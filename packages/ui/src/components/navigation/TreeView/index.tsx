@@ -118,7 +118,7 @@ function Group({ label, children, defaultOpen = false, style, ref }: TreeViewGro
             {label}
           </Text>
         </Collapsible.Trigger>
-        <Collapsible.Panel keepMounted hidden={false}>
+        <Collapsible.Panel keepMounted hidden={false} inert={!open}>
           <motion.div
             initial={false}
             animate={open ? 'open' : 'closed'}
