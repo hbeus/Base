@@ -17,11 +17,18 @@ export interface SwitchProps
   size?: SwitchSize;
 }
 
+const THUMB_TRANSITION = {
+  type: 'spring',
+  visualDuration: 0.2,
+  bounce: 0.2,
+} as const;
+
 const rootStyles = stylex.create({
   base: {
     position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     borderRadius: radii.full,
     cursor: 'pointer',
     borderWidth: 0,
@@ -35,6 +42,7 @@ const rootStyles = stylex.create({
     },
   },
   checked: {
+    justifyContent: 'flex-end',
     backgroundColor: colors.foregroundPrimary,
   },
   sm: {
@@ -50,6 +58,7 @@ const rootStyles = stylex.create({
 const thumbStyles = stylex.create({
   base: {
     display: 'block',
+    flexShrink: 0,
     borderRadius: radii.full,
     backgroundColor: colors.background,
   },
@@ -57,9 +66,15 @@ const thumbStyles = stylex.create({
     width: '0.875rem',
     height: '0.875rem',
   },
+  smPressed: {
+    width: '1.125rem',
+  },
   md: {
     width: '1.125rem',
     height: '1.125rem',
+  },
+  mdPressed: {
+    width: '1.375rem',
   },
 });
 
@@ -70,9 +85,11 @@ export function Switch({
   onCheckedChange,
   style,
   ref,
+  disabled,
   ...props
 }: SwitchProps) {
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
+  const [pressed, setPressed] = useState(false);
   const checked = checkedProp ?? internalChecked;
 
   return (
@@ -81,10 +98,20 @@ export function Switch({
       data-size={size}
       ref={ref}
       checked={checked}
+      disabled={disabled}
       onCheckedChange={(value, event) => {
         setInternalChecked(value);
         onCheckedChange?.(value, event);
       }}
+      render={
+        <motion.span
+          onTapStart={() => {
+            if (!disabled) setPressed(true);
+          }}
+          onTap={() => setPressed(false)}
+          onTapCancel={() => setPressed(false)}
+        />
+      }
       {...stylex.props(
         rootStyles.base,
         rootStyles[size],
@@ -97,8 +124,12 @@ export function Switch({
         render={
           <motion.span
             layout
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            {...stylex.props(thumbStyles.base, thumbStyles[size])}
+            transition={THUMB_TRANSITION}
+            {...stylex.props(
+              thumbStyles.base,
+              thumbStyles[size],
+              pressed && (size === 'sm' ? thumbStyles.smPressed : thumbStyles.mdPressed),
+            )}
           />
         }
       />
