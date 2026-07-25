@@ -1,4 +1,4 @@
-import { Button, Card, Flex, ScrollArea, Text } from '@base/ui';
+import { Button, Card, Flex, ScrollArea, Text, Toast } from '@base/ui';
 import { borders } from '@base/ui/tokens/borders.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
@@ -29,34 +29,34 @@ export function ComponentExample({
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const toastManager = Toast.useManager();
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(rawCode);
     setCopied(true);
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setCopied(false), 2000);
-  }, [rawCode]);
+    toastManager.add({ title: 'Copied to clipboard' });
+  }, [rawCode, toastManager]);
 
   return (
     <Flex as='section' direction='column' gap='s12'>
-      <Flex direction='row' gap='s8' align='center' justify='between'>
-        <Text as='h2' size='body' weight='medium'>
-          {title}
-        </Text>
-        <button
-          type='button'
-          onClick={handleCopy}
-          {...stylex.props(styles.copyButton)}
-          aria-label='Copy code'
-        >
-          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-        </button>
-      </Flex>
+      <Text as='h2' size='body' weight='medium'>
+        {title}
+      </Text>
 
       <Card variant='outline' gap='none' padding='none' style={styles.container}>
         <div {...stylex.props(styles.preview)}>{children}</div>
 
         <div {...stylex.props(styles.codeBlockContainer)}>
+          <button
+            type='button'
+            onClick={handleCopy}
+            {...stylex.props(styles.copyButton)}
+            aria-label='Copy code'
+          >
+            {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+          </button>
           <div {...stylex.props(styles.toggleButtonContainer)}>
             <Button onClick={() => setExpanded(v => !v)} variant='accent' size='xs' rounded>
               {expanded ? 'Hide code' : 'Show code'}
@@ -100,14 +100,6 @@ const styles = stylex.create({
     padding: spacing.s32,
     minHeight: '200px',
   },
-  toolbar: {
-    paddingInline: spacing.s12,
-    paddingBlock: spacing.s8,
-    borderTopWidth: borders.default,
-    borderTopStyle: 'solid',
-    borderTopColor: colors.border,
-    backgroundColor: colors.lighten4,
-  },
   toggleButtonContainer: {
     position: 'absolute',
     bottom: spacing.s16,
@@ -116,17 +108,37 @@ const styles = stylex.create({
     zIndex: 1,
   },
   copyButton: {
+    position: 'absolute',
+    top: spacing.s12,
+    right: spacing.s12,
+    zIndex: 1,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparent',
-    borderWidth: 0,
+    backgroundColor: colors.surface300,
+    borderWidth: borders.default,
+    borderStyle: 'solid',
+    borderColor: colors.border,
     color: colors.foregroundSecondary,
     cursor: 'pointer',
-    padding: spacing.s4,
-    borderRadius: radii.r4,
+    padding: spacing.s6,
+    borderRadius: radii.r8,
+    opacity: 0,
+    pointerEvents: 'none',
+    transition: 'opacity 0.15s, color 0.15s, background-color 0.15s',
+    ':hover > &': {
+      opacity: 1,
+      pointerEvents: 'auto',
+    },
+    ':focus-visible': {
+      opacity: 1,
+      pointerEvents: 'auto',
+      outline: 'none',
+      color: colors.foregroundPrimary,
+    },
     ':hover': {
       color: colors.foregroundPrimary,
+      backgroundColor: colors.surface200,
     },
   },
   codeBlockContainer: {
