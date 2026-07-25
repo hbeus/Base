@@ -10,7 +10,7 @@ src/
     typography/   Text
     overlays/     Dialog
     navigation/   Tabs, TreeView, Toolbar, Sidebar, …
-  tokens/         spacing, size, elementSize, colors, radii, typography
+  tokens/         themes, spacing, size, elementSize, radii, typography, …
   types/          polymorphic.ts (read before creating polymorphic components)
   utils/          styleArray, mergeRefs
 ```
@@ -19,5 +19,5 @@ src/
 
 - **Token split**: `spacing` = padding/margin/gap, `size` = arbitrary dimensions, `elementSize` = component heights (sm/md/lg). Read the token files to see the scales.
 - **No hardcoded values**: all colors, spacing, radii, and typography come from tokens. No raw px, hex, or font sizes.
-- **Components import from barrel** (`@base/ui`), **tokens use deep imports** (`@base/ui/tokens/colors.stylex`).
-- **Theming via `stylex.createTheme()`**: dark values are defaults in `defineVars()`, light overrides in `lightTheme` via `createTheme()`. Applied as a className on `<html>`. Do not use `light-dark()` CSS function — LightningCSS mangles it.
+- **Components import from barrel** (`@base/ui`), **tokens use deep imports** (`@base/ui/tokens/themes.stylex`).
+- **Theming via `stylex.createTheme()`**: default-dark values in `defineVars()`; other palette/scheme combos via `themeMap` / `createTheme()` on `<html>`. Do not use `light-dark()` CSS function — LightningCSS mangles it.

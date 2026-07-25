@@ -5,6 +5,8 @@ import { colors } from '@base/ui/tokens/themes.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
+import { DocsPage } from '~/components/DocsPage';
+import { InlineCode } from '~/components/InlineCode';
 
 export const Route = createFileRoute('/tokens/typography')({
   component: TypographyPage,
@@ -26,23 +28,13 @@ const scales = [
 ] as const;
 
 const styles = stylex.create({
-  page: {
-    maxWidth: '640px',
-    marginInline: 'auto',
-    paddingInline: spacing.s24,
-    paddingBlock: spacing.s64,
-  },
-  header: {
-    marginBottom: spacing.s48,
-  },
-  headerTitle: {
-    marginBottom: spacing.s8,
-  },
   section: {
-    marginBottom: spacing.s64,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.s8,
   },
   sectionTitle: {
-    marginBottom: spacing.s24,
+    marginBottom: spacing.s16,
     paddingBottom: spacing.s12,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
@@ -75,7 +67,6 @@ const styles = stylex.create({
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
     gap: spacing.s24,
-    marginBottom: spacing.s48,
   },
   weightCard: {
     display: 'flex',
@@ -120,18 +111,18 @@ const styles = stylex.create({
 
 function TypographyPage() {
   return (
-    <div {...stylex.props(styles.page)}>
-      <header {...stylex.props(styles.header)}>
-        <Text as='h1' size='hero' weight='semibold' style={styles.headerTitle}>
-          Typography
-        </Text>
-        <Text as='p' size='body' color='secondary'>
-          8 steps from 11px to 32px. Unitless line-heights: 1.2 headings, 1.4 body.
-        </Text>
-      </header>
-
+    <DocsPage
+      title='Typography'
+      description={
+        <>
+          Eight steps from 11px to 32px via{' '}
+          <InlineCode>@base/ui/tokens/typography.stylex</InlineCode>. Unitless line-heights: 1.2
+          headings, 1.4 body.
+        </>
+      }
+    >
       <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
+        <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
           Type Scale
         </Text>
         {scales.map((s, i) => (
@@ -155,7 +146,7 @@ function TypographyPage() {
       </section>
 
       <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
+        <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
           Weights
         </Text>
         <div {...stylex.props(styles.weightsGrid)}>
@@ -176,7 +167,7 @@ function TypographyPage() {
       </section>
 
       <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
+        <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
           Paragraph Readability
         </Text>
         <div {...stylex.props(styles.paragraphGrid)}>
@@ -198,7 +189,7 @@ function TypographyPage() {
           </div>
           <div {...stylex.props(styles.paragraphColumn)}>
             <Text size='label' weight='semibold' color='secondary' style={styles.uppercase}>
-              Label (12px / 1.35)
+              Label (12px / 1.4)
             </Text>
             <Text size='label' weight='regular'>
               {sampleParagraph}
@@ -206,7 +197,7 @@ function TypographyPage() {
           </div>
           <div {...stylex.props(styles.paragraphColumn)}>
             <Text size='label' weight='semibold' color='secondary' style={styles.uppercase}>
-              Caption (11px / 1.35)
+              Caption (11px / 1.4)
             </Text>
             <Text size='caption' weight='regular'>
               {sampleParagraph}
@@ -216,7 +207,7 @@ function TypographyPage() {
       </section>
 
       <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
+        <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
           Color Variants
         </Text>
         <div {...stylex.props(styles.colorGrid)}>
@@ -246,7 +237,7 @@ function TypographyPage() {
       </section>
 
       <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
+        <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
           Monospace
         </Text>
         {(['body', 'bodySm', 'label', 'caption'] as const).map(s => {
@@ -270,7 +261,7 @@ function TypographyPage() {
       </section>
 
       <section {...stylex.props(styles.section)}>
-        <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
+        <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
           Mixed Content
         </Text>
         <div {...stylex.props(styles.mixedSection)}>
@@ -305,6 +296,6 @@ function TypographyPage() {
           </Text>
         </div>
       </section>
-    </div>
+    </DocsPage>
   );
 }

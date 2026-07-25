@@ -2,24 +2,23 @@ import { Flex, Text } from '@base/ui';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
+import { DocsPage } from '~/components/DocsPage';
+import { InlineCode } from '~/components/InlineCode';
 
 export const Route = createFileRoute('/guides/theming')({
-  component: DocsPage,
+  component: ThemingGuidePage,
 });
 
 const styles = stylex.create({
-  page: {
-    maxWidth: '720px',
-    marginInline: 'auto',
-    paddingInline: spacing.s24,
-    paddingBlock: spacing.s64,
-  },
-  header: {
-    marginBottom: spacing.s32,
-  },
   section: {
-    marginBottom: spacing.s32,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.s12,
+  },
+  sectionTitle: {
+    marginBottom: spacing.s4,
   },
   code: {
     fontFamily: "'SF Mono', 'Cascadia Code', 'Fira Code', monospace",
@@ -31,14 +30,6 @@ const styles = stylex.create({
     overflowX: 'auto',
     whiteSpace: 'pre',
     display: 'block',
-  },
-  inlineCode: {
-    fontFamily: "'SF Mono', 'Cascadia Code', 'Fira Code', monospace",
-    fontSize: '0.85em',
-    paddingInline: spacing.s4,
-    paddingBlock: '2px',
-    borderRadius: '4px',
-    backgroundColor: colors.lighten6,
   },
   table: {
     width: '100%',
@@ -62,25 +53,16 @@ const styles = stylex.create({
     borderBottomStyle: 'solid',
     borderBottomColor: colors.border,
   },
-  swatch: {
-    width: '20px',
-    height: '20px',
-    borderRadius: '4px',
-    display: 'inline-block',
-    verticalAlign: 'middle',
-  },
-  list: {
-    paddingInlineStart: spacing.s20,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: spacing.s8,
+  link: {
+    color: 'inherit',
+    textDecoration: 'underline',
   },
 });
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='heading' weight='semibold' style={{ marginBottom: spacing.s12 }}>
+      <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
         {title}
       </Text>
       {children}
@@ -92,32 +74,29 @@ function Code({ children }: { children: string }) {
   return <code {...stylex.props(styles.code)}>{children}</code>;
 }
 
-function IC({ children }: { children: string }) {
-  return <code {...stylex.props(styles.inlineCode)}>{children}</code>;
-}
-
-function DocsPage() {
+function ThemingGuidePage() {
   return (
-    <div {...stylex.props(styles.page)}>
-      <header {...stylex.props(styles.header)}>
-        <Flex direction='column' gap='s8'>
-          <Text as='h1' size='display' weight='semibold'>
-            Theme Builder
-          </Text>
-          <Text as='p' color='secondary'>
-            OKLCH-based color theme generator with relative chroma for consistent perceived
-            vividness across hues.
-          </Text>
-        </Flex>
-      </header>
-
+    <DocsPage
+      title='Theme Builder'
+      description={
+        <>
+          OKLCH-based color theme generator with relative chroma for consistent perceived vividness
+          across hues. Preview generated themes on{' '}
+          <Link to='/tokens/themes' {...stylex.props(styles.link)}>
+            Themes
+          </Link>
+          .
+        </>
+      }
+    >
       <Section title='How it works'>
         <Flex direction='column' gap='s12'>
           <Text as='p' size='bodySm' color='secondary'>
-            Every color token is generated from two parameters: <IC>lightness</IC> (0-1) and{' '}
-            <IC>vividness</IC> (0-1, fraction of max chroma). The generator computes the maximum
-            displayable chroma for a given lightness and hue within the sRGB gamut, then multiplies
-            by vividness. This guarantees all colors are in-gamut regardless of what values you set.
+            Every color token is generated from two parameters: <InlineCode>lightness</InlineCode>{' '}
+            (0-1) and <InlineCode>vividness</InlineCode> (0-1, fraction of max chroma). The
+            generator computes the maximum displayable chroma for a given lightness and hue within
+            the sRGB gamut, then multiplies by vividness. This guarantees all colors are in-gamut
+            regardless of what values you set.
           </Text>
           <Code>{`chroma = maxChroma(lightness, hue) × vividness
 
@@ -134,7 +113,7 @@ function DocsPage() {
       <Section title='Theme parameters'>
         <Flex direction='column' gap='s12'>
           <Text as='p' size='bodySm' color='secondary'>
-            Each theme is defined by three parameters in <IC>CONFIGS</IC>:
+            Each theme is defined by three parameters in <InlineCode>CONFIGS</InlineCode>:
           </Text>
           <div style={{ overflowX: 'auto' }}>
             <table {...stylex.props(styles.table)}>
@@ -148,7 +127,7 @@ function DocsPage() {
               <tbody>
                 <tr>
                   <td {...stylex.props(styles.td)}>
-                    <IC>brandHue</IC>
+                    <InlineCode>brandHue</InlineCode>
                   </td>
                   <td {...stylex.props(styles.td)}>number | null</td>
                   <td {...stylex.props(styles.td)}>
@@ -158,7 +137,7 @@ function DocsPage() {
                 </tr>
                 <tr>
                   <td {...stylex.props(styles.td)}>
-                    <IC>neutralTint</IC>
+                    <InlineCode>neutralTint</InlineCode>
                   </td>
                   <td {...stylex.props(styles.td)}>number</td>
                   <td {...stylex.props(styles.td)}>
@@ -167,7 +146,7 @@ function DocsPage() {
                 </tr>
                 <tr>
                   <td {...stylex.props(styles.td)}>
-                    <IC>stateHarmony</IC>
+                    <InlineCode>stateHarmony</InlineCode>
                   </td>
                   <td {...stylex.props(styles.td)}>number</td>
                   <td {...stylex.props(styles.td)}>
@@ -195,8 +174,8 @@ warm:      { brandHue: 65,   neutralTint: 0.02,  stateHarmony: 0.12 }`}</Code>
           </Text>
           <Text as='p' size='bodySm' color='secondary'>
             Used by tokens where perceived saturation matters: state colors, highlight, accent
-            buttons. Chroma is computed as <IC>maxChroma(L, H) × vividness</IC>, normalizing
-            perceived vividness across different hues.
+            buttons. Chroma is computed as <InlineCode>maxChroma(L, H) × vividness</InlineCode>,
+            normalizing perceived vividness across different hues.
           </Text>
           <Text as='p' size='bodySm' weight='medium'>
             Fixed chroma (neutralTint)
@@ -213,8 +192,9 @@ warm:      { brandHue: 65,   neutralTint: 0.02,  stateHarmony: 0.12 }`}</Code>
       <Section title='Color configs'>
         <Flex direction='column' gap='s12'>
           <Text as='p' size='bodySm' color='secondary'>
-            Every token value is derived from an exported config in <IC>theme-config.ts</IC>. Edit
-            any value and run <IC>pnpm generate:themes</IC> to regenerate.
+            Every token value is derived from an exported config in{' '}
+            <InlineCode>theme-config.ts</InlineCode>. Edit any value and run{' '}
+            <InlineCode>pnpm generate:themes</InlineCode> to regenerate.
           </Text>
           <Text as='p' size='bodySm' weight='medium'>
             STATE_CONFIG — state colors (relative chroma)
@@ -249,14 +229,14 @@ warm:      { brandHue: 65,   neutralTint: 0.02,  stateHarmony: 0.12 }`}</Code>
           </Text>
           <Text as='p' size='bodySm' color='secondary'>
             Lightness-only config for primary, hover, and inverse text. Chroma comes from{' '}
-            <IC>neutralTint</IC>, not vividness.
+            <InlineCode>neutralTint</InlineCode>, not vividness.
           </Text>
           <Text as='p' size='bodySm' weight='medium'>
             BACKGROUND_CONFIG — surfaces (neutralTint)
           </Text>
           <Text as='p' size='bodySm' color='secondary'>
             Lightness-only config for base and surface backgrounds. Same as foreground — chroma from{' '}
-            <IC>neutralTint</IC>.
+            <InlineCode>neutralTint</InlineCode>.
           </Text>
           <Text as='p' size='bodySm' weight='medium'>
             OPACITY_CONFIG — transparency multipliers
@@ -271,11 +251,12 @@ warm:      { brandHue: 65,   neutralTint: 0.02,  stateHarmony: 0.12 }`}</Code>
       <Section title='Editing and regenerating'>
         <Flex direction='column' gap='s12'>
           <Text as='p' size='bodySm' color='secondary'>
-            The theme config lives at <IC>packages/ui/src/utils/theme-config.ts</IC>. The codegen
-            script at <IC>packages/ui/scripts/generate-themes.ts</IC> runs the generator and writes
-            static values to <IC>themes.stylex.ts</IC>. This two-step process exists because StyleX
-            requires fully static string values in <IC>defineVars()</IC> and <IC>createTheme()</IC>{' '}
-            — no function calls allowed at compile time.
+            The theme config lives at <InlineCode>packages/ui/src/utils/theme-config.ts</InlineCode>
+            . The codegen script at <InlineCode>packages/ui/scripts/generate-themes.ts</InlineCode>{' '}
+            runs the generator and writes static values to <InlineCode>themes.stylex.ts</InlineCode>
+            . This two-step process exists because StyleX requires fully static string values in{' '}
+            <InlineCode>defineVars()</InlineCode> and <InlineCode>createTheme()</InlineCode> — no
+            function calls allowed at compile time.
           </Text>
           <Code>{`# Edit any config (STATE_CONFIG, HIGHLIGHT_CONFIG, ACCENT_CONFIG,
 # PRIMARY_BUTTON_CONFIG, FOREGROUND_CONFIG, BACKGROUND_CONFIG,
@@ -283,18 +264,17 @@ warm:      { brandHue: 65,   neutralTint: 0.02,  stateHarmony: 0.12 }`}</Code>
 # Then regenerate:
 pnpm generate:themes
 
-# Preview at /showcase/themes`}</Code>
+# Preview at /tokens/themes`}</Code>
           <Text as='p' size='bodySm' color='secondary'>
-            The safety guarantee: <IC>maxChroma(L, H)</IC> binary-searches for the sRGB boundary, so
-            the output is always a valid sRGB color. You can freely change any lightness or
-            vividness value without risk of gamut clipping.
+            The safety guarantee: <InlineCode>maxChroma(L, H)</InlineCode> binary-searches for the
+            sRGB boundary, so the output is always a valid sRGB color. You can freely change any
+            lightness or vividness value without risk of gamut clipping.
           </Text>
         </Flex>
       </Section>
 
       <Section title='Adding a new theme'>
-        <Flex direction='column' gap='s12'>
-          <Code>{`// 1. Add to CONFIGS in theme-config.ts:
+        <Code>{`// 1. Add to CONFIGS in theme-config.ts:
 export const CONFIGS = {
   ...existing,
   ocean: { brandHue: 210, neutralTint: 0.01, stateHarmony: 0.1 },
@@ -305,8 +285,7 @@ pnpm generate:themes
 
 // 3. The codegen creates defineVars/createTheme exports
 //    and adds entries to themeMap and themeBackgrounds.`}</Code>
-        </Flex>
       </Section>
-    </div>
+    </DocsPage>
   );
 }

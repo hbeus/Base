@@ -32,13 +32,13 @@ packages/ui/src/
     typography/   Text
     overlays/     Dialog
     navigation/   Tabs, TreeView, Toolbar, Sidebar, …
-  tokens/         Design tokens (spacing, size, colors, radii, typography)
+  tokens/         Design tokens (themes, spacing, size, radii, typography, …)
   providers/      ComponentConfigProvider (app-wide component defaults)
   types/          Shared polymorphic type utilities
   utils/          styleArray, mergeProps, mergeRefs
 ```
 
-All colors use oklch. Theming is handled via `stylex.createTheme()` with a `lightTheme` class override. See `packages/ui/AGENTS.md` for details.
+Colors use OKLCH. Defaults are default-dark via `defineVars()`; other palette/scheme themes via `createTheme()` / `themeMap` on `<html>`. See `packages/ui/AGENTS.md` and the docs Theming guide.
 
 ## Getting started
 

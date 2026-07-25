@@ -369,8 +369,8 @@ function DocsSidebar() {
         <TreeView.Item href='/tokens/overview' onClick={handleClick}>
           Overview
         </TreeView.Item>
-        <TreeView.Item href='/tokens/colors' onClick={handleClick}>
-          Colors
+        <TreeView.Item href='/tokens/themes' onClick={handleClick}>
+          Themes
         </TreeView.Item>
         <TreeView.Item href='/tokens/typography' onClick={handleClick}>
           Typography

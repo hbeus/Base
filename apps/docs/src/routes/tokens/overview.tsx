@@ -1,47 +1,37 @@
-import { Accordion, Button, Card, Dialog, Flex, Input, Pressable, Switch, Text } from '@base/ui';
+import { Flex, Text } from '@base/ui';
+import { borders } from '@base/ui/tokens/borders.stylex';
 import { elementSize } from '@base/ui/tokens/elementSize.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
+import { size } from '@base/ui/tokens/size.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
-import { createFileRoute } from '@tanstack/react-router';
-import { AnimatePresence } from 'motion/react';
-import { useState } from 'react';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import type { ReactNode } from 'react';
+import { DocsPage } from '~/components/DocsPage';
+import { InlineCode } from '~/components/InlineCode';
 
 export const Route = createFileRoute('/tokens/overview')({
   component: OverviewPage,
 });
 
 const styles = stylex.create({
-  page: {
-    maxWidth: '960px',
-    marginInline: 'auto',
-    paddingInline: spacing.s24,
-    paddingBlock: spacing.s64,
-  },
-  header: {
-    marginBottom: spacing.s48,
-  },
-  headerTitle: {
-    marginBottom: spacing.s8,
-  },
   section: {
-    marginBottom: spacing.s64,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.s24,
   },
   sectionTitle: {
-    marginBottom: spacing.s24,
     paddingBottom: spacing.s12,
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
     borderBottomColor: colors.border,
   },
   subsection: {
-    marginBottom: spacing.s32,
-  },
-  subsectionTitle: {
-    marginBottom: spacing.s8,
-    paddingInline: spacing.s8,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.s8,
   },
   swatchGrid: {
     display: 'grid',
@@ -75,17 +65,6 @@ const styles = stylex.create({
     gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))',
     gap: spacing.s8,
   },
-  preview: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: spacing.s12,
-    alignItems: 'center',
-    padding: spacing.s20,
-    borderRadius: radii.r12,
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: colors.border,
-  },
   previewColumn: {
     display: 'flex',
     flexDirection: 'column',
@@ -95,11 +74,6 @@ const styles = stylex.create({
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: colors.border,
-  },
-  toggleRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
   mono: {
     fontFamily: typography.fontMono,
@@ -130,12 +104,48 @@ const styles = stylex.create({
     backgroundColor: colors.highlight,
     borderRadius: radii.r4,
   },
+  sizeBar: {
+    height: spacing.s12,
+    backgroundColor: colors.buttonAccentBg,
+    borderRadius: radii.r4,
+  },
   elementSizeBar: {
     backgroundColor: colors.lighten8,
     borderRadius: radii.r8,
     display: 'flex',
     alignItems: 'center',
     paddingInline: spacing.s12,
+  },
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+  },
+  th: {
+    textAlign: 'left',
+    paddingBlock: spacing.s8,
+    paddingInline: spacing.s8,
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: colors.border,
+  },
+  td: {
+    paddingBlock: spacing.s8,
+    paddingInline: spacing.s8,
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: colors.border,
+  },
+  borderDemo: {
+    width: '100%',
+    height: spacing.s48,
+    borderStyle: 'solid',
+    borderColor: colors.border,
+    borderRadius: radii.r8,
+    backgroundColor: colors.lighten4,
+  },
+  link: {
+    color: colors.highlight,
+    textDecoration: 'underline',
   },
 });
 
@@ -206,6 +216,21 @@ const spacingBarWidths = stylex.create({
   s128: { width: spacing.s128 },
 });
 
+const sizeBarWidths = stylex.create({
+  s4: { width: size.s4 },
+  s8: { width: size.s8 },
+  s12: { width: size.s12 },
+  s16: { width: size.s16 },
+  s24: { width: size.s24 },
+  s32: { width: size.s32 },
+  s40: { width: size.s40 },
+  s48: { width: size.s48 },
+  s64: { width: size.s64 },
+  s80: { width: size.s80 },
+  s96: { width: size.s96 },
+  s128: { width: size.s128 },
+});
+
 const elementSizeHeights = stylex.create({
   xs: { height: elementSize.xs },
   sm: { height: elementSize.sm },
@@ -221,11 +246,17 @@ const radiiBoxStyles = stylex.create({
   r8: { borderRadius: radii.r8 },
   r10: { borderRadius: radii.r10 },
   r12: { borderRadius: radii.r12 },
+  r14: { borderRadius: radii.r14 },
   r16: { borderRadius: radii.r16 },
   r20: { borderRadius: radii.r20 },
   r24: { borderRadius: radii.r24 },
   r32: { borderRadius: radii.r32 },
   full: { borderRadius: radii.full },
+});
+
+const borderWidths = stylex.create({
+  default: { borderWidth: borders.default },
+  focus: { borderWidth: borders.focus },
 });
 
 function Swatch({
@@ -247,15 +278,32 @@ function Swatch({
   );
 }
 
-function ColorTokensSection() {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Color Tokens
+      <Text as='h2' size='headline' weight='semibold' style={styles.sectionTitle}>
+        {title}
+      </Text>
+      {children}
+    </section>
+  );
+}
+
+function ColorTokensSection() {
+  return (
+    <Section title='Colors'>
+      <Text as='p' size='bodySm' color='secondary'>
+        Semantic <InlineCode>colors</InlineCode> from{' '}
+        <InlineCode>@base/ui/tokens/themes.stylex</InlineCode>. Values follow the active app theme.
+        Compare palettes on{' '}
+        <Link to='/tokens/themes' {...stylex.props(styles.link)}>
+          Themes
+        </Link>
+        .
       </Text>
 
       <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
+        <Text as='h3' size='label' weight='medium' color='secondary'>
           Core
         </Text>
         <div {...stylex.props(styles.swatchGrid)}>
@@ -269,7 +317,7 @@ function ColorTokensSection() {
       </div>
 
       <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
+        <Text as='h3' size='label' weight='medium' color='secondary'>
           Foreground
         </Text>
         <div {...stylex.props(styles.swatchGrid)}>
@@ -284,7 +332,7 @@ function ColorTokensSection() {
       </div>
 
       <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
+        <Text as='h3' size='label' weight='medium' color='secondary'>
           State
         </Text>
         <div {...stylex.props(styles.swatchGrid)}>
@@ -294,8 +342,8 @@ function ColorTokensSection() {
       </div>
 
       <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Lighten Ramp
+        <Text as='h3' size='label' weight='medium' color='secondary'>
+          Lighten ramp
         </Text>
         <div {...stylex.props(styles.rampGrid)}>
           <Swatch name='4' colorStyle={swatchColors.lighten4} small />
@@ -308,8 +356,8 @@ function ColorTokensSection() {
       </div>
 
       <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Darken Ramp
+        <Text as='h3' size='label' weight='medium' color='secondary'>
+          Darken ramp
         </Text>
         <div {...stylex.props(styles.rampGrid)}>
           <Swatch name='4' colorStyle={swatchColors.darken4} small />
@@ -322,8 +370,8 @@ function ColorTokensSection() {
       </div>
 
       <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Hover Ramp
+        <Text as='h3' size='label' weight='medium' color='secondary'>
+          Hover ramp
         </Text>
         <div {...stylex.props(styles.rampGrid)}>
           <Swatch name='4' colorStyle={swatchColors.hover4} small />
@@ -335,7 +383,7 @@ function ColorTokensSection() {
       </div>
 
       <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
+        <Text as='h3' size='label' weight='medium' color='secondary'>
           Button
         </Text>
         <div {...stylex.props(styles.swatchGrid)}>
@@ -347,549 +395,7 @@ function ColorTokensSection() {
           <Swatch name='primaryHover' colorStyle={swatchColors.buttonPrimaryHover} />
         </div>
       </div>
-    </section>
-  );
-}
-
-function ButtonSection() {
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Button
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Variants
-        </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button variant='accent'>Accent</Button>
-          <Button>Primary</Button>
-          <Button variant='ghost'>Ghost</Button>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Sizes
-        </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button size='xs'>Extra Small</Button>
-          <Button size='sm'>Small</Button>
-          <Button size='md'>Medium</Button>
-          <Button size='lg'>Large</Button>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Rounded
-        </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button variant='accent' rounded>
-            Accent
-          </Button>
-          <Button rounded>Primary</Button>
-          <Button variant='ghost' rounded>
-            Ghost
-          </Button>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Fill
-        </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button variant='accent' fill>
-            Accent Fill
-          </Button>
-          <Button fill>Primary Fill</Button>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Disabled
-        </Text>
-        <div {...stylex.props(styles.preview)}>
-          <Button variant='accent' disabled>
-            Accent
-          </Button>
-          <Button disabled>Primary</Button>
-          <Button variant='ghost' disabled>
-            Ghost
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function InputSection() {
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Input
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Sizes
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <Input size='sm' placeholder='Small input' />
-          <Input size='md' placeholder='Medium input' />
-          <Input size='lg' placeholder='Large input' />
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          States
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <Input placeholder='Default' />
-          <Input placeholder='Disabled' disabled />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ToggleSection() {
-  const [checked, setChecked] = useState(false);
-
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Switch
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Sizes
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <div {...stylex.props(styles.toggleRow)}>
-            <Text size='bodySm'>Small</Text>
-            <Switch size='sm' checked={checked} onCheckedChange={setChecked} />
-          </div>
-          <div {...stylex.props(styles.toggleRow)}>
-            <Text size='bodySm'>Medium</Text>
-            <Switch size='md' checked={checked} onCheckedChange={setChecked} />
-          </div>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Disabled
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <div {...stylex.props(styles.toggleRow)}>
-            <Text size='bodySm'>Disabled off</Text>
-            <Switch disabled checked={false} onCheckedChange={() => {}} />
-          </div>
-          <div {...stylex.props(styles.toggleRow)}>
-            <Text size='bodySm'>Disabled on</Text>
-            <Switch disabled checked onCheckedChange={() => {}} />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PressableSection() {
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Pressable
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Inset (hover to see)
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <Pressable inset='s4'>
-            <Text size='bodySm'>Inset s4</Text>
-          </Pressable>
-          <Pressable inset='s8'>
-            <Text size='bodySm'>Inset s8</Text>
-          </Pressable>
-          <Pressable inset='s12'>
-            <Text size='bodySm'>Inset s12</Text>
-          </Pressable>
-          <Pressable inset='s16'>
-            <Text size='bodySm'>Inset s16</Text>
-          </Pressable>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CardSection() {
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Card
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Variants
-        </Text>
-        <Flex direction='column' gap='s16'>
-          <Card variant='filled'>
-            <Text size='bodySm' weight='medium'>
-              Filled (default)
-            </Text>
-            <Text size='caption' color='secondary'>
-              Uses lighten4 background
-            </Text>
-          </Card>
-          <Card variant='outline'>
-            <Text size='bodySm' weight='medium'>
-              Outline
-            </Text>
-            <Text size='caption' color='secondary'>
-              Transparent background with border
-            </Text>
-          </Card>
-          <Card darken>
-            <Text size='bodySm' weight='medium'>
-              Darken
-            </Text>
-            <Text size='caption' color='secondary'>
-              Uses darken4 background
-            </Text>
-          </Card>
-        </Flex>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Padding
-        </Text>
-        <Flex direction='column' gap='s16'>
-          <Card padding='none'>
-            <Text size='caption' color='secondary'>
-              padding: none
-            </Text>
-          </Card>
-          <Card padding='sm'>
-            <Text size='caption' color='secondary'>
-              padding: sm
-            </Text>
-          </Card>
-          <Card padding='md'>
-            <Text size='caption' color='secondary'>
-              padding: md (default)
-            </Text>
-          </Card>
-          <Card padding='lg'>
-            <Text size='caption' color='secondary'>
-              padding: lg
-            </Text>
-          </Card>
-        </Flex>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Direction & Gap
-        </Text>
-        <Flex direction='column' gap='s16'>
-          <Card direction='row' gap='s8'>
-            <Card>
-              <Text size='caption'>Row 1</Text>
-            </Card>
-            <Card>
-              <Text size='caption'>Row 2</Text>
-            </Card>
-            <Card>
-              <Text size='caption'>Row 3</Text>
-            </Card>
-          </Card>
-          <Card direction='column' gap='s8'>
-            <Card>
-              <Text size='caption'>Column 1</Text>
-            </Card>
-            <Card>
-              <Text size='caption'>Column 2</Text>
-            </Card>
-          </Card>
-        </Flex>
-      </div>
-    </section>
-  );
-}
-
-function AccordionSection() {
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Accordion
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Default (single)
-        </Text>
-        <Accordion.Root>
-          <Accordion.Item trigger='First item'>
-            <Text weight='regular' color='secondary'>
-              Only one item can be open at a time in single mode.
-            </Text>
-          </Accordion.Item>
-          <Accordion.Item trigger='Second item'>
-            <Text weight='regular' color='secondary'>
-              Opening this item closes the previous one.
-            </Text>
-          </Accordion.Item>
-          <Accordion.Item trigger='Third item'>
-            <Text weight='regular' color='secondary'>
-              Panels animate with spring physics via motion.dev.
-            </Text>
-          </Accordion.Item>
-        </Accordion.Root>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Multiple
-        </Text>
-        <Accordion.Root multiple>
-          <Accordion.Item trigger='Section A'>
-            <Text weight='regular' color='secondary'>
-              Multiple items can be expanded simultaneously.
-            </Text>
-          </Accordion.Item>
-          <Accordion.Item trigger='Section B'>
-            <Text weight='regular' color='secondary'>
-              Try opening both sections at once.
-            </Text>
-          </Accordion.Item>
-        </Accordion.Root>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Disabled
-        </Text>
-        <Accordion.Root>
-          <Accordion.Item trigger='Enabled'>
-            <Text weight='regular' color='secondary'>
-              This item works normally.
-            </Text>
-          </Accordion.Item>
-          <Accordion.Item trigger='Disabled' disabled>
-            <Text weight='regular' color='secondary'>
-              This item cannot be toggled.
-            </Text>
-          </Accordion.Item>
-        </Accordion.Root>
-      </div>
-    </section>
-  );
-}
-
-function DialogSection() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Dialog
-      </Text>
-
-      <div {...stylex.props(styles.preview)}>
-        <Dialog.Root open={open} onOpenChange={setOpen}>
-          <Dialog.Trigger render={<Button variant='primary' />}>Open dialog</Dialog.Trigger>
-          <AnimatePresence>
-            {open && (
-              <Dialog.Portal>
-                <Dialog.Backdrop />
-                <Dialog.Content>
-                  <Dialog.Title>Dialog Title</Dialog.Title>
-                  <Dialog.Description>
-                    A compound component dialog with backdrop, animated enter/exit, title,
-                    description, and footer with action buttons.
-                  </Dialog.Description>
-                  <Dialog.Footer>
-                    <Dialog.Close render={<Button variant='ghost' size='sm' />}>
-                      Cancel
-                    </Dialog.Close>
-                    <Dialog.Close render={<Button size='sm' />}>Confirm</Dialog.Close>
-                  </Dialog.Footer>
-                </Dialog.Content>
-              </Dialog.Portal>
-            )}
-          </AnimatePresence>
-        </Dialog.Root>
-      </div>
-    </section>
-  );
-}
-
-function TextSection() {
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Text
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Scale
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <Text size='hero'>Hero — 32px</Text>
-          <Text size='display'>Display — 28px</Text>
-          <Text size='headline'>Headline — 22px</Text>
-          <Text size='title'>Title — 18px</Text>
-          <Text size='body'>Body — 15px</Text>
-          <Text size='bodySm'>Body Sm — 13px</Text>
-          <Text size='label'>Label — 12px</Text>
-          <Text size='caption'>Caption — 11px</Text>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Weights
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <Text size='title' weight='regular'>
-            Regular
-          </Text>
-          <Text size='title' weight='medium'>
-            Medium
-          </Text>
-          <Text size='title' weight='semibold'>
-            Semibold
-          </Text>
-          <Text size='title' weight='bold'>
-            Bold
-          </Text>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Colors
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <Text size='body' color='primary'>
-            Primary color
-          </Text>
-          <Text size='body' color='secondary'>
-            Secondary color
-          </Text>
-        </div>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Modifiers
-        </Text>
-        <div {...stylex.props(styles.previewColumn)}>
-          <Text size='body' uppercase>
-            Uppercase text
-          </Text>
-          <Text size='body' capitalize>
-            capitalize text
-          </Text>
-          <Text size='body' mono>
-            Monospace text
-          </Text>
-          <Text size='body' tight>
-            Tight line-height for compact layouts
-          </Text>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FlexSection() {
-  return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Flex
-      </Text>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Direction & Alignment
-        </Text>
-        <Flex direction='column' gap='s16'>
-          <Card>
-            <Text size='caption' color='secondary'>
-              row / center / between
-            </Text>
-            <Flex direction='row' align='center' justify='between'>
-              <Card padding='sm'>
-                <Text size='caption'>A</Text>
-              </Card>
-              <Card padding='sm'>
-                <Text size='caption'>B</Text>
-              </Card>
-              <Card padding='sm'>
-                <Text size='caption'>C</Text>
-              </Card>
-            </Flex>
-          </Card>
-          <Card>
-            <Text size='caption' color='secondary'>
-              row / center / center / gap s8
-            </Text>
-            <Flex direction='row' align='center' justify='center' gap='s8'>
-              <Card padding='sm'>
-                <Text size='caption'>A</Text>
-              </Card>
-              <Card padding='sm'>
-                <Text size='caption'>B</Text>
-              </Card>
-              <Card padding='sm'>
-                <Text size='caption'>C</Text>
-              </Card>
-            </Flex>
-          </Card>
-          <Card>
-            <Text size='caption' color='secondary'>
-              column / stretch / gap s8
-            </Text>
-            <Flex direction='column' gap='s8'>
-              <Card padding='sm'>
-                <Text size='caption'>Row 1</Text>
-              </Card>
-              <Card padding='sm'>
-                <Text size='caption'>Row 2</Text>
-              </Card>
-            </Flex>
-          </Card>
-        </Flex>
-      </div>
-
-      <div {...stylex.props(styles.subsection)}>
-        <Text as='h3' size='label' weight='medium' color='secondary' style={styles.subsectionTitle}>
-          Wrap
-        </Text>
-        <Card>
-          <Flex direction='row' gap='s8' wrap>
-            {Array.from({ length: 12 }, (_, i) => (
-              <Card key={i} padding='sm'>
-                <Text size='caption'>Item {i + 1}</Text>
-              </Card>
-            ))}
-          </Flex>
-        </Card>
-      </div>
-    </section>
+    </Section>
   );
 }
 
@@ -901,6 +407,7 @@ function RadiiSection() {
     'r8',
     'r10',
     'r12',
+    'r14',
     'r16',
     'r20',
     'r24',
@@ -909,9 +416,9 @@ function RadiiSection() {
   ] as const;
 
   return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Radii
+    <Section title='Radii'>
+      <Text as='p' size='bodySm' color='secondary'>
+        <InlineCode>@base/ui/tokens/radii.stylex</InlineCode>
       </Text>
       <div {...stylex.props(styles.radiiGrid)}>
         {radiiValues.map(r => (
@@ -923,7 +430,7 @@ function RadiiSection() {
           </div>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }
 
@@ -955,9 +462,9 @@ function SpacingSection() {
   ] as const;
 
   return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Spacing
+    <Section title='Spacing'>
+      <Text as='p' size='bodySm' color='secondary'>
+        Padding, margin, and gap — <InlineCode>@base/ui/tokens/spacing.stylex</InlineCode>
       </Text>
       <Flex direction='column' gap='s4'>
         {spacingValues.map(s => (
@@ -972,7 +479,47 @@ function SpacingSection() {
           </div>
         ))}
       </Flex>
-    </section>
+    </Section>
+  );
+}
+
+function SizeSection() {
+  const sizeValues = [
+    { name: 's4', px: 4 },
+    { name: 's8', px: 8 },
+    { name: 's12', px: 12 },
+    { name: 's16', px: 16 },
+    { name: 's24', px: 24 },
+    { name: 's32', px: 32 },
+    { name: 's40', px: 40 },
+    { name: 's48', px: 48 },
+    { name: 's64', px: 64 },
+    { name: 's80', px: 80 },
+    { name: 's96', px: 96 },
+    { name: 's128', px: 128 },
+  ] as const;
+
+  return (
+    <Section title='Size'>
+      <Text as='p' size='bodySm' color='secondary'>
+        Arbitrary dimensions (width/height) — <InlineCode>@base/ui/tokens/size.stylex</InlineCode>.
+        Full scale includes negatives (<InlineCode>n1</InlineCode>, <InlineCode>n2</InlineCode>) and
+        steps through <InlineCode>s128</InlineCode>.
+      </Text>
+      <Flex direction='column' gap='s4'>
+        {sizeValues.map(s => (
+          <div key={s.name} {...stylex.props(styles.spacingRow)}>
+            <Text size='caption' color='secondary' style={[styles.mono, styles.spacingLabel]}>
+              {s.name}
+            </Text>
+            <div {...stylex.props(styles.sizeBar, sizeBarWidths[s.name])} />
+            <Text size='caption' color='secondary' style={styles.mono}>
+              {s.px}px
+            </Text>
+          </div>
+        ))}
+      </Flex>
+    </Section>
   );
 }
 
@@ -986,9 +533,9 @@ function ElementSizeSection() {
   ] as const;
 
   return (
-    <section {...stylex.props(styles.section)}>
-      <Text as='h2' size='display' weight='semibold' style={styles.sectionTitle}>
-        Element Sizes
+    <Section title='Element sizes'>
+      <Text as='p' size='bodySm' color='secondary'>
+        Component heights — <InlineCode>@base/ui/tokens/elementSize.stylex</InlineCode>
       </Text>
       <Flex direction='column' gap='s8'>
         {sizes.map(s => (
@@ -999,35 +546,254 @@ function ElementSizeSection() {
           </div>
         ))}
       </Flex>
-    </section>
+    </Section>
+  );
+}
+
+function BordersSection() {
+  return (
+    <Section title='Borders'>
+      <Text as='p' size='bodySm' color='secondary'>
+        <InlineCode>@base/ui/tokens/borders.stylex</InlineCode>
+      </Text>
+      <Flex direction='column' gap='s12'>
+        {(['default', 'focus'] as const).map(name => (
+          <div key={name} {...stylex.props(styles.subsection)}>
+            <Text size='caption' color='secondary' style={styles.mono}>
+              {name}
+            </Text>
+            <div {...stylex.props(styles.borderDemo, borderWidths[name])} />
+          </div>
+        ))}
+      </Flex>
+    </Section>
+  );
+}
+
+function BreakpointsSection() {
+  const entries = [
+    { name: 'sm', value: '@media (max-width: 640px)' },
+    { name: 'md', value: '@media (max-width: 768px)' },
+    { name: 'lg', value: '@media (max-width: 1024px)' },
+    { name: 'xl', value: '@media (max-width: 1280px)' },
+  ] as const;
+
+  return (
+    <Section title='Breakpoints'>
+      <Text as='p' size='bodySm' color='secondary'>
+        StyleX <InlineCode>defineConsts</InlineCode> media queries —{' '}
+        <InlineCode>@base/ui/tokens/breakpoints.stylex</InlineCode>
+      </Text>
+      <table {...stylex.props(styles.table)}>
+        <thead>
+          <tr>
+            <th {...stylex.props(styles.th)}>
+              <Text size='label' weight='semibold'>
+                Token
+              </Text>
+            </th>
+            <th {...stylex.props(styles.th)}>
+              <Text size='label' weight='semibold'>
+                Query
+              </Text>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map(entry => (
+            <tr key={entry.name}>
+              <td {...stylex.props(styles.td)}>
+                <Text size='caption' style={styles.mono}>
+                  {entry.name}
+                </Text>
+              </td>
+              <td {...stylex.props(styles.td)}>
+                <Text size='caption' color='secondary' style={styles.mono}>
+                  {entry.value}
+                </Text>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Section>
+  );
+}
+
+function ZIndexSection() {
+  const entries = [
+    { name: 'base', value: '0' },
+    { name: 'raised', value: '1' },
+    { name: 'dropdown', value: '10' },
+    { name: 'sticky', value: '20' },
+    { name: 'fixed', value: '30' },
+    { name: 'overlay', value: '40' },
+    { name: 'modalBackdrop', value: '50' },
+    { name: 'modal', value: '51' },
+    { name: 'popover', value: '60' },
+    { name: 'tooltip', value: '70' },
+    { name: 'toast', value: '80' },
+    { name: 'max', value: '9999' },
+  ] as const;
+
+  return (
+    <Section title='Z-index'>
+      <Text as='p' size='bodySm' color='secondary'>
+        <InlineCode>@base/ui/tokens/zIndex.stylex</InlineCode>
+      </Text>
+      <table {...stylex.props(styles.table)}>
+        <thead>
+          <tr>
+            <th {...stylex.props(styles.th)}>
+              <Text size='label' weight='semibold'>
+                Token
+              </Text>
+            </th>
+            <th {...stylex.props(styles.th)}>
+              <Text size='label' weight='semibold'>
+                Value
+              </Text>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map(entry => (
+            <tr key={entry.name}>
+              <td {...stylex.props(styles.td)}>
+                <Text size='caption' style={styles.mono}>
+                  {entry.name}
+                </Text>
+              </td>
+              <td {...stylex.props(styles.td)}>
+                <Text size='caption' color='secondary' style={styles.mono}>
+                  {entry.value}
+                </Text>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Section>
+  );
+}
+
+function EasingSection() {
+  const groups = [
+    {
+      title: 'In',
+      entries: [
+        { name: 'inQuad', value: 'cubic-bezier(0.55, 0.085, 0.68, 0.53)' },
+        { name: 'inCubic', value: 'cubic-bezier(0.55, 0.055, 0.675, 0.19)' },
+        { name: 'inQuart', value: 'cubic-bezier(0.895, 0.03, 0.685, 0.22)' },
+        { name: 'inQuint', value: 'cubic-bezier(0.755, 0.05, 0.855, 0.06)' },
+        { name: 'inExpo', value: 'cubic-bezier(0.95, 0.05, 0.795, 0.035)' },
+        { name: 'inCirc', value: 'cubic-bezier(0.6, 0.04, 0.98, 0.335)' },
+      ],
+    },
+    {
+      title: 'Out',
+      entries: [
+        { name: 'outQuad', value: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' },
+        { name: 'outCubic', value: 'cubic-bezier(0.215, 0.61, 0.355, 1)' },
+        { name: 'outQuart', value: 'cubic-bezier(0.165, 0.84, 0.44, 1)' },
+        { name: 'outQuint', value: 'cubic-bezier(0.23, 1, 0.32, 1)' },
+        { name: 'outExpo', value: 'cubic-bezier(0.19, 1, 0.22, 1)' },
+        { name: 'outCirc', value: 'cubic-bezier(0.075, 0.82, 0.165, 1)' },
+        { name: 'outFluid', value: 'cubic-bezier(0.32, 0.72, 0, 1)' },
+      ],
+    },
+    {
+      title: 'In-out',
+      entries: [
+        { name: 'inOutQuad', value: 'cubic-bezier(0.455, 0.03, 0.515, 0.955)' },
+        { name: 'inOutCubic', value: 'cubic-bezier(0.645, 0.045, 0.355, 1)' },
+        { name: 'inOutQuart', value: 'cubic-bezier(0.77, 0, 0.175, 1)' },
+        { name: 'inOutQuint', value: 'cubic-bezier(0.86, 0, 0.07, 1)' },
+        { name: 'inOutExpo', value: 'cubic-bezier(1, 0, 0, 1)' },
+        { name: 'inOutCirc', value: 'cubic-bezier(0.785, 0.135, 0.15, 0.86)' },
+      ],
+    },
+  ];
+
+  return (
+    <Section title='Easing'>
+      <Text as='p' size='bodySm' color='secondary'>
+        Cubic-bezier curves as <InlineCode>easing</InlineCode> —{' '}
+        <InlineCode>@base/ui/tokens/transitionTiming.stylex</InlineCode>
+      </Text>
+      <Flex direction='column' gap='s24'>
+        {groups.map(group => (
+          <div key={group.title} {...stylex.props(styles.subsection)}>
+            <Text as='h3' size='label' weight='medium' color='secondary'>
+              {group.title}
+            </Text>
+            <Flex direction='column' gap='s4'>
+              {group.entries.map(entry => (
+                <Text key={entry.name} size='caption' style={styles.mono}>
+                  {entry.name} — {entry.value}
+                </Text>
+              ))}
+            </Flex>
+          </div>
+        ))}
+      </Flex>
+    </Section>
+  );
+}
+
+function TypographySection() {
+  return (
+    <Section title='Typography'>
+      <Text as='p' size='bodySm' color='secondary'>
+        <InlineCode>@base/ui/tokens/typography.stylex</InlineCode> — see also{' '}
+        <Link to='/tokens/typography' {...stylex.props(styles.link)}>
+          Typography
+        </Link>
+        .
+      </Text>
+      <div {...stylex.props(styles.previewColumn)}>
+        <Text size='hero'>Hero — 32px</Text>
+        <Text size='display'>Display — 28px</Text>
+        <Text size='headline'>Headline — 22px</Text>
+        <Text size='title'>Title — 18px</Text>
+        <Text size='body'>Body — 15px</Text>
+        <Text size='bodySm'>Body Sm — 13px</Text>
+        <Text size='label'>Label — 12px</Text>
+        <Text size='caption'>Caption — 11px</Text>
+      </div>
+    </Section>
   );
 }
 
 function OverviewPage() {
   return (
-    <div {...stylex.props(styles.page)}>
-      <header {...stylex.props(styles.header)}>
-        <Text as='h1' size='hero' weight='semibold' style={styles.headerTitle}>
-          Overview
-        </Text>
-        <Text as='p' size='body' color='secondary'>
-          All design tokens and components at a glance. Switch palette and color scheme to compare.
-        </Text>
-      </header>
-
+    <DocsPage
+      title='Overview'
+      description={
+        <>
+          Design tokens at a glance. Import from <InlineCode>@base/ui/tokens/*.stylex</InlineCode>.
+          Colors are generated into <InlineCode>themes.stylex</InlineCode> — see{' '}
+          <Link to='/tokens/themes' {...stylex.props(styles.link)}>
+            Themes
+          </Link>{' '}
+          and the{' '}
+          <Link to='/guides/theming' {...stylex.props(styles.link)}>
+            Theming
+          </Link>{' '}
+          guide.
+        </>
+      }
+    >
       <ColorTokensSection />
       <RadiiSection />
       <SpacingSection />
+      <SizeSection />
       <ElementSizeSection />
-      <TextSection />
-      <ButtonSection />
-      <InputSection />
-      <ToggleSection />
-      <PressableSection />
-      <CardSection />
-      <FlexSection />
-      <AccordionSection />
-      <DialogSection />
-    </div>
+      <BordersSection />
+      <BreakpointsSection />
+      <ZIndexSection />
+      <EasingSection />
+      <TypographySection />
+    </DocsPage>
   );
 }
