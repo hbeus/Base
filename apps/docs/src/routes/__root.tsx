@@ -4,7 +4,7 @@ import { MotionProvider, QueryProvider, ThemeProvider, useTheme } from '@base/sh
 import { getThemeFromCookie } from '@base/shared/server';
 import appCss from '@base/shared/styles/global.css?url';
 import shikiCss from '~/styles/shiki.css?url';
-import { SurfaceLevel, TreeView, useSurface } from '@base/ui';
+import { SurfaceLevel, Toast, TreeView, useSurface } from '@base/ui';
 import { breakpoints } from '@base/ui/tokens/breakpoints.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
@@ -26,6 +26,7 @@ import {
   useRouterState,
 } from '@tanstack/react-router';
 import { useEffect } from 'react';
+import { ToastHost } from '~/components/ToastHost';
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
@@ -60,9 +61,11 @@ function RootComponent() {
     <QueryProvider>
       <ThemeProvider initialColorScheme={colorScheme} initialPalette={palette}>
         <MotionProvider>
-          <RootDocument>
-            <DocsLayout />
-          </RootDocument>
+          <Toast.Provider>
+            <RootDocument>
+              <DocsLayout />
+            </RootDocument>
+          </Toast.Provider>
         </MotionProvider>
       </ThemeProvider>
     </QueryProvider>
@@ -403,6 +406,7 @@ function RootBody({ children }: { children: React.ReactNode }) {
       <PalettePicker />
       <ThemeToggle />
       {children}
+      <ToastHost />
     </body>
   );
 }
