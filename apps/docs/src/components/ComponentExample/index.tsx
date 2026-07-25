@@ -5,7 +5,7 @@ import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import * as stylex from '@stylexjs/stylex';
 import { IconCheck, IconCopy } from '@tabler/icons-react';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion, type Variants } from 'motion/react';
 import { type ReactNode, useCallback, useRef, useState } from 'react';
 
 interface ComponentExampleProps {
@@ -18,6 +18,14 @@ interface ComponentExampleProps {
 
 const CODE_HEIGHT_COLLAPSED = 120;
 const CODE_HEIGHT_EXPANDED = 320;
+const COPY_RESET_MS = 2000;
+const ICON_TRANSITION = { duration: 0.15, ease: 'easeOut' } as const;
+
+const iconVariants = {
+  initial: { opacity: 0, scale: 0.5, filter: 'blur(4px)' },
+  animate: { opacity: 1, scale: 1, filter: 'blur(0px)' },
+  exit: { opacity: 0, scale: 0.5, filter: 'blur(4px)' },
+} satisfies Variants;
 
 export function ComponentExample({
   title,
@@ -32,12 +40,13 @@ export function ComponentExample({
   const toastManager = Toast.useManager();
 
   const handleCopy = useCallback(() => {
+    if (copied) return;
     navigator.clipboard.writeText(rawCode);
     setCopied(true);
     if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => setCopied(false), 2000);
+    timerRef.current = setTimeout(() => setCopied(false), COPY_RESET_MS);
     toastManager.add({ title: 'Copied to clipboard' });
-  }, [rawCode, toastManager]);
+  }, [copied, rawCode, toastManager]);
 
   return (
     <Flex as='section' direction='column' gap='s12'>
@@ -48,14 +57,40 @@ export function ComponentExample({
       <Card variant='outline' gap='none' padding='none' style={styles.container}>
         <div {...stylex.props(styles.preview)}>{children}</div>
 
-        <div {...stylex.props(styles.codeBlockContainer)}>
+        <div {...stylex.props(styles.codeBlockContainer, stylex.defaultMarker())}>
           <button
             type='button'
             onClick={handleCopy}
             {...stylex.props(styles.copyButton)}
-            aria-label='Copy code'
+            aria-label={copied ? 'Copied' : 'Copy code'}
           >
-            {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+            <AnimatePresence mode='popLayout' initial={false}>
+              {copied ? (
+                <motion.span
+                  key='check'
+                  variants={iconVariants}
+                  initial='initial'
+                  animate='animate'
+                  exit='exit'
+                  transition={ICON_TRANSITION}
+                  {...stylex.props(styles.icon)}
+                >
+                  <IconCheck size={14} />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key='copy'
+                  variants={iconVariants}
+                  initial='initial'
+                  animate='animate'
+                  exit='exit'
+                  transition={ICON_TRANSITION}
+                  {...stylex.props(styles.icon)}
+                >
+                  <IconCopy size={14} />
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
           <div {...stylex.props(styles.toggleButtonContainer)}>
             <Button onClick={() => setExpanded(v => !v)} variant='accent' size='xs' rounded>
@@ -123,16 +158,18 @@ const styles = stylex.create({
     cursor: 'pointer',
     padding: spacing.s6,
     borderRadius: radii.r8,
-    opacity: 0,
-    pointerEvents: 'none',
-    transition: 'opacity 0.15s, color 0.15s, background-color 0.15s',
-    ':hover > &': {
-      opacity: 1,
-      pointerEvents: 'auto',
+    opacity: {
+      default: 0,
+      [stylex.when.ancestor(':hover')]: 1,
+      ':focus-visible': 1,
     },
+    pointerEvents: {
+      default: 'none',
+      [stylex.when.ancestor(':hover')]: 'auto',
+      ':focus-visible': 'auto',
+    },
+    transition: 'opacity 0.15s, color 0.15s, background-color 0.15s',
     ':focus-visible': {
-      opacity: 1,
-      pointerEvents: 'auto',
       outline: 'none',
       color: colors.foregroundPrimary,
     },
@@ -140,6 +177,9 @@ const styles = stylex.create({
       color: colors.foregroundPrimary,
       backgroundColor: colors.surface200,
     },
+  },
+  icon: {
+    display: 'flex',
   },
   codeBlockContainer: {
     position: 'relative',
