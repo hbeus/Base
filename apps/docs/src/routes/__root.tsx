@@ -4,7 +4,7 @@ import { MotionProvider, QueryProvider, ThemeProvider, useTheme } from '@base/sh
 import { getThemeFromCookie } from '@base/shared/server';
 import appCss from '@base/shared/styles/global.css?url';
 import shikiCss from '~/styles/shiki.css?url';
-import { TreeView } from '@base/ui';
+import { SurfaceLevel, TreeView, useSurface } from '@base/ui';
 import { breakpoints } from '@base/ui/tokens/breakpoints.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
@@ -86,7 +86,6 @@ function StyleXCSS() {
 
 const bodyStyles = stylex.create({
   base: {
-    backgroundColor: colors.background,
     color: colors.foregroundPrimary,
     minHeight: '100vh',
   },
@@ -396,6 +395,18 @@ function DocsLayout() {
   );
 }
 
+function RootBody({ children }: { children: React.ReactNode }) {
+  const surface = useSurface();
+
+  return (
+    <body {...stylex.props(bodyStyles.base, surface)}>
+      <PalettePicker />
+      <ThemeToggle />
+      {children}
+    </body>
+  );
+}
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { colorScheme, palette } = useTheme();
   const themeKey = `${palette}-${colorScheme}` as const;
@@ -415,11 +426,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <meta name='theme-color' content={themeBackgrounds[themeKey]} />
         <StyleXCSS />
       </head>
-      <body {...stylex.props(bodyStyles.base)}>
-        <PalettePicker />
-        <ThemeToggle />
-        {children}
-      </body>
+      <SurfaceLevel level={0}>
+        <RootBody>{children}</RootBody>
+      </SurfaceLevel>
       <Scripts />
     </html>
   );

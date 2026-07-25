@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 function SurfaceCard({ label, children }: { label: string; children?: ReactNode }) {
   return (
-    <Card padding='md' gap='s12'>
+    <Card padding='md' gap='s16'>
       <Text size='bodySm' weight='medium'>
         {label}
       </Text>
@@ -19,7 +19,7 @@ function SurfaceCard({ label, children }: { label: string; children?: ReactNode 
 
 export default function SurfaceButtons() {
   return (
-    <Card level={0} padding='md' gap='s12'>
+    <Card level={0} padding='md' gap='s16'>
       <Text size='bodySm' weight='medium'>
         Level 0 (page)
       </Text>

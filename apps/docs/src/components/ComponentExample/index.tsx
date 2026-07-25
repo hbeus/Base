@@ -1,4 +1,4 @@
-import { Text } from '@base/ui';
+import { Card, Flex, Text } from '@base/ui';
 import { borders } from '@base/ui/tokens/borders.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
@@ -35,83 +35,62 @@ export function ComponentExample({
   }, [rawCode]);
 
   return (
-    <section {...stylex.props(styles.section)}>
-      <Text
-        as='h2'
-        size='label'
-        weight='medium'
-        color='secondary'
-        style={styles.title}
-      >
-        {title}
-      </Text>
-      <div {...stylex.props(styles.container)}>
+    <Flex as='section' direction='column' gap='s12'>
+      <Flex direction='row' gap='s8' align='center' justify='between'>
+        <Text as='h2' size='body' weight='medium'>
+          {title}
+        </Text>
+        <button
+          type='button'
+          onClick={handleCopy}
+          {...stylex.props(styles.copyButton)}
+          aria-label='Copy code'
+        >
+          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+        </button>
+      </Flex>
+
+      <Card variant='outline' gap='none' padding='none' style={styles.container}>
         <div {...stylex.props(styles.preview)}>{children}</div>
-        <div {...stylex.props(styles.toolbar)}>
+        <Flex direction='row' gap='s16' align='center' justify='between' style={styles.toolbar}>
           <button
             type='button'
-            onClick={() => setExpanded((v) => !v)}
+            onClick={() => setExpanded(v => !v)}
             {...stylex.props(styles.toggleButton)}
           >
             <IconChevronDown
               size={14}
-              {...stylex.props(
-                styles.chevron,
-                expanded && styles.chevronExpanded,
-              )}
+              {...stylex.props(styles.chevron, expanded && styles.chevronExpanded)}
             />
             <span>{expanded ? 'Hide code' : 'Show code'}</span>
           </button>
-          <button
-            type='button'
-            onClick={handleCopy}
-            {...stylex.props(styles.copyButton)}
-            aria-label='Copy code'
-          >
-            {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-          </button>
-        </div>
-        {expanded && (
-          <div
-            {...stylex.props(styles.codeBlock)}
-            dangerouslySetInnerHTML={{ __html: code }}
-          />
-        )}
-      </div>
-    </section>
+        </Flex>
+        <div
+          {...stylex.props(styles.codeBlock, expanded && styles.codeBlockExpanded)}
+          dangerouslySetInnerHTML={{ __html: code }}
+        />
+      </Card>
+    </Flex>
   );
 }
 
 const styles = stylex.create({
-  section: {
-    marginBottom: spacing.s8,
-  },
-  title: {
-    marginBottom: spacing.s8,
-    paddingInline: spacing.s8,
-  },
   container: {
-    borderRadius: radii.r12,
-    borderWidth: borders.default,
-    borderStyle: 'solid',
-    borderColor: colors.border,
+    borderRadius: radii.r24,
     overflow: 'hidden',
   },
   preview: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: spacing.s12,
+    gap: spacing.s24,
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.s32,
     minHeight: '200px',
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     paddingInline: spacing.s12,
-    paddingBlock: spacing.s6,
+    paddingBlock: spacing.s8,
     borderTopWidth: borders.default,
     borderTopStyle: 'solid',
     borderTopColor: colors.border,
@@ -156,9 +135,15 @@ const styles = stylex.create({
     },
   },
   codeBlock: {
+    overflowX: 'auto',
+    overflowY: 'auto',
+    maxHeight: '120px',
     borderTopWidth: borders.default,
     borderTopStyle: 'solid',
     borderTopColor: colors.border,
-    overflowX: 'auto',
+    overscrollBehavior: 'none',
+  },
+  codeBlockExpanded: {
+    maxHeight: '300px',
   },
 });

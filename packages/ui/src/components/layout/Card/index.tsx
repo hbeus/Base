@@ -70,8 +70,8 @@ const variants = stylex.create({
 
 const paddings = stylex.create({
   none: { padding: 0 },
-  sm: { padding: spacing.s12 },
-  md: { padding: spacing.s20 },
+  sm: { padding: spacing.s16 },
+  md: { padding: spacing.s24 },
   lg: { padding: spacing.s32 },
 });
 

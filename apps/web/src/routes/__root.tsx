@@ -3,6 +3,7 @@
 import { MotionProvider, QueryProvider, ThemeProvider, useTheme } from '@base/shared';
 import { getThemeFromCookie } from '@base/shared/server';
 import appCss from '@base/shared/styles/global.css?url';
+import { SurfaceLevel, useSurface } from '@base/ui';
 import { radii } from '@base/ui/tokens/radii.stylex';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import {
@@ -82,7 +83,6 @@ function StyleXCSS() {
 
 const bodyStyles = stylex.create({
   base: {
-    backgroundColor: colors.background,
     color: colors.foregroundPrimary,
     minHeight: '100vh',
   },
@@ -202,6 +202,19 @@ function BackButton() {
   );
 }
 
+function RootBody({ children }: { children: React.ReactNode }) {
+  const surface = useSurface();
+
+  return (
+    <body {...stylex.props(bodyStyles.base, surface)}>
+      <BackButton />
+      <PalettePicker />
+      <ThemeToggle />
+      {children}
+    </body>
+  );
+}
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   const { colorScheme, palette } = useTheme();
   const themeKey = `${palette}-${colorScheme}` as const;
@@ -221,12 +234,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <meta name='theme-color' content={themeBackgrounds[themeKey]} />
         <StyleXCSS />
       </head>
-      <body {...stylex.props(bodyStyles.base)}>
-        <BackButton />
-        <PalettePicker />
-        <ThemeToggle />
-        {children}
-      </body>
+      <SurfaceLevel level={0}>
+        <RootBody>{children}</RootBody>
+      </SurfaceLevel>
       <Scripts />
     </html>
   );
