@@ -13,12 +13,16 @@ The compound React surface for a GPU background effect — Root plus its named p
 _Avoid_: GLSL source, OGL Program, any WebGL on the page
 
 **Root**:
-The Shader host that owns the canvas lifecycle (client mount, RAF pause, DPR, fallback, reveal). In the POC, exactly one Preset runs under it.
+The Shader host that owns the canvas lifecycle (client mount, RAF pause, DPR, fallback, reveal). Exactly one Preset runs under it; Root may supply Pointer when that Preset opts in.
 _Avoid_: the visual look itself; a Preset
 
 **Preset**:
 A named visual effect that plugs into Root — typed props in, fragment look out.
 _Avoid_: editor save files; layer stacks; the canvas host
+
+**Pointer**:
+Host-tracked pointer state Root exposes to an opted-in Preset (normalized position + whether the pointer is over the host). Absent when the Preset does not opt in or motion is reduced.
+_Avoid_: DOM event objects; a required interaction for every Preset; flowmap / velocity buffers
 
 **Fallback**:
 The non-WebGL stand-in shown in Root’s fallback slot while the GPU isn’t ready or can’t run. Shaders-domain only.
