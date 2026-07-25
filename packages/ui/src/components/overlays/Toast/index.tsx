@@ -8,8 +8,8 @@ import {
   IconLoader2,
   IconX,
 } from '@tabler/icons-react';
-import { motion } from 'motion/react';
-import { createContext, useContext, type ComponentProps, type CSSProperties } from 'react';
+import { AnimatePresence, motion, type HTMLMotionProps } from 'motion/react';
+import { type ComponentProps, type CSSProperties, createContext, useContext } from 'react';
 import { borders } from '../../../tokens/borders.stylex';
 import { radii } from '../../../tokens/radii.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -20,6 +20,11 @@ import type { BaseProps } from '../../../types/BaseProps';
 import { styleArray } from '../../../utils/styleArray';
 import { Icon } from '../../display/Icon';
 import { Button } from '../../input/Button';
+
+const toastMotionTransition = {
+  duration: 0.45,
+  ease: [0.22, 1, 0.36, 1] as const,
+};
 
 export type ToastPosition =
   | 'bottom-right'
@@ -117,6 +122,7 @@ function Viewport({
   style,
   ref,
   position = 'bottom-right',
+  children,
   ...props
 }: ToastViewportProps) {
   const top = isTopPosition(position);
@@ -128,16 +134,17 @@ function Viewport({
         data-slot='toast-viewport'
         data-position={position}
         ref={ref}
+        {...props}
         {...sx}
         style={
           {
             ...sx.style,
             '--toast-stack-dir': top ? '1' : '-1',
-            '--toast-enter-from': top ? '-1.5rem' : '1.5rem',
           } as CSSProperties
         }
-        {...props}
-      />
+      >
+        <AnimatePresence>{children}</AnimatePresence>
+      </BaseToast.Viewport>
     </ToastPositionContext.Provider>
   );
 }
@@ -157,19 +164,18 @@ const rootStyles = stylex.create({
     borderWidth: borders.default,
     borderStyle: 'solid',
     borderColor: colors.border,
-    borderRadius: radii.r12,
+    borderRadius: radii.r24,
     boxShadow: colors.shadowElevated,
     outline: 'none',
     userSelect: 'none',
-    willChange: 'transform, opacity, filter',
+    willChange: 'transform, translate, opacity, filter',
     zIndex: 'calc(1000 - var(--toast-index))' as unknown as number,
     height: 'var(--toast-frontmost-height, var(--toast-height))',
-    // stack-dir: -1 bottom (up), 1 top (down)
-    transform: `translateX(var(--toast-swipe-movement-x, 0px)) translateY(calc(var(--toast-swipe-movement-y, 0px) + (var(--toast-stack-dir, -1) * var(--toast-index) * ${spacing.s12}) + (var(--toast-stack-dir, -1) * (1 - max(0, 1 - (var(--toast-index) * 0.1))) * var(--toast-frontmost-height, var(--toast-height))) + var(--toast-enter-y, 0px))) scale(max(0, 1 - (var(--toast-index) * 0.1)))`,
-    transitionProperty: 'transform, opacity, height, filter',
-    transitionDuration: '0.5s, 0.35s, 0.15s, 0.35s',
-    transitionTimingFunction:
-      'cubic-bezier(0.22, 1, 0.36, 1), cubic-bezier(0.22, 1, 0.36, 1), ease, cubic-bezier(0.22, 1, 0.36, 1)',
+    transform: `translateX(var(--toast-swipe-movement-x, 0px)) translateY(calc(var(--toast-swipe-movement-y, 0px) + (var(--toast-stack-dir, -1) * var(--toast-index) * ${spacing.s12}) + (var(--toast-stack-dir, -1) * (1 - max(0, 1 - (var(--toast-index) * 0.1))) * var(--toast-frontmost-height, var(--toast-height))))) scale(max(0, 1 - (var(--toast-index) * 0.1)))`,
+    translate: '0 var(--toast-enter-y, 0px)' as unknown as string,
+    transitionProperty: 'transform, height',
+    transitionDuration: '0.45s, 0.15s',
+    transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1), ease',
     '::after': {
       content: '""',
       position: 'absolute',
@@ -177,36 +183,24 @@ const rootStyles = stylex.create({
       width: '100%',
       height: `calc(${spacing.s12} + 1px)`,
     },
-    ':is([data-expanded])': {
+    ':is([data-expanded]:not([data-limited]))': {
       height: 'var(--toast-height)',
-      transform: `translateX(var(--toast-swipe-movement-x, 0px)) translateY(calc((var(--toast-stack-dir, -1) * var(--toast-offset-y, 0px)) + (var(--toast-stack-dir, -1) * var(--toast-index) * ${spacing.s12}) + var(--toast-swipe-movement-y, 0px) + var(--toast-enter-y, 0px)))`,
+      transform: `translateX(var(--toast-swipe-movement-x, 0px)) translateY(calc((var(--toast-stack-dir, -1) * var(--toast-offset-y, 0px)) + (var(--toast-stack-dir, -1) * var(--toast-index) * ${spacing.s12}) + var(--toast-swipe-movement-y, 0px)))`,
     },
-    // Overflow past limit — animate away
     ':is([data-limited])': {
-      opacity: 0,
-      filter: 'blur(6px)',
       pointerEvents: 'none',
-      transform: `translateX(var(--toast-swipe-movement-x, 0px)) translateY(calc(var(--toast-swipe-movement-y, 0px) + (var(--toast-stack-dir, -1) * var(--toast-index) * ${spacing.s12}) + (var(--toast-stack-dir, -1) * (1 - max(0, 1 - (var(--toast-index) * 0.1))) * var(--toast-frontmost-height, var(--toast-height))) + var(--toast-enter-y, 0px))) scale(0.85)`,
     },
-    ':is([data-ending-style]:not([data-limited]):not([data-swipe-direction]))': {
-      opacity: 0,
-      transform:
-        'translateY(calc(var(--toast-stack-dir, -1) * -150% + var(--toast-enter-y, 0px)))',
-    },
+    // Swipe dismiss: continue from finger offset fully off-screen
     ':is([data-ending-style][data-swipe-direction="down"])': {
-      opacity: 0,
       transform: 'translateY(calc(var(--toast-swipe-movement-y, 0px) + 150%))',
     },
     ':is([data-ending-style][data-swipe-direction="up"])': {
-      opacity: 0,
       transform: 'translateY(calc(var(--toast-swipe-movement-y, 0px) - 150%))',
     },
     ':is([data-ending-style][data-swipe-direction="left"])': {
-      opacity: 0,
       transform: `translateX(calc(var(--toast-swipe-movement-x, 0px) - 150%)) translateY(calc((var(--toast-stack-dir, -1) * var(--toast-offset-y, 0px)) + (var(--toast-stack-dir, -1) * var(--toast-index) * ${spacing.s12}) + var(--toast-swipe-movement-y, 0px)))`,
     },
     ':is([data-ending-style][data-swipe-direction="right"])': {
-      opacity: 0,
       transform: `translateX(calc(var(--toast-swipe-movement-x, 0px) + 150%)) translateY(calc((var(--toast-stack-dir, -1) * var(--toast-offset-y, 0px)) + (var(--toast-stack-dir, -1) * var(--toast-index) * ${spacing.s12}) + var(--toast-swipe-movement-y, 0px)))`,
     },
   },
@@ -237,7 +231,7 @@ const rootStyles = stylex.create({
 function Root({ style, ref, swipeDirection, ...props }: ToastRootProps) {
   const position = useToastPosition();
   const top = isTopPosition(position);
-  const enterFrom = top ? '-1.5rem' : '1.5rem';
+  const enterFrom = top ? '-150%' : '150%';
 
   return (
     <BaseToast.Root
@@ -245,14 +239,50 @@ function Root({ style, ref, swipeDirection, ...props }: ToastRootProps) {
       data-position={position}
       ref={ref}
       swipeDirection={swipeDirection ?? defaultSwipeDirection(position)}
-      render={
-        <motion.div
-          initial={{ opacity: 0, '--toast-enter-y': enterFrom } as never}
-          animate={{ opacity: 1, '--toast-enter-y': '0px' } as never}
-          exit={{ opacity: 0, '--toast-enter-y': enterFrom } as never}
-          transition={{ duration: 0.2 }}
-        />
-      }
+      render={(renderProps, state) => {
+        const ending = state.transitionStatus === 'ending';
+        // Fade while ending so Base UI waits on getAnimations() for the CSS
+        // swipe fly-off to finish instead of getting stuck mid-translate.
+        const animate = state.limited
+          ? ({
+              opacity: 0,
+              filter: 'blur(8px)',
+              '--toast-enter-y': '0px',
+            } as const)
+          : ending
+            ? ({
+                opacity: 0,
+                filter: 'blur(0px)',
+                '--toast-enter-y': state.swipeDirection ? '0px' : enterFrom,
+              } as const)
+            : ({
+                opacity: 1,
+                filter: 'blur(0px)',
+                '--toast-enter-y': '0px',
+              } as const);
+
+        return (
+          <motion.div
+            {...(renderProps as HTMLMotionProps<'div'>)}
+            initial={
+              {
+                opacity: 0,
+                filter: 'blur(0px)',
+                '--toast-enter-y': enterFrom,
+              } as never
+            }
+            animate={animate as never}
+            exit={
+              {
+                opacity: 0,
+                filter: 'blur(0px)',
+                '--toast-enter-y': enterFrom,
+              } as never
+            }
+            transition={toastMotionTransition}
+          />
+        );
+      }}
       {...stylex.props(
         rootStyles.base,
         top ? rootStyles.top : rootStyles.bottom,

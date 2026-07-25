@@ -2,7 +2,12 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
-import { toastIconProps, toastProviderProps, toastRootProps } from '~/data/components/toast';
+import {
+  toastIconProps,
+  toastProviderProps,
+  toastRootProps,
+  toastViewportProps,
+} from '~/data/components/toast';
 import ToastActionExample from '~/examples/toast/action';
 import actionRaw from '~/examples/toast/action.tsx?raw';
 import ToastHero from '~/examples/toast/hero';
@@ -52,6 +57,7 @@ function PageComponent() {
       </ComponentExample>
 
       <PropsTable props={toastProviderProps} title='Toast.Provider Props' />
+      <PropsTable props={toastViewportProps} title='Toast.Viewport Props' />
       <PropsTable props={toastRootProps} title='Toast.Root Props' />
       <PropsTable props={toastIconProps} title='Toast.Icon Props' />
     </DocsPage>
