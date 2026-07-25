@@ -266,26 +266,6 @@ export type { SurfaceLevel as SurfaceLevelValue } from './contexts/SurfaceContex
 // hooks
 export { useActiveSection } from './hooks/useActiveSection';
 export { surfaceHover, useSurface, useSurfaceLevel } from './hooks/useSurface';
-export { borders } from './tokens/borders.stylex';
-// tokens
-export { breakpoints } from './tokens/breakpoints.stylex';
-export { elementSize } from './tokens/elementSize.stylex';
-export { radii } from './tokens/radii.stylex';
-export { size } from './tokens/size.stylex';
-export { spacing } from './tokens/spacing.stylex';
-export {
-  COLOR_SCHEMES,
-  type ColorScheme,
-  colors,
-  defaultLight,
-  PALETTES,
-  type Palette,
-  type ThemeKey,
-  themeBackgrounds,
-  themeMap,
-} from './tokens/themes.stylex';
-export { easing } from './tokens/transitionTiming.stylex';
-export { typography } from './tokens/typography.stylex';
 // types
 export type { BaseProps } from './types/BaseProps';
 export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic';

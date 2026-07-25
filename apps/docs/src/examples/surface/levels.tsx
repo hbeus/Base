@@ -1,40 +1,44 @@
-import { Card, type SurfaceLevelValue, Text } from '@base/ui';
-import { spacing } from '@base/ui/tokens/spacing.stylex';
+import { Card, Flex, type SurfaceLevelValue, Text } from '@base/ui';
+import { radii } from '@base/ui/tokens/radii.stylex';
 import * as stylex from '@stylexjs/stylex';
 
 const styles = stylex.create({
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-    gap: spacing.s8,
+  item: {
     width: '100%',
-  },
-  gridItem: {
-    aspectRatio: '1',
     justifyContent: 'flex-end',
+    firstOfType: {
+      borderTopLeftRadius: radii.r24,
+      borderTopRightRadius: radii.r24,
+    },
+    lastOfType: {
+      borderBottomLeftRadius: radii.r24,
+      borderBottomRightRadius: radii.r24,
+    },
   },
 });
 
-function SurfaceGridItem({ level }: { level: SurfaceLevelValue }) {
+function SurfaceItem({ level }: { level: SurfaceLevelValue }) {
   return (
-    <Card level={level} padding='md' gap='s4' style={styles.gridItem}>
+    <Card level={level} padding='md' gap='s4' style={styles.item}>
       <Text size='title' weight='bold'>
-        {level}
+        Level {level}
       </Text>
-      <Text size='caption'>bgSurface-{level}</Text>
+      <Text size='bodySm' color='secondary'>
+        bgSurface-{level}
+      </Text>
     </Card>
   );
 }
 
 export default function SurfaceLevels() {
   return (
-    <div {...stylex.props(styles.grid)}>
-      <SurfaceGridItem level={0} />
-      <SurfaceGridItem level={100} />
-      <SurfaceGridItem level={200} />
-      <SurfaceGridItem level={300} />
-      <SurfaceGridItem level={400} />
-      <SurfaceGridItem level={500} />
-    </div>
+    <Flex direction='column' gap='s8' grow>
+      <SurfaceItem level={0} />
+      <SurfaceItem level={100} />
+      <SurfaceItem level={200} />
+      <SurfaceItem level={300} />
+      <SurfaceItem level={400} />
+      <SurfaceItem level={500} />
+    </Flex>
   );
 }
