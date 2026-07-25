@@ -10,7 +10,7 @@ import {
 import { ClientGuard } from './ClientGuard';
 import { ShaderContext } from './context';
 import { DEFAULT_VERTEX } from './defaultVertex';
-import type { PresetRegistration, UniformMap } from './types';
+import type { PointerState, PresetRegistration, UniformMap } from './types';
 
 const MAX_DPR = 1.5;
 
@@ -45,6 +45,8 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
   const reducedMotionRef = useRef(false);
   const rafRef = useRef(0);
   const lastTimeRef = useRef(0);
+  const pointerRef = useRef<PointerState>({ x: 0.5, y: 0.5, active: false });
+  const wantsPointerRef = useRef(false);
 
   const register = useCallback((preset: PresetRegistration) => {
     if (presetRef.current && presetRef.current.id !== preset.id) {
@@ -58,6 +60,7 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
       presetRef.current.fragment !== preset.fragment ||
       presetRef.current.vertex !== preset.vertex;
     presetRef.current = preset;
+    wantsPointerRef.current = Boolean(preset.pointer);
     setHasPreset(true);
     if (sourcesChanged) {
       setRevealed(false);
@@ -66,6 +69,7 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
     return () => {
       if (presetRef.current?.id === preset.id) {
         presetRef.current = null;
+        wantsPointerRef.current = false;
         setHasPreset(false);
         setRevealed(false);
         setProgramEpoch((n) => n + 1);
@@ -106,6 +110,37 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
 
   useEffect(() => {
     const host = hostRef.current;
+    if (!host || !hasPreset) return;
+
+    const onMove = (event: PointerEvent) => {
+      if (!wantsPointerRef.current || reducedMotionRef.current) return;
+      if (!visibleRef.current || !intersectingRef.current) return;
+      const rect = host.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = 1 - (event.clientY - rect.top) / rect.height;
+      pointerRef.current = {
+        x: Math.min(1, Math.max(0, x)),
+        y: Math.min(1, Math.max(0, y)),
+        active: true,
+      };
+    };
+
+    const onLeave = () => {
+      pointerRef.current = { ...pointerRef.current, active: false };
+    };
+
+    host.addEventListener('pointermove', onMove);
+    host.addEventListener('pointerleave', onLeave);
+    return () => {
+      host.removeEventListener('pointermove', onMove);
+      host.removeEventListener('pointerleave', onLeave);
+      pointerRef.current = { ...pointerRef.current, active: false };
+    };
+  }, [hasPreset, programEpoch]);
+
+  useEffect(() => {
+    const host = hostRef.current;
     if (!host || !hasPreset || !presetRef.current) return;
 
     let disposed = false;
@@ -129,11 +164,8 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
     const preset = presetRef.current;
     const uniforms: UniformMap = {
       uTime: { value: 0 },
-      uColorA: { value: [0, 0, 0] },
-      uColorB: { value: [1, 1, 1] },
-      uIntensity: { value: 1 },
-      uBandCount: { value: 3 },
       uResolution: { value: [1, 1] },
+      ...preset.uniforms,
     };
 
     let program: Program;
@@ -174,6 +206,11 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
       }
     };
 
+    const framePointer = (): PointerState | null => {
+      if (!wantsPointerRef.current || reducedMotionRef.current) return null;
+      return pointerRef.current;
+    };
+
     const tick = (t: number) => {
       rafRef.current = 0;
       if (disposed) return;
@@ -184,7 +221,11 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
         if (reducedMotionRef.current && programRef.current && meshRef.current) {
           const p = presetRef.current;
           if (p) {
-            p.sync(program.uniforms as UniformMap, { time: 0, delta: 0 });
+            p.sync(program.uniforms as UniformMap, {
+              time: 0,
+              delta: 0,
+              pointer: null,
+            });
             renderer.render({ scene: mesh });
             if (!revealed) {
               canvas.style.opacity = '1';
@@ -199,7 +240,11 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
       lastTimeRef.current = t;
       const p = presetRef.current;
       if (p && programRef.current && meshRef.current) {
-        p.sync(program.uniforms as UniformMap, { time: t * 0.001, delta });
+        p.sync(program.uniforms as UniformMap, {
+          time: t * 0.001,
+          delta,
+          pointer: framePointer(),
+        });
         renderer.render({ scene: mesh });
         if (canvas.style.opacity !== '1') {
           canvas.style.opacity = '1';
@@ -242,7 +287,7 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
   }, [hasPreset, programEpoch]);
 
   return (
-    <ShaderContext.Provider value={{ register }}>
+    <ShaderContext.Provider value={{ register, hostRef }}>
       <div
         ref={hostRef}
         className={className}

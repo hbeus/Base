@@ -1,8 +1,9 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, type RefObject } from 'react';
 import type { RegisterFn } from './types';
 
 export type ShaderContextValue = {
   register: RegisterFn;
+  hostRef: RefObject<HTMLDivElement | null>;
 };
 
 export const ShaderContext = createContext<ShaderContextValue | null>(null);
