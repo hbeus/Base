@@ -33,7 +33,10 @@ function Root({ style, ref, ...props }: ScrollAreaRootProps) {
 /* ---------- Viewport ---------- */
 export interface ScrollAreaViewportProps
   extends Omit<ComponentProps<typeof BaseScrollArea.Viewport>, 'style'>,
-    BaseProps {}
+    BaseProps {
+  /** Scroll-aware edge fade via mask-image. Defaults to `true`. */
+  scrollFade?: boolean;
+}
 
 const viewportStyles = stylex.create({
   base: {
@@ -44,12 +47,27 @@ const viewportStyles = stylex.create({
   },
 });
 
-function Viewport({ style, ref, ...props }: ScrollAreaViewportProps) {
+function Viewport({
+  style,
+  ref,
+  scrollFade = true,
+  className,
+  ...props
+}: ScrollAreaViewportProps) {
+  const { className: stylexClassName, ...stylexProps } = stylex.props(
+    viewportStyles.base,
+    ...styleArray(style),
+  );
+  const mergedClassName = [scrollFade ? 'scroll-fade' : undefined, stylexClassName, className]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <BaseScrollArea.Viewport
       data-slot='scroll-area-viewport'
       ref={ref}
-      {...stylex.props(viewportStyles.base, ...styleArray(style))}
+      className={mergedClassName || undefined}
+      {...stylexProps}
       {...props}
     />
   );

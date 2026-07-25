@@ -26,7 +26,7 @@ function PageComponent() {
   return (
     <DocsPage
       title='Scroll Area'
-      description='Custom scrollbar overlay with viewport, scrollbar, and thumb subcomponents.'
+      description='Custom scrollbar overlay with viewport, scrollbar, and thumb. Scroll-aware edge fade is on by default (scrollFade={false} to disable). Put surface/background on Root or a parent — the mask dissolves the Viewport, including any background painted on it or its children.'
     >
       <ComponentExample
         title='Vertical scroll'

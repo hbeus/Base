@@ -7,6 +7,24 @@ html[data-theme="dark"] .shiki span {
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
+/*
+ * scroll-fade masks the whole viewport (background included). Keep the solid
+ * theme background on `.code-block-surface` and clear it from `.shiki` inside
+ * the scroller so only content dissolves.
+ */
+.code-block-surface {
+  background-color: #faf4ed; /* rose-pine-dawn */
+}
+
+html[data-theme="dark"] .code-block-surface {
+  background-color: #101010; /* vesper */
+}
+
+.scroll-fade .shiki,
+.scroll-fade .shiki span {
+  background-color: transparent !important;
+}
+
 .shiki {
   margin: 0;
   padding: 1rem 1.25rem;

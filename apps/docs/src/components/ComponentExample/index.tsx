@@ -48,6 +48,15 @@ export function ComponentExample({
     toastManager.add({ title: 'Copied to clipboard' });
   }, [copied, rawCode, toastManager]);
 
+  const { className: codeBlockClassName, ...codeBlockStylex } = stylex.props(
+    styles.codeBlockContainer,
+    stylex.defaultMarker(),
+  );
+  const codeBlockContainerProps = {
+    ...codeBlockStylex,
+    className: ['code-block-surface', codeBlockClassName].filter(Boolean).join(' '),
+  };
+
   return (
     <Flex as='section' direction='column' gap='s12'>
       <Text as='h2' size='body' weight='medium'>
@@ -57,7 +66,7 @@ export function ComponentExample({
       <Card variant='outline' gap='none' padding='none' style={styles.container}>
         <div {...stylex.props(styles.preview)}>{children}</div>
 
-        <div {...stylex.props(styles.codeBlockContainer, stylex.defaultMarker())}>
+        <div {...codeBlockContainerProps}>
           <button
             type='button'
             onClick={handleCopy}
