@@ -54,6 +54,23 @@ export type ThemeMode = {
     primaryFg: string;
     primaryHover: string;
   };
+  data: {
+    data1: string;
+    data2: string;
+    data3: string;
+    data4: string;
+    data5: string;
+    data6: string;
+    data7: string;
+    data8: string;
+  };
+  chart: {
+    axis: string;
+    grid: string;
+    crosshair: string;
+    tooltipBg: string;
+    tooltipFg: string;
+  };
 };
 
 export type Schemes = { dark: ThemeMode; light: ThemeMode };
@@ -162,9 +179,23 @@ export const OPACITY_CONFIG = {
   foregroundSecondaryHover: 0.7,
   foregroundDisabled: 0.3,
   border: 0.08,
+  chartAxis: 0.45,
+  chartGrid: 0.06,
+  chartCrosshair: 0.35,
   shadowInner: { dark: 0.02, light: 0.5 },
   shadowElevated: { ring: 0.04, ambient1: 0.01, key: 0.08, ambient2: 0.02, spread: 0.02 },
 } as const;
+
+/* ---------- Data ramp ---------- */
+
+export const DATA_RAMP_COUNT = 8;
+
+export const DATA_RAMP_CONFIG = {
+  dark: { lightness: 0.72, vividness: 0.85 },
+  light: { lightness: 0.55, vividness: 0.9 },
+} as const;
+
+export const ACHROMATIC_DATA_HUES = [220, 30, 145, 280, 55, 190, 350, 100] as const;
 
 /* ---------- Theme configurations ---------- */
 

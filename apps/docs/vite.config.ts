@@ -13,6 +13,9 @@ export default defineConfig({
   },
   resolve: {
     tsconfigPaths: true,
+    alias: {
+      '@base/charts': path.resolve(__dirname, '..', '..', 'packages', 'charts', 'src'),
+    },
   },
   plugins: [
     stylex.vite({
@@ -25,6 +28,8 @@ export default defineConfig({
         '@base/ui/*': [path.resolve(__dirname, '..', '..', 'packages', 'ui', 'src', '*')],
         '@base/shared/*': [path.resolve(__dirname, '..', '..', 'packages', 'shared', 'src', '*')],
         '@base/shaders/*': [path.resolve(__dirname, '..', '..', 'packages', 'shaders', 'src', '*')],
+        '@base/charts': [path.resolve(__dirname, '..', '..', 'packages', 'charts', 'src')],
+        '@base/charts/*': [path.resolve(__dirname, '..', '..', 'packages', 'charts', 'src', '*')],
       },
     }),
     tanstackStart({

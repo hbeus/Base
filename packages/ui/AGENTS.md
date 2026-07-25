@@ -21,3 +21,4 @@ src/
 - **No hardcoded values**: all colors, spacing, radii, and typography come from tokens. No raw px, hex, or font sizes.
 - **Components import from barrel** (`@base/ui`), **tokens use deep imports** (`@base/ui/tokens/themes.stylex`).
 - **Theming via `stylex.createTheme()`**: default-dark values in `defineVars()`; other palette/scheme combos via `themeMap` / `createTheme()` on `<html>`. Do not use `light-dark()` CSS function — LightningCSS mangles it.
+- **Data / chart colors**: `colors.data1`…`data8` (categorical ramp) and `colors.chartAxis` / `chartGrid` / `chartCrosshair` / `chartTooltipBg` / `chartTooltipFg` — generated in `generate-themes` for `@base/charts`.

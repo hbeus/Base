@@ -136,13 +136,14 @@ const styles = stylex.create({
     overflow: 'hidden',
   },
   preview: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: spacing.s24,
+    display: 'grid',
+    justifyItems: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: spacing.s24,
     padding: spacing.s32,
     minHeight: '200px',
+    width: '100%',
+    boxSizing: 'border-box',
   },
   toggleButtonContainer: {
     position: 'absolute',

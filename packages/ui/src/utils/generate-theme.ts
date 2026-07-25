@@ -1,7 +1,10 @@
 import { harmonizeHue, maxChroma } from './oklch';
 import {
   ACCENT_CONFIG,
+  ACHROMATIC_DATA_HUES,
   BACKGROUND_CONFIG,
+  DATA_RAMP_CONFIG,
+  DATA_RAMP_COUNT,
   FOREGROUND_CONFIG,
   HIGHLIGHT_CONFIG,
   OPACITY_CONFIG,
@@ -105,6 +108,15 @@ function generateMode(
   const lightenColor = isDark ? (achromatic ? '1 0 0' : tint(1, neutralTint, brandHue)) : '0 0 0';
   const darkenColor = isDark ? '0 0 0' : '1 0 0';
 
+  const { lightness: dataL, vividness: dataV } = DATA_RAMP_CONFIG[mode];
+  const dataEntries = Array.from({ length: DATA_RAMP_COUNT }, (_, i) => {
+    const hue = achromatic
+      ? ACHROMATIC_DATA_HUES[i]!
+      : (((brandHue as number) + i * 45) % 360 + 360) % 360;
+    return [`data${i + 1}`, vivid(dataL, hue, dataV)] as const;
+  });
+  const data = Object.fromEntries(dataEntries) as ThemeMode['data'];
+
   return {
     foreground: {
       primary: fgPrimary,
@@ -152,6 +164,14 @@ function generateMode(
       primaryBg,
       primaryFg,
       primaryHover,
+    },
+    data,
+    chart: {
+      axis: `${fgPrimary} / ${op.chartAxis}`,
+      grid: `${fgPrimary} / ${op.chartGrid}`,
+      crosshair: `${fgPrimary} / ${op.chartCrosshair}`,
+      tooltipBg: nt(bg.surface300[mode].lightness),
+      tooltipFg: fgPrimary,
     },
   };
 }
@@ -219,6 +239,21 @@ export function modeToVars(mode: ThemeMode) {
     buttonPrimaryBg: `oklch(${mode.button.primaryBg})`,
     buttonPrimaryFg: `oklch(${mode.button.primaryFg})`,
     buttonPrimaryHover: `oklch(${mode.button.primaryHover})`,
+
+    data1: `oklch(${mode.data.data1})`,
+    data2: `oklch(${mode.data.data2})`,
+    data3: `oklch(${mode.data.data3})`,
+    data4: `oklch(${mode.data.data4})`,
+    data5: `oklch(${mode.data.data5})`,
+    data6: `oklch(${mode.data.data6})`,
+    data7: `oklch(${mode.data.data7})`,
+    data8: `oklch(${mode.data.data8})`,
+
+    chartAxis: `oklch(${mode.chart.axis})`,
+    chartGrid: `oklch(${mode.chart.grid})`,
+    chartCrosshair: `oklch(${mode.chart.crosshair})`,
+    chartTooltipBg: `oklch(${mode.chart.tooltipBg})`,
+    chartTooltipFg: `oklch(${mode.chart.tooltipFg})`,
 
     shadowElevated: `0 0 0 1px oklch(${mode.shadow.drop} / ${se.ring}), 0 2px 8px oklch(${mode.shadow.drop} / ${se.ambient1}), 0 2px 6px -4px oklch(${mode.shadow.drop} / ${se.key}), 0 4px 10px oklch(${mode.shadow.drop} / ${se.ambient2}), 0 4px 24px oklch(${mode.shadow.drop} / ${se.spread})`,
     shadowElevatedInner: `inset 0 0 0 1px oklch(${mode.shadow.inner})`,

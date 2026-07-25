@@ -4,7 +4,7 @@
 
 TanStack Start (SSR/Nitro) + TanStack Router (folder-based) + React Query · StyleX · Base UI (`@base-ui/react`) · motion.dev (`motion/react`) · Zustand · Drizzle ORM + PostgreSQL (pgvector) · Tabler Icons (`@tabler/icons-react`) · Biome · Vitest · Node 22, pnpm 11
 
-Component library: `@base/ui` (Base UI + StyleX + motion). Optional 3D: `@base/canvas` (R3F + drei + DialKit). GPU backgrounds: `@base/shaders` (OGL + compound `Shader` API; see `docs/adr/0001-shaders-package-route.md`, `docs/adr/0003-shaders-next-phase-catalog-pointer-color.md`).
+Component library: `@base/ui` (Base UI + StyleX + motion). Optional 3D: `@base/canvas` (R3F + drei + DialKit). Charts: `@base/charts` (VisX + motion, theme tokens from `@base/ui`). GPU backgrounds: `@base/shaders` (OGL + compound `Shader` API; see `docs/adr/0001-shaders-package-route.md`, `docs/adr/0003-shaders-next-phase-catalog-pointer-color.md`).
 
 ## Design rules
 

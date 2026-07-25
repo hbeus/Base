@@ -365,6 +365,23 @@ function DocsSidebar() {
           </TreeView.Item>
         </TreeView.Group>
       </TreeView.Group>
+      <TreeView.Group label='Charts'>
+        <TreeView.Item href='/charts' onClick={handleClick}>
+          Overview
+        </TreeView.Item>
+        <TreeView.Item href='/charts/bar' onClick={handleClick}>
+          Bar
+        </TreeView.Item>
+        <TreeView.Item href='/charts/line' onClick={handleClick}>
+          Line
+        </TreeView.Item>
+        <TreeView.Item href='/charts/area' onClick={handleClick}>
+          Area
+        </TreeView.Item>
+        <TreeView.Item href='/charts/donut' onClick={handleClick}>
+          Donut
+        </TreeView.Item>
+      </TreeView.Group>
       <TreeView.Group label='Shaders'>
         <TreeView.Item href='/shaders' onClick={handleClick}>
           Overview
@@ -391,6 +408,9 @@ function DocsSidebar() {
         </TreeView.Item>
         <TreeView.Item href='/tokens/themes' onClick={handleClick}>
           Themes
+        </TreeView.Item>
+        <TreeView.Item href='/tokens/data-colors' onClick={handleClick}>
+          Data Colors
         </TreeView.Item>
         <TreeView.Item href='/tokens/typography' onClick={handleClick}>
           Typography
