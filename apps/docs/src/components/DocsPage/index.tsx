@@ -5,7 +5,7 @@ import { docStyles } from '~/styles/docs';
 
 interface DocsPageProps {
   title: string;
-  description: string;
+  description: ReactNode;
   children: ReactNode;
 }
 

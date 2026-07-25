@@ -276,4 +276,5 @@ export type { PolymorphicComponent, PolymorphicProps } from './types/polymorphic
 
 // utils
 export { mergeRefs } from './utils/mergeRefs';
+export { scrollFade } from './utils/scrollFade';
 export { styleArray } from './utils/styleArray';

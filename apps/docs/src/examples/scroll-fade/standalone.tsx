@@ -1,4 +1,4 @@
-import { Text } from '@base/ui';
+import { scrollFade, Text } from '@base/ui';
 import { spacing } from '@base/ui/tokens/spacing.stylex';
 import * as stylex from '@stylexjs/stylex';
 
@@ -16,10 +16,8 @@ const styles = stylex.create({
 });
 
 export default function ScrollFadeStandalone() {
-  const { className, ...stylexProps } = stylex.props(styles.viewport);
-
   return (
-    <div className={['scroll-fade', className].filter(Boolean).join(' ')} {...stylexProps}>
+    <div {...scrollFade.y(styles.viewport)}>
       <div {...stylex.props(styles.content)}>
         {Array.from({ length: 20 }, (_, i) => (
           <Text key={i} size='bodySm' color='secondary'>

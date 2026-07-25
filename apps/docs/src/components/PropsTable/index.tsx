@@ -5,6 +5,7 @@ import { spacing } from '@base/ui/tokens/spacing.stylex';
 import { colors } from '@base/ui/tokens/themes.stylex';
 import { typography } from '@base/ui/tokens/typography.stylex';
 import * as stylex from '@stylexjs/stylex';
+import { InlineCode } from '~/components/InlineCode';
 
 export interface PropDef {
   name: string;
@@ -55,13 +56,6 @@ const styles = stylex.create({
   lastRow: {
     borderBottomWidth: 0,
   },
-  code: {
-    fontFamily: typography.fontMono,
-    fontSize: typography.captionSize,
-    backgroundColor: colors.lighten8,
-    padding: `${spacing.s2} ${spacing.s6}`,
-    borderRadius: radii.r4,
-  },
 });
 
 export function PropsTable({ props, title = 'Props' }: PropsTableProps) {
@@ -95,7 +89,7 @@ export function PropsTable({ props, title = 'Props' }: PropsTableProps) {
                     i === props.length - 1 && styles.lastRow,
                   )}
                 >
-                  <code {...stylex.props(styles.code)}>{prop.name}</code>
+                  <InlineCode>{prop.name}</InlineCode>
                 </td>
                 <td
                   {...stylex.props(
@@ -103,7 +97,7 @@ export function PropsTable({ props, title = 'Props' }: PropsTableProps) {
                     i === props.length - 1 && styles.lastRow,
                   )}
                 >
-                  <code {...stylex.props(styles.code)}>{prop.type}</code>
+                  <InlineCode>{prop.type}</InlineCode>
                 </td>
                 <td
                   {...stylex.props(
@@ -111,7 +105,7 @@ export function PropsTable({ props, title = 'Props' }: PropsTableProps) {
                     i === props.length - 1 && styles.lastRow,
                   )}
                 >
-                  <code {...stylex.props(styles.code)}>{prop.default}</code>
+                  <InlineCode>{prop.default}</InlineCode>
                 </td>
                 <td
                   {...stylex.props(

@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
+import { InlineCode } from '~/components/InlineCode';
 import ScrollFadeScrollArea from '~/examples/scroll-fade/scroll-area';
 import ScrollFadeStandalone from '~/examples/scroll-fade/standalone';
 import { highlightCode } from '~/lib/highlight';
@@ -28,7 +29,13 @@ function PageComponent() {
   return (
     <DocsPage
       title='Scroll Fade'
-      description='CSS utility for scroll-aware edge fades via mask-image. Import @base/ui/styles/scroll-fade.css (included in @base/shared global CSS). ScrollArea.Viewport enables it by default (scrollFade={false} to disable). Apply .scroll-fade / .scroll-fade-y / .scroll-fade-x on any overflow container.'
+      description={
+        <>
+          Scroll-aware edge fades for overflow containers. Compose with StyleX via the{' '}
+          <InlineCode>scrollFade</InlineCode> helper; enabled on{' '}
+          <InlineCode>ScrollArea.Viewport</InlineCode> by default.
+        </>
+      }
     >
       <ComponentExample
         title='With Scroll Area'
@@ -40,7 +47,7 @@ function PageComponent() {
       </ComponentExample>
 
       <ComponentExample
-        title='Standalone Class'
+        title='Standalone'
         code={highlighted.standaloneRaw}
         rawCode={standaloneRaw}
       >

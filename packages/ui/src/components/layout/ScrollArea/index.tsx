@@ -5,6 +5,7 @@ import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { colors } from '../../../tokens/themes.stylex';
 import type { BaseProps } from '../../../types/BaseProps';
+import { scrollFade } from '../../../utils/scrollFade';
 import { styleArray } from '../../../utils/styleArray';
 
 /* ---------- Root ---------- */
@@ -34,7 +35,6 @@ function Root({ style, ref, ...props }: ScrollAreaRootProps) {
 export interface ScrollAreaViewportProps
   extends Omit<ComponentProps<typeof BaseScrollArea.Viewport>, 'style'>,
     BaseProps {
-  /** Scroll-aware edge fade via mask-image. Defaults to `true`. */
   scrollFade?: boolean;
 }
 
@@ -50,24 +50,21 @@ const viewportStyles = stylex.create({
 function Viewport({
   style,
   ref,
-  scrollFade = true,
+  scrollFade: scrollFadeEnabled = true,
   className,
   ...props
 }: ScrollAreaViewportProps) {
-  const { className: stylexClassName, ...stylexProps } = stylex.props(
-    viewportStyles.base,
-    ...styleArray(style),
-  );
-  const mergedClassName = [scrollFade ? 'scroll-fade' : undefined, stylexClassName, className]
-    .filter(Boolean)
-    .join(' ');
+  const fadeProps = scrollFadeEnabled
+    ? scrollFade.y(viewportStyles.base, ...styleArray(style))
+    : stylex.props(viewportStyles.base, ...styleArray(style));
+  const mergedClassName = [fadeProps.className, className].filter(Boolean).join(' ') || undefined;
 
   return (
     <BaseScrollArea.Viewport
       data-slot='scroll-area-viewport'
       ref={ref}
-      className={mergedClassName || undefined}
-      {...stylexProps}
+      {...fadeProps}
+      className={mergedClassName}
       {...props}
     />
   );

@@ -83,8 +83,16 @@
   --scroll-fade-block: linear-gradient(
     to bottom,
     transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--scroll-fade-t, 0px) * 0.15),
+    rgb(0 0 0 / 0.2) calc(var(--scroll-fade-t, 0px) * 0.4),
+    rgb(0 0 0 / 0.55) calc(var(--scroll-fade-t, 0px) * 0.65),
+    rgb(0 0 0 / 0.85) calc(var(--scroll-fade-t, 0px) * 0.85),
     #000 var(--scroll-fade-t, 0px),
     #000 calc(100% - var(--scroll-fade-b, 0px)),
+    rgb(0 0 0 / 0.85) calc(100% - var(--scroll-fade-b, 0px) * 0.85),
+    rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-b, 0px) * 0.65),
+    rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-b, 0px) * 0.4),
+    rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-b, 0px) * 0.15),
     transparent 100%
   );
   -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-block));
@@ -129,8 +137,16 @@
   --scroll-fade-inline: linear-gradient(
     to right,
     transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--scroll-fade-s, 0px) * 0.15),
+    rgb(0 0 0 / 0.2) calc(var(--scroll-fade-s, 0px) * 0.4),
+    rgb(0 0 0 / 0.55) calc(var(--scroll-fade-s, 0px) * 0.65),
+    rgb(0 0 0 / 0.85) calc(var(--scroll-fade-s, 0px) * 0.85),
     #000 var(--scroll-fade-s, 0px),
     #000 calc(100% - var(--scroll-fade-e, 0px)),
+    rgb(0 0 0 / 0.85) calc(100% - var(--scroll-fade-e, 0px) * 0.85),
+    rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-e, 0px) * 0.65),
+    rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-e, 0px) * 0.4),
+    rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-e, 0px) * 0.15),
     transparent 100%
   );
   -webkit-mask-image: var(--scroll-fade-mask, var(--scroll-fade-inline));
@@ -145,8 +161,16 @@
   --scroll-fade-inline: linear-gradient(
     to left,
     transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--scroll-fade-s, 0px) * 0.15),
+    rgb(0 0 0 / 0.2) calc(var(--scroll-fade-s, 0px) * 0.4),
+    rgb(0 0 0 / 0.55) calc(var(--scroll-fade-s, 0px) * 0.65),
+    rgb(0 0 0 / 0.85) calc(var(--scroll-fade-s, 0px) * 0.85),
     #000 var(--scroll-fade-s, 0px),
     #000 calc(100% - var(--scroll-fade-e, 0px)),
+    rgb(0 0 0 / 0.85) calc(100% - var(--scroll-fade-e, 0px) * 0.85),
+    rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-e, 0px) * 0.65),
+    rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-e, 0px) * 0.4),
+    rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-e, 0px) * 0.15),
     transparent 100%
   );
 }
@@ -179,6 +203,10 @@
   --scroll-fade-mask: linear-gradient(
     to bottom,
     transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--scroll-fade-t, 0px) * 0.15),
+    rgb(0 0 0 / 0.2) calc(var(--scroll-fade-t, 0px) * 0.4),
+    rgb(0 0 0 / 0.55) calc(var(--scroll-fade-t, 0px) * 0.65),
+    rgb(0 0 0 / 0.85) calc(var(--scroll-fade-t, 0px) * 0.85),
     #000 var(--scroll-fade-t, 0px),
     #000 100%
   );
@@ -214,6 +242,10 @@
     to bottom,
     #000 0,
     #000 calc(100% - var(--scroll-fade-b, 0px)),
+    rgb(0 0 0 / 0.85) calc(100% - var(--scroll-fade-b, 0px) * 0.85),
+    rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-b, 0px) * 0.65),
+    rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-b, 0px) * 0.4),
+    rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-b, 0px) * 0.15),
     transparent 100%
   );
   -webkit-mask-image: var(--scroll-fade-mask);
@@ -247,6 +279,10 @@
   --scroll-fade-mask: linear-gradient(
     to right,
     transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--scroll-fade-s, 0px) * 0.15),
+    rgb(0 0 0 / 0.2) calc(var(--scroll-fade-s, 0px) * 0.4),
+    rgb(0 0 0 / 0.55) calc(var(--scroll-fade-s, 0px) * 0.65),
+    rgb(0 0 0 / 0.85) calc(var(--scroll-fade-s, 0px) * 0.85),
     #000 var(--scroll-fade-s, 0px),
     #000 100%
   );
@@ -282,6 +318,10 @@
     to right,
     #000 0,
     #000 calc(100% - var(--scroll-fade-e, 0px)),
+    rgb(0 0 0 / 0.85) calc(100% - var(--scroll-fade-e, 0px) * 0.85),
+    rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-e, 0px) * 0.65),
+    rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-e, 0px) * 0.4),
+    rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-e, 0px) * 0.15),
     transparent 100%
   );
   -webkit-mask-image: var(--scroll-fade-mask);
@@ -315,6 +355,10 @@
   --scroll-fade-mask: linear-gradient(
     to right,
     transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--scroll-fade-s, 0px) * 0.15),
+    rgb(0 0 0 / 0.2) calc(var(--scroll-fade-s, 0px) * 0.4),
+    rgb(0 0 0 / 0.55) calc(var(--scroll-fade-s, 0px) * 0.65),
+    rgb(0 0 0 / 0.85) calc(var(--scroll-fade-s, 0px) * 0.85),
     #000 var(--scroll-fade-s, 0px),
     #000 100%
   );
@@ -330,6 +374,10 @@
   --scroll-fade-mask: linear-gradient(
     to left,
     transparent 0,
+    rgb(0 0 0 / 0.05) calc(var(--scroll-fade-s, 0px) * 0.15),
+    rgb(0 0 0 / 0.2) calc(var(--scroll-fade-s, 0px) * 0.4),
+    rgb(0 0 0 / 0.55) calc(var(--scroll-fade-s, 0px) * 0.65),
+    rgb(0 0 0 / 0.85) calc(var(--scroll-fade-s, 0px) * 0.85),
     #000 var(--scroll-fade-s, 0px),
     #000 100%
   );
@@ -359,6 +407,10 @@
     to right,
     #000 0,
     #000 calc(100% - var(--scroll-fade-e, 0px)),
+    rgb(0 0 0 / 0.85) calc(100% - var(--scroll-fade-e, 0px) * 0.85),
+    rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-e, 0px) * 0.65),
+    rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-e, 0px) * 0.4),
+    rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-e, 0px) * 0.15),
     transparent 100%
   );
   -webkit-mask-image: var(--scroll-fade-mask);
@@ -374,6 +426,10 @@
     to left,
     #000 0,
     #000 calc(100% - var(--scroll-fade-e, 0px)),
+    rgb(0 0 0 / 0.85) calc(100% - var(--scroll-fade-e, 0px) * 0.85),
+    rgb(0 0 0 / 0.55) calc(100% - var(--scroll-fade-e, 0px) * 0.65),
+    rgb(0 0 0 / 0.2) calc(100% - var(--scroll-fade-e, 0px) * 0.4),
+    rgb(0 0 0 / 0.05) calc(100% - var(--scroll-fade-e, 0px) * 0.15),
     transparent 100%
   );
 }
