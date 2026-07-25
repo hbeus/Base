@@ -43,7 +43,7 @@ function FieldSet() {
 
 export default function SurfaceFields() {
   return (
-    <Card level={0} padding='md' gap='s12'>
+    <Card level={0} padding='md' gap='s16'>
       <Text size='bodySm' weight='medium'>
         Level 0 (page)
       </Text>
