@@ -24,3 +24,4 @@ export type { CartesianBarProps } from './Bar';
 export type { CartesianLineProps } from './Line';
 export type { CartesianAreaProps } from './Area';
 export type { CartesianTooltipProps, CartesianTooltipContext } from './Tooltip';
+export type { CartesianLayout } from '../types';

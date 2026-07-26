@@ -15,3 +15,5 @@ export const DEFAULT_MARGIN: Margin = {
   bottom: 36,
   left: 48,
 };
+
+export type CartesianLayout = 'overlay' | 'stack' | 'group';

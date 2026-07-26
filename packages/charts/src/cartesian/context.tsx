@@ -7,7 +7,7 @@ import {
   type ReactNode,
   type RefObject,
 } from 'react';
-import type { ChartDatum, Margin } from '../types';
+import type { CartesianLayout, ChartDatum, Margin } from '../types';
 
 export type SeriesRegistration = {
   id: string;
@@ -26,6 +26,7 @@ export type CartesianContextValue = {
   innerWidth: number;
   innerHeight: number;
   animate: boolean;
+  layout: CartesianLayout;
   series: SeriesRegistration[];
   registerSeries: (series: SeriesRegistration) => void;
   unregisterSeries: (id: string) => void;
@@ -55,6 +56,7 @@ type ProviderProps = {
   height: number;
   margin: Margin;
   animate: boolean;
+  layout: CartesianLayout;
   hostRef: RefObject<HTMLDivElement | null>;
   children: ReactNode;
 };
@@ -66,6 +68,7 @@ export function CartesianProvider({
   height,
   margin,
   animate,
+  layout,
   hostRef,
   children,
 }: ProviderProps) {
@@ -97,17 +100,45 @@ export function CartesianProvider({
 
   const yMax = useMemo(() => {
     const seriesKeys = series.map(s => s.dataKey);
+    const barKeys = series.filter(s => s.kind === 'bar').map(s => s.dataKey);
+    const areaKeys = series.filter(s => s.kind === 'area').map(s => s.dataKey);
     let max = 0;
+
+    const stackSumMax = (keys: string[]) => {
+      if (keys.length <= 1) return 0;
+      let local = 0;
+      for (const row of data) {
+        let sum = 0;
+        for (const key of keys) {
+          const n = Number(row[key]);
+          if (Number.isFinite(n)) sum += n;
+        }
+        if (sum > local) local = sum;
+      }
+      return local;
+    };
+
+    if (layout === 'stack') {
+      max = Math.max(max, stackSumMax(barKeys), stackSumMax(areaKeys));
+    }
+
     for (const row of data) {
       for (const [key, val] of Object.entries(row)) {
         if (key === xKey) continue;
         if (seriesKeys.length > 0 && !seriesKeys.includes(key)) continue;
+        if (
+          layout === 'stack' &&
+          ((barKeys.length > 1 && barKeys.includes(key)) ||
+            (areaKeys.length > 1 && areaKeys.includes(key)))
+        ) {
+          continue;
+        }
         const n = Number(val);
         if (Number.isFinite(n) && n > max) max = n;
       }
     }
     return max === 0 ? 1 : max;
-  }, [data, series, xKey]);
+  }, [data, series, xKey, layout]);
 
   const innerWidth = Math.max(0, width - margin.left - margin.right);
   const innerHeight = Math.max(0, height - margin.top - margin.bottom);
@@ -122,6 +153,7 @@ export function CartesianProvider({
       innerWidth,
       innerHeight,
       animate,
+      layout,
       series,
       registerSeries,
       unregisterSeries,
@@ -140,6 +172,7 @@ export function CartesianProvider({
       innerWidth,
       innerHeight,
       animate,
+      layout,
       series,
       registerSeries,
       unregisterSeries,

@@ -29,7 +29,7 @@ export function Arc({ color }: DonutArcProps) {
   const innerRadius = radius * innerRadiusRatio;
 
   return (
-    <svg width={width} height={height} role='img'>
+    <svg width={width} height={height} aria-hidden='true' focusable='false'>
       <Group top={height / 2} left={width / 2}>
         <Pie<ChartDatum>
           data={data}

@@ -2,6 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import { useParentSize } from '@visx/responsive';
 import { useRef, type CSSProperties, type ReactNode } from 'react';
 import type { ChartDatum } from '../types';
+import { AccessibleFrame } from './AccessibleFrame';
 import { DonutProvider } from './context';
 
 export type DonutChartRootProps = {
@@ -12,6 +13,10 @@ export type DonutChartRootProps = {
   height?: number;
   animate?: boolean;
   innerRadiusRatio?: number;
+  label?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+  keyboard?: boolean;
   style?: CSSProperties;
   className?: string;
 };
@@ -34,6 +39,10 @@ export function Root({
   height = 280,
   animate = true,
   innerRadiusRatio = 0.55,
+  label,
+  'aria-labelledby': ariaLabelledby,
+  'aria-describedby': ariaDescribedby,
+  keyboard = true,
   style,
   className,
 }: DonutChartRootProps) {
@@ -60,7 +69,14 @@ export function Root({
           hostRef={hostRef}
           innerRadiusRatio={innerRadiusRatio}
         >
-          {children}
+          <AccessibleFrame
+            label={label}
+            aria-labelledby={ariaLabelledby}
+            aria-describedby={ariaDescribedby}
+            keyboard={keyboard}
+          >
+            {children}
+          </AccessibleFrame>
         </DonutProvider>
       ) : null}
     </div>

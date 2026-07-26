@@ -19,4 +19,4 @@ export type {
 } from './donut';
 
 export { DATA_COLORS, dataColorAt } from './dataColors';
-export type { ChartDatum, Margin } from './types';
+export type { CartesianLayout, ChartDatum, Margin } from './types';

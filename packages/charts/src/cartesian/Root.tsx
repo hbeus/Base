@@ -3,7 +3,8 @@ import { localPoint } from '@visx/event';
 import { useParentSize } from '@visx/responsive';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { useRef, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
-import { DEFAULT_MARGIN, type ChartDatum, type Margin } from '../types';
+import { DEFAULT_MARGIN, type CartesianLayout, type ChartDatum, type Margin } from '../types';
+import { AccessibleFrame } from './AccessibleFrame';
 import { CartesianProvider, useCartesian } from './context';
 import { CartesianScalesProvider } from './scales';
 
@@ -14,6 +15,11 @@ export type CartesianChartRootProps = {
   height?: number;
   margin?: Partial<Margin>;
   animate?: boolean;
+  layout?: CartesianLayout;
+  label?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+  keyboard?: boolean;
   style?: CSSProperties;
   className?: string;
 };
@@ -72,7 +78,8 @@ function ChartSvg({ children }: { children: ReactNode }) {
       height={height}
       onPointerMove={onMove}
       onPointerLeave={() => setActiveIndex(null)}
-      role='img'
+      aria-hidden='true'
+      focusable='false'
       style={{ display: 'block', maxWidth: '100%' }}
     >
       <g transform={`translate(${margin.left},${margin.top})`}>
@@ -91,6 +98,11 @@ export function Root({
   height = 280,
   margin: marginProp,
   animate = true,
+  layout = 'overlay',
+  label,
+  'aria-labelledby': ariaLabelledby,
+  'aria-describedby': ariaDescribedby,
+  keyboard = true,
   style,
   className,
 }: CartesianChartRootProps) {
@@ -115,9 +127,17 @@ export function Root({
           height={height}
           margin={margin}
           animate={animate}
+          layout={layout}
           hostRef={hostRef}
         >
-          <ChartSvg>{children}</ChartSvg>
+          <AccessibleFrame
+            label={label}
+            aria-labelledby={ariaLabelledby}
+            aria-describedby={ariaDescribedby}
+            keyboard={keyboard}
+          >
+            <ChartSvg>{children}</ChartSvg>
+          </AccessibleFrame>
         </CartesianProvider>
       ) : null}
     </div>
