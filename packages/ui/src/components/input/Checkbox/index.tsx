@@ -1,8 +1,9 @@
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import * as stylex from '@stylexjs/stylex';
-import { motion } from 'motion/react';
-import type { ComponentProps, ReactNode } from 'react';
+import { motion, useMotionValue } from 'motion/react';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
+import { INPUT_SCALE_DOWN } from '../../../constants/motion';
 import { radii } from '../../../tokens/radii.stylex';
 import { size } from '../../../tokens/size.stylex';
 import { spacing } from '../../../tokens/spacing.stylex';
@@ -20,7 +21,11 @@ export interface CheckboxRootProps
 }
 
 const rootStyles = stylex.create({
+  checkIcon: {
+    stroke: colors.foregroundPrimaryInverse,
+  },
   base: {
+    position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -53,7 +58,7 @@ const rootStyles = stylex.create({
   },
 });
 
-function Root({
+export function Checkbox({
   size = 'md',
   checked: checkedProp,
   defaultChecked = false,
@@ -62,83 +67,53 @@ function Root({
   ref,
   ...props
 }: CheckboxRootProps) {
-  const [internalChecked, setInternalChecked] = useState(defaultChecked);
-  const checked = checkedProp ?? internalChecked;
+  const [isChecked, setIsChecked] = useState(defaultChecked);
+  const pathLength = useMotionValue(isChecked ? 1 : 0);
 
   return (
     <BaseCheckbox.Root
-      data-slot="checkbox"
+      data-slot='checkbox'
       data-size={size}
       ref={ref}
-      checked={checked}
-      onCheckedChange={(value, event) => {
-        setInternalChecked(value);
-        onCheckedChange?.(value, event);
+      checked={isChecked}
+      onCheckedChange={checked => {
+        setIsChecked(checked);
       }}
-      {...stylex.props(
-        rootStyles.base,
-        rootStyles[size],
-        checked && rootStyles.checked,
-        ...styleArray(style),
-      )}
+      render={
+        <motion.div
+          transition={{ duration: 0.15, ease: 'easeOut' }}
+          whileTap={{ scale: INPUT_SCALE_DOWN }}
+          {...stylex.props(
+            rootStyles.base,
+            rootStyles[size],
+            isChecked && rootStyles.checked,
+            ...styleArray(style),
+          )}
+        >
+          <svg width='12' height='12' viewBox='0 0 12 12' fill='none' aria-hidden='true'>
+            <motion.path
+              animate={{
+                pathLength: isChecked ? 1 : 0,
+                opacity: isChecked ? 1 : 0,
+                scale: isChecked ? 1 : 0.5,
+                filter: isChecked ? 'blur(0px)' : 'blur(2px)',
+              }}
+              transition={{
+                duration: isChecked ? 0.15 : 0.1,
+                delay: isChecked ? 0.05 : 0,
+                ease: 'easeOut',
+              }}
+              d='M2.5 6L5 8.5L9.5 4'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              style={{ pathLength }}
+              {...stylex.props(rootStyles.checkIcon)}
+            />
+          </svg>
+        </motion.div>
+      }
       {...props}
     />
   );
 }
-
-/* ---------- Indicator ---------- */
-export interface CheckboxIndicatorProps
-  extends Omit<ComponentProps<typeof BaseCheckbox.Indicator>, 'style'>,
-    BaseProps {
-  children?: ReactNode;
-}
-
-const indicatorStyles = stylex.create({
-  base: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: colors.foregroundPrimaryInverse,
-  },
-});
-
-function Indicator({ children, style, ref, ...props }: CheckboxIndicatorProps) {
-  return (
-    <BaseCheckbox.Indicator
-      data-slot="checkbox-indicator"
-      ref={ref}
-      render={
-        <motion.span
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0 }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        />
-      }
-      {...stylex.props(indicatorStyles.base, ...styleArray(style))}
-      {...props}
-    >
-      {children ?? <CheckIcon />}
-    </BaseCheckbox.Indicator>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg width='12' height='12' viewBox='0 0 12 12' fill='none' aria-hidden='true'>
-      <path
-        d='M2.5 6L5 8.5L9.5 4'
-        stroke='currentColor'
-        strokeWidth='2'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-      />
-    </svg>
-  );
-}
-
-/* ---------- Export ---------- */
-export const Checkbox = {
-  Root,
-  Indicator,
-};
