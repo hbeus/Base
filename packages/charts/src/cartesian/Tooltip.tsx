@@ -14,6 +14,7 @@ export type CartesianTooltipContext = {
   index: number;
   category: string;
   series: { label: string; value: number; color: string }[];
+  total?: number;
 };
 
 export type CartesianTooltipProps = {
@@ -56,10 +57,22 @@ const styles = stylex.create({
   title: {
     fontWeight: 600,
   },
+  totalRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: size.s6,
+    marginTop: size.s8,
+    paddingTop: size.s6,
+    borderTopWidth: 1,
+    borderTopStyle: 'solid',
+    borderTopColor: colors.chartGrid,
+    fontWeight: 600,
+  },
 });
 
 export function Tooltip({ children }: CartesianTooltipProps) {
-  const { activeIndex, xValues, data, series, margin, width, hostRef } = useCartesian();
+  const { activeIndex, xValues, data, series, layout, margin, width, hostRef } =
+    useCartesian();
   const { xScale } = useCartesianScales();
   const reduce = useReducedMotion();
 
@@ -69,15 +82,23 @@ export function Tooltip({ children }: CartesianTooltipProps) {
 
   const ctx: CartesianTooltipContext | null =
     open && row
-      ? {
-          index: activeIndex!,
-          category,
-          series: series.map(s => ({
+      ? (() => {
+          const seriesValues = series.map(s => ({
             label: s.label ?? s.dataKey,
             value: Number(row[s.dataKey]) || 0,
             color: s.color,
-          })),
-        }
+          }));
+          const stackedKeys = series.filter(s => s.kind === 'bar' || s.kind === 'area');
+          const stacked = layout === 'stack' && stackedKeys.length > 1;
+          return {
+            index: activeIndex!,
+            category,
+            series: seriesValues,
+            total: stacked
+              ? stackedKeys.reduce((sum, s) => sum + (Number(row[s.dataKey]) || 0), 0)
+              : undefined,
+          };
+        })()
       : null;
 
   const xVal = category;
@@ -114,6 +135,12 @@ export function Tooltip({ children }: CartesianTooltipProps) {
                   <span {...stylex.props(styles.value)}>{s.value}</span>
                 </div>
               ))}
+              {ctx.total != null ? (
+                <div {...stylex.props(styles.totalRow)}>
+                  <span {...stylex.props(styles.label)}>Total</span>
+                  <span {...stylex.props(styles.value)}>{ctx.total}</span>
+                </div>
+              ) : null}
             </>
           )}
         </motion.div>

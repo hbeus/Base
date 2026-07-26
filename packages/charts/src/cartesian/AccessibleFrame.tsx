@@ -18,7 +18,7 @@ export function AccessibleFrame({
   keyboard,
   children,
 }: Props) {
-  const { data, xValues, series, activeIndex, setActiveIndex } = useCartesian();
+  const { data, xValues, series, layout, activeIndex, setActiveIndex } = useCartesian();
   const [liveText, setLiveText] = useState('');
 
   const announce = (index: number | null) => {
@@ -36,6 +36,11 @@ export function AccessibleFrame({
       const value = Number(row[s.dataKey]) || 0;
       return `${s.label ?? s.dataKey} ${value}`;
     });
+    const stackedKeys = series.filter(s => s.kind === 'bar' || s.kind === 'area');
+    if (layout === 'stack' && stackedKeys.length > 1) {
+      const total = stackedKeys.reduce((sum, s) => sum + (Number(row[s.dataKey]) || 0), 0);
+      parts.push(`total ${total}`);
+    }
     setLiveText(parts.length > 0 ? `${category}: ${parts.join(', ')}` : category);
   };
 
