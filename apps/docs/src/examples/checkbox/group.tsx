@@ -4,22 +4,16 @@ export default function CheckboxGroupExample() {
   return (
     <CheckboxGroup>
       <Flex direction='column' gap='s8'>
-        <Flex direction='row' align='center' gap='s8'>
-          <Checkbox.Root name='prefs' value='terms'>
-            <Checkbox.Indicator />
-          </Checkbox.Root>
-          <Text size='bodySm'>Accept terms</Text>
-        </Flex>
-        <Flex direction='row' align='center' gap='s8'>
-          <Checkbox.Root name='prefs' value='newsletter'>
-            <Checkbox.Indicator />
-          </Checkbox.Root>
+          <Flex as="label" gap="s8">
+            <Checkbox name='prefs' value='terms' id='checkbox-terms' />
+            <Text size='bodySm'>Accept terms</Text>
+          </Flex>
+        <Flex as="label" gap="s8">
+          <Checkbox name='prefs' value='newsletter' />
           <Text size='bodySm'>Subscribe to newsletter</Text>
         </Flex>
-        <Flex direction='row' align='center' gap='s8'>
-          <Checkbox.Root name='prefs' value='updates'>
-            <Checkbox.Indicator />
-          </Checkbox.Root>
+        <Flex as="label" gap="s8">
+            <Checkbox name='prefs' value='updates' />
           <Text size='bodySm'>Receive updates</Text>
         </Flex>
       </Flex>
