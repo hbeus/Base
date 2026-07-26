@@ -36,12 +36,14 @@ import { CartesianChart, DonutChart } from '@base/charts'`}
             <InlineCode>CartesianChart.Root</InlineCode> owns data, scales, and size for bar, line,
             and area. Compose <InlineCode>Grid</InlineCode>, <InlineCode>Axis</InlineCode>, series
             parts, <InlineCode>Tooltip</InlineCode>, and <InlineCode>Crosshair</InlineCode>{' '}
-            explicitly. <InlineCode>DonutChart</InlineCode> is a separate polar compound.
+            explicitly. <InlineCode>DonutChart</InlineCode> is a separate polar compound. Pie is{' '}
+            <InlineCode>DonutChart</InlineCode> with <InlineCode>innerRadiusRatio={'{0}'}</InlineCode>
+            .
           </Text>
           <pre>
             {`import { letterFrequency } from '@visx/mock-data'
 
-<CartesianChart.Root data={letterFrequency.slice(0, 12)} x="letter">
+<CartesianChart.Root data={letterFrequency.slice(0, 12)} x="letter" label="Letter frequency">
   <CartesianChart.Grid />
   <CartesianChart.Axis position="left" />
   <CartesianChart.Axis position="bottom" />

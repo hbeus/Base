@@ -8,7 +8,7 @@ const data = letterFrequency.slice(0, 12).map(d => ({
 
 export default function BarHero() {
   return (
-    <CartesianChart.Root data={data} x='letter' height={280}>
+    <CartesianChart.Root data={data} x='letter' height={280} label='Letter frequency'>
       <CartesianChart.Grid />
       <CartesianChart.Axis position='left' />
       <CartesianChart.Axis position='bottom' />

@@ -9,17 +9,17 @@ const data = [...letterFrequency]
     frequency: d.frequency,
   }));
 
-export default function DonutHero() {
+export default function PieHero() {
   return (
     <DonutChart.Root
       data={data}
       category='letter'
       value='frequency'
       height={280}
-      label='Top letter frequencies'
+      innerRadiusRatio={0}
+      label='Top letter frequencies as pie'
     >
       <DonutChart.Arc />
-      <DonutChart.Label />
       <DonutChart.Tooltip />
     </DonutChart.Root>
   );

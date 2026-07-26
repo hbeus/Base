@@ -8,7 +8,7 @@ const data = appleStock.slice(-60).map(d => ({
 
 export default function AreaHero() {
   return (
-    <CartesianChart.Root data={data} x='date' height={280}>
+    <CartesianChart.Root data={data} x='date' height={280} label='Apple stock close'>
       <CartesianChart.Grid />
       <CartesianChart.Axis position='left' />
       <CartesianChart.Axis position='bottom' />
