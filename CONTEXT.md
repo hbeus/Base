@@ -21,8 +21,8 @@ A named visual effect that plugs into Root — typed props in, fragment look out
 _Avoid_: editor save files; layer stacks; the canvas host
 
 **Pointer**:
-Host-tracked pointer state Root exposes to an opted-in Preset (normalized position + whether the pointer is over the host). Absent when the Preset does not opt in or motion is reduced.
-_Avoid_: DOM event objects; a required interaction for every Preset; flowmap / velocity buffers
+Host-tracked pointer state Root exposes to an opted-in Preset — normalized position, velocity (normalized units per second in the same space), and whether the pointer is over the host. Root may smooth and decay velocity. Absent when the Preset does not opt in or motion is reduced.
+_Avoid_: DOM event objects; a required interaction for every Preset; flowmap / FBO trail buffers
 
 **Fallback**:
 The non-WebGL stand-in shown in Root’s fallback slot while the GPU isn’t ready or can’t run. Shaders-domain only.
