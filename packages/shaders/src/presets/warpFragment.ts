@@ -8,6 +8,11 @@ uniform vec3 uColorC;
 uniform float uIntensity;
 uniform float uWarp;
 uniform float uScale;
+uniform float uPointerPull;
+uniform float uVelocityPull;
+uniform vec2 uPointer;
+uniform float uActive;
+uniform vec2 uVelocity;
 uniform vec2 uResolution;
 
 varying vec2 vUv;
@@ -39,9 +44,15 @@ float fbm(vec2 p) {
 }
 
 void main() {
+  float aspect = uResolution.x / max(uResolution.y, 1.0);
   vec2 uv = (vUv - 0.5) * uScale;
   float t = uTime * 0.2;
   float w = uWarp;
+
+  vec2 ptr = (uPointer - 0.5) * vec2(aspect, 1.0);
+  float speed = length(uVelocity);
+  vec2 pull = ptr * uPointerPull * uActive + uVelocity * uVelocityPull * 0.06;
+  uv += pull * (0.35 + speed * 0.15);
 
   vec2 q = vec2(fbm(uv + t), fbm(uv + vec2(1.7, 9.2) + t * 0.7));
   vec2 r = vec2(

@@ -4,9 +4,8 @@ import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { InlineCode } from '~/components/InlineCode';
 import AuroraTokens from '~/examples/shaders/aurora-tokens';
-import { highlightCode } from '~/lib/highlight';
-
 import tokensRaw from '~/examples/shaders/aurora-tokens.tsx?raw';
+import { highlightCode } from '~/lib/highlight';
 
 export const Route = createFileRoute('/shaders/')({
   loader: async () => {
@@ -62,7 +61,9 @@ import { Shader, resolveColor } from '@base/shaders'`}
             <InlineCode>prefers-reduced-motion</InlineCode> freezes after a static frame, and{' '}
             <InlineCode>fallback</InlineCode> stays visible until Reveal (first successful frame).
             Pointer-aware presets opt in via registration; Root tracks the host in 0–1 bottom-left
-            coords and passes <InlineCode>null</InlineCode> under reduced motion.
+            coords with velocity (<InlineCode>vx</InlineCode>/<InlineCode>vy</InlineCode>, norm
+            units/s, smoothed + idle decay) and passes <InlineCode>null</InlineCode> under reduced
+            motion.
           </Text>
         </Flex>
 
@@ -76,11 +77,7 @@ import { Shader, resolveColor } from '@base/shaders'`}
             <InlineCode>@base/ui</InlineCode> dependency). Prefer resolving against the Root host so
             cascade matches the shader surface.
           </Text>
-          <ComponentExample
-            title='CSS variables'
-            code={highlighted.tokensRaw}
-            rawCode={tokensRaw}
-          >
+          <ComponentExample title='CSS variables' code={highlighted.tokensRaw} rawCode={tokensRaw}>
             <AuroraTokens />
           </ComponentExample>
         </Flex>
@@ -92,8 +89,9 @@ import { Shader, resolveColor } from '@base/shaders'`}
           <Text color='secondary'>
             <Link to='/shaders/aurora'>Aurora</Link>, <Link to='/shaders/warp'>Warp</Link>,{' '}
             <Link to='/shaders/grain'>Grain</Link>, <Link to='/shaders/hex'>Hex</Link>,{' '}
-            <Link to='/shaders/ripple'>Ripple</Link> (pointer-aware) — each with DialKit playgrounds
-            and props.
+            <Link to='/shaders/ripple'>Ripple</Link>, <Link to='/shaders/mesh'>Mesh</Link>,{' '}
+            <Link to='/shaders/palette'>Palette</Link>, <Link to='/shaders/blobs'>Blobs</Link> —
+            each with DialKit playgrounds and props.
           </Text>
         </Flex>
       </Flex>

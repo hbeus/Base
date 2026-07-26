@@ -43,4 +43,16 @@ export const warpProps: PropDef[] = [
     default: '1.4',
     description: 'Spatial scale of the noise field.',
   },
+  {
+    name: 'pointerPull',
+    type: 'number',
+    default: '0.45',
+    description: 'Domain offset toward the pointer.',
+  },
+  {
+    name: 'velocityPull',
+    type: 'number',
+    default: '0.7',
+    description: 'Extra domain pull from pointer velocity.',
+  },
 ];

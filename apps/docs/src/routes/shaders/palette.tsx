@@ -3,25 +3,25 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
-import { rippleProps } from '~/data/shaders/ripple';
-import RippleHero from '~/examples/shaders/ripple-hero';
-import heroRaw from '~/examples/shaders/ripple-hero.tsx?raw';
+import { paletteProps } from '~/data/shaders/palette';
+import PaletteHero from '~/examples/shaders/palette-hero';
+import heroRaw from '~/examples/shaders/palette-hero.tsx?raw';
 import { highlightCode } from '~/lib/highlight';
 
-export const Route = createFileRoute('/shaders/ripple')({
+export const Route = createFileRoute('/shaders/palette')({
   loader: async () => {
     return { heroRaw: await highlightCode({ data: { code: heroRaw } }) };
   },
-  component: RipplePage,
+  component: PalettePage,
 });
 
-function RipplePage() {
+function PalettePage() {
   const highlighted = Route.useLoaderData();
 
   return (
     <DocsPage
-      title='Ripple'
-      description='Concentric rings from the pointer (normalized host coords). Velocity boosts amplitude and frequency. Opts into Root Pointer; under reduced motion, rings idle quietly at center.'
+      title='Palette'
+      description='Spectral color field (Quilez-style cosine). mode="angular" is the Spectrum / conic multi-stop wash — same Preset, not a separate name.'
     >
       <ComponentExample
         title='Playground'
@@ -29,13 +29,13 @@ function RipplePage() {
         rawCode={heroRaw}
         defaultExpanded
       >
-        <RippleHero />
+        <PaletteHero />
       </ComponentExample>
 
       <Text as='h2' size='title'>
-        Shader.Ripple
+        Shader.Palette
       </Text>
-      <PropsTable props={rippleProps} />
+      <PropsTable props={paletteProps} />
     </DocsPage>
   );
 }

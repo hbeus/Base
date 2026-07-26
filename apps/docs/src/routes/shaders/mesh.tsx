@@ -3,25 +3,25 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
-import { rippleProps } from '~/data/shaders/ripple';
-import RippleHero from '~/examples/shaders/ripple-hero';
-import heroRaw from '~/examples/shaders/ripple-hero.tsx?raw';
+import { meshProps } from '~/data/shaders/mesh';
+import MeshHero from '~/examples/shaders/mesh-hero';
+import heroRaw from '~/examples/shaders/mesh-hero.tsx?raw';
 import { highlightCode } from '~/lib/highlight';
 
-export const Route = createFileRoute('/shaders/ripple')({
+export const Route = createFileRoute('/shaders/mesh')({
   loader: async () => {
     return { heroRaw: await highlightCode({ data: { code: heroRaw } }) };
   },
-  component: RipplePage,
+  component: MeshPage,
 });
 
-function RipplePage() {
+function MeshPage() {
   const highlighted = Route.useLoaderData();
 
   return (
     <DocsPage
-      title='Ripple'
-      description='Concentric rings from the pointer (normalized host coords). Velocity boosts amplitude and frequency. Opts into Root Pointer; under reduced motion, rings idle quietly at center.'
+      title='Mesh'
+      description='Soft multi-hue atmosphere (Attio-class wash). Ambient by default; pointer attract and velocity bias via props. Opts into Root Pointer.'
     >
       <ComponentExample
         title='Playground'
@@ -29,13 +29,13 @@ function RipplePage() {
         rawCode={heroRaw}
         defaultExpanded
       >
-        <RippleHero />
+        <MeshHero />
       </ComponentExample>
 
       <Text as='h2' size='title'>
-        Shader.Ripple
+        Shader.Mesh
       </Text>
-      <PropsTable props={rippleProps} />
+      <PropsTable props={meshProps} />
     </DocsPage>
   );
 }

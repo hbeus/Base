@@ -5,9 +5,8 @@ import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
 import { warpProps } from '~/data/shaders/warp';
 import WarpHero from '~/examples/shaders/warp-hero';
-import { highlightCode } from '~/lib/highlight';
-
 import heroRaw from '~/examples/shaders/warp-hero.tsx?raw';
+import { highlightCode } from '~/lib/highlight';
 
 export const Route = createFileRoute('/shaders/warp')({
   loader: async () => {
@@ -22,9 +21,14 @@ function WarpPage() {
   return (
     <DocsPage
       title='Warp'
-      description='Domain-warped noise folds — cloudy marble sheets instead of vertical curtains. DialKit tunes colors, warp strength, and scale.'
+      description='Domain-warped noise folds — cloudy marble sheets. Pointer and velocity pull the domain; opts into Root Pointer.'
     >
-      <ComponentExample title='Playground' code={highlighted.heroRaw} rawCode={heroRaw} defaultExpanded>
+      <ComponentExample
+        title='Playground'
+        code={highlighted.heroRaw}
+        rawCode={heroRaw}
+        defaultExpanded
+      >
         <WarpHero />
       </ComponentExample>
 

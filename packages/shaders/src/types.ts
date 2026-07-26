@@ -3,6 +3,8 @@ export type UniformMap = Record<string, { value: unknown }>;
 export type PointerState = {
   x: number;
   y: number;
+  vx: number;
+  vy: number;
   active: boolean;
 };
 

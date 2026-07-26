@@ -2,17 +2,17 @@ import { Shader } from '@base/shaders';
 import { DialRoot, useDialKit } from 'dialkit';
 import 'dialkit/styles.css';
 
-export default function WarpHero() {
-  const p = useDialKit('Warp', {
-    colorA: { type: 'color', default: '#0a1628' },
-    colorB: { type: 'color', default: '#3d5a80' },
-    colorC: { type: 'color', default: '#98c1d9' },
+export default function MeshHero() {
+  const p = useDialKit('Mesh', {
+    colorA: { type: 'color', default: '#fd9038' },
+    colorB: { type: 'color', default: '#266df0' },
+    colorC: { type: 'color', default: '#ff5b59' },
+    colorD: { type: 'color', default: '#13dd8d' },
     speed: [1, 0, 3, 0.01],
     intensity: [1, 0, 2, 0.01],
-    warp: [1, 0, 3, 0.01],
-    scale: [1.4, 0.4, 4, 0.01],
-    pointerPull: [0.45, 0, 1.5, 0.01],
-    velocityPull: [0.7, 0, 2, 0.01],
+    softness: [1, 0.2, 2.5, 0.01],
+    attract: [0.45, 0, 1.5, 0.01],
+    velocityBias: [0.6, 0, 2, 0.01],
   });
 
   return (
@@ -24,21 +24,21 @@ export default function WarpHero() {
             style={{
               width: '100%',
               height: '100%',
-              background: `linear-gradient(140deg, ${p.colorA}, ${p.colorB}, ${p.colorC})`,
+              background: `radial-gradient(ellipse at 50% 80%, ${p.colorA}, ${p.colorB} 45%, ${p.colorC})`,
             }}
           />
         }
       >
-        <Shader.Warp
+        <Shader.Mesh
           colorA={p.colorA}
           colorB={p.colorB}
           colorC={p.colorC}
+          colorD={p.colorD}
           speed={p.speed}
           intensity={p.intensity}
-          warp={p.warp}
-          scale={p.scale}
-          pointerPull={p.pointerPull}
-          velocityPull={p.velocityPull}
+          softness={p.softness}
+          attract={p.attract}
+          velocityBias={p.velocityBias}
         />
       </Shader.Root>
       <DialRoot />

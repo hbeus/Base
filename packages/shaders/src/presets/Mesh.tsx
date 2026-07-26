@@ -2,70 +2,70 @@ import { useLayoutEffect, useRef } from 'react';
 import { useShaderContext } from '../context';
 import { resolveColor } from '../resolveColor';
 import type { UniformMap } from '../types';
+import { MESH_FRAGMENT } from './meshFragment';
 import { syncPointerUniforms } from './syncPointer';
-import { WARP_FRAGMENT } from './warpFragment';
 
-export type WarpProps = {
+export type MeshProps = {
   colorA?: string;
   colorB?: string;
   colorC?: string;
+  colorD?: string;
   speed?: number;
   intensity?: number;
-  warp?: number;
-  scale?: number;
-  pointerPull?: number;
-  velocityPull?: number;
+  softness?: number;
+  attract?: number;
+  velocityBias?: number;
 };
 
-export function Warp({
-  colorA = '#0a1628',
-  colorB = '#3d5a80',
-  colorC = '#98c1d9',
+export function Mesh({
+  colorA = '#fd9038',
+  colorB = '#266df0',
+  colorC = '#ff5b59',
+  colorD = '#13dd8d',
   speed = 1,
   intensity = 1,
-  warp = 1,
-  scale = 1.4,
-  pointerPull = 0.45,
-  velocityPull = 0.7,
-}: WarpProps) {
-  const { register, hostRef } = useShaderContext('Shader.Warp');
+  softness = 1,
+  attract = 0.45,
+  velocityBias = 0.6,
+}: MeshProps) {
+  const { register, hostRef } = useShaderContext('Shader.Mesh');
   const propsRef = useRef({
     colorA,
     colorB,
     colorC,
+    colorD,
     speed,
     intensity,
-    warp,
-    scale,
-    pointerPull,
-    velocityPull,
+    softness,
+    attract,
+    velocityBias,
   });
   propsRef.current = {
     colorA,
     colorB,
     colorC,
+    colorD,
     speed,
     intensity,
-    warp,
-    scale,
-    pointerPull,
-    velocityPull,
+    softness,
+    attract,
+    velocityBias,
   };
 
   useLayoutEffect(() => {
     return register({
-      id: 'warp',
-      fragment: WARP_FRAGMENT,
+      id: 'mesh',
+      fragment: MESH_FRAGMENT,
       pointer: true,
       uniforms: {
-        uColorA: { value: [0, 0, 0] },
-        uColorB: { value: [1, 1, 1] },
-        uColorC: { value: [0.5, 0.5, 0.5] },
+        uColorA: { value: [1, 0.5, 0.2] },
+        uColorB: { value: [0.15, 0.4, 0.95] },
+        uColorC: { value: [1, 0.35, 0.35] },
+        uColorD: { value: [0.07, 0.87, 0.55] },
         uIntensity: { value: 1 },
-        uWarp: { value: 1 },
-        uScale: { value: 1 },
-        uPointerPull: { value: 0.45 },
-        uVelocityPull: { value: 0.7 },
+        uSoftness: { value: 1 },
+        uAttract: { value: 0.45 },
+        uVelocityBias: { value: 0.6 },
         uPointer: { value: [0.5, 0.5] },
         uActive: { value: 0 },
         uVelocity: { value: [0, 0] },
@@ -77,12 +77,12 @@ export function Warp({
         if (uniforms.uColorA) uniforms.uColorA.value = resolveColor(p.colorA, host);
         if (uniforms.uColorB) uniforms.uColorB.value = resolveColor(p.colorB, host);
         if (uniforms.uColorC) uniforms.uColorC.value = resolveColor(p.colorC, host);
+        if (uniforms.uColorD) uniforms.uColorD.value = resolveColor(p.colorD, host);
         if (uniforms.uIntensity) uniforms.uIntensity.value = p.intensity;
-        if (uniforms.uWarp) uniforms.uWarp.value = p.warp;
-        if (uniforms.uScale) uniforms.uScale.value = p.scale;
-        if (uniforms.uPointerPull) uniforms.uPointerPull.value = p.pointerPull;
-        if (uniforms.uVelocityPull) uniforms.uVelocityPull.value = p.velocityPull;
-        syncPointerUniforms(uniforms, frame);
+        if (uniforms.uSoftness) uniforms.uSoftness.value = p.softness;
+        if (uniforms.uAttract) uniforms.uAttract.value = p.attract;
+        if (uniforms.uVelocityBias) uniforms.uVelocityBias.value = p.velocityBias;
+        syncPointerUniforms(uniforms, frame, { x: 0.5, y: 0.35, active: 0 });
       },
     });
   }, [register, hostRef]);

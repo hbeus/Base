@@ -3,6 +3,7 @@ import { useShaderContext } from '../context';
 import { resolveColor } from '../resolveColor';
 import type { UniformMap } from '../types';
 import { RIPPLE_FRAGMENT } from './rippleFragment';
+import { syncPointerUniforms } from './syncPointer';
 
 export type RippleProps = {
   colorA?: string;
@@ -12,6 +13,8 @@ export type RippleProps = {
   speed?: number;
   decay?: number;
   thickness?: number;
+  velocityAmp?: number;
+  velocityFreq?: number;
 };
 
 export function Ripple({
@@ -22,6 +25,8 @@ export function Ripple({
   speed = 1,
   decay = 2.2,
   thickness = 1,
+  velocityAmp = 0.8,
+  velocityFreq = 0.5,
 }: RippleProps) {
   const { register, hostRef } = useShaderContext('Shader.Ripple');
   const propsRef = useRef({
@@ -32,8 +37,20 @@ export function Ripple({
     speed,
     decay,
     thickness,
+    velocityAmp,
+    velocityFreq,
   });
-  propsRef.current = { colorA, colorB, amplitude, frequency, speed, decay, thickness };
+  propsRef.current = {
+    colorA,
+    colorB,
+    amplitude,
+    frequency,
+    speed,
+    decay,
+    thickness,
+    velocityAmp,
+    velocityFreq,
+  };
 
   useLayoutEffect(() => {
     return register({
@@ -47,8 +64,11 @@ export function Ripple({
         uFrequency: { value: 28 },
         uThickness: { value: 1 },
         uDecay: { value: 2.2 },
+        uVelocityAmp: { value: 0.8 },
+        uVelocityFreq: { value: 0.5 },
         uOrigin: { value: [0.5, 0.5] },
         uActive: { value: 0 },
+        uVelocity: { value: [0, 0] },
       },
       sync(uniforms: UniformMap, frame) {
         const p = propsRef.current;
@@ -60,15 +80,19 @@ export function Ripple({
         if (uniforms.uFrequency) uniforms.uFrequency.value = p.frequency;
         if (uniforms.uThickness) uniforms.uThickness.value = p.thickness;
         if (uniforms.uDecay) uniforms.uDecay.value = p.decay;
+        if (uniforms.uVelocityAmp) uniforms.uVelocityAmp.value = p.velocityAmp;
+        if (uniforms.uVelocityFreq) uniforms.uVelocityFreq.value = p.velocityFreq;
         const origin = uniforms.uOrigin as { value: [number, number] } | undefined;
-        const active = uniforms.uActive as { value: number } | undefined;
-        if (frame.pointer && origin && active) {
+        if (origin && frame.pointer) {
           origin.value = [frame.pointer.x, frame.pointer.y];
-          active.value = frame.pointer.active ? 1 : 0.35;
-        } else if (origin && active) {
+        } else if (origin) {
           origin.value = [0.5, 0.5];
-          active.value = 0.25;
         }
+        syncPointerUniforms(uniforms, frame, {
+          x: 0.5,
+          y: 0.5,
+          active: frame.pointer ? 0.35 : 0.25,
+        });
       },
     });
   }, [register, hostRef]);

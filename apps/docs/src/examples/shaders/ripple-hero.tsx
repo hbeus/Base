@@ -11,6 +11,8 @@ export default function RippleHero() {
     speed: [1, 0, 3, 0.01],
     decay: [2.2, 0.5, 6, 0.05],
     thickness: [1, 0.2, 3, 0.01],
+    velocityAmp: [0.8, 0, 2, 0.01],
+    velocityFreq: [0.5, 0, 2, 0.01],
   });
 
   return (
@@ -35,6 +37,8 @@ export default function RippleHero() {
           speed={p.speed}
           decay={p.decay}
           thickness={p.thickness}
+          velocityAmp={p.velocityAmp}
+          velocityFreq={p.velocityFreq}
         />
       </Shader.Root>
       <DialRoot />

@@ -3,7 +3,6 @@
 import { MotionProvider, QueryProvider, ThemeProvider, useTheme } from '@base/shared';
 import { getThemeFromCookie } from '@base/shared/server';
 import appCss from '@base/shared/styles/global.css?url';
-import shikiCss from '~/styles/shiki.css?url';
 import { SurfaceLevel, Toast, TreeView, useSurface } from '@base/ui';
 import { breakpoints } from '@base/ui/tokens/breakpoints.stylex';
 import { radii } from '@base/ui/tokens/radii.stylex';
@@ -27,6 +26,7 @@ import {
 } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { ToastHost } from '~/components/ToastHost';
+import shikiCss from '~/styles/shiki.css?url';
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
@@ -400,6 +400,15 @@ function DocsSidebar() {
         </TreeView.Item>
         <TreeView.Item href='/shaders/ripple' onClick={handleClick}>
           Ripple
+        </TreeView.Item>
+        <TreeView.Item href='/shaders/mesh' onClick={handleClick}>
+          Mesh
+        </TreeView.Item>
+        <TreeView.Item href='/shaders/palette' onClick={handleClick}>
+          Palette
+        </TreeView.Item>
+        <TreeView.Item href='/shaders/blobs' onClick={handleClick}>
+          Blobs
         </TreeView.Item>
       </TreeView.Group>
       <TreeView.Group label='Tokens'>

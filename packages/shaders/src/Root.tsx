@@ -1,11 +1,11 @@
 import { Mesh, Program, Renderer, Triangle } from 'ogl';
 import {
+  type CSSProperties,
+  type ReactNode,
   useCallback,
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
-  type ReactNode,
 } from 'react';
 import { ClientGuard } from './ClientGuard';
 import { ShaderContext } from './context';
@@ -13,6 +13,8 @@ import { DEFAULT_VERTEX } from './defaultVertex';
 import type { PointerState, PresetRegistration, UniformMap } from './types';
 
 const MAX_DPR = 1.5;
+const VELOCITY_RESPONSIVENESS = 14;
+const VELOCITY_DECAY = 5;
 
 export type RootProps = {
   className?: string;
@@ -45,7 +47,15 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
   const reducedMotionRef = useRef(false);
   const rafRef = useRef(0);
   const lastTimeRef = useRef(0);
-  const pointerRef = useRef<PointerState>({ x: 0.5, y: 0.5, active: false });
+  const pointerRef = useRef<PointerState>({
+    x: 0.5,
+    y: 0.5,
+    vx: 0,
+    vy: 0,
+    active: false,
+  });
+  const pointerSampleRef = useRef<{ x: number; y: number; t: number } | null>(null);
+  const lastPointerMoveAtRef = useRef(0);
   const wantsPointerRef = useRef(false);
 
   const register = useCallback((preset: PresetRegistration) => {
@@ -64,7 +74,7 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
     setHasPreset(true);
     if (sourcesChanged) {
       setRevealed(false);
-      setProgramEpoch((n) => n + 1);
+      setProgramEpoch(n => n + 1);
     }
     return () => {
       if (presetRef.current?.id === preset.id) {
@@ -72,7 +82,7 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
         wantsPointerRef.current = false;
         setHasPreset(false);
         setRevealed(false);
-        setProgramEpoch((n) => n + 1);
+        setProgramEpoch(n => n + 1);
       }
     };
   }, []);
@@ -117,16 +127,29 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
       if (!visibleRef.current || !intersectingRef.current) return;
       const rect = host.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return;
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = 1 - (event.clientY - rect.top) / rect.height;
-      pointerRef.current = {
-        x: Math.min(1, Math.max(0, x)),
-        y: Math.min(1, Math.max(0, y)),
-        active: true,
-      };
+      const x = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+      const y = Math.min(1, Math.max(0, 1 - (event.clientY - rect.top) / rect.height));
+      const now = performance.now();
+      const prev = pointerSampleRef.current;
+      let vx = pointerRef.current.vx;
+      let vy = pointerRef.current.vy;
+      if (prev) {
+        const dt = (now - prev.t) / 1000;
+        if (dt > 0 && dt < 0.1) {
+          const instVx = (x - prev.x) / dt;
+          const instVy = (y - prev.y) / dt;
+          const alpha = 1 - Math.exp(-dt * VELOCITY_RESPONSIVENESS);
+          vx += (instVx - vx) * alpha;
+          vy += (instVy - vy) * alpha;
+        }
+      }
+      pointerSampleRef.current = { x, y, t: now };
+      lastPointerMoveAtRef.current = now;
+      pointerRef.current = { x, y, vx, vy, active: true };
     };
 
     const onLeave = () => {
+      pointerSampleRef.current = null;
       pointerRef.current = { ...pointerRef.current, active: false };
     };
 
@@ -135,7 +158,8 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
     return () => {
       host.removeEventListener('pointermove', onMove);
       host.removeEventListener('pointerleave', onLeave);
-      pointerRef.current = { ...pointerRef.current, active: false };
+      pointerSampleRef.current = null;
+      pointerRef.current = { ...pointerRef.current, active: false, vx: 0, vy: 0 };
     };
   }, [hasPreset, programEpoch]);
 
@@ -215,8 +239,7 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
       rafRef.current = 0;
       if (disposed) return;
 
-      const canRun =
-        visibleRef.current && intersectingRef.current && !reducedMotionRef.current;
+      const canRun = visibleRef.current && intersectingRef.current && !reducedMotionRef.current;
       if (!canRun) {
         if (reducedMotionRef.current && programRef.current && meshRef.current) {
           const p = presetRef.current;
@@ -238,6 +261,19 @@ function HostInner({ className, style, fallback, children }: HostInnerProps) {
 
       const delta = lastTimeRef.current ? (t - lastTimeRef.current) / 1000 : 0;
       lastTimeRef.current = t;
+
+      if (wantsPointerRef.current && !reducedMotionRef.current && delta > 0) {
+        const idle = t - lastPointerMoveAtRef.current > 32;
+        if (idle || !pointerRef.current.active) {
+          const decay = Math.exp(-VELOCITY_DECAY * delta);
+          pointerRef.current = {
+            ...pointerRef.current,
+            vx: pointerRef.current.vx * decay,
+            vy: pointerRef.current.vy * decay,
+          };
+        }
+      }
+
       const p = presetRef.current;
       if (p && programRef.current && meshRef.current) {
         p.sync(program.uniforms as UniformMap, {

@@ -3,25 +3,25 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ComponentExample } from '~/components/ComponentExample';
 import { DocsPage } from '~/components/DocsPage';
 import { PropsTable } from '~/components/PropsTable';
-import { rippleProps } from '~/data/shaders/ripple';
-import RippleHero from '~/examples/shaders/ripple-hero';
-import heroRaw from '~/examples/shaders/ripple-hero.tsx?raw';
+import { blobsProps } from '~/data/shaders/blobs';
+import BlobsHero from '~/examples/shaders/blobs-hero';
+import heroRaw from '~/examples/shaders/blobs-hero.tsx?raw';
 import { highlightCode } from '~/lib/highlight';
 
-export const Route = createFileRoute('/shaders/ripple')({
+export const Route = createFileRoute('/shaders/blobs')({
   loader: async () => {
     return { heroRaw: await highlightCode({ data: { code: heroRaw } }) };
   },
-  component: RipplePage,
+  component: BlobsPage,
 });
 
-function RipplePage() {
+function BlobsPage() {
   const highlighted = Route.useLoaderData();
 
   return (
     <DocsPage
-      title='Ripple'
-      description='Concentric rings from the pointer (normalized host coords). Velocity boosts amplitude and frequency. Opts into Root Pointer; under reduced motion, rings idle quietly at center.'
+      title='Blobs'
+      description='Soft metaballs that attract toward the pointer; velocity shoves the field. Opts into Root Pointer.'
     >
       <ComponentExample
         title='Playground'
@@ -29,13 +29,13 @@ function RipplePage() {
         rawCode={heroRaw}
         defaultExpanded
       >
-        <RippleHero />
+        <BlobsHero />
       </ComponentExample>
 
       <Text as='h2' size='title'>
-        Shader.Ripple
+        Shader.Blobs
       </Text>
-      <PropsTable props={rippleProps} />
+      <PropsTable props={blobsProps} />
     </DocsPage>
   );
 }

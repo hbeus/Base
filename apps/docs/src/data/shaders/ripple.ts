@@ -43,4 +43,16 @@ export const rippleProps: PropDef[] = [
     default: '1',
     description: 'Ring line thickness.',
   },
+  {
+    name: 'velocityAmp',
+    type: 'number',
+    default: '0.8',
+    description: 'How much pointer speed boosts ring amplitude.',
+  },
+  {
+    name: 'velocityFreq',
+    type: 'number',
+    default: '0.5',
+    description: 'How much pointer speed tightens ring frequency.',
+  },
 ];

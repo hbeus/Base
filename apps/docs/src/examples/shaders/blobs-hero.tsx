@@ -2,17 +2,16 @@ import { Shader } from '@base/shaders';
 import { DialRoot, useDialKit } from 'dialkit';
 import 'dialkit/styles.css';
 
-export default function WarpHero() {
-  const p = useDialKit('Warp', {
-    colorA: { type: 'color', default: '#0a1628' },
-    colorB: { type: 'color', default: '#3d5a80' },
-    colorC: { type: 'color', default: '#98c1d9' },
+export default function BlobsHero() {
+  const p = useDialKit('Blobs', {
+    colorA: { type: 'color', default: '#0a1420' },
+    colorB: { type: 'color', default: '#5ec8ff' },
+    colorC: { type: 'color', default: '#ff7ad9' },
     speed: [1, 0, 3, 0.01],
     intensity: [1, 0, 2, 0.01],
-    warp: [1, 0, 3, 0.01],
-    scale: [1.4, 0.4, 4, 0.01],
-    pointerPull: [0.45, 0, 1.5, 0.01],
-    velocityPull: [0.7, 0, 2, 0.01],
+    threshold: [1.1, 0.4, 2.5, 0.01],
+    attract: [0.55, 0, 1.5, 0.01],
+    velocityForce: [0.8, 0, 2, 0.01],
   });
 
   return (
@@ -24,21 +23,20 @@ export default function WarpHero() {
             style={{
               width: '100%',
               height: '100%',
-              background: `linear-gradient(140deg, ${p.colorA}, ${p.colorB}, ${p.colorC})`,
+              background: `radial-gradient(circle at 40% 50%, ${p.colorB}, ${p.colorA})`,
             }}
           />
         }
       >
-        <Shader.Warp
+        <Shader.Blobs
           colorA={p.colorA}
           colorB={p.colorB}
           colorC={p.colorC}
           speed={p.speed}
           intensity={p.intensity}
-          warp={p.warp}
-          scale={p.scale}
-          pointerPull={p.pointerPull}
-          velocityPull={p.velocityPull}
+          threshold={p.threshold}
+          attract={p.attract}
+          velocityForce={p.velocityForce}
         />
       </Shader.Root>
       <DialRoot />
